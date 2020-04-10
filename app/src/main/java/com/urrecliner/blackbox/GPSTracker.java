@@ -31,7 +31,7 @@ class GPSTracker extends Service implements LocationListener {
     Location location; // Location
     double latitude = 0, longitude = 0;
     ArrayList<Double> latitudes, longitudes;
-    int arraySize = 3;
+    int arraySize = 4;
 
     private static final float MIN_DISTANCE_DRIVE = 10;
     private static final long MIN_TIME_DRIVE_UPDATES = 1000;
@@ -100,6 +100,7 @@ class GPSTracker extends Service implements LocationListener {
         if (latitude != 0) {
             vCompass.setVisibility(View.VISIBLE); vSatellite.setVisibility(View.VISIBLE);
         }
+
 //        Timer timer = new Timer();
 //        timer.scheduleAtFixedRate(new TimerTask() {
 //            @Override
