@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2f022f"
+    android:keepScreenOn="true">
+
+    <!--Event Record counts -->
+    <TextView
+        android:id="@+id/textEvent"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/textEvent"
+        android:textColor="#cccccc"
+        android:textSize="@dimen/info_size" />
+    <TextView
+        android:id="@+id/textCountEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/textEvent"
+        android:text="@string/zero"
+        android:layout_marginStart="0dp"
+        android:textColor="#cccccc"
+        android:textSize="@dimen/info_size" />
+
+    <!--Log Info in multi lines-->
+    <TextView
+        android:id="@+id/textLogInfo"
+        android:layout_width="440dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/textEvent"
+        android:layout_marginStart="16dp"
+        android:text="@string/loginfo"
+        android:textColor="#cccc"
+        android:textSize="@dimen/log_size" />
+
+    <!--GPS Active-->
+    <ImageView
+        android:id="@+id/gpsActive"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_above="@id/frmBattery"
+        android:layout_below="@id/frmRecord"
+        android:layout_alignStart="@id/frmRecord"
+        android:contentDescription="@string/compassImage"
+        android:src="@mipmap/satellite1" />
+
+    <!--Date and Time-->
+    <TextView
+        android:id="@+id/textDate"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:layout_toEndOf="@id/textLogInfo"
+        android:layout_toStartOf="@id/frmRecord"
+        android:text="@string/mm_dd"
+        android:textColor="#eeeeee"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/textTime"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/textDate"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@id/textLogInfo"
+        android:layout_toStartOf="@id/frmRecord"
+        android:gravity="center"
+        android:text="@string/_00_00"
+        android:textColor="#eeeeee"
+        android:textSize="30sp" />
+
+    <!--Record start button and count Fragment-->
+    <FrameLayout
+        android:id="@+id/frmEvent"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true" >
+
+        <ImageButton
+            android:id="@+id/btnEvent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:layout_marginBottom="16dp"
+            android:src="@mipmap/event_blue"
+            android:contentDescription="@string/textEvent" />
+
+        <TextView
+            android:id="@+id/activeEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            android:textColor="#F00"
+            android:textSize="30sp" />
+
+    </FrameLayout>
+
+    <!--Speed in Km-->
+    <TextView
+        android:id="@+id/textSpeed"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/textLogInfo"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="end"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="end"
+        android:text="@string/underscore"
+        android:textColor="#eeeeee"
+        android:textSize="44sp" />
+
+    <TextView
+        android:id="@+id/textKm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textSpeed"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="80dp"
+        android:layout_toEndOf="@id/textSpeed"
+        android:text="@string/km"
+        android:textColor="#eeeeee"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/obdKms"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignEnd="@id/textSpeed"
+        android:layout_below="@id/textSpeed"
+        android:layout_gravity="end"
+        android:layout_marginStart="8dp"
+        android:text="0"
+        android:textColor="#eeeeee"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/textKms"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignStart="@id/textKm"
+        android:layout_alignBottom="@id/obdKms"
+        android:layout_gravity="end"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@id/obdKms"
+        android:text="Kms"
+        android:textColor="#eeeeee"
+        android:textSize="28sp" />
+
+    <!--Exit & Napping button-->
+    <ImageButton
+        android:id="@+id/btnExit"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="94dp"
+        android:layout_height="94dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/km"
+        android:src="@mipmap/exit_app" />
+
+    <ImageButton
+        android:id="@+id/btnIWillBack"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="94dp"
+        android:layout_height="94dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@id/btnExit"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/km"
+        android:src="@mipmap/i_will_be_back" />
+
+    <!--Event button and count-->
+    <FrameLayout
+        android:id="@+id/frmRecord"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp" >
+
+        <ImageButton
+            android:id="@+id/btnRecord"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:contentDescription="@string/play_stop"
+            android:src="@mipmap/off_recording" />
+
+        <TextView
+            android:id="@+id/textCountRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/zero"
+            android:textColor="#00FF00"
+            android:textSize="24sp" />
+
+    </FrameLayout>
+
+    <!--Compass-->
+    <FrameLayout
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_toEndOf="@id/textLogInfo"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/textTime" >
+
+        <ImageView
+            android:id="@+id/iVCompass"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/compassImage"
+            android:src="@mipmap/compass_color" />
+
+        <ImageView
+            android:id="@+id/iViewArrow"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/compass_arrow"
+            android:contentDescription="@string/directionTriangle" />
+
+    </FrameLayout>
+
+    <!--  Battery  -->
+    <FrameLayout
+        android:id="@+id/frmBattery"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@id/textureBox"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="30dp">
+
+        <ImageView
+            android:id="@+id/imgBattery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/battery_none"
+            android:gravity="center"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/textBattery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="90"
+            android:textStyle="bold"
+            android:textColor="#eee"
+            android:textSize="28sp" />
+    </FrameLayout>
+
+    <!--draw box around texture view -->
+    <TextView
+        android:id="@+id/textureBox"
+        android:layout_width="174dp"
+        android:layout_height="104dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/btnExit"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/backborder_only" />
+
+    <TextureView
+        android:id="@+id/textureView"
+        android:layout_width="170dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/btnExit"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="4dp" />
+
+</RelativeLayout>

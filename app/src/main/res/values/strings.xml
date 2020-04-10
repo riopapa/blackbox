@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">BlackBox</string>
+    <string name="video_button">Video Record Button</string>
+    <string name="camera_button">Camera Capture Button</string>
+    <string name="permission_request">Permission for camera and audio recording.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="zero">0</string>
+    <string name="location">Loc:</string>
+    <string name="un_known">UnKnown</string>
+    <string name="textEvent">Event:</string>
+    <string name="mm_dd">mm-dd</string>
+    <string name="_00_00">00:00</string>
+    <string name="play_stop">play_stop</string>
+    <string name="loginfo">logInfo</string>
+    <string name="underscore">_ _</string>
+    <string name="km">Km</string>
+    <string name="compassImage">compassImage</string>
+    <string name="directionTriangle">directionTriangle</string>
+    <string name="appwidget_text"> </string>
+
+</resources>
