@@ -19,7 +19,7 @@ class GatherDiskSpace implements Runnable {
             Arrays.sort(files);
             if (files.length > 1) { // more than 2 date directory
                 utils.deleteRecursive(files[0]);
-                utils.log("Disk", "Squeezed to "+mPackagePath.getFreeSpace() / 1000L);
+                utils.logBoth("Disk", "Squeezed to "+mPackagePath.getFreeSpace() / 1000L);
             } else {  // if this is only folder then remove some files within this directory
                 File[] subFiles = utils.getDirectoryList(files[0]);
                 if (subFiles.length > 5) {
@@ -28,9 +28,9 @@ class GatherDiskSpace implements Runnable {
                     for (int i = 0; i < max; i++) {  // delete old file first
                         subFiles[i].delete();
                     }
-                    utils.log("Disk", "Size squeezed");
+                    utils.logBoth("Disk", "Size squeezed");
                 } else {
-                    utils.logE("No FreeSize", "Something wrong");
+                    utils.logException("No FreeSize", "Something wrong");
                 }
             }
         }

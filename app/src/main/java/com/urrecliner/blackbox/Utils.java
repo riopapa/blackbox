@@ -106,7 +106,7 @@ class Utils {
     }
 
 
-    void log (String tag, String text) {
+    void logBoth(String tag, String text) {
 //        int pid = android.os.Process.myPid();
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
@@ -124,7 +124,16 @@ class Utils {
         });
     }
 
-    void logE(String tag, String text) {
+    void logOnly (String tag, String text) {
+//        int pid = android.os.Process.myPid();
+        StackTraceElement[] traces;
+        traces = Thread.currentThread().getStackTrace();
+        String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
+        Log.w(tag , log);
+        append2file(mPackageLogPath, "log_" + logDate + ".txt", getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  ": " + log);
+    }
+
+    void logException(String tag, String text) {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
@@ -228,7 +237,7 @@ class Utils {
             bw.write("\n" + text + "\n");
         } catch (IOException e) {
             String s = directory.toString() + filename + " Err:" + e.toString();
-            logE("append",s);
+            logException("append",s);
             Log.e("appendIOExcept1",  e.getMessage());
         } finally {
             try {
@@ -255,7 +264,7 @@ class Utils {
         }
         catch (IOException e) {
             String s = file.toString() + " Err:" + e.toString();
-            logE("write",s);
+            logException("write",s);
             e.printStackTrace();
         }
     }

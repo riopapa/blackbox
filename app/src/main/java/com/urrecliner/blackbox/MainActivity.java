@@ -76,7 +76,6 @@ public class MainActivity extends Activity {
     static EventMerge eventMerge0 = new EventMerge();
     static EventMerge eventMerge1 = new EventMerge();
     static EventMerge eventMerge2 = new EventMerge();
-    static EventMerge eventMerge3 = new EventMerge();
 
     private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -109,10 +108,11 @@ public class MainActivity extends Activity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vTextureView = findViewById(R.id.textureView);
+        utils.logOnly(logID, "Main Started");
         final TextView textureBox = findViewById(R.id.textureBox);
         vBtnRecord = findViewById(R.id.btnRecord);
         vBtnRecord.setOnClickListener(v -> {
-            utils.log(logID," start button clicked");
+            utils.logBoth(logID," start button clicked");
             if (mIsRecording)
                 startStopExit.stopVideo();
             else {
@@ -180,7 +180,7 @@ public class MainActivity extends Activity {
     static void startEventSaving() {
 
         if (!mIsRecording) return;
-        utils.log("Event","Starting ...");
+        utils.logBoth(logID,"Event Starting ...");
 
         gpsTracker.askLocation();
         long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
@@ -190,8 +190,6 @@ public class MainActivity extends Activity {
             eventMerge1.merge(startTime);
         else if (activeEventCount == 2)
             eventMerge2.merge(startTime);
-        else if (activeEventCount == 3)
-            eventMerge3.merge(startTime);
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
             String text = "<  "+activeEventCount+"  >\n";
@@ -312,7 +310,7 @@ public class MainActivity extends Activity {
                 }, 800);
                 break;
             default:
-                utils.logE("key", keyCode + " Pressed");
+                utils.logException("key", keyCode + " Pressed");
                 break;
         }
         keyOldTime = keyNowTime;
@@ -382,5 +380,5 @@ private final static int ALL_PERMISSIONS_RESULT = 101;
                 .show();
     }
 
-// ↑ ↑ ↑ ↑ P E R M I S S I O N    RELATED /////// ↑ ↑ ↑
+// ↑ ↑ ↑ ↑ P E R M I S S I O N    RELATED /////// ↑ ↑ ↑ 완벽하진 않음
 }

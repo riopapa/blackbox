@@ -9,14 +9,10 @@ import android.view.View;
 
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.speedNow;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
-import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vTextureView;
-import static com.urrecliner.blackbox.Vars.vTodayKms;
-import static com.urrecliner.blackbox.Vars.viewFinder;
 
 class DisplayBattery {
 
@@ -31,7 +27,7 @@ class DisplayBattery {
             final int level = intent.getIntExtra( BatteryManager.EXTRA_LEVEL, 0 );
             final int scale = intent.getIntExtra( BatteryManager.EXTRA_SCALE, 0 );
 
-            utils.log("received","action: "+action+" level= "+level+" scale= "+scale);
+            utils.logBoth("received","action: "+action+" level= "+level+" scale= "+scale);
             show();
         }
     }

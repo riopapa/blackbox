@@ -17,7 +17,6 @@ import com.github.pires.obd.enums.ObdProtocols;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
 import java.util.Timer;
@@ -66,7 +65,7 @@ class OBDAccess {
                 if (device.getName().contains("OBD")) {
                     chosenDeviceAddress = device.getAddress();
                     chosenDeviceName = device.getName();
-                    utils.log(logID,"OBD found "+chosenDeviceName);
+                    utils.logBoth(logID,"OBD found "+chosenDeviceName);
                 }
             }
             new Timer().schedule(new TimerTask() {  // autoStart
@@ -81,7 +80,7 @@ class OBDAccess {
     }
 
     private void connectOBD() {
-        utils.log(logID, "connect OBD");
+        utils.logBoth(logID, "connect OBD");
         BluetoothDevice device = btAdapter.getRemoteDevice(chosenDeviceAddress);
         UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 //            utils.log(TAG, "connectOBD  "+chosenDeviceName+" : "+chosenDeviceAddress);
@@ -90,13 +89,13 @@ class OBDAccess {
             btSocket = device.createRfcommSocketToServiceRecord(uuid);
             btSocket.connect();
         } catch (IllegalArgumentException e) {
-            utils.log(logID, "IllegalArgumentException  ") ; //+e.toString());
+            utils.logOnly(logID, "IllegalArgumentException  ") ; //+e.toString());
 //            Toast.makeText(mContext, "Please choose Bluetooth device first", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
-            utils.log(logID, "*** OBD not READY ***"); //+e.toString());
+            utils.logOnly(logID, "*** OBD not READY ***"); //+e.toString());
 //            Toast.makeText(mContext, "Unable to establish connection", Toast.LENGTH_LONG).show();
         } catch (Exception e){
-            utils.log(logID, "Exception  "); //+e.toString());
+            utils.logOnly(logID, "Exception  "); //+e.toString());
 //            Toast.makeText(mContext, e.toString(), Toast.LENGTH_LONG).show();
         }
         try {
@@ -104,14 +103,14 @@ class OBDAccess {
             new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
             new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
         } catch (IllegalArgumentException e) {
-            utils.log(logID, "IllegalArgumentException  "); // +e.toString());
+            utils.logOnly(logID, "IllegalArgumentException  "); // +e.toString());
 //            Toast.makeText(mContext, "Please choose Bluetooth device first", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
-            utils.log(logID, "*** OBD not READY ***"); //+e.toString());
+            utils.logOnly(logID, "*** OBD not READY ***"); //+e.toString());
             e.printStackTrace();
 //            Toast.makeText(mContext, "Unable to establish connection", Toast.LENGTH_LONG).show();
         } catch (Exception e){
-            utils.log(logID, "Exception  "); //+e.toString());
+            utils.logOnly(logID, "Exception  "); //+e.toString());
 //            Toast.makeText(mContext, e.toString(), Toast.LENGTH_LONG).show();
         }
         try {
@@ -129,19 +128,19 @@ class OBDAccess {
             }
             else
                 beginKms = sharedPref.getInt("beginKms",beginKms);
-            utils.log(logID, todayStr +" Starting with "+beginKms+" Kms");
+            utils.logOnly(logID, todayStr +" Starting with "+beginKms+" Kms");
             getOBDInfoTimeBased();
         } catch (IllegalArgumentException e) {
-            utils.log(logID, "IllegalArgumentException  "); //+e.toString());
+            utils.logOnly(logID, "IllegalArgumentException  "); //+e.toString());
             e.printStackTrace();
 //            Toast.makeText(mContext, "Please choose Bluetooth device first", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
-            utils.log(logID, "*** OBD not READY ***"); //+e.toString());
+            utils.logOnly(logID, "*** OBD not READY ***"); //+e.toString());
 //            Toast.makeText(mContext, "Unable to establish connection", Toast.LENGTH_LONG).show();
         } catch (Exception e){
             e.printStackTrace();
-            utils.log(logID, "Exception  "); //+e.toString());
+            utils.logOnly(logID, "Exception  "); //+e.toString());
 //            Toast.makeText(mContext, e.toString(), Toast.LENGTH_LONG).show();
         }
     }
@@ -149,7 +148,7 @@ class OBDAccess {
     private Timer timer = null;
     private int beginKms, nowKms;
     private void getOBDInfoTimeBased() {
-        utils.log(logID, "startOBD  ");
+        utils.logBoth(logID, "startOBD  ");
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -174,7 +173,7 @@ class OBDAccess {
 //                    loadCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
 //                    utils.log(TAG,"3) "+ loadCommand.getCalculatedResult());
                 } catch (Exception e) {
-                    utils.log(logID,"start Exception "+e.toString());
+                    utils.logOnly(logID,"start Exception "+e.toString());
                 }
             }
         }, 100, 2000);
@@ -184,7 +183,7 @@ class OBDAccess {
         if (timer != null)
             timer.cancel();
         timer = null;
-        utils.log(logID, "today "+(nowKms-beginKms)+" Kms moved");
+        utils.logBoth(logID, "today "+(nowKms-beginKms)+" Kms moved");
     }
 }
 //If you are connecting to a Bluetooth serial board then try using the well-known SPP UUID 00001101-0000-1000-8000-00805F9B34FB. However if you are connecting to an Android peer then please generate your own unique UUID.

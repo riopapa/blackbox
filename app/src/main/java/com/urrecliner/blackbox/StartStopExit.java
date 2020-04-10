@@ -17,6 +17,7 @@ import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.normalMerge;
 import static com.urrecliner.blackbox.Vars.obdAccess;
+import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -26,25 +27,25 @@ class StartStopExit {
 
     private String logID = "StartStop";
     void startVideo() {
-        utils.log(logID, "Start Recording ---");
+        utils.logBoth(logID, "Start Recording ---");
         mIsRecording = true;
         vBtnRecord.setImageResource(R.mipmap.on_recording);
-        utils.log(logID, "Step 1 prepareRecord");
+        utils.logBoth(logID, "Step 1 prepareRecord");
         try {
             videoUtils.prepareRecord();
         } catch (Exception e) {
-            utils.log(logID, "prepareRecord "+e.toString());
+            utils.logOnly(logID, "prepareRecord "+e.toString());
         }
         try {
             mediaRecorder.start();
         } catch (Exception e) {
-            utils.logE("Start Error", e.toString());
+            utils.logOnly("Start Error", e.toString());
         }
         try {
             startCamera();
             startNormal();
         } catch (Exception e) {
-            utils.log(logID, "startCamera, startNormal "+e.toString());
+            utils.logOnly(logID, "startCamera, startNormal "+e.toString());
         }
     }
 
@@ -88,7 +89,7 @@ class StartStopExit {
             mediaRecorder.reset();
             timerSnapCamera.cancel();
         } catch (Exception e) {
-            utils.log(logID, e.toString());
+            utils.logOnly(logID, e.toString());
         }
         try {
             videoUtils.startPreview();
@@ -96,19 +97,20 @@ class StartStopExit {
             obdAccess.stop();
             directionSensor.stop();
         } catch (Exception e) {
-            utils.log(logID, e.toString());
+            utils.logOnly(logID, e.toString());
         }
     }
 
     void exitBlackBoxApp() {
         mExitApplication = true;
+        snapBytes = null;
         mActivity.finish();
         if (mIsRecording)
             stopVideo();
         displayTime.stop();
         new Timer().schedule(new TimerTask() {
             public void run() {
-                utils.log(logID,"Exit BlackBox");
+                utils.logBoth(logID,"Exit BlackBox");
                 mActivity.finishAffinity();
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());

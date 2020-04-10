@@ -7,23 +7,16 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import static android.content.Context.SENSOR_SERVICE;
 import static android.hardware.Sensor.TYPE_ACCELEROMETER;
-import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.isSatelliteShown;
 import static com.urrecliner.blackbox.Vars.azimuth;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.startStopExit;
-import static com.urrecliner.blackbox.Vars.utils;
 
 public class DirectionSensor implements SensorEventListener{
 
     private String logID = "DirSensor";
-    private Timer timer;
     private SensorManager sensorManager;
     private Sensor rotationVector, accelerometer, magnetometer;
     private float[] rotationMatrix = new float[9];

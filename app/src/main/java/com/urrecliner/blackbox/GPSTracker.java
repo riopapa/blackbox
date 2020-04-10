@@ -14,20 +14,13 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.GPSDegree;
-import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.isCompassShown;
 import static com.urrecliner.blackbox.Vars.gpsUpdateTime;
-import static com.urrecliner.blackbox.Vars.isSatelliteShown;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vCompass;
-import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vSatellite;
 
 class GPSTracker extends Service implements LocationListener {
@@ -128,7 +121,7 @@ class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        utils.log("location","location changed "+location.getLatitude()+" x "+location.getLongitude());
+        utils.logBoth("location","location changed "+location.getLatitude()+" x "+location.getLongitude());
         updateCompass(location);
     }
 
@@ -139,7 +132,6 @@ class GPSTracker extends Service implements LocationListener {
         latitudes.remove(0); longitudes.remove(0);
         latitudes.add(latitude); longitudes.add(longitude);
         gpsUpdateTime = System.currentTimeMillis();
-        isSatelliteShown = true;
         if (!isCompassShown) {
             mActivity.runOnUiThread(() -> {
                 vCompass.setVisibility(View.VISIBLE);
@@ -147,8 +139,11 @@ class GPSTracker extends Service implements LocationListener {
             });
             isCompassShown = true;
         }
-        GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitude, longitude);
-        if (!Double.isNaN(GPSDegree)) {
+
+        float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitude, longitude);
+        utils.logBoth("degree",GPSDegree+" : "+latitudes.get(0)+" x "+longitudes.get(0)+
+                " > "+latitude+" x "+longitudes);
+        if (!Float.isNaN(GPSDegree)) {
             mActivity.runOnUiThread(() -> {
                 vSatellite.setImageResource(blinkGPS ? R.mipmap.satellite1 : R.mipmap.satellite2);
                 drawCompass(GPSDegree % 360);
@@ -156,7 +151,6 @@ class GPSTracker extends Service implements LocationListener {
             blinkGPS = !blinkGPS;
         }
     }
-
 
     @Override
     public void onProviderDisabled(String provider) { }
@@ -172,6 +166,7 @@ class GPSTracker extends Service implements LocationListener {
         return null;
     }
 
+    // 방향 계산
     private float calcDirection(double P1_latitude, double P1_longitude, double P2_latitude, double P2_longitude)
     {
         final double CONSTANT2RADIAN = (3.141592 / 180);

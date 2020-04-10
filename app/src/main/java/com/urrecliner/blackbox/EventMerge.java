@@ -71,7 +71,7 @@ class EventMerge {
                 try {
                     new MergeFileTask().execute("" + fromTime);
                 } catch (Exception e) {
-                    utils.logE(logID, "Exception: " + e.toString());
+                    utils.logException(logID, "Exception: " + e.toString());
                 }
             }
         }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
@@ -109,7 +109,7 @@ class EventMerge {
                     mp.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    utils.logE(logID, "IOException: " + e.toString());
+                    utils.logException(logID, "IOException: " + e.toString());
                 }
                 mp.release();
             }
@@ -128,7 +128,7 @@ class EventMerge {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
-                        utils.logE(logID, "mergeOne~ " + file.toString());
+                        utils.logException(logID, "mergeOne~ " + file.toString());
                     }
                 }
             }
@@ -149,11 +149,11 @@ class EventMerge {
                     container.writeContainer(fileChannel);
                     fileChannel.close();
                 } catch (IOException e) {
-                    utils.logE(logID, "IOException~ " + e.toString());
+                    utils.logException(logID, "IOException~ " + e.toString());
                 }
             } else {
                 utils.beepOnce(3, 1f);
-                utils.logE(logID, "IOException~ ");
+                utils.logException(logID, "IOException~ ");
             }
         }
 
@@ -186,7 +186,7 @@ class EventMerge {
 
         private void countDownTimer() {
 
-            utils.log(logID, "Copying Event Images..");
+            utils.logBoth(logID, "Copying Event Images..");
             countDownTimer = new CountDownTimer(2000 * MAX_IMAGES_SIZE, 300) {
                 public void onTick(long millisUntilFinished) {
                     if (idx < MAX_IMAGES_SIZE) {
@@ -211,7 +211,7 @@ class EventMerge {
 //                        utils.log(logID, "Event File: "+thisEventPath.getName());
                     }
                 }
-                public void onFinish() { }
+                public void onFinish() { jpgBytes = null;}
             };
         }
 

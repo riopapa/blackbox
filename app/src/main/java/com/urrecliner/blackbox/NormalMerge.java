@@ -52,7 +52,7 @@ class NormalMerge {
         try {
             new MergeFileTask().execute("" + normalStartTime);
         } catch (Exception e) {
-            utils.logE(logID,"Exception: "+e.toString());
+            utils.logException(logID,"Exception: "+e.toString());
         }
     }
     private static class MergeFileTask extends AsyncTask< String, String, String> {
@@ -82,7 +82,7 @@ class NormalMerge {
                     Date date = sdf.parse(endTimeS);
                     normalStartTime = date.getTime();
                 } catch (ParseException e) {
-                    utils.logE("parse", endTimeS + ", " + e.toString()+e.toString());
+                    utils.logException("parse", endTimeS + ", " + e.toString()+e.toString());
                 }
                 outputFile = new File(mPackageNormalDatePath, beginTimeS + " x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
@@ -108,7 +108,7 @@ class NormalMerge {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
-                        utils.logE(logID, "mergeOne~ " + file.toString());
+                        utils.logException(logID, "mergeOne~ " + file.toString());
                     }
                 }
             }
@@ -133,7 +133,7 @@ class NormalMerge {
                         container.writeContainer(fileChannel);
                         fileChannel.close();
                 } catch (IOException e) {
-                    utils.logE(logID,"IOException~ "+e.toString());
+                    utils.logException(logID,"IOException~ "+e.toString());
                 }
             } else {
                 utils.beepOnce(3, 1f);
@@ -156,7 +156,7 @@ class NormalMerge {
         }
         @Override
         protected void onCancelled(String result) {
-            utils.log(logID, "canceled result:"+result);
+            utils.logOnly(logID, "canceled result:"+result);
         }
 
         @Override

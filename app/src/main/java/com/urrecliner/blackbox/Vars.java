@@ -82,7 +82,6 @@ public class Vars {
     static int FRAME_RATE = 30;
 
     static int CountEvent;
-    static boolean isCompassShown = false;
     static int activeEventCount = 0;
     final static int DELAY_AUTO_RECORD = 5;
     final static int DELAY_WAIT_EXIT = 10;
@@ -109,7 +108,7 @@ public class Vars {
 
     static long gpsUpdateTime = 0;
     static boolean viewFinder = true;
-    static boolean isSatelliteShown = false;
     static String speedNow = "now", speedOld = "old";
-    static float GPSDegree = 0, azimuth = 0;
+    static float azimuth = 0;
+    static boolean isCompassShown = false;
 }

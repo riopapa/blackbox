@@ -52,7 +52,6 @@ import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
-import static com.urrecliner.blackbox.Vars.startStopExit;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vTextureView;
@@ -64,7 +63,7 @@ public class VideoUtils {
     private String mCameraId;
     void setupCamera() {
         String model = Build.MODEL;
-        utils.log(logID, "Start setupCamera on "+model);
+        utils.logBoth(logID, "Start setupCamera on "+model);
         CameraManager cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
             assert cameraManager != null;
@@ -84,9 +83,9 @@ public class VideoUtils {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
-        utils.log(logID, "mPreviewSize "+mPreviewSize.getWidth()+" x "+mPreviewSize.getHeight());
-        utils.log(logID, "mImageSize "+mImageSize.getWidth()+" x "+mImageSize.getHeight()+" with array "+MAX_IMAGES_SIZE);
-        utils.log(logID, "mVideoSize "+mVideoSize.getWidth()+" x "+mVideoSize.getHeight());
+        utils.logOnly(logID, "mPreviewSize "+mPreviewSize.getWidth()+" x "+mPreviewSize.getHeight());
+        utils.logOnly(logID, "mImageSize "+mImageSize.getWidth()+" x "+mImageSize.getHeight()+" with array "+MAX_IMAGES_SIZE);
+        utils.logOnly(logID, "mVideoSize "+mVideoSize.getWidth()+" x "+mVideoSize.getHeight());
         try {
             mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 5); // MAX_IMAGES_SIZE);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
@@ -98,7 +97,7 @@ public class VideoUtils {
 
     private void setCameraSize(StreamConfigurationMap map) {
         String model = Build.MODEL;
-        utils.log(logID, "setCameraSize on "+model);
+        utils.logBoth(logID, "setCameraSize on "+model);
         if (model.equals("Nexus 6P")) {
             /* nexus 6p resolution
             3264 x 2448 : 1.3, 3200 x 2400 : 1.3, 2592 x 1944 : 1.3, 2688 x 1512 : 1.7, 2048 x 1536 : 1.3,
@@ -152,7 +151,7 @@ public class VideoUtils {
             mCameraDevice = camera;
             if(mIsRecording) {
                 mVideoFileName = videoUtils.getOutputFileName(0, "mp4").toString();
-                utils.log(logID, "Step 2 prepareRecord");
+                utils.logBoth(logID, "Step 2 prepareRecord");
                 prepareRecord();
                 mediaRecorder.start();
             } else {
@@ -201,11 +200,11 @@ public class VideoUtils {
             mCaptureRequestBuilder.addTarget(previewSurface);
             mCaptureRequestBuilder.addTarget(recordSurface);
         } catch (Exception e) {
-            utils.logE(logID, "Prepare Error AA "+e.toString());
+            utils.logException(logID, "Prepare Error AA "+e.toString());
             e.printStackTrace();
         }
         if (previewSurface == null || recordSurface == null) {
-            utils.log(logID, "previewSurface or recordSurface is null");
+            utils.logBoth(logID, "previewSurface or recordSurface is null");
             return;
         }
         try {
@@ -219,26 +218,26 @@ public class VideoUtils {
                                 mCaptureRequestBuilder.build(), null, null
                         );
                     } catch (CameraAccessException e) {
-                        utils.log(logID, "setRepeatingRequest Error");
+                        utils.logBoth(logID, "setRepeatingRequest Error");
                         e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onConfigureFailed(CameraCaptureSession session) {
-                    utils.log(logID, "onConfigureFailed: while prepareRecord");
+                    utils.logBoth(logID, "onConfigureFailed: while prepareRecord");
                 }
             }, null);
 
         } catch (Exception e) {
-            utils.logE(logID, "Prepare Error BB "+e.toString());
+            utils.logException(logID, "Prepare Error BB "+e.toString());
             e.printStackTrace();
         }
     }
 
     private void setupMediaRecorder() throws IOException {
 
-        utils.log(logID," setup Media");
+        utils.logBoth(logID," setup Media");
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 //        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -265,13 +264,12 @@ public class VideoUtils {
         mediaRecorder.setOnInfoListener((mediaRecorder, what, extra) -> {
             switch (what) {
                 case MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED:
-                    utils.log(logID,"MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED");
+                    utils.logOnly(logID,"MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED");
 //                    startStopExit.stopVideo();
 //                    startStopExit.startVideo();
-                    utils.log(logID, "***** MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED ***");
+                    utils.logBoth(logID, "***** MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED ***");
                     mediaRecorder.stop();
                     mediaRecorder.reset();
-                    utils.logE("maxSize", "MAX_FILE SIZE_REACHED ");
                     break;
                 case MediaRecorder.MEDIA_RECORDER_INFO_NEXT_OUTPUT_FILE_STARTED:
                     prepareNextFile();
@@ -307,7 +305,7 @@ public class VideoUtils {
                 vTextRecord.setText(s);
 //                utils.log("assign " + s, nextFileName.toString());
             } catch (IOException e) {
-                utils.logE("Error", "nxtFile\n" + e.toString());
+                utils.logException("Error", "nxtFile\n" + e.toString());
             }
         }
     }
@@ -331,18 +329,18 @@ public class VideoUtils {
                                 mPrevSession.setRepeatingRequest(mPrevBuilder.build(),
                                         null, mBackgroundPreview);
                             } catch (Exception e) {
-                                utils.log(logID, "mPreSession error"+e.toString());
+                                utils.logBoth(logID, "mPreSession error"+e.toString());
                                 e.printStackTrace();
                             }
                         }
 
                         @Override
                         public void onConfigureFailed(CameraCaptureSession session) {
-                            utils.log(logID, "onConfigureFailed: startPreview");
+                            utils.logOnly(logID, "onConfigureFailed: startPreview");
                         }
                     }, null);
         } catch (Exception e) {
-            utils.log(logID, "startPreview "+e.toString());
+            utils.logOnly(logID, "startPreview "+e.toString());
             e.printStackTrace();
         }
     }
