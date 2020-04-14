@@ -35,6 +35,7 @@ import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
 import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
+import static com.urrecliner.blackbox.Vars.sdfDate;
 import static com.urrecliner.blackbox.Vars.utils;
 
 class NormalMerge {
@@ -52,7 +53,7 @@ class NormalMerge {
         try {
             new MergeFileTask().execute("" + normalStartTime);
         } catch (Exception e) {
-            utils.logException(logID,"Exception: "+e.toString());
+            utils.logException(logID,"Merge Exception: ", e);
         }
     }
     private static class MergeFileTask extends AsyncTask< String, String, String> {
@@ -65,7 +66,6 @@ class NormalMerge {
         }
         @Override
         protected String doInBackground(String... inputParams) {
-            SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_LOG_TIME, Locale.getDefault());
             long startTime = Long.parseLong(inputParams[0]);
             File []files2Merge;
 
@@ -79,10 +79,10 @@ class NormalMerge {
                 Arrays.sort(files2Merge);
                 endTimeS = files2Merge[files2Merge.length - 2].getName();
                 try {
-                    Date date = sdf.parse(endTimeS);
+                    Date date = sdfDate.parse(endTimeS);
                     normalStartTime = date.getTime();
                 } catch (ParseException e) {
-                    utils.logException("parse", endTimeS + ", " + e.toString()+e.toString());
+                    utils.logException("parse", endTimeS, e);
                 }
                 outputFile = new File(mPackageNormalDatePath, beginTimeS + " x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
@@ -108,7 +108,7 @@ class NormalMerge {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
-                        utils.logException(logID, "mergeOne~ " + file.toString());
+                        utils.logException(logID, "mergeOne~ ", e);
                     }
                 }
             }
@@ -133,7 +133,7 @@ class NormalMerge {
                         container.writeContainer(fileChannel);
                         fileChannel.close();
                 } catch (IOException e) {
-                    utils.logException(logID,"IOException~ "+e.toString());
+                    utils.logException(logID,"IOException~ ", e);
                 }
             } else {
                 utils.beepOnce(3, 1f);

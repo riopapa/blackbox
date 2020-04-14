@@ -88,8 +88,10 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-            return false;
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+            surfaceTexture.release();
+//            emExoPlayer.blockingClearSurface();
+            return true;
         }
 
         @Override
@@ -310,7 +312,7 @@ public class MainActivity extends Activity {
                 }, 800);
                 break;
             default:
-                utils.logException("key", keyCode + " Pressed");
+                utils.logBoth("key", keyCode + " Pressed");
                 break;
         }
         keyOldTime = keyNowTime;
@@ -328,7 +330,7 @@ private final static int ALL_PERMISSIONS_RESULT = 101;
             PackageInfo info = getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_PERMISSIONS);
             permissions = info.requestedPermissions;//This array contain
         } catch (Exception e) {
-            //
+            utils.logException("Permission", "Not done", e);
         }
 
         permissionsToRequest = findUnAskedPermissions();

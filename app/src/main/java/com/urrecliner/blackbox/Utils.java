@@ -16,6 +16,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,6 +33,7 @@ import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 class Utils {
     private String logDate = getMilliSec2String(System.currentTimeMillis(),FORMAT_DATE);
+    private String logFile = "log_"+logDate+".txt";
 
     String getMilliSec2String(long milliSec, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
@@ -105,14 +108,13 @@ class Utils {
         return fullPath.listFiles();
     }
 
-
     void logBoth(String tag, String text) {
 //        int pid = android.os.Process.myPid();
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
         Log.w(tag , log);
-        append2file(mPackageLogPath, "log_" + logDate + ".txt", getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  ": " + log);
+        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  ": " + log);
         text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+text;
         text = truncLine(text);
         final String fText = tag + ":" + text;
@@ -130,16 +132,14 @@ class Utils {
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
         Log.w(tag , log);
-        append2file(mPackageLogPath, "log_" + logDate + ".txt", getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  ": " + log);
+        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  ": " + log);
     }
 
-    void logException(String tag, String text) {
+    void logException(String tag, String text, Exception e) {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
-        Log.e("<" + tag + ">" , log);
-        append2file(mPackageLogPath, "log_" + logDate + ".txt", getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  "> " + log);
-        append2file(mPackageLogPath, "log_" + logDate + "E.txt", getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  "> " + log);
+        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  "// " + log+ "\n"+ getStackTrace(e));
         text = vTextLogInfo.getText().toString() + "\n" + text;
         text = truncLine(text);
         final String fText = text;
@@ -149,6 +149,13 @@ class Utils {
                 vTextLogInfo.setText(fText);
             }
         });
+        e.printStackTrace();
+    }
+
+    String getStackTrace(Exception e) {
+        StringWriter errors = new StringWriter();
+        e.printStackTrace(new PrintWriter(errors));
+        return errors.toString();
     }
 
     static private String []omits = { "performResume", "performCreate", "dispatch", "callActivityOnResume", "access$",
@@ -234,11 +241,9 @@ class Utils {
             }
             fw = new FileWriter(file.getAbsoluteFile(), true);
             bw = new BufferedWriter(fw);
-            bw.write("\n" + text + "\n");
+            bw.write("\n" + text);
         } catch (IOException e) {
-            String s = directory.toString() + filename + " Err:" + e.toString();
-            logException("append",s);
-            Log.e("appendIOExcept1",  e.getMessage());
+            e.printStackTrace();
         } finally {
             try {
                 if (bw != null) bw.close();
@@ -264,7 +269,6 @@ class Utils {
         }
         catch (IOException e) {
             String s = file.toString() + " Err:" + e.toString();
-            logException("write",s);
             e.printStackTrace();
         }
     }

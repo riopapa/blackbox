@@ -14,22 +14,20 @@ import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
 import static com.urrecliner.blackbox.Vars.vTextureView;
 
-class DisplayBattery {
+class DisplayBattery extends BroadcastReceiver {
 
     private int [] batteryMipmap = { R.mipmap.battery_none, R.mipmap.battery_level90, R.mipmap.battery_level70, R.mipmap.battery_level50, R.mipmap.battery_level30};
     private int batteryPrev = 0;
     private BroadcastReceiver mPowerOn = null, mPowerOff = null;
 
-    private class BatteryBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            final int level = intent.getIntExtra( BatteryManager.EXTRA_LEVEL, 0 );
-            final int scale = intent.getIntExtra( BatteryManager.EXTRA_SCALE, 0 );
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        final int level = intent.getIntExtra( BatteryManager.EXTRA_LEVEL, 0 );
+        final int scale = intent.getIntExtra( BatteryManager.EXTRA_SCALE, 0 );
 
-            utils.logBoth("received","action: "+action+" level= "+level+" scale= "+scale);
-            show();
-        }
+        utils.logBoth("received","action: "+action+" level= "+level+" scale= "+scale);
+        showBattery();
     }
 
     void init() {
@@ -49,7 +47,7 @@ class DisplayBattery {
 //        mContext.registerReceiver(mPowerOff, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
     }
 
-    void show() {
+    void showBattery() {
 //        utils.log("show"," detected");
         boolean isCharging;
         IntentFilter intFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);

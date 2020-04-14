@@ -1,7 +1,5 @@
 package com.urrecliner.blackbox;
 
-import android.view.View;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,7 +18,7 @@ class DisplayTime implements Runnable {
             @Override
             public void run() {
                 vTextTime.setText(utils.getNowTimeString("HH:mm"));
-                displayBattery.show();
+                displayBattery.showBattery();
                 gpsTracker.askLocation();
 //                if (System.currentTimeMillis() > (gpsUpdateTime + 7000)) {
 //                    isSatelliteShown = false;
@@ -43,3 +41,4 @@ class DisplayTime implements Runnable {
         displayTime.cancel();
     }
 }
+

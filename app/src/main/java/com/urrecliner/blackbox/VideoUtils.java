@@ -68,11 +68,13 @@ public class VideoUtils {
         try {
             assert cameraManager != null;
             for(String cameraId : cameraManager.getCameraIdList()){
+                utils.logOnly(logID, "cameraID="+cameraId);
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
                 if(cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT){
                     continue;
                 }
                 mCameraId = cameraId;
+                utils.logOnly(logID, "M cameraID="+cameraId);
                 StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 setCameraSize(map);
 //                int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
@@ -114,7 +116,7 @@ public class VideoUtils {
                     mVideoSize = size;
             }
         }
-        if (model.equals("SM_G965N")) {
+        if (model.equals("SM-G965N")) {
             /* galaxy s9+
             4032 x 3024 : 1.3, 4032 x 2268 : 1.7, 4032 x 1960 : 2.0, 3024 x 3024 : 1.0, 3984 x 2988 : 1.3, 3840 x 2160 : 1.7,
             3264 x 2448 : 1.3, 3264 x 1836 : 1.7, 2976 x 2976 : 1.0, 2880 x 2160 : 1.3, 2560 x 1440 : 1.7, 2160 x 2160 : 1.0,
@@ -200,7 +202,7 @@ public class VideoUtils {
             mCaptureRequestBuilder.addTarget(previewSurface);
             mCaptureRequestBuilder.addTarget(recordSurface);
         } catch (Exception e) {
-            utils.logException(logID, "Prepare Error AA "+e.toString());
+            utils.logException(logID, "Prepare Error AA ", e);
             e.printStackTrace();
         }
         if (previewSurface == null || recordSurface == null) {
@@ -230,7 +232,7 @@ public class VideoUtils {
             }, null);
 
         } catch (Exception e) {
-            utils.logException(logID, "Prepare Error BB "+e.toString());
+            utils.logException(logID, "Prepare Error BB ", e);
             e.printStackTrace();
         }
     }
@@ -305,7 +307,7 @@ public class VideoUtils {
                 vTextRecord.setText(s);
 //                utils.log("assign " + s, nextFileName.toString());
             } catch (IOException e) {
-                utils.logException("Error", "nxtFile\n" + e.toString());
+                utils.logException("Error", "nxtFile", e);
             }
         }
     }

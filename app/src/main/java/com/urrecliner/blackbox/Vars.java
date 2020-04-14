@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Vars {
 
@@ -60,6 +62,8 @@ public class Vars {
 
     static final String FORMAT_LOG_TIME = "yy-MM-dd HH.mm.ss.SSS";
     static final String FORMAT_DATE = "yy-MM-dd";
+    static SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.getDefault());
+    static SimpleDateFormat sdfLog = new SimpleDateFormat(FORMAT_LOG_TIME, Locale.getDefault());
 
     private static final String PATH_PACKAGE = "BlackBox";
     private static final String PATH_EVENT = "event";
@@ -83,7 +87,7 @@ public class Vars {
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int DELAY_AUTO_RECORD = 5;
+    final static int DELAY_AUTO_RECORD = 8;
     final static int DELAY_WAIT_EXIT = 10;
     final static int DELAY_I_WILL_BACK = 50;
 

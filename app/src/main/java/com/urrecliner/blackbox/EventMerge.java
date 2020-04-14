@@ -71,7 +71,7 @@ class EventMerge {
                 try {
                     new MergeFileTask().execute("" + fromTime);
                 } catch (Exception e) {
-                    utils.logException(logID, "Exception: " + e.toString());
+                    utils.logException(logID, "Exception: ", e);
                 }
             }
         }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
@@ -108,8 +108,7 @@ class EventMerge {
                     mp.setDataSource(outputFile);
                     mp.prepare();
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    utils.logException(logID, "IOException: " + e.toString());
+                    utils.logException(logID, "IOException: ", e);
                 }
                 mp.release();
             }
@@ -128,7 +127,7 @@ class EventMerge {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
-                        utils.logException(logID, "mergeOne~ " + file.toString());
+                        utils.logBoth(logID, "mergeOne~ " + file.toString());
                     }
                 }
             }
@@ -149,11 +148,11 @@ class EventMerge {
                     container.writeContainer(fileChannel);
                     fileChannel.close();
                 } catch (IOException e) {
-                    utils.logException(logID, "IOException~ " + e.toString());
+                    utils.logException(logID, "IOException~ ", e);
                 }
             } else {
                 utils.beepOnce(3, 1f);
-                utils.logException(logID, "IOException~ ");
+                utils.logOnly(logID, "IOException~ ");
             }
         }
 

@@ -25,7 +25,7 @@ public class CameraUtils {
             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CaptureRequest.CONTROL_AF_TRIGGER_START);
             mCaptureSession.capture(mCaptureRequestBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
         } catch (CameraAccessException e) {
-            utils.logException("capture",e.toString());
+            utils.logException("capture","SnapShot",e);
         }
     }
 
