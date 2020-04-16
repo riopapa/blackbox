@@ -18,13 +18,11 @@ import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.text.Collator;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
@@ -53,7 +51,7 @@ class NormalMerge {
         try {
             new MergeFileTask().execute("" + normalStartTime);
         } catch (Exception e) {
-            utils.logException(logID,"Merge Exception: ", e);
+            utils.logE(logID,"Merge Exception: ", e);
         }
     }
     private static class MergeFileTask extends AsyncTask< String, String, String> {
@@ -82,7 +80,7 @@ class NormalMerge {
                     Date date = sdfDate.parse(endTimeS);
                     normalStartTime = date.getTime();
                 } catch (ParseException e) {
-                    utils.logException("parse", endTimeS, e);
+                    utils.logE("parse", endTimeS, e);
                 }
                 outputFile = new File(mPackageNormalDatePath, beginTimeS + " x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
@@ -108,7 +106,7 @@ class NormalMerge {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
-                        utils.logException(logID, "mergeOne~ ", e);
+                        utils.logE(logID, "mergeOne~ ", e);
                     }
                 }
             }
@@ -133,7 +131,7 @@ class NormalMerge {
                         container.writeContainer(fileChannel);
                         fileChannel.close();
                 } catch (IOException e) {
-                    utils.logException(logID,"IOException~ ", e);
+                    utils.logE(logID,"IOException~ ", e);
                 }
             } else {
                 utils.beepOnce(3, 1f);

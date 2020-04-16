@@ -34,18 +34,18 @@ class StartStopExit {
         try {
             videoUtils.prepareRecord();
         } catch (Exception e) {
-            utils.logOnly(logID, "prepareRecord "+e.toString());
+            utils.logE(logID, "Prepare Error", e);
         }
         try {
             mediaRecorder.start();
         } catch (Exception e) {
-            utils.logOnly("Start Error", e.toString());
+            utils.logE(logID, "Start Error", e);
         }
         try {
             startCamera();
             startNormal();
         } catch (Exception e) {
-            utils.logOnly(logID, "startCamera, startNormal "+e.toString());
+            utils.logE(logID, "Start Camera, Normal Error", e);
         }
     }
 
@@ -89,7 +89,7 @@ class StartStopExit {
             mediaRecorder.reset();
             timerSnapCamera.cancel();
         } catch (Exception e) {
-            utils.logOnly(logID, e.toString());
+            utils.logE(logID, "Stop", e);
         }
         try {
             videoUtils.startPreview();
@@ -97,7 +97,7 @@ class StartStopExit {
             obdAccess.stop();
             directionSensor.stop();
         } catch (Exception e) {
-            utils.logOnly(logID, e.toString());
+            utils.logE(logID, "Stop 2", e);
         }
     }
 

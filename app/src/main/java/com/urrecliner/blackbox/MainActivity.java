@@ -330,7 +330,7 @@ private final static int ALL_PERMISSIONS_RESULT = 101;
             PackageInfo info = getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_PERMISSIONS);
             permissions = info.requestedPermissions;//This array contain
         } catch (Exception e) {
-            utils.logException("Permission", "Not done", e);
+            utils.logE("Permission", "Not done", e);
         }
 
         permissionsToRequest = findUnAskedPermissions();

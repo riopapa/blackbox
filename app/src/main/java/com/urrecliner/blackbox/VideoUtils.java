@@ -202,7 +202,7 @@ public class VideoUtils {
             mCaptureRequestBuilder.addTarget(previewSurface);
             mCaptureRequestBuilder.addTarget(recordSurface);
         } catch (Exception e) {
-            utils.logException(logID, "Prepare Error AA ", e);
+            utils.logE(logID, "Prepare Error AA ", e);
             e.printStackTrace();
         }
         if (previewSurface == null || recordSurface == null) {
@@ -232,7 +232,7 @@ public class VideoUtils {
             }, null);
 
         } catch (Exception e) {
-            utils.logException(logID, "Prepare Error BB ", e);
+            utils.logE(logID, "Prepare Error BB ", e);
             e.printStackTrace();
         }
     }
@@ -307,7 +307,7 @@ public class VideoUtils {
                 vTextRecord.setText(s);
 //                utils.log("assign " + s, nextFileName.toString());
             } catch (IOException e) {
-                utils.logException("Error", "nxtFile", e);
+                utils.logE("Error", "nxtFile", e);
             }
         }
     }
@@ -342,7 +342,7 @@ public class VideoUtils {
                         }
                     }, null);
         } catch (Exception e) {
-            utils.logOnly(logID, "startPreview "+e.toString());
+            utils.logE(logID, "startPreview ", e);
             e.printStackTrace();
         }
     }

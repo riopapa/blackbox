@@ -71,7 +71,7 @@ class EventMerge {
                 try {
                     new MergeFileTask().execute("" + fromTime);
                 } catch (Exception e) {
-                    utils.logException(logID, "Exception: ", e);
+                    utils.logE(logID, "Exception: ", e);
                 }
             }
         }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
@@ -108,7 +108,7 @@ class EventMerge {
                     mp.setDataSource(outputFile);
                     mp.prepare();
                 } catch (IOException e) {
-                    utils.logException(logID, "IOException: ", e);
+                    utils.logE(logID, "IOException: ", e);
                 }
                 mp.release();
             }
@@ -148,7 +148,7 @@ class EventMerge {
                     container.writeContainer(fileChannel);
                     fileChannel.close();
                 } catch (IOException e) {
-                    utils.logException(logID, "IOException~ ", e);
+                    utils.logE(logID, "IOException~ ", e);
                 }
             } else {
                 utils.beepOnce(3, 1f);
