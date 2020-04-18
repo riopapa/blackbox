@@ -106,6 +106,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_activity);
         mActivity = this;
         mContext = this;
+        gpsTracker = new GPSTracker(mContext);
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
@@ -128,8 +129,6 @@ public class MainActivity extends Activity {
         setViewVars();
         setBlackBoxFolders();
         initiate();
-        gpsTracker = new GPSTracker(mContext);
-        gpsTracker.askLocation();
 
         textureBox.setOnClickListener(v -> {
             viewFinder = !viewFinder;
@@ -154,6 +153,7 @@ public class MainActivity extends Activity {
             vTextureView.setLayoutParams(textureLP);
             vTextureView.setScaleX(1.7f);
         });
+
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //        DisplayTime displayTime = new DisplayTime();
         displayTime.run();
@@ -207,7 +207,6 @@ public class MainActivity extends Activity {
         vSatellite.setVisibility(View.INVISIBLE);
         vCompass.setVisibility(View.INVISIBLE);
         utils.beepsInitiate();
-        gpsTracker = new GPSTracker(mContext);
         gpsTracker.askLocation();
         CountEvent = utils.getDirectoryFiltered(mPackageEventPath, "mp4").length;
         String txt = "" + CountEvent;

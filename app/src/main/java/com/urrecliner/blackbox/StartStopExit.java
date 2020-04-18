@@ -30,7 +30,7 @@ class StartStopExit {
         utils.logBoth(logID, "Start Recording ---");
         mIsRecording = true;
         vBtnRecord.setImageResource(R.mipmap.on_recording);
-        utils.logBoth(logID, "Step 1 prepareRecord");
+//        utils.logBoth(logID, "Step 1 prepareRecord");
         try {
             videoUtils.prepareRecord();
         } catch (Exception e) {

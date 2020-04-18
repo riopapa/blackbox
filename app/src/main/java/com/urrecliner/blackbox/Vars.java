@@ -81,9 +81,9 @@ public class Vars {
     static double evtLatitude = 0;
     static double evtLongitude = 0;
 
-    static long ONE_WORK_FILE_SIZE = 25 * 100000;
-    static int ENCODING_RATE = 3000*1000;
-    static int FRAME_RATE = 30;
+    static long VIDEO_ONE_WORK_FILE_SIZE = 26 * 100000;
+    static int VIDEO_ENCODING_RATE = 3000*1000;
+    static int VIDEO_FRAME_RATE = 30;
 
     static int CountEvent;
     static int activeEventCount = 0;

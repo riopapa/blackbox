@@ -26,7 +26,7 @@ class DisplayBattery extends BroadcastReceiver {
         final int level = intent.getIntExtra( BatteryManager.EXTRA_LEVEL, 0 );
         final int scale = intent.getIntExtra( BatteryManager.EXTRA_SCALE, 0 );
 
-        utils.logBoth("received","action: "+action+" level= "+level+" scale= "+scale);
+        utils.logBoth("received","battery: "+action+" level= "+level+" scale= "+scale);
         showBattery();
     }
 

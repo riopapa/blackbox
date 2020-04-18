@@ -27,10 +27,11 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.ENCODING_RATE;
+import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.ONE_WORK_FILE_SIZE;
+import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
+import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mBackgroundPreview;
@@ -63,18 +64,18 @@ public class VideoUtils {
     private String mCameraId;
     void setupCamera() {
         String model = Build.MODEL;
-        utils.logBoth(logID, "Start setupCamera on "+model);
+        utils.logBoth(logID, "Start setupCamera on ["+model+"]");
         CameraManager cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
             assert cameraManager != null;
             for(String cameraId : cameraManager.getCameraIdList()){
-                utils.logOnly(logID, "cameraID="+cameraId);
+//                utils.logOnly(logID, "cameraID="+cameraId);
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
                 if(cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT){
                     continue;
                 }
                 mCameraId = cameraId;
-                utils.logOnly(logID, "M cameraID="+cameraId);
+//                utils.logOnly(logID, "M cameraID="+cameraId);
                 StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 setCameraSize(map);
 //                int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
@@ -85,9 +86,9 @@ public class VideoUtils {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
-        utils.logOnly(logID, "mPreviewSize "+mPreviewSize.getWidth()+" x "+mPreviewSize.getHeight());
-        utils.logOnly(logID, "mImageSize "+mImageSize.getWidth()+" x "+mImageSize.getHeight()+" with array "+MAX_IMAGES_SIZE);
-        utils.logOnly(logID, "mVideoSize "+mVideoSize.getWidth()+" x "+mVideoSize.getHeight());
+        utils.logOnly(logID, "mPrevw "+mPreviewSize.getWidth()+"x"+mPreviewSize.getHeight());
+        utils.logOnly(logID, "mImage "+mImageSize.getWidth()+"x"+mImageSize.getHeight()+" array "+MAX_IMAGES_SIZE);
+        utils.logOnly(logID, "mVideo "+mVideoSize.getWidth()+"x"+mVideoSize.getHeight());
         try {
             mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 5); // MAX_IMAGES_SIZE);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
@@ -107,7 +108,7 @@ public class VideoUtils {
             1024 x 768 : 1.3, 800 x 600 : 1.3, 864 x 480 : 1.8, 800 x 480 : 1.66, 2 720 x 480 : 1.5, 640 x 480 : 1.3
             640 x 360 : 1.7, 352 x 288 : 1.2, 320 x 240 : 1.3, 176 x 144 : 1.2, 160 x 120 : 1.3 */
             for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-    //                    Log.w("size", size.getWidth()+" x "+ size.getHeight());
+    //                    Log.w("size", size.getWidth()+"x"+ size.getHeight());
                 if (size.getWidth() == 640)
                     mPreviewSize = size;
                 else if (size.getWidth() == 3200 && size.getHeight() == 2400)
@@ -124,7 +125,7 @@ public class VideoUtils {
             1056 x 704 : 1.5, 1024 x 768 : 1.3, 960 x 720 : 1.3, 960 x 540 : 1.7, 800 x 450 : 1.7, 720 x 720 : 1.0,
             720 x 480 : 1.5, 640 x 480 : 1.3, 352 x 288 : 1.2 */
             for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-    //                    Log.w("size", size.getWidth()+" x "+ size.getHeight());
+    //                    Log.w("size", size.getWidth()+"x"+ size.getHeight());
                     if (size.getWidth() == 640)
                         mPreviewSize = size;
                     else if (size.getWidth() == 4032 && size.getHeight() == 2268)
@@ -153,7 +154,7 @@ public class VideoUtils {
             mCameraDevice = camera;
             if(mIsRecording) {
                 mVideoFileName = videoUtils.getOutputFileName(0, "mp4").toString();
-                utils.logBoth(logID, "Step 2 prepareRecord");
+//                utils.logBoth(logID, "Step 2 prepareRecord");
                 prepareRecord();
                 mediaRecorder.start();
             } else {
@@ -179,10 +180,12 @@ public class VideoUtils {
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
         byte[] bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
-        snapBytes[snapMapIdx] = bytes;
-        snapMapIdx++;
-        if (snapMapIdx >= MAX_IMAGES_SIZE)
-            snapMapIdx = 0;
+        if (mIsRecording) {
+            snapBytes[snapMapIdx] = bytes;
+            snapMapIdx++;
+            if (snapMapIdx >= MAX_IMAGES_SIZE)
+                snapMapIdx = 0;
+        }
         image.close();
     };
 
@@ -243,14 +246,14 @@ public class VideoUtils {
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 //        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mediaRecorder.setVideoEncodingBitRate(ENCODING_RATE); // 1000000
+        mediaRecorder.setVideoEncodingBitRate(VIDEO_ENCODING_RATE); // 1000000
 //        mediaRecorder.setVideoFrameRate(FRAME_RATE);
-        mediaRecorder.setVideoFrameRate(30);
+        mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
         mediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
 //        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mediaRecorder.setOutputFile(getOutputFileName(0, "mp4").toString());
-        mediaRecorder.setMaxFileSize(ONE_WORK_FILE_SIZE);
+        mediaRecorder.setMaxFileSize(VIDEO_ONE_WORK_FILE_SIZE);
         mediaRecorder.prepare();
         mediaRecorder.setNextOutputFile(getOutputFileName(3000, "mp4"));
         setUpNextFile();

@@ -122,7 +122,7 @@ class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        utils.logBoth("location","location changed "+location.getLatitude()+" x "+location.getLongitude());
+//        utils.logBoth("location","location changed "+location.getLatitude()+" x "+location.getLongitude());
         updateCompass(location);
     }
 
@@ -132,6 +132,11 @@ class GPSTracker extends Service implements LocationListener {
 //        utils.log("gps"," lat "+latitude+" x "+longitude);
         latitudes.remove(0); longitudes.remove(0);
         latitudes.add(latitude); longitudes.add(longitude);
+        latitudes.set(1, ((latitudes.get(0)+ latitudes.get(2))/2+ latitudes.get(1))/2);
+        latitudes.set(2, ((latitudes.get(1)+ latitudes.get(3))/2+ latitudes.get(2))/2);
+        longitudes.set(1, ((longitudes.get(0)+ longitudes.get(2))/2+ longitudes.get(1))/2);
+        longitudes.set(2, ((longitudes.get(1)+ longitudes.get(3))/2+ longitudes.get(2))/2);
+
         gpsUpdateTime = System.currentTimeMillis();
         if (!isCompassShown) {
             mActivity.runOnUiThread(() -> {
@@ -141,9 +146,9 @@ class GPSTracker extends Service implements LocationListener {
             isCompassShown = true;
         }
 
-        float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitude, longitude);
-        utils.logBoth("degree",GPSDegree+" : "+latitudes.get(0)+" x "+longitudes.get(0)+
-                " > "+latitude+" x "+longitudes);
+        float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
+//        utils.logBoth("degree",GPSDegree+" : "+latitudes.get(0)+" x "+longitudes.get(0)+
+//                " > "+latitude+" x "+longitude);
         if (!Float.isNaN(GPSDegree)) {
             mActivity.runOnUiThread(() -> {
                 vSatellite.setImageResource(blinkGPS ? R.mipmap.satellite1 : R.mipmap.satellite2);
