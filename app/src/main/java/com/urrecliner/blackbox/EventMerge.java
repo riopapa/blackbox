@@ -49,7 +49,7 @@ class EventMerge {
     private static String logID = "Event";
     private static int idx;
 
-    private static byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE][];
+    private static byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
     private static CountDownTimer countDownTimer;
     private static File thisEventPath;
 
@@ -186,12 +186,11 @@ class EventMerge {
         private void countDownTimer() {
 
             utils.logBoth(logID, "Copying Event Images..");
-            countDownTimer = new CountDownTimer(2000 * MAX_IMAGES_SIZE, 300) {
+            countDownTimer = new CountDownTimer(3000 * MAX_IMAGES_SIZE, 250) {
                 public void onTick(long millisUntilFinished) {
                     if (idx < MAX_IMAGES_SIZE) {
                         if (jpgBytes[idx] != null && jpgBytes[idx].length > 0) {
-                            File jpgFile = new File(thisEventPath, beginTimeS + "_" + ("" + (1000 + idx)).substring(1, 4) + ".jpg");
-//                        utils.log(logID, " jpg " + idx + " " + jpgFile.toString());
+                            File jpgFile = new File(thisEventPath, "EventCameraShot" + "_" + ("" + (1000 + idx)).substring(1, 4) + ".jpg");
                             bytes2File(jpgBytes[idx], jpgFile);
                         }
                         idx++;
@@ -204,13 +203,16 @@ class EventMerge {
                         vTextActiveCount.setText(text);
                         ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
                         mEventButton.setImageResource(R.mipmap.event_ready);
-                        //                    utils.log(logID, idx + " jpgs "+(Runtime.getRuntime().freeMemory()));
                         countDownTimer.cancel();
                         utils.customToast("Event Recording completed", Toast.LENGTH_SHORT, Color.CYAN);
+///                        try {
+//                        } catch (Exception e) {
+//                            utils.logE(logID,"after saving", e);
+//                        }
 //                        utils.log(logID, "Event File: "+thisEventPath.getName());
                     }
                 }
-                public void onFinish() { jpgBytes = null;}
+                public void onFinish() { }
             };
         }
 

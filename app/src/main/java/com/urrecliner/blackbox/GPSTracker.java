@@ -97,9 +97,10 @@ class GPSTracker extends Service implements LocationListener {
         for (int i = 0; i < arraySize; i++) {
             latitudes.add(latitude + (double) i * 0.00001f); longitudes.add(longitude + (double) i * 0.0001f);
         }
-        if (latitude != 0) {
-            vCompass.setVisibility(View.VISIBLE); vSatellite.setVisibility(View.VISIBLE);
-        }
+//        if (latitude != 0) {
+//
+//            vCompass.setVisibility(View.VISIBLE); vSatellite.setVisibility(View.VISIBLE);
+//        }
 
 //        Timer timer = new Timer();
 //        timer.scheduleAtFixedRate(new TimerTask() {

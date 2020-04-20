@@ -26,6 +26,7 @@ class DisplayTime implements Runnable {
                 displayBattery.showBattery();
                 gpsTracker.askLocation();
                 if (System.currentTimeMillis() > (gpsUpdateTime + 70000)) {
+                    utils.logBoth("GPS","GPS not Active");
                     isCompassShown = false;
                     gpsTracker.askLocation();
                     vSatellite.setVisibility(View.INVISIBLE);
