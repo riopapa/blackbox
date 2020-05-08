@@ -94,7 +94,7 @@ public class Vars {
     static Handler mBackgroundImage, mBackgroundPreview;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
-    static CameraDevice mCameraDevice;
+    static CameraDevice mCameraDevice = null;
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder = new MediaRecorder();
 
@@ -102,9 +102,9 @@ public class Vars {
     static CaptureRequest.Builder mCaptureRequestBuilder, mPrevBuilder;
     static CameraCaptureSession mCaptureSession, mPrevSession;
 
-    final static long INTERVAL_NORMAL = 80 * 1000;
-    final static long INTERVAL_EVENT = 17 * 1000;
-    final static int SNAP_SHOT_INTERVAL = 500;
+    final static long INTERVAL_NORMAL = 81 * 1000;
+    final static long INTERVAL_EVENT = 13 * 1000;
+    final static int SNAP_SHOT_INTERVAL = 420;
     final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 2 + INTERVAL_EVENT) / SNAP_SHOT_INTERVAL);
     static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
     static int snapMapIdx = 0;

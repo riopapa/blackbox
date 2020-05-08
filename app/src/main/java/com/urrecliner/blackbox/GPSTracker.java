@@ -27,7 +27,7 @@ class GPSTracker extends Service implements LocationListener {
 
     private final Context mContext;
     boolean isGPSEnabled = false;
-    boolean isNetworkEnabled = false;
+//    boolean isNetworkEnabled = false;
     Location location; // Location
     double latitude = 0, longitude = 0;
     ArrayList<Double> latitudes, longitudes;
@@ -56,7 +56,7 @@ class GPSTracker extends Service implements LocationListener {
                     return;
                 }
                 // If GPS enabled, get latitude/longitude using GPS Services
-                if (isGPSEnabled) {
+//                if (isGPSEnabled) {
                     assert locationManager != null;
                     locationManager.requestLocationUpdates(
                             LocationManager.GPS_PROVIDER,
@@ -71,27 +71,27 @@ class GPSTracker extends Service implements LocationListener {
                             longitude = location.getLongitude();
                         }
                     }
-                }
-                if (isNetworkEnabled) {
-                    assert locationManager != null;
-                    locationManager.requestLocationUpdates(
-                            LocationManager.NETWORK_PROVIDER,
-                            timeUpdate,
-                            distanceUpdate, this);
-                    //   Log.d("Network", "Network");
-                    if (locationManager != null) {
-                        location = locationManager
-                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                        }
-                    }
-                }
+//                }
+//                if (isNetworkEnabled) {
+//                    assert locationManager != null;
+//                    locationManager.requestLocationUpdates(
+//                            LocationManager.NETWORK_PROVIDER,
+//                            timeUpdate,
+//                            distanceUpdate, this);
+//                    //   Log.d("Network", "Network");
+//                    if (locationManager != null) {
+//                        location = locationManager
+//                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                        if (location != null) {
+//                            latitude = location.getLatitude();
+//                            longitude = location.getLongitude();
+//                        }
+//                    }
+//                }
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            utils.logE("GPS", "Exception", e);
         }
         latitudes = new ArrayList<>(); longitudes = new ArrayList<>();
         for (int i = 0; i < arraySize; i++) {

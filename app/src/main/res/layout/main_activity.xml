@@ -84,12 +84,12 @@
 
         <ImageButton
             android:id="@+id/btnEvent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:layout_width="98dp"
+            android:layout_height="match_parent"
             android:layout_marginBottom="16dp"
-            android:src="@mipmap/event_blue"
-            android:contentDescription="@string/textEvent" />
+            android:contentDescription="@string/textEvent"
+            android:src="@mipmap/event_blue" />
 
         <TextView
             android:id="@+id/activeEvent"
@@ -138,7 +138,7 @@
         android:layout_below="@id/textSpeed"
         android:layout_gravity="end"
         android:layout_marginStart="8dp"
-        android:text="0"
+        android:text="@string/zero"
         android:textColor="#eeeeee"
         android:textSize="28sp" />
 
@@ -151,7 +151,7 @@
         android:layout_gravity="end"
         android:layout_marginStart="4dp"
         android:layout_toEndOf="@id/obdKms"
-        android:text="Kms"
+        android:text="@string/kms"
         android:textColor="#eeeeee"
         android:textSize="28sp" />
 
@@ -159,8 +159,8 @@
     <ImageButton
         android:id="@+id/btnExit"
         style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="94dp"
-        android:layout_height="94dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="10dp"
@@ -170,8 +170,8 @@
     <ImageButton
         android:id="@+id/btnIWillBack"
         style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="94dp"
-        android:layout_height="94dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@id/btnExit"
         android:layout_marginStart="0dp"
@@ -251,7 +251,8 @@
             android:layout_height="match_parent"
             android:src="@mipmap/battery_none"
             android:gravity="center"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:contentDescription="@string/todo" />
 
         <TextView
             android:id="@+id/textBattery"
@@ -259,7 +260,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_gravity="center"
-            android:text="90"
+            android:text="@string/percent"
             android:textStyle="bold"
             android:textColor="#eee"
             android:textSize="28sp" />

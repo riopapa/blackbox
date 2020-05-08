@@ -84,17 +84,17 @@ public class VideoUtils {
 //                mPreviewReader.setOnImageAvailableListener(mOnPreviewAvailableListener, mBackgroundPreview);
 //                mPreviewReader.setOnImageAvailableListener(null, null);
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            utils.logE(logID, "CameraAccessException", e);
         }
-        utils.logOnly(logID, "mPrevw "+mPreviewSize.getWidth()+"x"+mPreviewSize.getHeight());
+        utils.logOnly(logID, "mPrev "+mPreviewSize.getWidth()+"x"+mPreviewSize.getHeight());
         utils.logOnly(logID, "mImage "+mImageSize.getWidth()+"x"+mImageSize.getHeight()+" array "+MAX_IMAGES_SIZE);
         utils.logOnly(logID, "mVideo "+mVideoSize.getWidth()+"x"+mVideoSize.getHeight());
         try {
-            mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 10); // MAX_IMAGES_SIZE);
+            mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 6); // MAX_IMAGES_SIZE);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
             mPreviewReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(), ImageFormat.JPEG, 1);
         } catch (Exception e) {
-            e.printStackTrace();
+            utils.logE(logID, "Exception ", e);
         }
     }
 
@@ -109,7 +109,7 @@ public class VideoUtils {
             640 x 360 : 1.7, 352 x 288 : 1.2, 320 x 240 : 1.3, 176 x 144 : 1.2, 160 x 120 : 1.3 */
             for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
     //                    Log.w("size", size.getWidth()+"x"+ size.getHeight());
-                if (size.getWidth() == 640)
+                if (size.getWidth() == 640 && size.getHeight() == 480)
                     mPreviewSize = size;
                 else if (size.getWidth() == 3200 && size.getHeight() == 2400)
                     mImageSize = size;
@@ -144,21 +144,22 @@ public class VideoUtils {
                 cameraManager.openCamera(mCameraId, mCameraDeviceStateCallback, mBackgroundImage);
             }
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            utils.logE(logID, "connectCamera Exception ", e);
         }
     }
 
     CameraDevice.StateCallback mCameraDeviceStateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(CameraDevice camera) {
-            mCameraDevice = camera;
+            if (mCameraDevice == null)
+                mCameraDevice = camera;
             if(mIsRecording) {
                 mVideoFileName = videoUtils.getOutputFileName(0, "mp4").toString();
 //                utils.logBoth(logID, "Step 2 prepareRecord");
                 prepareRecord();
                 mediaRecorder.start();
             } else {
-                startPreview();
+//                startPreview();
             }
         }
 
@@ -178,6 +179,7 @@ public class VideoUtils {
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         Image image = reader.acquireLatestImage();
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+//        utils.logOnly(logID, "capacity="+buffer.capacity());
         byte[] bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
         if (mIsRecording) {
@@ -189,11 +191,15 @@ public class VideoUtils {
         image.close();
     };
 
+    boolean isPrepared = false;
+    SurfaceTexture surface_Texture = null;
+    Surface previewSurface = null;
+    Surface recordSurface = null;
     void prepareRecord() {
 
-        SurfaceTexture surface_Texture = null;
-        Surface previewSurface = null;
-        Surface recordSurface = null;
+//        utils.logOnly(logID, "prepareRecord 1111");
+        if (isPrepared)
+            return;
         try {
 //            if(!mIsRecording)
                 setupMediaRecorder();
@@ -206,12 +212,13 @@ public class VideoUtils {
             mCaptureRequestBuilder.addTarget(recordSurface);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error AA ", e);
-            e.printStackTrace();
         }
         if (previewSurface == null || recordSurface == null) {
             utils.logBoth(logID, "previewSurface or recordSurface is null");
             return;
         }
+//        utils.logOnly(logID, "prepareRecord 222");
+
         try {
             mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface, mImageReader.getSurface()),
             new CameraCaptureSession.StateCallback() {
@@ -224,7 +231,6 @@ public class VideoUtils {
                         );
                     } catch (CameraAccessException e) {
                         utils.logBoth(logID, "setRepeatingRequest Error");
-                        e.printStackTrace();
                     }
                 }
 
@@ -236,8 +242,8 @@ public class VideoUtils {
 
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error BB ", e);
-            e.printStackTrace();
         }
+        isPrepared = true;
     }
 
     private void setupMediaRecorder() throws IOException {
@@ -247,7 +253,6 @@ public class VideoUtils {
 //        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setVideoEncodingBitRate(VIDEO_ENCODING_RATE); // 1000000
-//        mediaRecorder.setVideoFrameRate(FRAME_RATE);
         mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
         mediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
@@ -316,15 +321,17 @@ public class VideoUtils {
     }
 
     void startPreview() {
-        SurfaceTexture surfaceTexture = vTextureView.getSurfaceTexture();
-        surfaceTexture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-        Surface previewSurface = new Surface(surfaceTexture);
+        utils.logOnly(logID, "startPreview 1");
+
+        surface_Texture = vTextureView.getSurfaceTexture();
+        surface_Texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+
+        Surface preview_Surface = new Surface(surface_Texture);
 
         try {
             mPrevBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            mPrevBuilder.addTarget(previewSurface);
-
-            mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, mPreviewReader.getSurface()),
+            mPrevBuilder.addTarget(preview_Surface);
+            mCameraDevice.createCaptureSession(Arrays.asList(preview_Surface, mPreviewReader.getSurface()),
                     new CameraCaptureSession.StateCallback() {
                         @Override
                         public void onConfigured(CameraCaptureSession session) {
@@ -335,18 +342,16 @@ public class VideoUtils {
                                         null, mBackgroundPreview);
                             } catch (Exception e) {
                                 utils.logBoth(logID, "mPreSession error"+e.toString());
-                                e.printStackTrace();
                             }
                         }
-
                         @Override
                         public void onConfigureFailed(CameraCaptureSession session) {
                             utils.logOnly(logID, "onConfigureFailed: startPreview");
                         }
                     }, null);
         } catch (Exception e) {
-            utils.logE(logID, "startPreview ", e);
-            e.printStackTrace();
+            utils.logE(logID, "// startPreview //", e);
         }
+        utils.logOnly(logID, "startPreview 2");
     }
 }

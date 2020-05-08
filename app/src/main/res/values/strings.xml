@@ -4,7 +4,6 @@
     <string name="camera_button">Camera Capture Button</string>
     <string name="permission_request">Permission for camera and audio recording.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
-    <string name="zero">0</string>
     <string name="location">Loc:</string>
     <string name="un_known">UnKnown</string>
     <string name="textEvent">Event:</string>
@@ -17,5 +16,9 @@
     <string name="compassImage">compassImage</string>
     <string name="directionTriangle">directionTriangle</string>
     <string name="appwidget_text"> </string>
+    <string name="zero">0</string>
+    <string name="kms">Kms</string>
+    <string name="percent">90</string>
+    <string name="todo">TODO</string>
 
 </resources>

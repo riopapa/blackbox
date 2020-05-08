@@ -76,12 +76,11 @@ public class MainActivity extends Activity {
     static EventMerge eventMerge0 = new EventMerge();
     static EventMerge eventMerge1 = new EventMerge();
     static EventMerge eventMerge2 = new EventMerge();
-
+    boolean surfaceReady = false;
     private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            videoUtils.setupCamera();
-            videoUtils.connectCamera();
+            readyCamera();
         }
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
@@ -98,6 +97,14 @@ public class MainActivity extends Activity {
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         }
     };
+
+    void readyCamera() {
+        if (!surfaceReady) {
+            videoUtils.setupCamera();
+            videoUtils.connectCamera();
+            surfaceReady = true;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +143,7 @@ public class MainActivity extends Activity {
         });
 
         vTextureView.post(() -> {
+            readyCamera();
             vTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
             int width = vTextureView.getWidth();
             int height = vTextureView.getHeight();
@@ -186,12 +194,13 @@ public class MainActivity extends Activity {
 
         gpsTracker.askLocation();
         long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
-        if (activeEventCount == 0)
-            eventMerge0.merge(startTime);
-        else if (activeEventCount == 1)
-            eventMerge1.merge(startTime);
-        else if (activeEventCount == 2)
-            eventMerge2.merge(startTime);
+        EventMerge ev = new EventMerge();
+        ev.merge(startTime);
+//            eventMerge0.merge(startTime);
+//        else if (activeEventCount == 1)
+//            eventMerge1.merge(startTime);
+//        else if (activeEventCount == 2)
+//            eventMerge2.merge(startTime);
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
             String text = "<  "+activeEventCount+"  >\n";
@@ -233,17 +242,8 @@ public class MainActivity extends Activity {
 //        directionSensor.start();
     }
 
-    private void setBlackBoxFolders() {
-        utils.readyPackageFolder(mPackagePath);
-        utils.readyPackageFolder(mPackageLogPath);
-        utils.readyPackageFolder(mPackageWorkingPath);
-        utils.readyPackageFolder(mPackageEventPath);
-        utils.readyPackageFolder(mPackageNormalPath);
-        utils.readyPackageFolder(mPackageNormalDatePath);
-    }
-
     private void setViewVars() {
-        vTextureView = findViewById(R.id.textureView);
+//        vTextureView = findViewById(R.id.textureView);
         vTextDate = findViewById(R.id.textDate);
         vTextTime = findViewById(R.id.textTime);
         vTextSpeed = findViewById(R.id.textSpeed);
@@ -260,6 +260,16 @@ public class MainActivity extends Activity {
         vBtnRecord = findViewById(R.id.btnRecord);
         vTextSpeed.setText("_");
     }
+
+    private void setBlackBoxFolders() {
+        utils.readyPackageFolder(mPackagePath);
+        utils.readyPackageFolder(mPackageLogPath);
+        utils.readyPackageFolder(mPackageWorkingPath);
+        utils.readyPackageFolder(mPackageEventPath);
+        utils.readyPackageFolder(mPackageNormalPath);
+        utils.readyPackageFolder(mPackageNormalDatePath);
+    }
+
     private void startBackgroundThread() {
         HandlerThread mBackgroundHandlerThread;
         mBackgroundHandlerThread = new HandlerThread("BlackBox");
@@ -305,9 +315,13 @@ public class MainActivity extends Activity {
                 }
                 new Timer().schedule(new TimerTask() {
                     public void run() {
-                        if (!willBack && mIsRecording)
-                            startEventSaving();
+                        try {
+                            if (!willBack && mIsRecording)
+                                startEventSaving();
+                        } catch (Exception e) {
+                            utils.logE(logID, "// start Eventing //", e);
                         }
+                    }
                 }, 800);
                 break;
             default:

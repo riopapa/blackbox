@@ -186,7 +186,7 @@ class EventMerge {
         private void countDownTimer() {
 
             utils.logBoth(logID, "Copying Event Images..");
-            countDownTimer = new CountDownTimer(3000 * MAX_IMAGES_SIZE, 250) {
+            countDownTimer = new CountDownTimer(3000 * MAX_IMAGES_SIZE, 300) {
                 public void onTick(long millisUntilFinished) {
                     if (idx < MAX_IMAGES_SIZE) {
                         if (jpgBytes[idx] != null && jpgBytes[idx].length > 0) {
@@ -203,17 +203,19 @@ class EventMerge {
                         vTextActiveCount.setText(text);
                         ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
                         mEventButton.setImageResource(R.mipmap.event_ready);
-                        countDownTimer.cancel();
-                        utils.customToast("Event Recording completed", Toast.LENGTH_SHORT, Color.CYAN);
-///                        try {
-//                        } catch (Exception e) {
-//                            utils.logE(logID,"after saving", e);
-//                        }
-//                        utils.log(logID, "Event File: "+thisEventPath.getName());
+                        try {
+                            countDownTimer.cancel();
+                            utils.customToast("Event Recording completed", Toast.LENGTH_SHORT, Color.CYAN);
+                            utils.logBoth(logID, "Event File: "+thisEventPath.getName());
+                        } catch (Exception e) {
+                            utils.logE(logID,"after saving", e);
+                        }
                     }
                 }
                 public void onFinish() { }
             };
+//            utils.logOnly(logID, "countDownTimer Completed");
+
         }
 
         private void bytes2File(byte[] bytes, File file) {
@@ -223,13 +225,13 @@ class EventMerge {
                 fileOutputStream = new FileOutputStream(file);
                 fileOutputStream.write(bytes);
             } catch (IOException e) {
-                e.printStackTrace();
+                utils.logE(logID, "IOException catch", e);
             } finally {
                 if (fileOutputStream != null) {
                     try {
                         fileOutputStream.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        utils.logE(logID, "IOException finally", e);
                     }
                 }
             }

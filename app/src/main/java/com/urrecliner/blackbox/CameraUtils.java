@@ -61,7 +61,7 @@ public class CameraUtils {
             mCaptureRequestBuilder.addTarget(mImageReader.getSurface());
             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            utils.logE("cameraUtils", "CameraAccessException", e);
         }
     }
 }

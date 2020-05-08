@@ -1,0 +1,12 @@
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/.idea/encodings.xml
+/.idea/gradle.xml
+/.idea/misc.xml
+camera2_video_image_proto.iml
+.DS_Store
+/build
+/captures
+/projectFilesBackup/
