@@ -145,6 +145,7 @@ class GPSTracker extends Service implements LocationListener {
                 vSatellite.setVisibility(View.VISIBLE);
             });
             isCompassShown = true;
+            utils.logBoth("GPSTracker","Activated ..");
         }
 
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));

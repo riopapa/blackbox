@@ -13,11 +13,18 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="true"/>
 
     <application
         android:icon="@mipmap/spy_car"
         android:label="BlackBox"
+        android:hardwareAccelerated="true"
+        android:largeHeap="true"
         android:allowBackup="true">
         <receiver android:name=".NewAppWidget">
             <intent-filter>
@@ -31,7 +38,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/MaterialTheme"
-            android:screenOrientation="landscape">
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />

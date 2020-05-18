@@ -50,7 +50,7 @@ class OBDAccess {
 
     void prepare() {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
-//        utils.log(TAG, "btAdaptor is "+btAdapter.toString());
+        utils.logOnly(logID, "btAdaptor is "+btAdapter.toString());
         if(btAdapter == null){
             Toast.makeText(Vars.mContext, "Device doesn't support Bluetooth", Toast.LENGTH_LONG).show();
             return;
@@ -70,9 +70,10 @@ class OBDAccess {
             }
             new Timer().schedule(new TimerTask() {  // autoStart
                 public void run() {
+                    utils.logOnly(logID,"begin connect OBD");
                     connectOBD();
                 }
-            }, 5000);
+            }, 3000);
 
         } else{
             Toast.makeText(mContext, "No paired devices found", Toast.LENGTH_SHORT).show();

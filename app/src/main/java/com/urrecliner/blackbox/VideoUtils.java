@@ -1,5 +1,6 @@
 package com.urrecliner.blackbox;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
@@ -14,9 +15,11 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Build;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
@@ -27,6 +30,7 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static android.content.Context.ACTIVITY_SERVICE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
@@ -71,10 +75,11 @@ public class VideoUtils {
             for(String cameraId : cameraManager.getCameraIdList()){
 //                utils.logOnly(logID, "cameraID="+cameraId);
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
-                if(cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT){
+                if(cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
+                        CameraCharacteristics.LENS_FACING_BACK)
+                    mCameraId = cameraId;
+                else
                     continue;
-                }
-                mCameraId = cameraId;
 //                utils.logOnly(logID, "M cameraID="+cameraId);
                 StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 setCameraSize(map);
@@ -101,38 +106,42 @@ public class VideoUtils {
     private void setCameraSize(StreamConfigurationMap map) {
         String model = Build.MODEL;
         utils.logBoth(logID, "setCameraSize on "+model);
-        if (model.equals("Nexus 6P")) {
-            /* nexus 6p resolution
-            3264 x 2448 : 1.3, 3200 x 2400 : 1.3, 2592 x 1944 : 1.3, 2688 x 1512 : 1.7, 2048 x 1536 : 1.3,
-            1920 x 1080 : 1.7, 1600 x 1200 : 1.3, 1440 x 1080 : 1.3, 1280 x 960 : 1.3, 1280 x 768 : 1.6, 1280 x 720 : 1.7
-            1024 x 768 : 1.3, 800 x 600 : 1.3, 864 x 480 : 1.8, 800 x 480 : 1.66, 2 720 x 480 : 1.5, 640 x 480 : 1.3
-            640 x 360 : 1.7, 352 x 288 : 1.2, 320 x 240 : 1.3, 176 x 144 : 1.2, 160 x 120 : 1.3 */
-            for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-    //                    Log.w("size", size.getWidth()+"x"+ size.getHeight());
-                if (size.getWidth() == 640 && size.getHeight() == 480)
-                    mPreviewSize = size;
-                else if (size.getWidth() == 3200 && size.getHeight() == 2400)
-                    mImageSize = size;
-                else if (size.getWidth() == 1440 && size.getHeight() == 1080)
-                    mVideoSize = size;
-            }
-        }
+//        if (model.equals("Nexus 6P")) {
+//            /* nexus 6p resolution
+//            3264 x 2448 : 1.3, 3200 x 2400 : 1.3, 2592 x 1944 : 1.3, 2688 x 1512 : 1.7, 2048 x 1536 : 1.3,
+//            1920 x 1080 : 1.7, 1600 x 1200 : 1.3, 1440 x 1080 : 1.3, 1280 x 960 : 1.3, 1280 x 768 : 1.6, 1280 x 720 : 1.7
+//            1024 x 768 : 1.3, 800 x 600 : 1.3, 864 x 480 : 1.8, 800 x 480 : 1.66, 2 720 x 480 : 1.5, 640 x 480 : 1.3
+//            640 x 360 : 1.7, 352 x 288 : 1.2, 320 x 240 : 1.3, 176 x 144 : 1.2, 160 x 120 : 1.3 */
+//            for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+//    //                    Log.w("size", size.getWidth()+"x"+ size.getHeight());
+//                if (size.getWidth() == 640 && size.getHeight() == 480)
+//                    mPreviewSize = size;
+//                else if (size.getWidth() == 3200 && size.getHeight() == 2400)
+//                    mImageSize = size;
+//                else if (size.getWidth() == 1440 && size.getHeight() == 1080)
+//                    mVideoSize = size;
+//            }
+//        }
         if (model.equals("SM-G965N")) {
             /* galaxy s9+
-            4032 x 3024 : 1.3, 4032 x 2268 : 1.7, 4032 x 1960 : 2.0, 3024 x 3024 : 1.0, 3984 x 2988 : 1.3, 3840 x 2160 : 1.7,
-            3264 x 2448 : 1.3, 3264 x 1836 : 1.7, 2976 x 2976 : 1.0, 2880 x 2160 : 1.3, 2560 x 1440 : 1.7, 2160 x 2160 : 1.0,
-            2224 x 1080 : 2.0, 2048 x 1152 : 1.7, 1920 x 1080 : 1.7, 1440 x 1080 : 1.3, 1088 x 1088 : 1.0, 1280 x 720 : 1.7,
-            1056 x 704 : 1.5, 1024 x 768 : 1.3, 960 x 720 : 1.3, 960 x 540 : 1.7, 800 x 450 : 1.7, 720 x 720 : 1.0,
-            720 x 480 : 1.5, 640 x 480 : 1.3, 352 x 288 : 1.2 */
+            4032x3024 1.3 , 4032x2268 1.8 , 4032x1960 2.1 , 3024x3024 1.0 , 3984x2988 1.3 , 3840x2160 1.8 ,
+            3264x2448 1.3 , 3264x1836 1.8 , 2976x2976 1.0 , 2880x2160 1.3 , 2560x1440 1.8 , 2160x2160 1.0 ,
+            2224x1080 2.1 , 2048x1152 1.8 , 1920x1080 1.8 , 1440x1080 1.3 , 1088x1088 1.0 , 1280x720 1.8 ,
+            1056x704 1.5 , 1024x768 1.3 , 960x720 1.3 , 960x540 1.8 , 800x450 1.8 , 720x720 1.0 ,
+            720x480 1.5 , 640x480 1.3 , 352x288 1.2 , 320x240 1.3 , 256x144 1.8 , 176x144 1.2 ,
+             */
+//            String sb = "";
             for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-    //                    Log.w("size", size.getWidth()+"x"+ size.getHeight());
-                    if (size.getWidth() == 640)
-                        mPreviewSize = size;
-                    else if (size.getWidth() == 4032 && size.getHeight() == 2268)
-                        mImageSize = size;
-                    else if (size.getWidth() == 2560 && size.getHeight() == 1440)
-                        mVideoSize = size;
+//                sb += size.getWidth()+"x"+ size.getHeight()+
+//                        String.format(" %,3.1f , ", (float)size.getWidth() / (float)size.getHeight());
+                if (size.getWidth() == 720 && size.getHeight() == 480)
+                    mPreviewSize = size;
+                else if (size.getWidth() == 4032 && size.getHeight() == 2268)
+                    mImageSize = size;
+                else if (size.getWidth() == 2560 && size.getHeight() == 1440)
+                    mVideoSize = size;
             }
+//            Log.w("SIZE",sb);
         }
     }
 
@@ -179,7 +188,15 @@ public class VideoUtils {
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         Image image = reader.acquireLatestImage();
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-//        utils.logOnly(logID, "capacity="+buffer.capacity());
+
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        ActivityManager activityManager = (ActivityManager) mActivity.getSystemService(ACTIVITY_SERVICE);
+        activityManager.getMemoryInfo(mi);
+        double availableMegs = mi.availMem / 0x100000L;
+
+        double percentAvail = mi.availMem / (double)mi.totalMem * 100.0;
+
+//        utils.logOnly(logID, "capacity="+buffer.capacity()+" free memory="+availableMegs+" %="+percentAvail);
         byte[] bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
         if (mIsRecording) {
@@ -189,32 +206,49 @@ public class VideoUtils {
                 snapMapIdx = 0;
         }
         image.close();
+//        bytes = null;
     };
 
-    boolean isPrepared = false;
-    SurfaceTexture surface_Texture = null;
-    Surface previewSurface = null;
-    Surface recordSurface = null;
+    private boolean isPrepared = false;
+    private SurfaceTexture surface_Texture = null;
+    private Surface previewSurface = null;
+    private Surface recordSurface = null;
     void prepareRecord() {
 
 //        utils.logOnly(logID, "prepareRecord 1111");
         if (isPrepared)
             return;
         try {
-//            if(!mIsRecording)
-                setupMediaRecorder();
+            setupMediaRecorder();
+            vTextureView = mActivity.findViewById(R.id.textureView);
+            if (vTextureView == null)
+                utils.logOnly(logID,"Texture NULL");
             surface_Texture = vTextureView.getSurfaceTexture();
+            if (surface_Texture == null)
+                utils.logOnly(logID,"surface_Texture NULL");
             surface_Texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+        } catch (Exception e) {
+            utils.logE(logID, "Prepare Error AA ///", e);
+        }
+        try {
             previewSurface = new Surface(surface_Texture);
-            recordSurface = mediaRecorder.getSurface();
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             mCaptureRequestBuilder.addTarget(previewSurface);
+        } catch (Exception e) {
+            utils.logE(logID, "Prepare Error BB ///", e);
+        }
+        if (previewSurface == null) {
+            utils.logBoth(logID, "previewSurface is null /,/,/,");
+            return;
+        }
+        try {
+            recordSurface = mediaRecorder.getSurface();
             mCaptureRequestBuilder.addTarget(recordSurface);
         } catch (Exception e) {
-            utils.logE(logID, "Prepare Error AA ", e);
+            utils.logE(logID, "Prepare Error recordSurface ///", e);
         }
-        if (previewSurface == null || recordSurface == null) {
-            utils.logBoth(logID, "previewSurface or recordSurface is null");
+        if (recordSurface == null) {
+            utils.logBoth(logID, "recordSurface is null /,/,/,");
             return;
         }
 //        utils.logOnly(logID, "prepareRecord 222");
@@ -251,12 +285,12 @@ public class VideoUtils {
         utils.logBoth(logID," setup Media");
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 //        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setVideoEncodingBitRate(VIDEO_ENCODING_RATE); // 1000000
         mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
         mediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mediaRecorder.setOutputFile(getOutputFileName(0, "mp4").toString());
         mediaRecorder.setMaxFileSize(VIDEO_ONE_WORK_FILE_SIZE);
         mediaRecorder.prepare();

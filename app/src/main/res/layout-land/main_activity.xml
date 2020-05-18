@@ -219,11 +219,11 @@
         <ImageView
             android:id="@+id/iVCompass"
             android:layout_gravity="center"
-            android:layout_margin="8dp"
+            android:layout_margin="0dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/compassImage"
-            android:src="@mipmap/compass_color" />
+            android:src="@mipmap/compass_image" />
 
         <ImageView
             android:id="@+id/iViewArrow"
@@ -275,7 +275,7 @@
         android:layout_alignBottom="@id/btnExit"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/backborder_only" />
+        android:background="@drawable/back_border_only" />
 
     <TextureView
         android:id="@+id/textureView"

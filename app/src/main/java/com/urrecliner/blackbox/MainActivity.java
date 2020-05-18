@@ -2,10 +2,12 @@ package com.urrecliner.blackbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -15,6 +17,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
@@ -109,16 +113,20 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            Toast.makeText(getApplicationContext(),"Rotate pls ",Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         askPermission();
         setContentView(R.layout.main_activity);
         mActivity = this;
         mContext = this;
         gpsTracker = new GPSTracker(mContext);
 
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vTextureView = findViewById(R.id.textureView);
-        utils.logOnly(logID, "Main Started");
+        utils.logOnly(logID, "Main Started ..");
         final TextView textureBox = findViewById(R.id.textureBox);
         vBtnRecord = findViewById(R.id.btnRecord);
         vBtnRecord.setOnClickListener(v -> {
