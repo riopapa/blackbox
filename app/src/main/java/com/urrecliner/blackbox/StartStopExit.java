@@ -92,7 +92,7 @@ class StartStopExit {
             utils.logE(logID, "Stop", e);
         }
         try {
-            videoUtils.startPreview();
+//            videoUtils.startPreview();
             normalTimer.cancel();
             obdAccess.stop();
             directionSensor.stop();
@@ -104,7 +104,6 @@ class StartStopExit {
     void exitBlackBoxApp() {
         mExitApplication = true;
         snapBytes = null;
-        mActivity.finish();
         if (mIsRecording)
             stopVideo();
         displayTime.stop();
@@ -115,7 +114,8 @@ class StartStopExit {
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
-        }, 10000);
+        }, 5000);
+        mActivity.finish();
     }
 
 }

@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -51,15 +52,23 @@ class BeBackSoon extends AsyncTask<String, String, String> {
                 utils.displayCount("I will be back in "+ DELAY_I_WILL_BACK +" secs.",Toast.LENGTH_LONG, Color.BLACK);
             }, 0);
             mHandler.postDelayed(() -> {
-                Intent restartIntent = mContext.getPackageManager()     // exit and reload app
-                        .getLaunchIntentForPackage(mContext.getPackageName() );
-                PendingIntent intent = PendingIntent.getActivity(
-                        mContext, 0,
-                        restartIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-                manager.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK *1000, intent);
-                mActivity.finish();
-                System.exit(2);
+                Intent mStartActivity = new Intent(mActivity, MainActivity.class);
+                int mPendingIntentId = 123456;
+                PendingIntent mPendingIntent = PendingIntent.getActivity(mActivity, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager mgr = (AlarmManager)mActivity.getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK*1000, mPendingIntent);
+                System.exit(0);
+//                Intent restartIntent = mContext.getPackageManager()     // exit and reload app
+//                        .getLaunchIntentForPackage(mContext.getPackageName() );
+//                PendingIntent intent = PendingIntent.getActivity(
+//                        mActivity, 1234,
+//                        restartIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//                AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+//                manager.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK *1000, intent);
+//                mActivity.finishActivity(12345);
+//                System.exit(0);
+
+//                System.exit(0);
             }, 2000);
 
         }

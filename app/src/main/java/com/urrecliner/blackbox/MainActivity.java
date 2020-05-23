@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,7 +36,9 @@ import java.util.TimerTask;
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORD;
 import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT;
+import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
+import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
@@ -52,6 +55,8 @@ import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.obdAccess;
 import static com.urrecliner.blackbox.Vars.sharedPref;
+import static com.urrecliner.blackbox.Vars.snapBytes;
+import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.startStopExit;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
@@ -113,17 +118,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            Toast.makeText(getApplicationContext(),"Rotate pls ",Toast.LENGTH_LONG).show();
-//            return;
-//        }
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Toast.makeText(getApplicationContext(),"Rotate Phone to Landscape, pls ",Toast.LENGTH_LONG).show();
+            return;
+        }
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         askPermission();
         setContentView(R.layout.main_activity);
         mActivity = this;
         mContext = this;
         gpsTracker = new GPSTracker(mContext);
-
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vTextureView = findViewById(R.id.textureView);
         utils.logOnly(logID, "Main Started ..");
@@ -137,6 +141,10 @@ public class MainActivity extends Activity {
                 startStopExit.startVideo();
             }
         });
+
+//        Utils.ScreenInfo screenInfo = utils.getScreenSize(mActivity);
+//        utils.logOnly(logID,"Screen Type is "+screenInfo.screenType);
+//        utils.logOnly(logID,"Screen Inch is "+screenInfo.screenInch);
 
         vBtnEvent = findViewById(R.id.btnEvent);
         vBtnEvent.setOnClickListener(v -> startEventSaving());
@@ -202,13 +210,23 @@ public class MainActivity extends Activity {
 
         gpsTracker.askLocation();
         long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
-        EventMerge ev = new EventMerge();
-        ev.merge(startTime);
-//            eventMerge0.merge(startTime);
-//        else if (activeEventCount == 1)
-//            eventMerge1.merge(startTime);
-//        else if (activeEventCount == 2)
-//            eventMerge2.merge(startTime);
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
+                int jdx = 0;
+                for (int i = snapMapIdx; i < MAX_IMAGES_SIZE; i++)
+                    jpgBytes[jdx++] = snapBytes[i];
+                for (int i = 0; i < snapMapIdx; i++)
+                    jpgBytes[jdx++] = snapBytes[i];
+                File thisEventPath = new File(mPackageEventPath, utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
+                utils.readyPackageFolder(thisEventPath);
+                SnapShotSave snapShotSave = new SnapShotSave();
+                snapShotSave.start(thisEventPath, jpgBytes);
+                EventMerge ev = new EventMerge();
+                ev.merge(startTime);
+            }
+        }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
+
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
             String text = "<  "+activeEventCount+"  >\n";
@@ -239,7 +257,7 @@ public class MainActivity extends Activity {
                 willBack = true;
                 if (mIsRecording)
                     stopHandler.sendEmptyMessage(0);
-                new BeBackSoon().execute("x", "Exit & Reload", "10");
+                new BeBackSoon().execute("x", "Exit & Reload", ""+DELAY_WAIT_EXIT);
             }
         });
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));

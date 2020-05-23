@@ -50,7 +50,7 @@ class OBDAccess {
 
     void prepare() {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
-        utils.logOnly(logID, "btAdaptor is "+btAdapter.toString());
+//        utils.logOnly(logID, "btAdaptor is "+btAdapter.toString());
         if(btAdapter == null){
             Toast.makeText(Vars.mContext, "Device doesn't support Bluetooth", Toast.LENGTH_LONG).show();
             return;
@@ -65,12 +65,11 @@ class OBDAccess {
                 if (device.getName().contains("OBD")) {
                     chosenDeviceAddress = device.getAddress();
                     chosenDeviceName = device.getName();
-                    utils.logBoth(logID,"OBD found "+chosenDeviceName);
+                    utils.logBoth(logID,"OBD found ["+chosenDeviceName+"]");
                 }
             }
             new Timer().schedule(new TimerTask() {  // autoStart
                 public void run() {
-                    utils.logOnly(logID,"begin connect OBD");
                     connectOBD();
                 }
             }, 3000);
@@ -81,7 +80,7 @@ class OBDAccess {
     }
 
     private void connectOBD() {
-        utils.logBoth(logID, "connect OBD");
+//        utils.logBoth(logID, "connect OBD");
         BluetoothDevice device = btAdapter.getRemoteDevice(chosenDeviceAddress);
         UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 //            utils.log(TAG, "connectOBD  "+chosenDeviceName+" : "+chosenDeviceAddress);
@@ -89,6 +88,7 @@ class OBDAccess {
         try {
             btSocket = device.createRfcommSocketToServiceRecord(uuid);
             btSocket.connect();
+            utils.logBoth(logID,chosenDeviceName+" connected");
         } catch (IllegalArgumentException e) {
             utils.logE(logID, "IllegalArgumentException  ", e);
 //            Toast.makeText(mContext, "Please choose Bluetooth device first", Toast.LENGTH_LONG).show();

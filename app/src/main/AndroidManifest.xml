@@ -60,6 +60,13 @@
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".MainActivity"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.urrecliner.blackbox" />
+            </intent-filter>
+        </receiver>
         <service android:name=".GPSTracker" android:exported="false" />
     </application>
 

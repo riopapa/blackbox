@@ -78,18 +78,15 @@ public class Vars {
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
-    static double evtLatitude = 0;
-    static double evtLongitude = 0;
-
     static long VIDEO_ONE_WORK_FILE_SIZE = 26 * 100000;
     static int VIDEO_ENCODING_RATE = 3000*1000;
     static int VIDEO_FRAME_RATE = 30;
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int DELAY_AUTO_RECORD = 8;
-    final static int DELAY_WAIT_EXIT = 10;
-    final static int DELAY_I_WILL_BACK = 50;
+    final static int DELAY_AUTO_RECORD = 5;
+    final static int DELAY_WAIT_EXIT = 5;
+    final static int DELAY_I_WILL_BACK = 20;
 
     static Handler mBackgroundImage, mBackgroundPreview;
     static Size mPreviewSize, mVideoSize, mImageSize;

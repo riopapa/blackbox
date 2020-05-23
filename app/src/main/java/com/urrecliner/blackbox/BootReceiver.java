@@ -20,7 +20,7 @@ public class BootReceiver extends BroadcastReceiver {
                     Intent i = new Intent(ctx, MainActivity.class);
                     ctx.startActivity(i);
                 }
-            }, 15000);
+            }, 10000);
         }
     }
 }

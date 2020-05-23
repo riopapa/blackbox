@@ -1,10 +1,15 @@
 package com.urrecliner.blackbox;
 
+import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -23,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static android.content.ContentValues.TAG;
 import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -43,6 +49,59 @@ class Utils {
     String getNowTimeString(String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
         return dateFormat.format(System.currentTimeMillis());
+    }
+
+    static class ScreenInfo {
+        int width, height;
+        int widthPixels, heightPixels;
+        int densityDpi;
+        float xdpi, ydpi;
+//        int screenWidth, screenHeight;
+        double screenInch;
+        String screenType;
+        ScreenInfo() {}
+    }
+
+    ScreenInfo getScreenSize(Activity activity) {
+        ScreenInfo screenInfo = new ScreenInfo();
+        Display display = activity.getWindowManager().getDefaultDisplay();
+//        String displayName = display.getName();  // minSdkVersion=17+
+//        Log.w("screen", "displayName  = " + displayName);
+
+// display size in pixels
+        Point size = new Point();
+        display.getSize(size);
+        screenInfo.width = size.x;
+        screenInfo.height = size.y;
+// pixels, dpi
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        screenInfo.heightPixels = metrics.heightPixels;
+        screenInfo.widthPixels = metrics.widthPixels;
+        screenInfo.densityDpi = metrics.densityDpi;
+        screenInfo.xdpi = metrics.xdpi;
+        screenInfo.ydpi = metrics.ydpi;
+        screenInfo.screenInch = Math.sqrt(Math.pow(screenInfo.width/screenInfo.xdpi,2)+Math.pow(screenInfo.height/screenInfo.ydpi,2));
+//
+//// deprecated
+//        int screenHeight = display.getHeight();
+//        int screenWidth = display.getWidth();
+//        Log.w(TAG, "screenHeight = " + screenHeight);
+//        Log.w(TAG, "screenWidth  = " + screenWidth);
+
+// orientation (either ORIENTATION_LANDSCAPE, ORIENTATION_PORTRAIT)
+//        int orientation = activity.getResources().getConfiguration().orientation;
+//        Log.w(TAG, "orientation  = " + orientation);
+        int screenSize = activity.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        if (screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE)
+            screenInfo.screenType = "L";
+        else if (screenSize == Configuration.SCREENLAYOUT_SIZE_NORMAL)
+            screenInfo.screenType = "N";
+        else if (screenSize == Configuration.SCREENLAYOUT_SIZE_SMALL)
+            screenInfo.screenType = "S";
+        else
+            screenInfo.screenType = "U";
+        return screenInfo;
     }
 
     boolean readyPackageFolder (File dir){
@@ -115,7 +174,7 @@ class Utils {
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
         Log.w(tag , log);
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME)+" "+tag+": " + log);
-        text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+":"+text;
+        text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
         text = truncLine(text);
         final String fText = text;
         mActivity.runOnUiThread(new Runnable() {
@@ -298,7 +357,7 @@ class Utils {
             R.raw.beep4_recording,                  //  record button pressed
             R.raw.beep5_s_dew_drops,                //  normal merge finished
             R.raw.beep6_stoprecording,              // stop recording
-            R.raw.i_will_be_back
+            R.raw.i_will_be_back_soon
             };
     private int[] soundNbr = {0,0,0,0,0,0,0,0,0,0};
 
@@ -325,7 +384,7 @@ class Utils {
             final int id = soundId;
             final float vol = volume;
             Handler handler = new Handler();
-            handler.postDelayed(() -> beepSound(id, vol), 2000);
+            handler.postDelayed(() -> beepSound(id, vol), 500);
         } else {
             beepSound(soundId, volume);
         }

@@ -42,32 +42,17 @@ class EventMerge {
 
     private static String logID = "Event";
 
-    private static byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
     private static CountDownTimer countDownTimer;
     private static File thisEventPath;
 
-    void merge(long startTime) {
+    void merge(final long startTime) {
         if (mExitApplication)
             return;
-        final long fromTime = startTime;
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                if (snapMapIdx == 0)
-                    jpgBytes = snapBytes.clone();
-                else {
-                    int jdx = 0;
-                    for (int i = snapMapIdx; i < MAX_IMAGES_SIZE; i++)
-                        jpgBytes[jdx++] = snapBytes[i];
-                    for (int i = 0; i < snapMapIdx; i++)
-                        jpgBytes[jdx++] = snapBytes[i];
-                }
-                try {
-                    new MergeFileTask().execute("" + fromTime);
-                } catch (Exception e) {
-                    utils.logE(logID, "Exception: ", e);
-                }
-            }
-        }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
+        try {
+            new EventMerge.MergeFileTask().execute("" + startTime);
+        } catch (Exception e) {
+            utils.logE(logID, "Exception: ", e);
+        }
     }
 
     private static class MergeFileTask extends AsyncTask<String, String, String> {
@@ -169,10 +154,7 @@ class EventMerge {
 
         @Override
         protected void onPostExecute(String doI) {
-            thisEventPath = new File(mPackageEventPath, beginTimeS);
-            utils.readyPackageFolder(thisEventPath);
-            SnapShotSave snapShotSave = new SnapShotSave();
-            snapShotSave.start(thisEventPath, jpgBytes);
+//            utils.logBoth(logID,new File(outputFile).getName()+" created . .");
         }
     }
 }
