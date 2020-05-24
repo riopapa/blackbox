@@ -65,7 +65,7 @@ class OBDAccess {
                 if (device.getName().contains("OBD")) {
                     chosenDeviceAddress = device.getAddress();
                     chosenDeviceName = device.getName();
-                    utils.logBoth(logID,"OBD found ["+chosenDeviceName+"]");
+                    utils.logBoth(logID,"["+chosenDeviceName+"] found");
                 }
             }
             new Timer().schedule(new TimerTask() {  // autoStart
