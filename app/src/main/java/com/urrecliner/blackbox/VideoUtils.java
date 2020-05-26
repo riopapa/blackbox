@@ -15,11 +15,9 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Build;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
@@ -150,6 +148,7 @@ public class VideoUtils {
         try {
             if(ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.CAMERA) ==
                     PackageManager.PERMISSION_GRANTED) {
+                assert cameraManager != null;
                 cameraManager.openCamera(mCameraId, mCameraDeviceStateCallback, mBackgroundImage);
             }
         } catch (CameraAccessException e) {
@@ -157,18 +156,16 @@ public class VideoUtils {
         }
     }
 
-    CameraDevice.StateCallback mCameraDeviceStateCallback = new CameraDevice.StateCallback() {
+    private CameraDevice.StateCallback mCameraDeviceStateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(CameraDevice camera) {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
             if(mIsRecording) {
-                mVideoFileName = videoUtils.getOutputFileName(0, "mp4").toString();
+                mVideoFileName = videoUtils.getOutputFileName(0).toString();
 //                utils.logBoth(logID, "Step 2 prepareRecord");
                 prepareRecord();
                 mediaRecorder.start();
-            } else {
-//                startPreview();
             }
         }
 
@@ -191,12 +188,8 @@ public class VideoUtils {
 
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
         ActivityManager activityManager = (ActivityManager) mActivity.getSystemService(ACTIVITY_SERVICE);
+        assert activityManager != null;
         activityManager.getMemoryInfo(mi);
-        double availableMegs = mi.availMem / 0x100000L;
-
-        double percentAvail = mi.availMem / (double)mi.totalMem * 100.0;
-
-//        utils.logOnly(logID, "capacity="+buffer.capacity()+" free memory="+availableMegs+" %="+percentAvail);
         byte[] bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
         if (mIsRecording) {
@@ -291,16 +284,16 @@ public class VideoUtils {
         mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
         mediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-        mediaRecorder.setOutputFile(getOutputFileName(0, "mp4").toString());
+        mediaRecorder.setOutputFile(getOutputFileName(0).toString());
         mediaRecorder.setMaxFileSize(VIDEO_ONE_WORK_FILE_SIZE);
         mediaRecorder.prepare();
-        mediaRecorder.setNextOutputFile(getOutputFileName(3000, "mp4"));
+        mediaRecorder.setNextOutputFile(getOutputFileName(3000));
         setUpNextFile();
     }
 
-    private File getOutputFileName(long after, String fileType) {
+    private File getOutputFileName(long after) {
         String time = utils.getMilliSec2String(System.currentTimeMillis() + after, FORMAT_LOG_TIME);
-        return new File(mPackageWorkingPath, time + "." + fileType);
+        return new File(mPackageWorkingPath, time + ".mp4");
     }
 
     private void setUpNextFile() {
@@ -338,14 +331,13 @@ public class VideoUtils {
         }
     }
 
-    int nextCount = 0;
+    private int nextCount = 0;
     private void assignNextFile() {
         if (mIsRecording) {
             try {
-                File nextFileName = getOutputFileName(3000, "mp4");
+                File nextFileName = getOutputFileName(3000);
                 mediaRecorder.setNextOutputFile(nextFileName);
-                nextCount++;
-                String s = nextCount + "";
+                String s = ++nextCount + "";
                 vTextRecord.setText(s);
 //                utils.log("assign " + s, nextFileName.toString());
             } catch (IOException e) {
