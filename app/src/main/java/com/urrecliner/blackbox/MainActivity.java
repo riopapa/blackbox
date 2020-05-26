@@ -82,9 +82,6 @@ import static com.urrecliner.blackbox.Vars.viewFinder;
 public class MainActivity extends Activity {
 
     private static final String logID = "Main";
-    static EventMerge eventMerge0 = new EventMerge();
-    static EventMerge eventMerge1 = new EventMerge();
-    static EventMerge eventMerge2 = new EventMerge();
     boolean surfaceReady = false;
     private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -202,8 +199,15 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) { startStopExit.stopVideo();
         }
     };
+    final Handler eventHandler = new Handler() {
+        public void handleMessage(Message msg) { eventRecording();
+        }
+    };
 
-    static void startEventSaving() {
+    void startEventSaving() {
+        eventHandler.sendEmptyMessage(0);
+    }
+    void eventRecording() {
 
         if (!mIsRecording) return;
         utils.logBoth(logID,"Event Starting ...");
