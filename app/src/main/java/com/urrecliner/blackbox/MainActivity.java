@@ -209,27 +209,21 @@ public class MainActivity extends Activity {
         utils.logBoth(logID,"Event Starting ...");
 
         gpsTracker.askLocation();
-        long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
+        final File thisEventPath = new File(mPackageEventPath, utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
+        utils.readyPackageFolder(thisEventPath);
+        SnapShotSave snapShotSave = new SnapShotSave();
+        snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,"A");
         new Timer().schedule(new TimerTask() {
             public void run() {
-                byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
-                int jdx = 0;
-                for (int i = snapMapIdx; i < MAX_IMAGES_SIZE; i++)
-                    jpgBytes[jdx++] = snapBytes[i];
-                for (int i = 0; i < snapMapIdx; i++)
-                    jpgBytes[jdx++] = snapBytes[i];
-                File thisEventPath = new File(mPackageEventPath, utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
-                utils.readyPackageFolder(thisEventPath);
-                SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.start(thisEventPath, jpgBytes);
                 EventMerge ev = new EventMerge();
-                ev.merge(startTime);
+                ev.merge(startTime, thisEventPath);
             }
         }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
-            String text = "<  "+activeEventCount+"  >\n";
+            String text = ""+activeEventCount;
             vTextActiveCount.setText(text);
             vBtnEvent.setImageResource(R.mipmap.event_blue);
             utils.customToast("EVENT button Pressed", Toast.LENGTH_LONG, Color.RED);

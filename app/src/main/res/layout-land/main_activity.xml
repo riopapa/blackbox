@@ -31,7 +31,7 @@
         android:layout_height="150dp"
         android:layout_below="@id/textEvent"
         android:layout_marginStart="16dp"
-        android:text="@string/loginfo"
+        android:text="@string/logInfo"
         android:textColor="#cccc"
         android:textSize="@dimen/log_size" />
 
@@ -77,28 +77,29 @@
     <!--Record start button and count Fragment-->
     <FrameLayout
         android:id="@+id/frmEvent"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true" >
 
         <ImageButton
             android:id="@+id/btnEvent"
             style="@android:style/Widget.Material.Light.Button.Borderless"
-            android:layout_width="98dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
+            android:layout_gravity="center"
             android:contentDescription="@string/textEvent"
             android:src="@mipmap/event_blue" />
 
         <TextView
             android:id="@+id/activeEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:text=""
-            android:textColor="#F00"
-            android:textSize="30sp" />
+            android:textColor="#FF0"
+            android:textSize="40sp" />
 
     </FrameLayout>
 

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +27,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
@@ -37,6 +40,8 @@ import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vTextActiveCount;
+import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 
 class EventMerge {
 
@@ -45,9 +50,10 @@ class EventMerge {
     private static CountDownTimer countDownTimer;
     private static File thisEventPath;
 
-    void merge(final long startTime) {
+    void merge(final long startTime, final File eventPath) {
         if (mExitApplication)
             return;
+        this.thisEventPath = eventPath;
         try {
             new EventMerge.MergeFileTask().execute("" + startTime);
         } catch (Exception e) {
@@ -154,10 +160,17 @@ class EventMerge {
 
         @Override
         protected void onPostExecute(String doI) {
-//            utils.logBoth(logID,new File(outputFile).getName()+" created . .");
+            SnapShotSave snapShotSave = new SnapShotSave();
+            snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,"B");
+            utils.beepOnce(3, .7f);
+            String countStr = "" + ++CountEvent;
+            vTextCountEvent.setText(countStr);
+            activeEventCount--;
+            String text = (activeEventCount == 0) ? "" : "" + activeEventCount + "";
+            vTextActiveCount.setText(text);
+            ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
+            mEventButton.setImageResource(R.mipmap.event_ready);
+            utils.logBoth(logID, thisEventPath.getName());
         }
     }
 }
-
-
-

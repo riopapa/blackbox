@@ -15,6 +15,8 @@ import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.mActivity;
+import static com.urrecliner.blackbox.Vars.snapBytes;
+import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.vTextCountEvent;
@@ -25,40 +27,33 @@ class SnapShotSave {
     private CountDownTimer countDownTimer;
     private int idx;
 
-    void start(final File thisEventPath, final byte[][] jpgBytes) {
-        utils.logBoth(logID, "Saving SnapShots ..");
+    void start(final File thisEventPath, final byte[][] snapCloned, final int snapIdx, final String prefix) {
         idx =0;
+        int jdx = 0;
+        byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
+        for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
+            jpgBytes[jdx++] = snapCloned[i];
+        for (int i = 0; i < snapIdx; i++)
+            jpgBytes[jdx++] = snapCloned[i];
+
+        final int interval = 220;
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                countDownTimer = new CountDownTimer(320 * MAX_IMAGES_SIZE, 300) {
+                countDownTimer = new CountDownTimer((interval+50) * MAX_IMAGES_SIZE, interval) {
                     public void onTick(long millisUntilFinished) {
 //                        utils.logOnly(logID, "idx="+idx);
                         if (idx < MAX_IMAGES_SIZE) {
                             if (jpgBytes[idx] != null && jpgBytes[idx].length > 0) {
-                                final File jpgFile = new File(thisEventPath, "SnapShot" + "_" + ("" + (1000 + idx)).substring(1, 4) + ".jpg");
+                                final File jpgFile = new File(thisEventPath, "SnapShot "+prefix+"_"+("" + (1000 + idx)).substring(1, 4) + ".jpg");
                                 bytes2File(jpgBytes[idx], jpgFile);
                             }
+                            idx++;
                         }
-                        idx++;
                     }
                     public void onFinish() {
-                        utils.beepOnce(3, .7f);
-                        String countStr = "" + ++CountEvent;
-                        vTextCountEvent.setText(countStr);
-                        activeEventCount--;
-                        String text = (activeEventCount == 0) ? "" : "< " + activeEventCount + " >\n";
-                        vTextActiveCount.setText(text);
-                        ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
-                        mEventButton.setImageResource(R.mipmap.event_ready);
-                        try {
-                            countDownTimer.cancel();
-//                        utils.customToast("Event Recording completed", Toast.LENGTH_SHORT, Color.CYAN);
-                            utils.logBoth(logID, thisEventPath.getName());
-                        } catch (Exception e) {
-                            utils.logE(logID,"onFinish after saving snapshot", e);
-                        }
+                        utils.logBoth(logID, "SnapShots saved .. "+prefix);
                     }
                 };
 //        utils.logBoth(logID, "countDownTimer start ---");
