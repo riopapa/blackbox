@@ -109,7 +109,7 @@ public class Vars {
 
     static long gpsUpdateTime = 0;
     static boolean viewFinder = true;
-    static String speedNow = "now", speedOld = "old";
+    static String speedNow = "n", speedOld = "o";
     static float azimuth = 0;
     static boolean isCompassShown = false;
 }
