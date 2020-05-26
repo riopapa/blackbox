@@ -93,11 +93,10 @@ class OBDAccess {
             utils.logE(logID, "IllegalArgumentException  ", e);
 //            Toast.makeText(mContext, "Please choose Bluetooth device first", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
-            utils.logE(logID, "*** OBD not READY ***", e);
-//            Toast.makeText(mContext, "Unable to establish connection", Toast.LENGTH_LONG).show();
+            utils.logBoth(logID, "*** OBD NOT FOUND ***");
+            return;
         } catch (Exception e){
             utils.logE(logID, "Exception  ", e);
-//            Toast.makeText(mContext, e.toString(), Toast.LENGTH_LONG).show();
         }
         try {
             new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
@@ -105,11 +104,13 @@ class OBDAccess {
             new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
         } catch (IllegalArgumentException e) {
             utils.logE(logID, "IllegalArgumentException  ", e);
-//            Toast.makeText(mContext, "Please choose Bluetooth device first", Toast.LENGTH_LONG).show();
+            return;
         } catch (IOException e) {
-            utils.logE(logID, "*** OBD not READY ***", e);
+            utils.logBoth(logID, "*** OBD not READY ***");
+            return;
         } catch (Exception e){
             utils.logE(logID, "Exception  ", e);
+            return;
         }
         try {
             new EchoOffCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
@@ -131,7 +132,7 @@ class OBDAccess {
         } catch (IllegalArgumentException e) {
             utils.logE(logID, "IllegalArgumentException  ", e);
         } catch (IOException e) {
-            utils.logE(logID, "IOException  ", e);
+            utils.logBoth(logID, "IOException  Command ");
         } catch (Exception e){
             utils.logE(logID, "General Exception  ", e);
         }

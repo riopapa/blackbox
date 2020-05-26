@@ -17,9 +17,10 @@ class SnapShotSave {
     private CountDownTimer countDownTimer;
     private int idx;
 
-    void start(final File thisEventPath, final byte[][] snapCloned, final int snapIdx, final String prefix) {
-        idx =0;
+    void start(final File thisEventPath, final byte[][] snapCloned, final int snapIdx, final boolean first) {
         int jdx = 0;
+        int start = (first) ? 1000: 1200;
+        idx = (first) ? 0: 8;
         byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
             jpgBytes[jdx++] = snapCloned[i];
@@ -36,14 +37,14 @@ class SnapShotSave {
 //                        utils.logOnly(logID, "idx="+idx);
                         if (idx < MAX_IMAGES_SIZE) {
                             if (jpgBytes[idx] != null && jpgBytes[idx].length > 0) {
-                                final File jpgFile = new File(thisEventPath, "SnapShot "+prefix+"_"+("" + (1000 + idx)).substring(1, 4) + ".jpg");
+                                final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (start + idx)).substring(1, 4) + ".jpg");
                                 bytes2File(jpgBytes[idx], jpgFile);
                             }
                             idx++;
                         }
                     }
                     public void onFinish() {
-                        utils.logBoth(logID, "SnapShots saved .. "+prefix);
+                        utils.logBoth(logID, "SnapShots saved .. "+start);
                     }
                 };
 //        utils.logBoth(logID, "countDownTimer start ---");

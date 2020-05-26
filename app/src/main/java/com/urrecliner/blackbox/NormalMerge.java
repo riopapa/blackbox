@@ -65,10 +65,8 @@ class NormalMerge {
         @Override
         protected String doInBackground(String... inputParams) {
             long startTime = Long.parseLong(inputParams[0]);
-            File []files2Merge;
-
             beginTimeS = utils.getMilliSec2String(startTime, FORMAT_LOG_TIME);
-
+            File []files2Merge;
             files2Merge = utils.getDirectoryList(mPackageWorkingPath);
             if (files2Merge.length < 3) {
                 publishProgress("<<file[] too short", "" +files2Merge.length);

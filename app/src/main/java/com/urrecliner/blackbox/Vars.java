@@ -63,7 +63,6 @@ public class Vars {
     static final String FORMAT_LOG_TIME = "yy-MM-dd HH.mm.ss.SSS";
     static final String FORMAT_DATE = "yy-MM-dd";
     static SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.getDefault());
-    static SimpleDateFormat sdfLog = new SimpleDateFormat(FORMAT_LOG_TIME, Locale.getDefault());
 
     private static final String PATH_PACKAGE = "BlackBox";
     private static final String PATH_EVENT = "event";
@@ -102,7 +101,7 @@ public class Vars {
     final static long INTERVAL_NORMAL = 81 * 1000;
     final static long INTERVAL_EVENT = 13 * 1000;
     final static int SNAP_SHOT_INTERVAL = 300;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 13 / 10) / SNAP_SHOT_INTERVAL) + 4;
+    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 15 / 10) / SNAP_SHOT_INTERVAL);
     static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
     static int snapMapIdx = 0;
     static NormalMerge normalMerge = new NormalMerge();

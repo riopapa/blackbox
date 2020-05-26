@@ -161,7 +161,7 @@ class EventMerge {
         @Override
         protected void onPostExecute(String doI) {
             SnapShotSave snapShotSave = new SnapShotSave();
-            snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,"B");
+            snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
             utils.beepOnce(3, .7f);
             String countStr = "" + ++CountEvent;
             vTextCountEvent.setText(countStr);

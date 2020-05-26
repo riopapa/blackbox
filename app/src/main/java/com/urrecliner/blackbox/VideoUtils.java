@@ -104,22 +104,7 @@ public class VideoUtils {
     private void setCameraSize(StreamConfigurationMap map) {
         String model = Build.MODEL;
         utils.logBoth(logID, "setCameraSize on "+model);
-//        if (model.equals("Nexus 6P")) {
-//            /* nexus 6p resolution
-//            3264 x 2448 : 1.3, 3200 x 2400 : 1.3, 2592 x 1944 : 1.3, 2688 x 1512 : 1.7, 2048 x 1536 : 1.3,
-//            1920 x 1080 : 1.7, 1600 x 1200 : 1.3, 1440 x 1080 : 1.3, 1280 x 960 : 1.3, 1280 x 768 : 1.6, 1280 x 720 : 1.7
-//            1024 x 768 : 1.3, 800 x 600 : 1.3, 864 x 480 : 1.8, 800 x 480 : 1.66, 2 720 x 480 : 1.5, 640 x 480 : 1.3
-//            640 x 360 : 1.7, 352 x 288 : 1.2, 320 x 240 : 1.3, 176 x 144 : 1.2, 160 x 120 : 1.3 */
-//            for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-//    //                    Log.w("size", size.getWidth()+"x"+ size.getHeight());
-//                if (size.getWidth() == 640 && size.getHeight() == 480)
-//                    mPreviewSize = size;
-//                else if (size.getWidth() == 3200 && size.getHeight() == 2400)
-//                    mImageSize = size;
-//                else if (size.getWidth() == 1440 && size.getHeight() == 1080)
-//                    mVideoSize = size;
-//            }
-//        }
+
         if (model.equals("SM-G965N")) {
             /* galaxy s9+
             4032x3024 1.3 , 4032x2268 1.8 , 4032x1960 2.1 , 3024x3024 1.0 , 3984x2988 1.3 , 3840x2160 1.8 ,
@@ -136,7 +121,7 @@ public class VideoUtils {
                     mPreviewSize = size;
                 else if (size.getWidth() == 4032 && size.getHeight() == 2268)
                     mImageSize = size;
-                else if (size.getWidth() == 2560 && size.getHeight() == 1440)
+                else if (size.getWidth() == 2048 && size.getHeight() == 1152)
                     mVideoSize = size;
             }
 //            Log.w("SIZE",sb);
