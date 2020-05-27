@@ -162,15 +162,6 @@ class EventMerge {
         protected void onPostExecute(String doI) {
             SnapShotSave snapShotSave = new SnapShotSave();
             snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
-            utils.beepOnce(3, .7f);
-            String countStr = "" + ++CountEvent;
-            vTextCountEvent.setText(countStr);
-            activeEventCount--;
-            String text = (activeEventCount == 0) ? "" : "" + activeEventCount + "";
-            vTextActiveCount.setText(text);
-            ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
-            mEventButton.setImageResource(R.mipmap.event_ready);
-            utils.logBoth(logID, thisEventPath.getName());
         }
     }
 }

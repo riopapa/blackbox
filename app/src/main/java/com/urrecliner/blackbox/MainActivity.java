@@ -223,7 +223,7 @@ public class MainActivity extends Activity {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventPath);
             }
-        }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
+        }, INTERVAL_EVENT + INTERVAL_EVENT / 3);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

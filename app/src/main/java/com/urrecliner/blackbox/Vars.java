@@ -99,9 +99,9 @@ public class Vars {
     static CameraCaptureSession mCaptureSession, mPrevSession;
 
     final static long INTERVAL_NORMAL = 81 * 1000;
-    final static long INTERVAL_EVENT = 13 * 1000;
+    final static long INTERVAL_EVENT = 14 * 1000;
     final static int SNAP_SHOT_INTERVAL = 300;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 15 / 10) / SNAP_SHOT_INTERVAL);
+    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 16 / 10) / SNAP_SHOT_INTERVAL);
     static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
     static int snapMapIdx = 0;
     static NormalMerge normalMerge = new NormalMerge();
