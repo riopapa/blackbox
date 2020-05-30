@@ -12,7 +12,7 @@ import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
-import static com.urrecliner.blackbox.Vars.vTextureView;
+import static com.urrecliner.blackbox.Vars.vPreviewView;
 
 class DisplayBattery extends BroadcastReceiver {
 
@@ -71,7 +71,7 @@ class DisplayBattery extends BroadcastReceiver {
             else
                 batteryNow = batteryMipmap[4];
             if (batteryPct < 50)
-                vTextureView.setVisibility(View.INVISIBLE);
+                vPreviewView.setVisibility(View.INVISIBLE);
         } else
             batteryNow = batteryMipmap[0];
         if (batteryNow != batteryPrev) {

@@ -2,9 +2,7 @@ package com.urrecliner.blackbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -17,8 +15,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
@@ -29,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,7 +34,6 @@ import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORD;
 import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
-import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
@@ -75,7 +69,7 @@ import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vTextTime;
-import static com.urrecliner.blackbox.Vars.vTextureView;
+import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.vTodayKms;
 import static com.urrecliner.blackbox.Vars.videoUtils;
 import static com.urrecliner.blackbox.Vars.viewFinder;
@@ -126,7 +120,7 @@ public class MainActivity extends Activity {
         mActivity = this; mContext = this;
         gpsTracker = new GPSTracker(mContext);
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
-        vTextureView = findViewById(R.id.textureView);
+        vPreviewView = findViewById(R.id.previewView);
         utils.logOnly(logID, "Main Started ..");
         final TextView textureBox = findViewById(R.id.textureBox);
         vBtnRecord = findViewById(R.id.btnRecord);
@@ -152,27 +146,27 @@ public class MainActivity extends Activity {
 
         textureBox.setOnClickListener(v -> {
             viewFinder = !viewFinder;
-            vTextureView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
+            vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
         });
 
-        vTextureView.post(() -> {
+        vPreviewView.post(() -> {
             readyCamera();
-            vTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
-            int width = vTextureView.getWidth();
-            int height = vTextureView.getHeight();
+            vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
+            int width = vPreviewView.getWidth();
+            int height = vPreviewView.getHeight();
             Matrix matrix = new Matrix();
             RectF viewRect = new RectF(0, 0, width, height);
             float centerX = viewRect.centerX();
             float centerY = viewRect.centerY();
             matrix.postRotate(-90, centerX, centerY);
-            vTextureView.setTransform(matrix);
-            RelativeLayout.LayoutParams textureLP = (RelativeLayout.LayoutParams) vTextureView.getLayoutParams();
+            vPreviewView.setTransform(matrix);
+            RelativeLayout.LayoutParams textureLP = (RelativeLayout.LayoutParams) vPreviewView.getLayoutParams();
             RelativeLayout.LayoutParams tvLP = (RelativeLayout.LayoutParams) textureBox.getLayoutParams();
             textureLP.setMargins(0,0,0,0);
             textureLP.bottomMargin = tvLP.bottomMargin+6;
             textureLP.rightMargin = tvLP.rightMargin+6;
-            vTextureView.setLayoutParams(textureLP);
-            vTextureView.setScaleX(1.7f);
+            vPreviewView.setLayoutParams(textureLP);
+            vPreviewView.setScaleX(1.7f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

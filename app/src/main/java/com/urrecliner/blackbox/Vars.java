@@ -51,7 +51,7 @@ public class Vars {
     static ImageView vExitApp = null;
 
     static ImageButton vBtnEvent = null;
-    static TextureView vTextureView;
+    static TextureView vPreviewView;
     static ImageButton vBtnRecord;
     static ImageView vCompass = null;
     static ImageView vSatellite = null;

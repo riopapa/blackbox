@@ -280,7 +280,7 @@
         android:background="@drawable/back_border_only" />
 
     <TextureView
-        android:id="@+id/textureView"
+        android:id="@+id/previewView"
         android:layout_width="170dp"
         android:layout_height="100dp"
         android:layout_alignParentEnd="true"

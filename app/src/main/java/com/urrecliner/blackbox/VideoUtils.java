@@ -57,7 +57,7 @@ import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
-import static com.urrecliner.blackbox.Vars.vTextureView;
+import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.videoUtils;
 
 public class VideoUtils {
@@ -190,7 +190,7 @@ public class VideoUtils {
     };
 
     private boolean isPrepared = false;
-    private SurfaceTexture surface_Texture = null;
+    private SurfaceTexture surface_Preview = null;
     private Surface previewSurface = null;
     private Surface recordSurface = null;
     void prepareRecord() {
@@ -199,25 +199,21 @@ public class VideoUtils {
             return;
         try {
             setupMediaRecorder();
-            vTextureView = mActivity.findViewById(R.id.textureView);
-            if (vTextureView == null)
-                utils.logOnly(logID,"Texture NULL");
-            surface_Texture = vTextureView.getSurfaceTexture();
-            if (surface_Texture == null)
-                utils.logOnly(logID,"surface_Texture NULL");
-            surface_Texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+            vPreviewView = mActivity.findViewById(R.id.previewView);
+            surface_Preview = vPreviewView.getSurfaceTexture();
+            surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         } catch (Exception e) {
-            utils.logE(logID, "Prepare Error AA ///", e);
+            utils.logE(logID, "Prepare Error preView ///", e);
         }
         try {
-            previewSurface = new Surface(surface_Texture);
+            previewSurface = new Surface(surface_Preview);
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             mCaptureRequestBuilder.addTarget(previewSurface);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error BB ///", e);
         }
         if (previewSurface == null) {
-            utils.logBoth(logID, "previewSurface is null /,/,/,");
+            utils.logBoth(logID, "previewSurface is null ====");
             return;
         }
         try {
@@ -259,7 +255,7 @@ public class VideoUtils {
 
     private void setupMediaRecorder() throws IOException {
 
-//        utils.logBoth(logID," setup Media");
+        utils.logBoth(logID," setup Media");
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 //        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 //        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
@@ -333,10 +329,10 @@ public class VideoUtils {
     void startPreview() {
         utils.logOnly(logID, "startPreview 1");
 
-        surface_Texture = vTextureView.getSurfaceTexture();
-        surface_Texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+        surface_Preview = vPreviewView.getSurfaceTexture();
+        surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
 
-        Surface preview_Surface = new Surface(surface_Texture);
+        Surface preview_Surface = new Surface(surface_Preview);
 
         try {
             mPrevBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);

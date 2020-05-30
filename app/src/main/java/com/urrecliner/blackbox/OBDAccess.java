@@ -33,7 +33,7 @@ import static com.urrecliner.blackbox.Vars.speedOld;
 import static com.urrecliner.blackbox.Vars.todayStr;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
-import static com.urrecliner.blackbox.Vars.vTextureView;
+import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.vTodayKms;
 import static com.urrecliner.blackbox.Vars.viewFinder;
 
@@ -159,7 +159,7 @@ class OBDAccess {
                             String s = (nowKms - beginKms)+"";
                             vTodayKms.setText(s);
                             if (viewFinder)
-                                vTextureView.setVisibility((Integer.parseInt(speedNow) > 60) ? View.INVISIBLE:View.VISIBLE);
+                                vPreviewView.setVisibility((Integer.parseInt(speedNow) > 60) ? View.INVISIBLE:View.VISIBLE);
                         });
                         speedOld = speedNow;
                     }
