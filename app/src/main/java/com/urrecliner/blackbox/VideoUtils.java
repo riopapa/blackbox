@@ -65,8 +65,8 @@ public class VideoUtils {
     private String logID = "videoUtils";
     private String mCameraId;
     void setupCamera() {
-        String model = Build.MODEL;
-        utils.logBoth(logID, "Start setupCamera on ["+model+"]");
+//        String model = Build.MODEL;
+//        utils.logBoth(logID, "Start setupCamera on ["+model+"]");
         CameraManager cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
             assert cameraManager != null;
@@ -103,7 +103,7 @@ public class VideoUtils {
 
     private void setCameraSize(StreamConfigurationMap map) {
         String model = Build.MODEL;
-        utils.logBoth(logID, "setCameraSize on "+model);
+//        utils.logBoth(logID, "setCameraSize on "+model);
 
         if (model.equals("SM-G965N")) {
             /* galaxy s9+
@@ -114,9 +114,13 @@ public class VideoUtils {
             720x480 1.5 , 640x480 1.3 , 352x288 1.2 , 320x240 1.3 , 256x144 1.8 , 176x144 1.2 ,
              */
 //            String sb = "";
-            for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+//            for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
 //                sb += size.getWidth()+"x"+ size.getHeight()+
 //                        String.format(" %,3.1f , ", (float)size.getWidth() / (float)size.getHeight());
+//            }
+//            Log.w("SIZE",sb);
+
+                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                 if (size.getWidth() == 720 && size.getHeight() == 480)
                     mPreviewSize = size;
                 else if (size.getWidth() == 4032 && size.getHeight() == 2268)
@@ -124,7 +128,6 @@ public class VideoUtils {
                 else if (size.getWidth() == 2048 && size.getHeight() == 1152)
                     mVideoSize = size;
             }
-//            Log.w("SIZE",sb);
         }
     }
 
@@ -184,7 +187,6 @@ public class VideoUtils {
                 snapMapIdx = 0;
         }
         image.close();
-//        bytes = null;
     };
 
     private boolean isPrepared = false;
@@ -193,7 +195,6 @@ public class VideoUtils {
     private Surface recordSurface = null;
     void prepareRecord() {
 
-//        utils.logOnly(logID, "prepareRecord 1111");
         if (isPrepared)
             return;
         try {
@@ -226,11 +227,9 @@ public class VideoUtils {
             utils.logE(logID, "Prepare Error recordSurface ///", e);
         }
         if (recordSurface == null) {
-            utils.logBoth(logID, "recordSurface is null /,/,/,");
+            utils.logBoth(logID, "recordSurface is null ------");
             return;
         }
-//        utils.logOnly(logID, "prepareRecord 222");
-
         try {
             mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface, mImageReader.getSurface()),
             new CameraCaptureSession.StateCallback() {
@@ -260,7 +259,7 @@ public class VideoUtils {
 
     private void setupMediaRecorder() throws IOException {
 
-        utils.logBoth(logID," setup Media");
+//        utils.logBoth(logID," setup Media");
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 //        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 //        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);

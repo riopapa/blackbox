@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -61,14 +62,16 @@ class BeBackSoon extends AsyncTask<String, String, String> {
 //                mActivity.finishActivity(123456);
 //                android.os.Process.killProcess(android.os.Process.myPid());
 //                System.exit(0);
-                mActivity.finish();
-                Intent restartIntent = mContext.getPackageManager()     // exit and reload app
-                        .getLaunchIntentForPackage(mContext.getPackageName() );
-                PendingIntent intent = PendingIntent.getActivity(
-                        mActivity, 1234,
-                        restartIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-                manager.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK *1000, intent);
+
+                reStartApp();
+//                mActivity.finish();
+//                Intent restartIntent = mContext.getPackageManager()     // exit and reload app
+//                        .getLaunchIntentForPackage(mContext.getPackageName() );
+//                PendingIntent intent = PendingIntent.getActivity(
+//                        mActivity, 1234,
+//                        restartIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//                AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+//               manager.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK *1000, intent);
                 mActivity.finishActivity(12345);
                 System.exit(0);
             }, 5000);
@@ -77,5 +80,15 @@ class BeBackSoon extends AsyncTask<String, String, String> {
         }
         else
             Log.e("jumpTo","jumpTo Error : "+jumpTo);
+    }
+
+    void reStartApp () {
+        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        Intent intent = new Intent("android.urrecliner.blackbox.MainActivity.class");
+        int uniqueId = 123456;
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, uniqueId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + DELAY_I_WILL_BACK *1000, pendingIntent);
+        mActivity.finish();
     }
 }

@@ -26,13 +26,13 @@ class SnapShotSave {
     void start(final File thisEventPath, final byte[][] snapCloned, final int snapIdx, final boolean first) {
         int jdx = 0;
         final int startBias = (first) ? 1000: 1200; // for snapshot image sequence
-        final int finishIdx = (first) ? MAX_IMAGES_SIZE-8: MAX_IMAGES_SIZE-24;  // to minimize snapshot image counts
+        final int finishIdx = (first) ? MAX_IMAGES_SIZE-16: MAX_IMAGES_SIZE-20;  // to minimize snapshot image counts
         byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
             jpgBytes[jdx++] = snapCloned[i];
         for (int i = 0; i < snapIdx; i++)
             jpgBytes[jdx++] = snapCloned[i];
-        final int saveInterval = 200;   // phone CPU dependency
+        final int saveInterval = 200;   // check phone CPU Capability
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -49,29 +49,28 @@ class SnapShotSave {
                         }
                     }
                     public void onFinish() {
-                        utils.logBoth(logID, "SnapShots saved .. "+startBias);
+//                        utils.logBoth(logID, "SnapShots saved .. "+startBias);
                         if (!first)
-                            showCompleted();
+                            showCompleted(thisEventPath);
                     }
                 };
-//        utils.logBoth(logID, "countDownTimer start ---");
                 countDownTimer.start();
             }
         }, 0);
     }
 
-    private void showCompleted() {
+    private void showCompleted(File thisEventPath) {
         utils.beepOnce(3, .7f);
         String countStr = "" + ++CountEvent;
         vTextCountEvent.setText(countStr);
         activeEventCount--;
-        String text = (activeEventCount == 0) ? "" : "" + activeEventCount + "";
+        String text = (activeEventCount == 0) ? "" : "" + activeEventCount;
         vTextActiveCount.setText(text);
         ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
         mEventButton.setImageResource(R.mipmap.event_ready);
-//       utils.logBoth(logID, thisEventPath.getName());
-
+       utils.logBoth(logID, thisEventPath.getName());
     }
+
     private void bytes2File(byte[] bytes, File file) {
 
         FileOutputStream fileOutputStream = null;

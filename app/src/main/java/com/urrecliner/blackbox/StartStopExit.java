@@ -6,6 +6,7 @@ import android.os.Message;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.cameraUtils;

@@ -34,6 +34,9 @@ import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
+import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
+import static com.urrecliner.blackbox.Vars.sdfDate;
+import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 
@@ -142,17 +145,31 @@ class Utils {
 
     /* delete directory and files under that directory */
     boolean deleteRecursive(File fileOrDirectory) {
+        utils.logOnly("recursive"+fileOrDirectory.isDirectory(),fileOrDirectory.toString());
         if (fileOrDirectory.isDirectory())
             for (File child : fileOrDirectory.listFiles())
                 deleteRecursive(child);
         return fileOrDirectory.delete();
     }
 
+    void deleteOldNormalEvents(File target) {
+
+        String oldDate = sdfDate.format(System.currentTimeMillis() - 7*24*60*60*1000L);    // 7 days old
+        File[] oldFiles = utils.getDirectoryList(target);
+        Collator myCollator = Collator.getInstance();
+        for (File file : oldFiles) {
+            String shortFileName = file.getName();
+            if (!shortFileName.substring(0,1).equals(".") && myCollator.compare(shortFileName, oldDate) < 0) {
+                deleteRecursive(file);
+            }
+        }
+    }
+
     void deleteOldLogs() {
         final SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.US);
 
         String oldDate = "log_" + sdfDate.format(System.currentTimeMillis() - 3*24*60*60*1000L);
-        File[] files = getCurrentFileList(mPackageLogPath);
+        File[] files = mPackageLogPath.listFiles();
         Collator myCollator = Collator.getInstance();
         for (File file : files) {
             String shortFileName = file.getName();
@@ -161,10 +178,6 @@ class Utils {
                     Log.e("file","Delete Error "+file);
             }
         }
-    }
-
-    private File[] getCurrentFileList(File fullPath) {
-        return fullPath.listFiles();
     }
 
     void logBoth(String tag, String text) {

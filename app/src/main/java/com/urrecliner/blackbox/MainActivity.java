@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -122,8 +123,7 @@ public class MainActivity extends Activity {
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         askPermission();
         setContentView(R.layout.main_activity);
-        mActivity = this;
-        mContext = this;
+        mActivity = this; mContext = this;
         gpsTracker = new GPSTracker(mContext);
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vTextureView = findViewById(R.id.textureView);
@@ -188,6 +188,8 @@ public class MainActivity extends Activity {
                 });
             }
         }, DELAY_AUTO_RECORD*1000);
+        utils.deleteOldNormalEvents(mPackageNormalPath);
+        utils.deleteOldNormalEvents(mPackageEventPath);
         utils.deleteOldLogs();
     }
 
