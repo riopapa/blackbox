@@ -50,7 +50,6 @@ import static com.urrecliner.blackbox.Vars.mPrevBuilder;
 import static com.urrecliner.blackbox.Vars.mPrevSession;
 import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
-import static com.urrecliner.blackbox.Vars.mVideoFileName;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.snapBytes;
@@ -150,8 +149,6 @@ public class VideoUtils {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
             if(mIsRecording) {
-                mVideoFileName = videoUtils.getOutputFileName(0).toString();
-//                utils.logBoth(logID, "Step 2 prepareRecord");
                 prepareRecord();
                 mediaRecorder.start();
             }
@@ -326,38 +323,38 @@ public class VideoUtils {
         }
     }
 
-    void startPreview() {
-        utils.logOnly(logID, "startPreview 1");
-
-        surface_Preview = vPreviewView.getSurfaceTexture();
-        surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-
-        Surface preview_Surface = new Surface(surface_Preview);
-
-        try {
-            mPrevBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            mPrevBuilder.addTarget(preview_Surface);
-            mCameraDevice.createCaptureSession(Arrays.asList(preview_Surface, mPreviewReader.getSurface()),
-                    new CameraCaptureSession.StateCallback() {
-                        @Override
-                        public void onConfigured(CameraCaptureSession session) {
-//                            utils.log(logID, "onConfigured: startPreview");
-                            mPrevSession = session;
-                            try {
-                                mPrevSession.setRepeatingRequest(mPrevBuilder.build(),
-                                        null, mBackgroundPreview);
-                            } catch (Exception e) {
-                                utils.logBoth(logID, "mPreSession error"+e.toString());
-                            }
-                        }
-                        @Override
-                        public void onConfigureFailed(CameraCaptureSession session) {
-                            utils.logOnly(logID, "onConfigureFailed: startPreview");
-                        }
-                    }, null);
-        } catch (Exception e) {
-            utils.logE(logID, "// startPreview //", e);
-        }
-        utils.logOnly(logID, "startPreview 2");
-    }
+//    void startPreview() {
+//        utils.logOnly(logID, "startPreview 1");
+//
+//        surface_Preview = vPreviewView.getSurfaceTexture();
+//        surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+//
+//        Surface preview_Surface = new Surface(surface_Preview);
+//
+//        try {
+//            mPrevBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+//            mPrevBuilder.addTarget(preview_Surface);
+//            mCameraDevice.createCaptureSession(Arrays.asList(preview_Surface, mPreviewReader.getSurface()),
+//                    new CameraCaptureSession.StateCallback() {
+//                        @Override
+//                        public void onConfigured(CameraCaptureSession session) {
+////                            utils.log(logID, "onConfigured: startPreview");
+//                            mPrevSession = session;
+//                            try {
+//                                mPrevSession.setRepeatingRequest(mPrevBuilder.build(),
+//                                        null, mBackgroundPreview);
+//                            } catch (Exception e) {
+//                                utils.logBoth(logID, "mPreSession error"+e.toString());
+//                            }
+//                        }
+//                        @Override
+//                        public void onConfigureFailed(CameraCaptureSession session) {
+//                            utils.logOnly(logID, "onConfigureFailed: startPreview");
+//                        }
+//                    }, null);
+//        } catch (Exception e) {
+//            utils.logE(logID, "// startPreview //", e);
+//        }
+//        utils.logOnly(logID, "startPreview 2");
+//    }
 }

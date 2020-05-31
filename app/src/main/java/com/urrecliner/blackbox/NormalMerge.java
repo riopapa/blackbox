@@ -67,12 +67,12 @@ class NormalMerge {
             beginTimeS = utils.getMilliSec2String(nextNormalTime, FORMAT_LOG_TIME);
             File []files2Merge;
             files2Merge = utils.getDirectoryList(mPackageWorkingPath);
-            if (files2Merge.length < 3) {
+            if (files2Merge.length < 5) {
                 publishProgress("<<file[] too short", "" +files2Merge.length);
             }
             else {
                 Arrays.sort(files2Merge);
-                endTimeS = files2Merge[files2Merge.length - 2].getName();
+                endTimeS = files2Merge[files2Merge.length - 3].getName();
 //                utils.logBoth(logID, beginTimeS+" to "+endTimeS+" len="+files2Merge.length);
                 Date date = null;
                 try {
@@ -80,7 +80,7 @@ class NormalMerge {
                 } catch (ParseException e) {
                     utils.logE(logID, endTimeS+" parse Error", e);
                 }
-                nextNormalTime = date.getTime();
+                nextNormalTime = date.getTime() - 2000;
                 outputFile = new File(mPackageNormalDatePath, beginTimeS + " x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
             }
@@ -99,7 +99,7 @@ class NormalMerge {
 
                 if (myCollator.compare(shortFileName, beginTimeS) < 0)
                     file.delete();  // remove old work file
-                else if (myCollator.compare(shortFileName, endTimeS) <= 0) {
+                else if (myCollator.compare(shortFileName, endTimeS) < 0) {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {

@@ -154,7 +154,7 @@ class Utils {
 
     void deleteOldNormalEvents(File target) {
 
-        String oldDate = sdfDate.format(System.currentTimeMillis() - 7*24*60*60*1000L);    // 7 days old
+        String oldDate = sdfDate.format(System.currentTimeMillis() - 5*24*60*60*1000L);    // 5 days old
         File[] oldFiles = utils.getDirectoryList(target);
         Collator myCollator = Collator.getInstance();
         for (File file : oldFiles) {
