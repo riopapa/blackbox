@@ -85,8 +85,8 @@ public class Vars {
     static int CountEvent;
     static int activeEventCount = 0;
     final static int DELAY_AUTO_RECORD = 5;
-    final static int DELAY_WAIT_EXIT = 5;
-    final static int DELAY_I_WILL_BACK = 20;
+    final static int DELAY_WAIT_EXIT = 4;
+    final static int DELAY_I_WILL_BACK = 50;
 
     static Handler mBackgroundImage, mBackgroundPreview;
     static Size mPreviewSize, mVideoSize, mImageSize;

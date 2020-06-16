@@ -15,7 +15,7 @@
     <string name="km">Km</string>
     <string name="compassImage">compassImage</string>
     <string name="directionTriangle">directionTriangle</string>
-    <string name="appwidget_text"> </string>
+    <string name="appwidget_text">0</string>
     <string name="zero">0</string>
     <string name="kms">Kms</string>
     <string name="percent">90</string>

@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true"/>
@@ -58,13 +59,6 @@
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".MainActivity"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="com.urrecliner.blackbox" />
             </intent-filter>
         </receiver>
         <service android:name=".GPSTracker" android:exported="false" />

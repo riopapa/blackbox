@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
@@ -43,7 +44,6 @@ public class NewAppWidget extends AppWidgetProvider {
         Intent intent = new Intent(BIG_ICON);
 //        Intent intent = new Intent(context, NewAppWidget.class);
         int [] appWidgetIds = {appWidgetId};
-//        Log.w("widget",AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
         intent.putExtra(MY_PARA, BIG_ICON);
@@ -61,8 +61,6 @@ public class NewAppWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.homepage_widget);
         views.setTextViewText(R.id.homeWidget_text1, widgetText);
         views.setTextViewText(R.id.homeWidget_text2, widgetText);
-        widgetText = utils.getMilliSec2String(System.currentTimeMillis(), "HH:mm:SS");
-        views.setTextViewText(R.id.homeWidget_time, widgetText);
         return views;
     }
 
@@ -75,11 +73,11 @@ public class NewAppWidget extends AppWidgetProvider {
         int[] appWidgets = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
         final String action = intent.getAction();
-//        Log.w("onReceive", "action:" + action);
+        Log.w("onReceive", "action:" + action);
         if(action != null && action.equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
             Bundle extras = intent.getExtras();
             String myPara = extras.getString(MY_PARA, "");
-//            Log.w("On receive"," widget update received myPARA "+MY_PARA);
+            Log.w("On receive"," widget update received myPARA "+MY_PARA);
             if (myPara != null && myPara.equals(BIG_ICON)) {
                 Intent mainIntent = new Intent(context, MainActivity.class);
                 context.startActivity(mainIntent);

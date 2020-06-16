@@ -16,13 +16,13 @@ public class BootReceiver extends BroadcastReceiver {
         String model = Build.MODEL;
         Utils utils = new Utils();
         utils.logOnly("Boot", "model="+model);
-        if (model.equals("Nexus 6P")) {
+//        if (model.equals("Nexus 6P")) {
             new Timer().schedule(new TimerTask() {
                 public void run() {
                     Intent i = new Intent(ctx, MainActivity.class);
                     ctx.startActivity(i);
                 }
-            }, 5000);
-        }
+            }, 1000);
+//        }
     }
 }

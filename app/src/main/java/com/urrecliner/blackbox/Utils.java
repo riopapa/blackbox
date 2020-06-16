@@ -152,9 +152,9 @@ class Utils {
         return fileOrDirectory.delete();
     }
 
-    void deleteOldNormalEvents(File target) {
+    void deleteOldNormalEvents(File target, int days) {
 
-        String oldDate = sdfDate.format(System.currentTimeMillis() - 5*24*60*60*1000L);    // 5 days old
+        String oldDate = sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
         File[] oldFiles = utils.getDirectoryList(target);
         Collator myCollator = Collator.getInstance();
         for (File file : oldFiles) {
@@ -165,10 +165,10 @@ class Utils {
         }
     }
 
-    void deleteOldLogs() {
+    void deleteOldLogs(int days) {
         final SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.US);
 
-        String oldDate = "log_" + sdfDate.format(System.currentTimeMillis() - 3*24*60*60*1000L);
+        String oldDate = "log_" + sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
         File[] files = mPackageLogPath.listFiles();
         Collator myCollator = Collator.getInstance();
         for (File file : files) {
@@ -263,7 +263,6 @@ class Utils {
 //                log("customToast",text);
             }
         });
-
     }
 
     void displayCount(String text, int short_Long, int backColor) {
@@ -370,7 +369,7 @@ class Utils {
             R.raw.beep4_recording,                  //  record button pressed
             R.raw.beep5_s_dew_drops,                //  normal merge finished
             R.raw.beep6_stoprecording,              // stop recording
-            R.raw.i_will_be_back_soon
+            R.raw.i_will_be_back_soon_kr
             };
     private int[] soundNbr = {0,0,0,0,0,0,0,0,0,0};
 

@@ -12,6 +12,7 @@
         android:layout_centerVertical="true"
         android:scaleX="1.5"
         android:scaleY="1.5"
+        android:rotation="90"
         android:contentDescription="@string/appwidget_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -22,6 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/appwidget_text"
+        android:rotation="90"
         android:text="@string/appwidget_text"
         android:textColor="#FFF"
         android:textSize="36sp"
@@ -33,17 +35,10 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/appwidget_text"
+        android:rotation="90"
         android:text="@string/appwidget_text"
         android:textColor="#0F0"
         android:textSize="32sp"
         android:textStyle="bold|italic" />
-    <TextView
-        android:id="@+id/homeWidget_time"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#000"
-        android:textSize="24sp" />
+
 </RelativeLayout>

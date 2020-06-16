@@ -1,8 +1,12 @@
 package com.urrecliner.blackbox;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -14,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.TextureView;
@@ -31,6 +36,7 @@ import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORD;
+import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
@@ -182,9 +188,9 @@ public class MainActivity extends Activity {
                 });
             }
         }, DELAY_AUTO_RECORD*1000);
-        utils.deleteOldNormalEvents(mPackageNormalPath);
-        utils.deleteOldNormalEvents(mPackageEventPath);
-        utils.deleteOldLogs();
+        utils.deleteOldNormalEvents(mPackageNormalPath, 3);
+        utils.deleteOldNormalEvents(mPackageEventPath, 5);
+        utils.deleteOldLogs(5);
     }
 
     final Handler startHandler = new Handler() {
@@ -226,7 +232,7 @@ public class MainActivity extends Activity {
             String text = ""+activeEventCount;
             vTextActiveCount.setText(text);
             vBtnEvent.setImageResource(R.mipmap.event_blue);
-            utils.customToast("EVENT button Pressed", Toast.LENGTH_LONG, Color.RED);
+            utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_LONG, Color.RED);
         });
     }
 
@@ -251,7 +257,8 @@ public class MainActivity extends Activity {
                 willBack = true;
                 if (mIsRecording)
                     stopHandler.sendEmptyMessage(0);
-                new BeBackSoon().execute("x", "Exit & Reload", ""+DELAY_WAIT_EXIT);
+//                reStarting();
+                new BeBackSoon().execute("x", "잠시 꺼둠", ""+DELAY_WAIT_EXIT);
             }
         });
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
@@ -297,20 +304,6 @@ public class MainActivity extends Activity {
         mBackgroundImage = new Handler(mBackgroundHandlerThread.getLooper());
     }
 
-//    private void stopBackgroundThread() {
-//        if (mBackgroundHandlerThread.getLooper().getThread().isAlive()) {
-//            mBackgroundHandlerThread.quitSafely();
-//            try {
-//                mBackgroundHandlerThread.join();
-//                mBackgroundHandlerThread = null;
-//                mBackgroundImage = null;
-//            } catch (InterruptedException e) {
-//                utils.logE(logID, e.toString());
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
     static long keyOldTime = 0, keyNowTime = 0;
     static boolean willBack = false;
     @Override
@@ -350,6 +343,27 @@ public class MainActivity extends Activity {
         }
         keyOldTime = keyNowTime;
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    void reStarting () {
+//        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+//        assert alarmManager != null;
+//        Intent intent = new Intent(mContext, MainActivity.class);
+//        int uniqueId = 123456;
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, uniqueId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + DELAY_I_WILL_BACK *1000, pendingIntent);
+//        mActivity.finish();
+
+        AlarmManager alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(mContext, MainActivity.class);
+        Intent intent = getApplicationContext().getPackageManager() .getLaunchIntentForPackage(getApplicationContext().getPackageName());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent alarmIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK * 1000, alarmIntent);
+//        alarmMgr.set(AlarmManager.RTC, SystemClock.elapsedRealtime() + DELAY_I_WILL_BACK * 1000, alarmIntent);
+        Runtime.getRuntime().exit(0);
     }
 
     // ↓ ↓ ↓ P E R M I S S I O N    RELATED /////// ↓ ↓ ↓ ↓
