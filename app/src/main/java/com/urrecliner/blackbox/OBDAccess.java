@@ -3,6 +3,8 @@ package com.urrecliner.blackbox;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.SystemClock;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
@@ -65,14 +67,14 @@ class OBDAccess {
                 if (device.getName().contains("OBD")) {
                     chosenDeviceAddress = device.getAddress();
                     chosenDeviceName = device.getName();
-                    utils.logBoth(logID,"["+chosenDeviceName+"] found");
+//                    utils.logBoth(logID,"["+chosenDeviceName+"] BlueTooth found");
                 }
             }
             new Timer().schedule(new TimerTask() {  // autoStart
                 public void run() {
                     connectOBD();
                 }
-            }, 3000);
+            }, 5000);
 
         } else{
             Toast.makeText(mContext, "No paired devices found", Toast.LENGTH_SHORT).show();
@@ -88,7 +90,8 @@ class OBDAccess {
         try {
             btSocket = device.createRfcommSocketToServiceRecord(uuid);
             btSocket.connect();
-            utils.logBoth(logID,chosenDeviceName+" connected");
+            if (btSocket.isConnected())
+                utils.logBoth(logID,chosenDeviceName+" connected ^^ ");
         } catch (IllegalArgumentException e) {
             utils.logE(logID, "IllegalArgumentException  ", e);
 //            Toast.makeText(mContext, "Please choose Bluetooth device first", Toast.LENGTH_LONG).show();
@@ -99,9 +102,10 @@ class OBDAccess {
             utils.logE(logID, "Exception  ", e);
         }
         try {
-            new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
-            new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
-            new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+            for (int i = 0; i < 3; i++) {
+                SystemClock.sleep(300);
+                new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+            }
         } catch (IllegalArgumentException e) {
             utils.logE(logID, "IllegalArgumentException  ", e);
             return;
@@ -112,11 +116,13 @@ class OBDAccess {
             utils.logE(logID, "Exception  ", e);
             return;
         }
+        for (int i = 0; i < 4; i++) {
+            if (!obdCommand(i)) {
+                SystemClock.sleep(1000);
+                obdCommand(i);  // retry once
+            }
+        }
         try {
-            new EchoOffCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
-            new LineFeedOffCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
-            new SelectProtocolCommand(ObdProtocols.AUTO).run(btSocket.getInputStream(), btSocket.getOutputStream());
-            new DistanceSinceCCCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
             distanceSinceCCCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
             beginKms = Integer.parseInt(distanceSinceCCCommand.getCalculatedResult());
             todayStr = new SimpleDateFormat(FORMAT_DATE, Locale.US).format(System.currentTimeMillis());
@@ -136,10 +142,40 @@ class OBDAccess {
         } catch (Exception e){
             utils.logE(logID, "General Exception  ", e);
         }
+
+    }
+
+    private boolean obdCommand(int cmd) {
+        boolean runOK = false;
+        try {
+            switch (cmd) {
+                case 0:
+                    new EchoOffCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    break;
+                case 1:
+                    new LineFeedOffCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    break;
+                case 2:
+                    new SelectProtocolCommand(ObdProtocols.AUTO).run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    break;
+                case 3:
+                    new DistanceSinceCCCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    break;
+            }
+            runOK = true;
+        } catch (IllegalArgumentException e) {
+            utils.logE(logID+cmd, "IllegalArgumentException "+cmd, e);
+        } catch (IOException e) {
+            utils.logE(logID+cmd, "IOException  Command "+cmd, e);
+        } catch (Exception e){
+            utils.logE(logID+cmd, "General Exception  "+cmd, e);
+        }
+        return runOK;
     }
 
     private Timer timer = null;
     private int beginKms, nowKms;
+    private boolean preViewVisible = true, speedHigh = false;
     private void getOBDInfoTimeBased() {
         utils.logBoth(logID, "startOBD  ");
         timer = new Timer();
@@ -158,8 +194,10 @@ class OBDAccess {
                             vTextSpeed.setText(speedNow);
                             String s = (nowKms - beginKms)+"";
                             vTodayKms.setText(s);
-                            if (viewFinder)
-                                vPreviewView.setVisibility((Integer.parseInt(speedNow) > 60) ? View.INVISIBLE:View.VISIBLE);
+                            if (viewFinder && (Integer.parseInt(speedNow) > 50) != speedHigh) {
+                                speedHigh = Integer.parseInt(speedNow) > 50;
+                                vPreviewView.setVisibility((speedHigh)? View.INVISIBLE:View.VISIBLE);
+                            }
                         });
                         speedOld = speedNow;
                     }

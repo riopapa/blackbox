@@ -18,16 +18,18 @@ import android.widget.Toast;
 import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
+import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.willBack;
 
 class BeBackSoon extends AsyncTask<String, String, String> {
 
     private String jumpTo, title;
     private int downCount;
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
+//    @Override
+//    protected void onPreExecute() {
+//        super.onPreExecute();
+//    }
 
     @Override
     protected String doInBackground(String... s) {
@@ -53,34 +55,25 @@ class BeBackSoon extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String m) {
         if(jumpTo.equals("x")) {
-            Handler mHandler = new Handler(Looper.getMainLooper());
-            mHandler.postDelayed(() -> {
+            if (mExitApplication) {
+                Toast.makeText(mContext,"Terminate BlackBox Now",Toast.LENGTH_LONG).show();
+            } else {
+                Handler mHandler = new Handler(Looper.getMainLooper());
+                mHandler.postDelayed(() -> {
 //                reStartApp();
-                AlarmManager alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
-                Intent intent = mContext.getPackageManager() .getLaunchIntentForPackage(mContext.getPackageName());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                PendingIntent alarmIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-                alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK * 1000, alarmIntent);
-                Runtime.getRuntime().exit(0);
-            }, 2000);
+                    AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    PendingIntent alarmIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK * 1000, alarmIntent);
+                    Runtime.getRuntime().exit(0);
+                }, 2000);
+            }
         }
         else if (jumpTo.equals("v")) {
             Log.w("v","v");
         }
         else
             Log.e("jumpTo","jumpTo Error : "+jumpTo);
-    }
-
-    void reStartApp () {
-        AlarmManager alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(mContext, MainActivity.class);
-        Intent intent = mContext.getPackageManager() .getLaunchIntentForPackage(mContext.getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent alarmIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK * 1000, alarmIntent);
-//        alarmMgr.set(AlarmManager.RTC, SystemClock.elapsedRealtime() + DELAY_I_WILL_BACK * 1000, alarmIntent);
-        Runtime.getRuntime().exit(0);
     }
 }

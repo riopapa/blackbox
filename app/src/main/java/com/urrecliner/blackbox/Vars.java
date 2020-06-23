@@ -85,8 +85,8 @@ public class Vars {
     static int CountEvent;
     static int activeEventCount = 0;
     final static int DELAY_AUTO_RECORD = 5;
-    final static int DELAY_WAIT_EXIT = 4;
-    final static int DELAY_I_WILL_BACK = 50;
+    final static int DELAY_WAIT_EXIT = 5;
+    final static int DELAY_I_WILL_BACK = 40;
 
     static Handler mBackgroundImage, mBackgroundPreview;
     static Size mPreviewSize, mVideoSize, mImageSize;
@@ -94,9 +94,10 @@ public class Vars {
     static CameraDevice mCameraDevice = null;
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder = new MediaRecorder();
+    static boolean willBack = false, exitApp = false;
 
-    static CaptureRequest.Builder mCaptureRequestBuilder, mPrevBuilder;
-    static CameraCaptureSession mCaptureSession, mPrevSession;
+    static CaptureRequest.Builder mCaptureRequestBuilder;
+    static CameraCaptureSession mCaptureSession;
 
     final static long INTERVAL_EVENT = 13 * 1000;
     final static int SNAP_SHOT_INTERVAL = 280;

@@ -42,6 +42,7 @@ import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
+import static com.urrecliner.blackbox.Vars.exitApp;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -79,6 +80,7 @@ import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.vTodayKms;
 import static com.urrecliner.blackbox.Vars.videoUtils;
 import static com.urrecliner.blackbox.Vars.viewFinder;
+import static com.urrecliner.blackbox.Vars.willBack;
 
 public class MainActivity extends Activity {
 
@@ -188,8 +190,8 @@ public class MainActivity extends Activity {
                 });
             }
         }, DELAY_AUTO_RECORD*1000);
-        utils.deleteOldNormalEvents(mPackageNormalPath, 3);
-        utils.deleteOldNormalEvents(mPackageEventPath, 5);
+        utils.deleteOldNormalEvents(mPackageNormalPath, 2);
+        utils.deleteOldNormalEvents(mPackageEventPath, 4);
         utils.deleteOldLogs(5);
     }
 
@@ -218,6 +220,7 @@ public class MainActivity extends Activity {
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
         final File thisEventPath = new File(mPackageEventPath, utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventPath);
+        utils.logBoth(logID,"Prev Snapshot");
         SnapShotSave snapShotSave = new SnapShotSave();
         snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
         new Timer().schedule(new TimerTask() {
@@ -305,13 +308,12 @@ public class MainActivity extends Activity {
     }
 
     static long keyOldTime = 0, keyNowTime = 0;
-    static boolean willBack = false;
     @Override
     public boolean onKeyDown(final int keyCode, KeyEvent event) {
 
         keyNowTime = System.currentTimeMillis();
-//        long diff = keyNowTime - keyOldTime;
-//        utils.log("KeyDown",keyCode+" keyUp diff = "+diff+willBack);
+        long diff = keyNowTime - keyOldTime;
+        utils.logBoth("KeyDown",keyCode+" keyUp diff = "+diff+willBack);
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
@@ -320,11 +322,11 @@ public class MainActivity extends Activity {
                 if ((keyOldTime + 20000) < keyNowTime)  // if gap is big, reset to current
                     keyOldTime = keyNowTime;
                 if ((keyOldTime + 800 > keyNowTime) &&
-                        (keyOldTime + 50 < keyNowTime)) {   // if gap is small double clicked so exit app
+                        (keyOldTime + 10 < keyNowTime)) {   // if gap is small double clicked so exit app
                     willBack = true;
                     if (mIsRecording)
                         stopHandler.sendEmptyMessage(0);
-                    new BeBackSoon().execute("x", "Exit & Reload", DELAY_WAIT_EXIT + "");
+                    new BeBackSoon().execute("x", "잠시 꺼둠", ""+DELAY_WAIT_EXIT);
                 }
                 new Timer().schedule(new TimerTask() {
                     public void run() {
@@ -335,7 +337,7 @@ public class MainActivity extends Activity {
                             utils.logE(logID, "// start Eventing //", e);
                         }
                     }
-                }, 800);
+                }, 1000);
                 break;
             default:
                 utils.logBoth("key", keyCode + " Pressed");

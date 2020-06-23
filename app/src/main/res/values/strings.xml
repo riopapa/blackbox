@@ -3,7 +3,7 @@
     <string name="video_button">Video Record Button</string>
     <string name="camera_button">Camera Capture Button</string>
     <string name="permission_request">Permission for camera and audio recording.</string>
-    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="camera_error">This device does not support Camera2 API.</string>
     <string name="location">Loc:</string>
     <string name="un_known">UnKnown</string>
     <string name="textEvent">Event:</string>

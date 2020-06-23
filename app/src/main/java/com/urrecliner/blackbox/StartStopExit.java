@@ -115,7 +115,7 @@ class StartStopExit {
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
-        }, 5000);
+        }, 3000);
         mActivity.finish();
     }
 
