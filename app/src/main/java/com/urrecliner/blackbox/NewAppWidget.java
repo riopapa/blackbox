@@ -36,8 +36,7 @@ public class NewAppWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-            int appWidgetId) {
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
         RemoteViews views = updateHomeButton(context);
 
@@ -73,11 +72,11 @@ public class NewAppWidget extends AppWidgetProvider {
         int[] appWidgets = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
         final String action = intent.getAction();
-        Log.w("onReceive", "action:" + action);
+//        Log.w("onReceive", "action:" + action);
         if(action != null && action.equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
             Bundle extras = intent.getExtras();
             String myPara = extras.getString(MY_PARA, "");
-            Log.w("On receive"," widget update received myPARA "+MY_PARA);
+//            Log.w("On receive"," widget update received myPARA "+MY_PARA);
             if (myPara != null && myPara.equals(BIG_ICON)) {
                 Intent mainIntent = new Intent(context, MainActivity.class);
                 context.startActivity(mainIntent);

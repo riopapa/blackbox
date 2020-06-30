@@ -35,7 +35,7 @@ class BeBackSoon extends AsyncTask<String, String, String> {
     protected String doInBackground(String... s) {
         jumpTo = s[0];
         title = s[1];
-        utils.beepOnce(7,0.4f); // I will be back
+        utils.beepOnce(7,0.7f); // I will be back
         downCount = Integer.parseInt(s[2]);
         while (downCount > 0) {
             publishProgress("" + downCount);

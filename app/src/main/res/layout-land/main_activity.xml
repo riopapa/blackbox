@@ -11,6 +11,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/textEvent"
         android:textColor="#cccccc"
         android:textSize="@dimen/info_size" />
@@ -20,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/textEvent"
         android:text="@string/zero"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:textColor="#cccccc"
         android:textSize="@dimen/info_size" />
 
@@ -28,7 +30,7 @@
     <TextView
         android:id="@+id/textLogInfo"
         android:layout_width="440dp"
-        android:layout_height="150dp"
+        android:layout_height="130dp"
         android:layout_below="@id/textEvent"
         android:layout_marginStart="16dp"
         android:text="@string/logInfo"
@@ -52,7 +54,7 @@
         android:id="@+id/textDate"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="10dp"
         android:gravity="center"
         android:layout_toEndOf="@id/textLogInfo"

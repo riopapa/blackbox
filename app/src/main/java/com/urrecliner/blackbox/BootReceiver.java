@@ -17,12 +17,12 @@ public class BootReceiver extends BroadcastReceiver {
         Utils utils = new Utils();
         utils.logOnly("Boot", "model="+model);
 //        if (model.equals("Nexus 6P")) {
-            new Timer().schedule(new TimerTask() {
-                public void run() {
-                    Intent i = new Intent(ctx, MainActivity.class);
-                    ctx.startActivity(i);
-                }
-            }, 1000);
+//            new Timer().schedule(new TimerTask() {
+//                public void run() {
+//                    Intent i = new Intent(ctx, MainActivity.class);
+//                    ctx.startActivity(i);
+//                }
+//            }, 1000);
 //        }
     }
 }

@@ -35,6 +35,7 @@ import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
+import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
@@ -146,7 +147,7 @@ class Utils {
     /* delete directory and files under that directory */
     boolean deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory()) {
-            utils.logOnly("Delete Dir",fileOrDirectory.toString());
+            utils.logBoth("Del Dir ",fileOrDirectory.toString().replace(mPackagePath.toString(),""));
             for (File child : fileOrDirectory.listFiles())
                 deleteRecursive(child);
         }
@@ -212,7 +213,7 @@ class Utils {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
-        append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End>");
+        append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<LogE End>");
         text = vTextLogInfo.getText().toString() + "\n" + text;
         text = truncLine(text);
         final String fText = tag+" : "+text;

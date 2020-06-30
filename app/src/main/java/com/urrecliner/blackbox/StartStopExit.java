@@ -21,6 +21,7 @@ import static com.urrecliner.blackbox.Vars.obdAccess;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
 import static com.urrecliner.blackbox.Vars.videoUtils;
 
@@ -31,6 +32,7 @@ class StartStopExit {
         utils.logBoth(logID, "Start Recording ---");
         mIsRecording = true;
         vBtnRecord.setImageResource(R.mipmap.on_recording);
+        vBtnEvent.setImageResource(R.mipmap.event_ready);
 //        utils.logBoth(logID, "Step 1 prepareRecord");
         try {
             videoUtils.prepareRecord();
@@ -56,8 +58,20 @@ class StartStopExit {
     private Timer timerSnapCamera = new Timer();
     private void startCamera() {
         snapMapIdx = 0;
+//        timerSnapCamera = new Timer();
+//        final TimerTask cameraTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                if (mIsRecording)
+//                    cameraTimer.sendEmptyMessage(0);
+//                else
+//                    timerSnapCamera.cancel();
+//            }
+//        };
+//        timerSnapCamera.schedule(cameraTask, 100, SNAP_SHOT_INTERVAL);
+
         timerSnapCamera = new Timer();
-        final TimerTask cameraTask = new TimerTask() {
+        timerSnapCamera.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if (mIsRecording)
@@ -65,8 +79,7 @@ class StartStopExit {
                 else
                     timerSnapCamera.cancel();
             }
-        };
-        timerSnapCamera.schedule(cameraTask, 100, SNAP_SHOT_INTERVAL);
+        }, 100, SNAP_SHOT_INTERVAL);
     }
 
     private Timer normalTimer;

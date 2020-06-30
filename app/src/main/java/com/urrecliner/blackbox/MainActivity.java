@@ -1,12 +1,8 @@
 package com.urrecliner.blackbox;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -14,12 +10,13 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
@@ -35,14 +32,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORD;
-import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
+import static com.urrecliner.blackbox.Vars.AUTO_START_RECORDING;
 import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
-import static com.urrecliner.blackbox.Vars.exitApp;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -55,6 +50,7 @@ import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
 import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
+import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.obdAccess;
 import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
@@ -119,13 +115,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Toast.makeText(getApplicationContext(),"Rotate Phone to Landscape, pls ",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Rotate Phone to Landscape, pls ", Toast.LENGTH_LONG).show();
             return;
         }
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         askPermission();
         setContentView(R.layout.main_activity);
-        mActivity = this; mContext = this;
+        mActivity = this;
+        mContext = this;
         gpsTracker = new GPSTracker(mContext);
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vPreviewView = findViewById(R.id.previewView);
@@ -133,7 +130,7 @@ public class MainActivity extends Activity {
         final TextView textureBox = findViewById(R.id.textureBox);
         vBtnRecord = findViewById(R.id.btnRecord);
         vBtnRecord.setOnClickListener(v -> {
-            utils.logBoth(logID," start button clicked");
+            utils.logBoth(logID, " start button clicked");
             if (mIsRecording)
                 startStopExit.stopVideo();
             else {
@@ -141,6 +138,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        mediaRecorder = new MediaRecorder();
 //        Utils.ScreenInfo screenInfo = utils.getScreenSize(mActivity);
 //        utils.logOnly(logID,"Screen Type is "+screenInfo.screenType);
 //        utils.logOnly(logID,"Screen Inch is "+screenInfo.screenInch);
@@ -154,7 +152,7 @@ public class MainActivity extends Activity {
 
         textureBox.setOnClickListener(v -> {
             viewFinder = !viewFinder;
-            vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
+            vPreviewView.setVisibility((viewFinder) ? View.VISIBLE : View.INVISIBLE);
         });
 
         vPreviewView.post(() -> {
@@ -170,31 +168,34 @@ public class MainActivity extends Activity {
             vPreviewView.setTransform(matrix);
             RelativeLayout.LayoutParams textureLP = (RelativeLayout.LayoutParams) vPreviewView.getLayoutParams();
             RelativeLayout.LayoutParams tvLP = (RelativeLayout.LayoutParams) textureBox.getLayoutParams();
-            textureLP.setMargins(0,0,0,0);
-            textureLP.bottomMargin = tvLP.bottomMargin+6;
-            textureLP.rightMargin = tvLP.rightMargin+6;
+            textureLP.setMargins(0, 0, 0, 0);
+            textureLP.bottomMargin = tvLP.bottomMargin + 6;
+            textureLP.rightMargin = tvLP.rightMargin + 6;
             vPreviewView.setLayoutParams(textureLP);
             vPreviewView.setScaleX(1.7f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //        DisplayTime displayTime = new DisplayTime();
-        displayTime.run();
-        displayBattery.init();
-        obdAccess.prepare();
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                displayTime.run();
+                displayBattery.init();
+                obdAccess.prepare();
+                utils.deleteOldNormalEvents(mPackageNormalPath, 2);
+                utils.deleteOldNormalEvents(mPackageEventPath, 3);
+                utils.deleteOldLogs(4);
+            }
+        }, 100);
         new Timer().schedule(new TimerTask() {  // autoStart
             public void run() {
-                mActivity.runOnUiThread(() -> {
+//                mActivity.runOnUiThread(() -> {
                     startHandler.sendEmptyMessage(0);
-                    vBtnEvent.setImageResource(R.mipmap.event_ready);
-                });
+//                });
             }
-        }, DELAY_AUTO_RECORD*1000);
-        utils.deleteOldNormalEvents(mPackageNormalPath, 2);
-        utils.deleteOldNormalEvents(mPackageEventPath, 4);
-        utils.deleteOldLogs(5);
-    }
+        }, AUTO_START_RECORDING * 1000);
 
+    }
     final Handler startHandler = new Handler() {
         public void handleMessage(Message msg) { startStopExit.startVideo();
         }
@@ -307,13 +308,20 @@ public class MainActivity extends Activity {
         mBackgroundImage = new Handler(mBackgroundHandlerThread.getLooper());
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+            Toast.makeText(mContext,"화면을 가로로 바꾸어 주세요",Toast.LENGTH_LONG).show();
+    }
+
     static long keyOldTime = 0, keyNowTime = 0;
     @Override
     public boolean onKeyDown(final int keyCode, KeyEvent event) {
 
         keyNowTime = System.currentTimeMillis();
         long diff = keyNowTime - keyOldTime;
-        utils.logBoth("KeyDown",keyCode+" keyUp diff = "+diff+willBack);
+        utils.logBoth("Key Pressed",keyCode+" time diff = "+diff+" willBack "+willBack);
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
@@ -339,33 +347,12 @@ public class MainActivity extends Activity {
                     }
                 }, 1000);
                 break;
-            default:
-                utils.logBoth("key", keyCode + " Pressed");
-                break;
+//            default:      backKey (= 4) is ignored
+//                utils.logBoth("key", keyCode + " Pressed");
+//                break;
         }
         keyOldTime = keyNowTime;
         return super.onKeyDown(keyCode, event);
-    }
-
-
-    void reStarting () {
-//        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-//        assert alarmManager != null;
-//        Intent intent = new Intent(mContext, MainActivity.class);
-//        int uniqueId = 123456;
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, uniqueId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + DELAY_I_WILL_BACK *1000, pendingIntent);
-//        mActivity.finish();
-
-        AlarmManager alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(mContext, MainActivity.class);
-        Intent intent = getApplicationContext().getPackageManager() .getLaunchIntentForPackage(getApplicationContext().getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent alarmIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK * 1000, alarmIntent);
-//        alarmMgr.set(AlarmManager.RTC, SystemClock.elapsedRealtime() + DELAY_I_WILL_BACK * 1000, alarmIntent);
-        Runtime.getRuntime().exit(0);
     }
 
     // ↓ ↓ ↓ P E R M I S S I O N    RELATED /////// ↓ ↓ ↓ ↓
@@ -392,7 +379,8 @@ private final static int ALL_PERMISSIONS_RESULT = 101;
 
     private ArrayList findUnAskedPermissions() {
         ArrayList <String> result = new ArrayList<String>();
-        for (String perm : permissions) if (hasPermission(perm)) result.add(perm);
+        for (String perm : permissions) if (hasPermission(perm)) {
+            Log.e("permission", perm); result.add(perm);}
         return result;
     }
     private boolean hasPermission(@NonNull String permission) {

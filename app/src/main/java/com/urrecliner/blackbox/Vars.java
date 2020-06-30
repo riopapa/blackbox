@@ -80,21 +80,21 @@ public class Vars {
 
     static long VIDEO_ONE_WORK_FILE_SIZE = 26 * 100000;
     static int VIDEO_ENCODING_RATE = 3000*1000;
-    static int VIDEO_FRAME_RATE = 30;
+    static int VIDEO_FRAME_RATE = 36;
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int DELAY_AUTO_RECORD = 5;
+    final static int AUTO_START_RECORDING = 5;
     final static int DELAY_WAIT_EXIT = 5;
     final static int DELAY_I_WILL_BACK = 40;
 
-    static Handler mBackgroundImage, mBackgroundPreview;
+    static Handler mBackgroundImage;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
     static CameraDevice mCameraDevice = null;
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder = new MediaRecorder();
-    static boolean willBack = false, exitApp = false;
+    static boolean willBack = false;
 
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
@@ -102,7 +102,7 @@ public class Vars {
     final static long INTERVAL_EVENT = 13 * 1000;
     final static int SNAP_SHOT_INTERVAL = 280;
     final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 18 / 10) / SNAP_SHOT_INTERVAL);
-    final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
+    final static long INTERVAL_NORMAL = INTERVAL_EVENT * 5;
     static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
     static int snapMapIdx = 0;
     static NormalMerge normalMerge = new NormalMerge();

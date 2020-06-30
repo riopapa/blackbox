@@ -3,6 +3,6 @@
 
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="info_size">24sp</dimen>
-    <dimen name="log_size">20sp</dimen>
+    <dimen name="log_size">18sp</dimen>
 
 </resources>

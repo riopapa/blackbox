@@ -44,50 +44,29 @@ class GPSTracker extends Service implements LocationListener {
 
     void askLocation() {
 
-        float distanceUpdate = MIN_DISTANCE_DRIVE;
-        long timeUpdate = MIN_TIME_DRIVE_UPDATES;
         latitude = 0; longitude = 0;
         try {
             locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+            assert locationManager != null;
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             if (isGPSEnabled) {
                 if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-                // If GPS enabled, get latitude/longitude using GPS Services
-//                if (isGPSEnabled) {
-                    assert locationManager != null;
-                    locationManager.requestLocationUpdates(
-                            LocationManager.GPS_PROVIDER,
-                            timeUpdate,
-                            distanceUpdate, this);
-                    //    Log.d("GPS Enabled", "GPS Enabled");
-                    if (locationManager != null) {
-                        location = locationManager
-                                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                        }
+                locationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER,
+                        MIN_TIME_DRIVE_UPDATES,
+                        MIN_DISTANCE_DRIVE, this);
+                //    Log.d("GPS Enabled", "GPS Enabled");
+                if (locationManager != null) {
+                    location = locationManager
+                            .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (location != null) {
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
                     }
-//                }
-//                if (isNetworkEnabled) {
-//                    assert locationManager != null;
-//                    locationManager.requestLocationUpdates(
-//                            LocationManager.NETWORK_PROVIDER,
-//                            timeUpdate,
-//                            distanceUpdate, this);
-//                    //   Log.d("Network", "Network");
-//                    if (locationManager != null) {
-//                        location = locationManager
-//                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                        if (location != null) {
-//                            latitude = location.getLatitude();
-//                            longitude = location.getLongitude();
-//                        }
-//                    }
-//                }
+                }
             }
         }
         catch (Exception e) {
@@ -97,19 +76,6 @@ class GPSTracker extends Service implements LocationListener {
         for (int i = 0; i < arraySize; i++) {
             latitudes.add(latitude + (double) i * 0.00001f); longitudes.add(longitude + (double) i * 0.0001f);
         }
-//        if (latitude != 0) {
-//
-//            vCompass.setVisibility(View.VISIBLE); vSatellite.setVisibility(View.VISIBLE);
-//        }
-
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                updateCompass(location);
-////                latitude = location.getLatitude(); longitude = location.getLongitude();
-//            }
-//        }, 100, 10000);
     }
 
 //    public void stopUsingGPS(){

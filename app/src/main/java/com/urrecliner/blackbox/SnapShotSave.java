@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.utils;
@@ -21,11 +22,11 @@ class SnapShotSave {
 
     private String logID = "SnapShot";
     private CountDownTimer countDownTimer;
-    private int idx;
+    private int idx = 0, jdx;
 
     void start(final File thisEventPath, final byte[][] snapCloned, final int snapIdx, final boolean first) {
-        int jdx = 0;
-        final int startBias = (first) ? 1000: 1200; // for snapshot image sequence
+        jdx = 0;
+        final int startBias = (first) ? 100: 213; // for snapshot image sequence, dependency : snap interval, snap size
         final int finishIdx = (first) ? MAX_IMAGES_SIZE-16: MAX_IMAGES_SIZE-20;  // to minimize snapshot image counts
         byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
@@ -42,7 +43,7 @@ class SnapShotSave {
 //                        utils.logOnly(logID, "idx="+idx);
                         if (idx < finishIdx) {
                             if (jpgBytes[idx] != null && jpgBytes[idx].length > 0) {
-                                final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (startBias + idx)).substring(1, 4) + ".jpg");
+                                final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (startBias+(idx*SNAP_SHOT_INTERVAL)/1200))+"."+idx+".jpg");
                                 bytes2File(jpgBytes[idx], jpgFile);
                             }
                             idx++;

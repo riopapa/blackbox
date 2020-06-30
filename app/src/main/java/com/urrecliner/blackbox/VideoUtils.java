@@ -11,6 +11,7 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.AudioRecord;
 import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
@@ -18,7 +19,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
@@ -37,7 +37,6 @@ import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
-import static com.urrecliner.blackbox.Vars.mBackgroundPreview;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
@@ -62,8 +61,6 @@ public class VideoUtils {
     private String logID = "videoUtils";
     private String mCameraId;
     void setupCamera() {
-//        String model = Build.MODEL;
-//        utils.logBoth(logID, "Start setupCamera on ["+model+"]");
         CameraManager cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
             assert cameraManager != null;
@@ -86,9 +83,9 @@ public class VideoUtils {
         } catch (CameraAccessException e) {
             utils.logE(logID, "CameraAccessException", e);
         }
-        utils.logOnly(logID, "mPrev "+mPreviewSize.getWidth()+"x"+mPreviewSize.getHeight());
-        utils.logOnly(logID, "mImage "+mImageSize.getWidth()+"x"+mImageSize.getHeight()+" array "+MAX_IMAGES_SIZE);
-        utils.logOnly(logID, "mVideo "+mVideoSize.getWidth()+"x"+mVideoSize.getHeight());
+//        utils.logOnly(logID, "mPrev "+mPreviewSize.getWidth()+"x"+mPreviewSize.getHeight());
+//        utils.logOnly(logID, "mImage "+mImageSize.getWidth()+"x"+mImageSize.getHeight()+" array "+MAX_IMAGES_SIZE);
+//        utils.logOnly(logID, "mVideo "+mVideoSize.getWidth()+"x"+mVideoSize.getHeight());
         try {
             mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 6); // MAX_IMAGES_SIZE);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
@@ -101,8 +98,8 @@ public class VideoUtils {
     private void setCameraSize(StreamConfigurationMap map) {
 
         String model = Build.MODEL;
-        utils.logBoth(logID, "CamSize on "+model);
-//        showCameraSizes(map);
+//        utils.logBoth(logID, "CamSize on "+model);
+//        dumpVariousCameraSizes(map);
 
         switch (model) {
             case "SM-G950N":
@@ -125,7 +122,7 @@ public class VideoUtils {
                         mPreviewSize = size;
                     else if (size.getWidth() == 4032 && size.getHeight() == 2268)
                         mImageSize = size;
-                    else if (size.getWidth() == 2560 && size.getHeight() == 1440)
+                    else if (size.getWidth() == 1920 && size.getHeight() == 1080)
                         mVideoSize = size;
                 }
                 break;
@@ -148,14 +145,14 @@ public class VideoUtils {
         }
     }
 
-    private void showCameraSizes(StreamConfigurationMap map) {
+//    private void dumpVariousCameraSizes(StreamConfigurationMap map) {
 //        String sb = "";
 //        for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
 //            sb += size.getWidth()+"x"+ size.getHeight()+
 //                    String.format(" %,3.1f , ", (float)size.getWidth() / (float)size.getHeight());
 //        }
-//        Log.w("SIZE",sb);
-    }
+//        Log.w("Camera Size",sb);
+//    }
 
     void connectCamera() {
         CameraManager cameraManager = (CameraManager) mActivity.getSystemService(Context.CAMERA_SERVICE);
@@ -227,14 +224,18 @@ public class VideoUtils {
             surface_Preview = vPreviewView.getSurfaceTexture();
             surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         } catch (Exception e) {
-            utils.logE(logID, "Prepare Error preView ///", e);
+            utils.logE(logID, "Prepare Error preView AA ///", e);
         }
         try {
             previewSurface = new Surface(surface_Preview);
+        } catch (Exception e) {
+            utils.logE(logID, "Prepare surface_Preview Error BB ///", e);
+        }
+        try {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             mCaptureRequestBuilder.addTarget(previewSurface);
         } catch (Exception e) {
-            utils.logE(logID, "Prepare Error BB ///", e);
+            utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
         }
         if (previewSurface == null) {
             utils.logBoth(logID, "previewSurface is null ====");
@@ -280,10 +281,11 @@ public class VideoUtils {
     private void setupMediaRecorder() throws IOException {
 
         utils.logBoth(logID," setup Media");
-        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);    // 1. setAudioSource
+        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);    // 2. setVideoSource
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);   // 3. setOutputFormat
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);  // 4. setAudioEncoder
         mediaRecorder.setVideoEncodingBitRate(VIDEO_ENCODING_RATE); // 1000000
         mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
         mediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());

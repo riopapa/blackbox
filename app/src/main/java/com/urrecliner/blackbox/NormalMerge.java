@@ -90,7 +90,7 @@ class NormalMerge {
         private void merge2OneVideo(String beginTimeS, String endTimeS, File[] files2Merge) {
             List<Movie> listMovies = new ArrayList<>();
             List<Track> videoTracks = new LinkedList<>();
-//            List<Track> audioTracks = new LinkedList<>();
+            List<Track> audioTracks = new LinkedList<>();
     //            Log.w("#of files","files2Merge "+files2Merge.length);
     //            Log.w("time","begin " +beginTimeS+" end "+endTimeS);
             for (File file : files2Merge) {
@@ -112,9 +112,9 @@ class NormalMerge {
                     if (track.getHandler().equals("vide")) {
                         videoTracks.add(track);
                     }
-//                    else { // track.getHandler().equals("soun")
-//                        audioTracks.add(track);
-//                    }
+                    else { // track.getHandler().equals("soun")
+                        audioTracks.add(track);
+                    }
                 }
             }
 
@@ -122,7 +122,7 @@ class NormalMerge {
                 Movie outputMovie = new Movie();
                 try {
                         outputMovie.addTrack(new AppendTrack(videoTracks.toArray(new Track[0])));
-//                        outputMovie.addTrack(new AppendTrack(audioTracks.toArray(new Track[0])));
+                        outputMovie.addTrack(new AppendTrack(audioTracks.toArray(new Track[0])));
                         Container container = new DefaultMp4Builder().build(outputMovie);
                         FileChannel fileChannel = new RandomAccessFile(outputFile, "rw").getChannel();
                         container.writeContainer(fileChannel);
