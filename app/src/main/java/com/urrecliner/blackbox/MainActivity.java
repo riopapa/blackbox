@@ -126,7 +126,7 @@ public class MainActivity extends Activity {
         gpsTracker = new GPSTracker(mContext);
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vPreviewView = findViewById(R.id.previewView);
-        utils.logOnly(logID, "Main Started ..");
+        utils.logOnly(logID, "\n* * * Main Started * * *\n");
         final TextView textureBox = findViewById(R.id.textureBox);
         vBtnRecord = findViewById(R.id.btnRecord);
         vBtnRecord.setOnClickListener(v -> {

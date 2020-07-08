@@ -147,7 +147,7 @@ class Utils {
     /* delete directory and files under that directory */
     boolean deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory()) {
-            utils.logBoth("Del Dir ",fileOrDirectory.toString().replace(mPackagePath.toString(),""));
+            logBoth("Del Dir ",fileOrDirectory.toString().replace(mPackagePath.toString(),""));
             for (File child : fileOrDirectory.listFiles())
                 deleteRecursive(child);
         }
@@ -186,7 +186,8 @@ class Utils {
 //        int pid = android.os.Process.myPid();
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
-        String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
+        String log = (traces.length>5) ? traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text:
+                traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
         Log.w(tag , log);
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME)+" "+tag+": " + log);
         text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm:ss ")+tag+": "+text;
@@ -294,9 +295,9 @@ class Utils {
 
     private String truncLine(String str) {
         String[] strArray = str.split("\n");
-        if (strArray.length > 5) {
+        if (strArray.length > 4) {
             String result = "";
-            for (int i = strArray.length - 5; i < strArray.length; i++)
+            for (int i = strArray.length - 4; i < strArray.length; i++)
                 result += strArray[i]+"\n";
             return result.substring(0,result.length()-1);
         }

@@ -30,7 +30,7 @@
     <TextView
         android:id="@+id/textLogInfo"
         android:layout_width="440dp"
-        android:layout_height="130dp"
+        android:layout_height="100dp"
         android:layout_below="@id/textEvent"
         android:layout_marginStart="16dp"
         android:text="@string/logInfo"
@@ -60,7 +60,7 @@
         android:layout_toEndOf="@id/textLogInfo"
         android:layout_toStartOf="@id/frmRecord"
         android:text="@string/mm_dd"
-        android:textColor="#eeeeee"
+        android:textColor="#fcfcfc"
         android:textSize="24sp" />
     <TextView
         android:id="@+id/textTime"
@@ -73,7 +73,7 @@
         android:layout_toStartOf="@id/frmRecord"
         android:gravity="center"
         android:text="@string/_00_00"
-        android:textColor="#eeeeee"
+        android:textColor="#fcfcfc"
         android:textSize="30sp" />
 
     <!--Record start button and count Fragment-->
@@ -118,7 +118,7 @@
         android:layout_marginEnd="8dp"
         android:gravity="end"
         android:text="@string/underscore"
-        android:textColor="#eeeeee"
+        android:textColor="#fcfcfc"
         android:textSize="44sp" />
 
     <TextView
@@ -130,7 +130,7 @@
         android:layout_marginBottom="80dp"
         android:layout_toEndOf="@id/textSpeed"
         android:text="@string/km"
-        android:textColor="#eeeeee"
+        android:textColor="#fcfcfc"
         android:textSize="36sp" />
 
     <TextView
@@ -141,8 +141,8 @@
         android:layout_below="@id/textSpeed"
         android:layout_gravity="end"
         android:layout_marginStart="8dp"
-        android:text="@string/zero"
-        android:textColor="#eeeeee"
+        android:text="@string/underscore"
+        android:textColor="#fcfcfc"
         android:textSize="28sp" />
 
     <TextView
@@ -155,7 +155,7 @@
         android:layout_marginStart="4dp"
         android:layout_toEndOf="@id/obdKms"
         android:text="@string/kms"
-        android:textColor="#eeeeee"
+        android:textColor="#fcfcfc"
         android:textSize="28sp" />
 
     <!--Exit & Napping button-->

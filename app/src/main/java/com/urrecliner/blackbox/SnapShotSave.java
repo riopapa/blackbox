@@ -33,7 +33,7 @@ class SnapShotSave {
             jpgBytes[jdx++] = snapCloned[i];
         for (int i = 0; i < snapIdx; i++)
             jpgBytes[jdx++] = snapCloned[i];
-        final int saveInterval = 200;   // check phone CPU Capability
+        final int saveInterval = 300;   // check phone CPU Capability
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(new Runnable() {
             @Override

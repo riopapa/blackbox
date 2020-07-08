@@ -1,7 +1,9 @@
 package com.urrecliner.blackbox;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,6 +15,7 @@ import static com.urrecliner.blackbox.Vars.cameraUtils;
 import static com.urrecliner.blackbox.Vars.directionSensor;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
+import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
@@ -71,7 +74,7 @@ class StartStopExit {
 //        timerSnapCamera.schedule(cameraTask, 100, SNAP_SHOT_INTERVAL);
 
         timerSnapCamera = new Timer();
-        timerSnapCamera.scheduleAtFixedRate(new TimerTask() {
+        final TimerTask cameraTask = new TimerTask() {
             @Override
             public void run() {
                 if (mIsRecording)
@@ -79,7 +82,8 @@ class StartStopExit {
                 else
                     timerSnapCamera.cancel();
             }
-        }, 100, SNAP_SHOT_INTERVAL);
+        };
+        timerSnapCamera.schedule(cameraTask, 100, SNAP_SHOT_INTERVAL);
     }
 
     private Timer normalTimer;
@@ -116,20 +120,22 @@ class StartStopExit {
     }
 
     void exitBlackBoxApp() {
+        String s = "Exit\nBlackBox";
+        utils.customToast(s, Toast.LENGTH_LONG, Color.BLACK);
         mExitApplication = true;
         snapBytes = null;
         if (mIsRecording)
             stopVideo();
         displayTime.stop();
+        utils.logOnly(logID,s);
         new Timer().schedule(new TimerTask() {
             public void run() {
-                utils.logBoth(logID,"Exit BlackBox");
+                mActivity.finish();
                 mActivity.finishAffinity();
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         }, 3000);
-        mActivity.finish();
     }
 
 }

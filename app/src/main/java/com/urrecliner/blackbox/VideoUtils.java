@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
@@ -142,17 +143,35 @@ public class VideoUtils {
                         mVideoSize = size;
                 }
                 break;
+            case "LM-G710N":
+                /* LG G7
+                    4656x3492 1.3 , 4656x2620 1.8 , 4656x2218 2.1 , 4160x3120 1.3 , 4160x2080 2.0 , 4000x3000 1.3 ,
+                    4000x2250 1.8 , 3840x2160 1.8 , 3492x3492 1.0 , 3264x2448 1.3 , 3264x1836 1.8 , 3264x1632 2.0 ,
+                    3264x1554 2.1 , 2560x1920 1.3 , 2560x1440 1.8 , 2560x1080 2.4 , 2048x1536 1.3 , 1920x1080 1.8 ,
+                    1440x1080 1.3 , 1440x960 1.5 , 1440x720 2.0 , 1408x1152 1.2 , 1280x768 1.7 , 1280x960 1.3 ,
+                    1280x720 1.8 , 960x720 1.3 , 960x540 1.8 , 720x720 1.0 , 720x540 1.3 , 720x480 1.5 , 640x480 1.3
+                 */
+                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+                    if (size.getWidth() == 720 && size.getHeight() == 480)
+                        mPreviewSize = size;
+                    else if (size.getWidth() == 4000 && size.getHeight() == 2250)
+                        mImageSize = size;
+                    else if (size.getWidth() == 1440 && size.getHeight() == 960)
+                        mVideoSize = size;
+                }
+                break;
         }
     }
 
-//    private void dumpVariousCameraSizes(StreamConfigurationMap map) {
-//        String sb = "";
-//        for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-//            sb += size.getWidth()+"x"+ size.getHeight()+
-//                    String.format(" %,3.1f , ", (float)size.getWidth() / (float)size.getHeight());
-//        }
-//        Log.w("Camera Size",sb);
-//    }
+    private void dumpVariousCameraSizes(StreamConfigurationMap map) {
+
+        String sb = "// DUMP CAMERA POSSIBLE SIZES // ";
+        for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+            sb += size.getWidth()+"x"+ size.getHeight()+
+                    String.format(" %,3.1f , ", (float)size.getWidth() / (float)size.getHeight());
+        }
+        utils.logOnly("Camera Size",sb);
+    }
 
     void connectCamera() {
         CameraManager cameraManager = (CameraManager) mActivity.getSystemService(Context.CAMERA_SERVICE);

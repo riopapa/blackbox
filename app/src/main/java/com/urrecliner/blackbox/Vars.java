@@ -78,7 +78,7 @@ public class Vars {
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
-    static long VIDEO_ONE_WORK_FILE_SIZE = 26 * 100000;
+    static long VIDEO_ONE_WORK_FILE_SIZE = 30 * 100000;
     static int VIDEO_ENCODING_RATE = 3000*1000;
     static int VIDEO_FRAME_RATE = 36;
 
@@ -110,7 +110,6 @@ public class Vars {
     static long gpsUpdateTime = 0;
     static long nextNormalTime = 0;
     static boolean viewFinder = true;
-    static String speedNow = "n", speedOld = "o";
     static float azimuth = 0;
     static boolean isCompassShown = false;
 }

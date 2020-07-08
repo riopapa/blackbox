@@ -35,11 +35,12 @@ class BeBackSoon extends AsyncTask<String, String, String> {
     protected String doInBackground(String... s) {
         jumpTo = s[0];
         title = s[1];
-        utils.beepOnce(7,0.7f); // I will be back
         downCount = Integer.parseInt(s[2]);
         while (downCount > 0) {
-            publishProgress("" + downCount);
-            SystemClock.sleep(1000);
+            if (!mExitApplication) {
+                publishProgress("" + downCount);
+                SystemClock.sleep(1000);
+            }
             downCount--;
         }
 //        Handler mHandler = new Handler(Looper.getMainLooper());
@@ -55,9 +56,8 @@ class BeBackSoon extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String m) {
         if(jumpTo.equals("x")) {
-            if (mExitApplication) {
-                Toast.makeText(mContext,"Terminate BlackBox Now",Toast.LENGTH_LONG).show();
-            } else {
+            if (!mExitApplication) {
+                utils.beepOnce(7,0.7f); // I will be back
                 Handler mHandler = new Handler(Looper.getMainLooper());
                 mHandler.postDelayed(() -> {
 //                reStartApp();
