@@ -122,6 +122,7 @@ class StartStopExit {
     void exitBlackBoxApp() {
         String s = "Exit\nBlackBox";
         utils.customToast(s, Toast.LENGTH_LONG, Color.BLACK);
+        utils.beepOnce(8,0.5f); // Exit BlackBox
         mExitApplication = true;
         snapBytes = null;
         if (mIsRecording)

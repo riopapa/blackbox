@@ -25,19 +25,20 @@ class SnapShotSave {
     private int idx = 0, jdx;
 
     void start(final File thisEventPath, final byte[][] snapCloned, final int snapIdx, final boolean first) {
-        jdx = 0;
         final int startBias = (first) ? 100: 213; // for snapshot image sequence, dependency : snap interval, snap size
         final int finishIdx = (first) ? MAX_IMAGES_SIZE-16: MAX_IMAGES_SIZE-20;  // to minimize snapshot image counts
         byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
+        jdx = 0;
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
             jpgBytes[jdx++] = snapCloned[i];
         for (int i = 0; i < snapIdx; i++)
             jpgBytes[jdx++] = snapCloned[i];
-        final int saveInterval = 300;   // check phone CPU Capability
+        final int saveInterval = 240;   // check phone CPU Capability
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                idx = 0;
                 countDownTimer = new CountDownTimer((saveInterval+50) * MAX_IMAGES_SIZE, saveInterval) {
                     public void onTick(long millisUntilFinished) {
 //                        utils.logOnly(logID, "idx="+idx);
@@ -61,15 +62,16 @@ class SnapShotSave {
     }
 
     private void showCompleted(File thisEventPath) {
-        utils.beepOnce(3, .7f);
+        utils.beepOnce(3, 1f);
         String countStr = "" + ++CountEvent;
         vTextCountEvent.setText(countStr);
         activeEventCount--;
         String text = (activeEventCount == 0) ? "" : "" + activeEventCount;
         vTextActiveCount.setText(text);
-        ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
-        mEventButton.setImageResource(R.mipmap.event_ready);
+//        ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
+//        mEventButton.setImageResource(R.mipmap.event_ready);
        utils.logBoth(logID, thisEventPath.getName());
+
     }
 
     private void bytes2File(byte[] bytes, File file) {

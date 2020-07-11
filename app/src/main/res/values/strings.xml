@@ -20,5 +20,6 @@
     <string name="kms">Kms</string>
     <string name="percent">90</string>
     <string name="todo">TODO</string>
+    <string name="i_will_back">잠시 꺼둠</string>
 
 </resources>

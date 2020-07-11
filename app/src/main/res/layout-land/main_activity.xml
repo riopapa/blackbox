@@ -30,7 +30,7 @@
     <TextView
         android:id="@+id/textLogInfo"
         android:layout_width="440dp"
-        android:layout_height="100dp"
+        android:layout_height="140dp"
         android:layout_below="@id/textEvent"
         android:layout_marginStart="16dp"
         android:text="@string/logInfo"
@@ -109,7 +109,7 @@
     <TextView
         android:id="@+id/textSpeed"
         android:layout_width="160dp"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_below="@id/textLogInfo"
         android:layout_alignParentStart="true"
         android:layout_gravity="end"
@@ -119,7 +119,7 @@
         android:gravity="end"
         android:text="@string/underscore"
         android:textColor="#fcfcfc"
-        android:textSize="44sp" />
+        android:textSize="64sp" />
 
     <TextView
         android:id="@+id/textKm"
@@ -132,32 +132,33 @@
         android:text="@string/km"
         android:textColor="#fcfcfc"
         android:textSize="36sp" />
+    <!--
 
-    <TextView
-        android:id="@+id/obdKms"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignEnd="@id/textSpeed"
-        android:layout_below="@id/textSpeed"
-        android:layout_gravity="end"
-        android:layout_marginStart="8dp"
-        android:text="@string/underscore"
-        android:textColor="#fcfcfc"
-        android:textSize="28sp" />
+        <TextView
+            android:id="@+id/obdKms"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignEnd="@id/textSpeed"
+            android:layout_below="@id/textSpeed"
+            android:layout_gravity="end"
+            android:layout_marginStart="8dp"
+            android:text="@string/underscore"
+            android:textColor="#fcfcfc"
+            android:textSize="28sp" />
 
-    <TextView
-        android:id="@+id/textKms"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignStart="@id/textKm"
-        android:layout_alignBottom="@id/obdKms"
-        android:layout_gravity="end"
-        android:layout_marginStart="4dp"
-        android:layout_toEndOf="@id/obdKms"
-        android:text="@string/kms"
-        android:textColor="#fcfcfc"
-        android:textSize="28sp" />
-
+        <TextView
+            android:id="@+id/textKms"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignStart="@id/textKm"
+            android:layout_alignBottom="@id/obdKms"
+            android:layout_gravity="end"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@id/obdKms"
+            android:text="@string/kms"
+            android:textColor="#fcfcfc"
+            android:textSize="28sp" />
+    -->
     <!--Exit & Napping button-->
     <ImageButton
         android:id="@+id/btnExit"
@@ -226,15 +227,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/compassImage"
-            android:src="@mipmap/compass_news" />
+            android:src="@mipmap/compass1_news" />
 
         <ImageView
             android:id="@+id/iViewArrow"
             android:layout_gravity="center"
-            android:layout_margin="8dp"
+            android:layout_margin="0dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/compass_arrow"
+            android:src="@mipmap/compass1_arrow"
             android:contentDescription="@string/directionTriangle" />
 
     </FrameLayout>

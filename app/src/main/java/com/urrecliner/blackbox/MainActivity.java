@@ -212,8 +212,8 @@ public class MainActivity extends Activity {
     void startEventSaving() {
         eventHandler.sendEmptyMessage(0);
     }
-    void eventRecording() {
 
+    void eventRecording() {
         if (!mIsRecording) return;
         utils.logBoth(logID,"Event Starting ...");
 
@@ -221,9 +221,10 @@ public class MainActivity extends Activity {
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
         final File thisEventPath = new File(mPackageEventPath, utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventPath);
-        utils.logBoth(logID,"Prev Snapshot");
-        SnapShotSave snapShotSave = new SnapShotSave();
-        snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
+        utils.logBoth("eventRecording","Prev Snapshot");
+//        SnapShotSave prevSnapShot = new SnapShotSave();
+//        prevSnapShot.start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
+        new SnapShotSave().start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
@@ -262,7 +263,7 @@ public class MainActivity extends Activity {
                 if (mIsRecording)
                     stopHandler.sendEmptyMessage(0);
 //                reStarting();
-                new BeBackSoon().execute("x", "잠시 꺼둠", ""+DELAY_WAIT_EXIT);
+                new BeBackSoon().execute("x", getString(R.string.i_will_back), ""+DELAY_WAIT_EXIT);
             }
         });
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
@@ -278,7 +279,6 @@ public class MainActivity extends Activity {
         vTextDate = findViewById(R.id.textDate);
         vTextTime = findViewById(R.id.textTime);
         vTextSpeed = findViewById(R.id.textSpeed);
-        vTodayKms = findViewById(R.id.obdKms);
         vKm = findViewById(R.id.textKm);
         vTextLogInfo = findViewById(R.id.textLogInfo);
         vTextCountEvent = findViewById(R.id.textCountEvent);
@@ -334,7 +334,7 @@ public class MainActivity extends Activity {
                     willBack = true;
                     if (mIsRecording)
                         stopHandler.sendEmptyMessage(0);
-                    new BeBackSoon().execute("x", "잠시 꺼둠", ""+DELAY_WAIT_EXIT);
+                    new BeBackSoon().execute("x", getString(R.string.i_will_back), ""+DELAY_WAIT_EXIT);
                 }
                 new Timer().schedule(new TimerTask() {
                     public void run() {

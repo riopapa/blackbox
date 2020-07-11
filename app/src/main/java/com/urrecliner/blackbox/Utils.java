@@ -366,16 +366,17 @@ class Utils {
 
     private SoundPool soundPool = null;
     private int[] beepSound = {
-            R.raw.beep0_animato,                    //  event button pressed
-            R.raw.beep1_ddok,                       //  file limit reached
-            R.raw.beep2_dungdong,                   //  close app, free storage
-            R.raw.beep3_haze,                       //  event merge finished
-            R.raw.beep4_recording,                  //  record button pressed
-            R.raw.beep5_s_dew_drops,                //  normal merge finished
-            R.raw.beep6_stoprecording,              // stop recording
-            R.raw.i_will_be_back_soon_kr
+            R.raw.beep0_animato,                    //  0 event button pressed
+            R.raw.beep1_ddok,                       //  1 file limit reached
+            R.raw.beep2_dungdong,                   //  2 close app, free storage
+            R.raw.beep3_haze,                       //  3 event merge finished
+            R.raw.beep4_recording,                  //  4 record button pressed
+            R.raw.beep5_s_dew_drops,                //  5 normal merge finished
+            R.raw.beep6_stoprecording,              //  6 stop recording
+            R.raw.i_will_be_back_soon_kr,           //  7 i will be back
+            R.raw.exit_application                  //  8 exit application
             };
-    private int[] soundNbr = {0,0,0,0,0,0,0,0,0,0};
+    private int[] soundNbr = {0,0,0,0,0,0,0,0,0,0,0};
 
     void beepsInitiate() {
 
