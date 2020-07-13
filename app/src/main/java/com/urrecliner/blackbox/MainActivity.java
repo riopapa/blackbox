@@ -221,7 +221,7 @@ public class MainActivity extends Activity {
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
         final File thisEventPath = new File(mPackageEventPath, utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventPath);
-        utils.logBoth("eventRecording","Prev Snapshot");
+//        utils.logBoth("Event","Prev Snapshot");
 //        SnapShotSave prevSnapShot = new SnapShotSave();
 //        prevSnapShot.start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
         new SnapShotSave().start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
@@ -230,14 +230,14 @@ public class MainActivity extends Activity {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventPath);
             }
-        }, INTERVAL_EVENT + INTERVAL_EVENT / 3);
+        }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
             String text = ""+activeEventCount;
             vTextActiveCount.setText(text);
             vBtnEvent.setImageResource(R.mipmap.event_blue);
-            utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_LONG, Color.RED);
+            utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_SHORT, Color.RED);
         });
     }
 

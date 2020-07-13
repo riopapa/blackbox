@@ -100,14 +100,14 @@ public class Vars {
     static CameraCaptureSession mCaptureSession;
 
     final static long INTERVAL_EVENT = 13 * 1000;
-    final static int SNAP_SHOT_INTERVAL = 280;
+    final static int SNAP_SHOT_INTERVAL = 240;
     final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 18 / 10) / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 5;
     static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
     static int snapMapIdx = 0;
     static NormalMerge normalMerge = new NormalMerge();
 
-    final static int ASK_SPEED_INTERVAL = 200;
+    final static int ASK_SPEED_INTERVAL = 400;
     static long gpsUpdateTime = 0;
     static long nextNormalTime = 0;
     static boolean viewFinder = true;

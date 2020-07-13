@@ -29,7 +29,7 @@ class DisplayTime implements Runnable {
                     utils.logBoth("GPS","GPS not Active");
                     isCompassShown = false;
                     gpsTracker.askLocation();
-                    vSatellite.setVisibility(View.INVISIBLE);
+//                    vSatellite.setVisibility(View.INVISIBLE);
                     vCompass.setVisibility(View.INVISIBLE);
                 }
             }

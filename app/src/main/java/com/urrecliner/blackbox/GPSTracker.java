@@ -21,7 +21,6 @@ import static com.urrecliner.blackbox.Vars.gpsUpdateTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vCompass;
-import static com.urrecliner.blackbox.Vars.vSatellite;
 
 class GPSTracker extends Service implements LocationListener {
 
@@ -33,10 +32,10 @@ class GPSTracker extends Service implements LocationListener {
     ArrayList<Double> latitudes, longitudes;
     int arraySize = 4;
 
-    private static final float MIN_DISTANCE_DRIVE = 10;
-    private static final long MIN_TIME_DRIVE_UPDATES = 1000;
+    private static final float MIN_DISTANCE_DRIVE = 20;
+    private static final long MIN_TIME_DRIVE_UPDATES = 2000;
     protected LocationManager locationManager;
-    private boolean blinkGPS = false;
+//    private boolean blinkGPS = false;
 
     public GPSTracker(Context context) {
         this.mContext = context;
@@ -58,7 +57,6 @@ class GPSTracker extends Service implements LocationListener {
                         LocationManager.GPS_PROVIDER,
                         MIN_TIME_DRIVE_UPDATES,
                         MIN_DISTANCE_DRIVE, this);
-                //    Log.d("GPS Enabled", "GPS Enabled");
                 if (locationManager != null) {
                     location = locationManager
                             .getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -108,7 +106,7 @@ class GPSTracker extends Service implements LocationListener {
         if (!isCompassShown) {
             mActivity.runOnUiThread(() -> {
                 vCompass.setVisibility(View.VISIBLE);
-                vSatellite.setVisibility(View.VISIBLE);
+//                vSatellite.setVisibility(View.VISIBLE);
             });
             isCompassShown = true;
             utils.logBoth("GPSTracker","Activated ..");
@@ -119,10 +117,10 @@ class GPSTracker extends Service implements LocationListener {
 //                " > "+latitude+" x "+longitude);
         if (!Float.isNaN(GPSDegree)) {
             mActivity.runOnUiThread(() -> {
-                vSatellite.setImageResource(blinkGPS ? R.mipmap.satellite1 : R.mipmap.satellite2);
+//                vSatellite.setImageResource(blinkGPS ? R.mipmap.satellite1 : R.mipmap.satellite2);
                 drawCompass(GPSDegree % 360);
             });
-            blinkGPS = !blinkGPS;
+//            blinkGPS = !blinkGPS;
         }
     }
 

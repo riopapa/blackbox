@@ -120,10 +120,10 @@ class StartStopExit {
     }
 
     void exitBlackBoxApp() {
-        String s = "Exit\nBlackBox";
-        utils.customToast(s, Toast.LENGTH_LONG, Color.BLACK);
-        utils.beepOnce(8,0.5f); // Exit BlackBox
         mExitApplication = true;
+        String s = "\nExit\nBlackBox";
+        utils.customToast(s, Toast.LENGTH_SHORT, Color.BLACK);
+        utils.beepOnce(8,0.5f); // Exit BlackBox
         snapBytes = null;
         if (mIsRecording)
             stopVideo();

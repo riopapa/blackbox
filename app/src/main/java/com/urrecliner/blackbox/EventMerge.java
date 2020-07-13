@@ -77,20 +77,21 @@ class EventMerge {
                 Arrays.sort(files2Merge);
                 endTimeS = files2Merge[files2Merge.length - 2].getName();
                 outputFile = new File(mPackageEventPath, beginTimeS + " x" + latitude + "," + longitude + ".mp4").toString();
-                merge2OneVideo(beginTimeS, endTimeS, files2Merge);
-                MediaPlayer mp = new MediaPlayer();
-                try {
-                    mp.setDataSource(outputFile);
-                    mp.prepare();
-                } catch (IOException e) {
-                    utils.logE(logID, "IOException: ", e);
+                if (merge2OneVideo(beginTimeS, endTimeS, files2Merge)) {
+                    MediaPlayer mp = new MediaPlayer();
+                    try {
+                        mp.setDataSource(outputFile);
+                        mp.prepare();
+                    } catch (IOException e) {
+                        utils.logE(logID, "IOException: ", e);
+                    }
+                    mp.release();
                 }
-                mp.release();
             }
             return beginTimeS;
         }
 
-        private void merge2OneVideo(String beginTimeS, String endTimeS, File[] files2Merge) {
+        private boolean merge2OneVideo(String beginTimeS, String endTimeS, File[] files2Merge) {
             List<Movie> listMovies = new ArrayList<>();
             List<Track> videoTracks = new LinkedList<>();
             List<Track> audioTracks = new LinkedList<>();
@@ -112,8 +113,11 @@ class EventMerge {
                     if (track.getHandler().equals("vide")) {    // excluding "audi" for event recording
                         videoTracks.add(track);
                     }
-                    else { // track.getHandler().equals("soun")
+                    else if (track.getHandler().equals("soun")) {
                         audioTracks.add(track);
+                    }
+                    else {
+                        utils.logBoth("Movie","// Invalid track // "+track.getHandler());
                     }
                 }
             }
@@ -127,6 +131,7 @@ class EventMerge {
                     FileChannel fileChannel = new RandomAccessFile(outputFile, "rw").getChannel();
                     container.writeContainer(fileChannel);
                     fileChannel.close();
+                    return true;
                 } catch (IOException e) {
                     utils.logE(logID, "IOException~ ", e);
                 }
@@ -134,6 +139,7 @@ class EventMerge {
                 utils.beepOnce(3, 1f);
                 utils.logOnly(logID, "IOException~ ");
             }
+            return false;
         }
 
         @Override
@@ -157,8 +163,9 @@ class EventMerge {
         @Override
         protected void onPostExecute(String doI) {
             utils.logBoth(logID,"Post Snapshot");
-            SnapShotSave snapShotSave = new SnapShotSave();
-            snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
+//            SnapShotSave snapShotSave = new SnapShotSave();
+//            snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
+            new SnapShotSave().start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
         }
     }
 }

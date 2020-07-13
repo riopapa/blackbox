@@ -71,19 +71,17 @@ class OBDAccess {
                     btAdapter.cancelDiscovery();
                     new Timer().schedule(new TimerTask() {  // autoStart
                         public void run() {
-//                        buildSocket(bluetoothDevice, uuid);
-//                        readyOBDDevice();
-//                        getOBDInfoTimeBased();
-//                            if (!connectOBD())
-                                connectOBD();
-                            askOBDDistance();
-                            loopAskOBDSpeed();
+                            connectOBD();
+                            if (bSocket.isConnected()) {
+                                askOBDDistance();
+                                loopAskOBDSpeed();
+                            }
                         }
                     }, 100);
                 }
             }
         } else{
-            Toast.makeText(mContext, "No paired devices found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "\nNo paired devices found\n", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -3,7 +3,6 @@ package com.urrecliner.blackbox;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.ImageButton;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,7 +12,6 @@ import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
-import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.vTextCountEvent;
@@ -22,29 +20,30 @@ class SnapShotSave {
 
     private String logID = "SnapShot";
     private CountDownTimer countDownTimer;
-    private int idx = 0, jdx;
+    private int idx;
 
     void start(final File thisEventPath, final byte[][] snapCloned, final int snapIdx, final boolean first) {
-        final int startBias = (first) ? 100: 213; // for snapshot image sequence, dependency : snap interval, snap size
-        final int finishIdx = (first) ? MAX_IMAGES_SIZE-16: MAX_IMAGES_SIZE-20;  // to minimize snapshot image counts
+        final int startBias = (first) ? 100: 221; // for snapshot image sequence, dependency : snap interval, snap size
+        final int startIdx = (first) ? 0: 17;
+        final int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-24;  // to minimize snapshot image counts
         byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
-        jdx = 0;
+        idx = 0;
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
-            jpgBytes[jdx++] = snapCloned[i];
+            jpgBytes[idx++] = snapCloned[i];
         for (int i = 0; i < snapIdx; i++)
-            jpgBytes[jdx++] = snapCloned[i];
-        final int saveInterval = 240;   // check phone CPU Capability
+            jpgBytes[idx++] = snapCloned[i];
+        final int saveInterval = 200;   // check phone CPU Capability
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                idx = 0;
-                countDownTimer = new CountDownTimer((saveInterval+50) * MAX_IMAGES_SIZE, saveInterval) {
+                idx = startIdx;
+                countDownTimer = new CountDownTimer((saveInterval+30) * MAX_IMAGES_SIZE, saveInterval) {
                     public void onTick(long millisUntilFinished) {
 //                        utils.logOnly(logID, "idx="+idx);
                         if (idx < finishIdx) {
                             if (jpgBytes[idx] != null && jpgBytes[idx].length > 0) {
-                                final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (startBias+(idx*SNAP_SHOT_INTERVAL)/1200))+"."+idx+".jpg");
+                                final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (startBias+(idx*SNAP_SHOT_INTERVAL)/1170))+"."+idx+".jpg");
                                 bytes2File(jpgBytes[idx], jpgFile);
                             }
                             idx++;
@@ -53,7 +52,7 @@ class SnapShotSave {
                     public void onFinish() {
 //                        utils.logBoth(logID, "SnapShots saved .. "+startBias);
                         if (!first)
-                            showCompleted(thisEventPath);
+                            sayEventCompleted(thisEventPath);
                     }
                 };
                 countDownTimer.start();
@@ -61,7 +60,7 @@ class SnapShotSave {
         }, 0);
     }
 
-    private void showCompleted(File thisEventPath) {
+    private void sayEventCompleted(File thisEventPath) {
         utils.beepOnce(3, 1f);
         String countStr = "" + ++CountEvent;
         vTextCountEvent.setText(countStr);
