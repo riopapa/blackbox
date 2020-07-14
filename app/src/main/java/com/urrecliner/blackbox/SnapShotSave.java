@@ -3,6 +3,7 @@ package com.urrecliner.blackbox;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,29 +23,31 @@ class SnapShotSave {
     private CountDownTimer countDownTimer;
     private int idx;
 
-    void start(final File thisEventPath, final byte[][] snapCloned, final int snapIdx, final boolean first) {
-        final int startBias = (first) ? 100: 221; // for snapshot image sequence, dependency : snap interval, snap size
-        final int startIdx = (first) ? 0: 17;
-        final int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-24;  // to minimize snapshot image counts
+    void start(final File thisEventPath, byte[][] snapCloned, final int snapIdx, final boolean first) {
+        final int startBias = (first) ? 100: 200; // for snapshot image sequence, dependency : snap interval, snap size
+        final int startIdx = (first) ? 0: 19;
+        final int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-22;  // to minimize snapshot image counts
         byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
         idx = 0;
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
             jpgBytes[idx++] = snapCloned[i];
         for (int i = 0; i < snapIdx; i++)
             jpgBytes[idx++] = snapCloned[i];
-        final int saveInterval = 200;   // check phone CPU Capability
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        final int saveInterval = 120;   // check phone CPU Capability
+//        Handler mHandler = new Handler(Looper.getMainLooper());
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
                 idx = startIdx;
-                countDownTimer = new CountDownTimer((saveInterval+30) * MAX_IMAGES_SIZE, saveInterval) {
+//                utils.logOnly("snapSize","="+jpgBytes.length+" start="+idx+" to="+finishIdx);
+                countDownTimer = new CountDownTimer((saveInterval+60) * MAX_IMAGES_SIZE, saveInterval) {
                     public void onTick(long millisUntilFinished) {
 //                        utils.logOnly(logID, "idx="+idx);
                         if (idx < finishIdx) {
-                            if (jpgBytes[idx] != null && jpgBytes[idx].length > 0) {
-                                final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (startBias+(idx*SNAP_SHOT_INTERVAL)/1170))+"."+idx+".jpg");
+                            if (jpgBytes[idx] != null && jpgBytes[idx].length > 1) {
+                                final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (startBias+(idx*SNAP_SHOT_INTERVAL)/1130))+"."+idx+".jpg");
                                 bytes2File(jpgBytes[idx], jpgFile);
+//                                Log.w(""+idx,""+idx);
                             }
                             idx++;
                         }
@@ -56,8 +59,8 @@ class SnapShotSave {
                     }
                 };
                 countDownTimer.start();
-            }
-        }, 0);
+//            }
+//        }, 0);
     }
 
     private void sayEventCompleted(File thisEventPath) {
@@ -70,7 +73,6 @@ class SnapShotSave {
 //        ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
 //        mEventButton.setImageResource(R.mipmap.event_ready);
        utils.logBoth(logID, thisEventPath.getName());
-
     }
 
     private void bytes2File(byte[] bytes, File file) {

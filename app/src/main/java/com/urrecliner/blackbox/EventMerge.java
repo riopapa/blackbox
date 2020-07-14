@@ -163,9 +163,9 @@ class EventMerge {
         @Override
         protected void onPostExecute(String doI) {
             utils.logBoth(logID,"Post Snapshot");
-//            SnapShotSave snapShotSave = new SnapShotSave();
-//            snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
-            new SnapShotSave().start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
+            SnapShotSave snapShotSave = new SnapShotSave();
+            snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
+//            new SnapShotSave().start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
         }
     }
 }

@@ -222,9 +222,9 @@ public class MainActivity extends Activity {
         final File thisEventPath = new File(mPackageEventPath, utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventPath);
 //        utils.logBoth("Event","Prev Snapshot");
-//        SnapShotSave prevSnapShot = new SnapShotSave();
-//        prevSnapShot.start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
-        new SnapShotSave().start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
+        SnapShotSave prevSnapShot = new SnapShotSave();
+        prevSnapShot.start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
+//        new SnapShotSave().start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
