@@ -24,7 +24,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
+import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
+import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
@@ -33,6 +40,8 @@ import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vTextActiveCount;
+import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 
 class EventMerge {
 
@@ -77,24 +86,22 @@ class EventMerge {
                 Arrays.sort(files2Merge);
                 endTimeS = files2Merge[files2Merge.length - 2].getName();
                 outputFile = new File(mPackageEventPath, beginTimeS + " x" + latitude + "," + longitude + ".mp4").toString();
-                if (merge2OneVideo(beginTimeS, endTimeS, files2Merge)) {
-                    MediaPlayer mp = new MediaPlayer();
-                    try {
-                        mp.setDataSource(outputFile);
-                        mp.prepare();
-                    } catch (IOException e) {
-                        utils.logE(logID, "IOException: ", e);
-                    }
-                    mp.release();
+                merge2OneVideo(beginTimeS, endTimeS, files2Merge);
+                MediaPlayer mp = new MediaPlayer();
+                try {
+                    mp.setDataSource(outputFile);
+                    mp.prepare();
+                } catch (IOException e) {
+                    utils.logE(logID, "IOException: ", e);
                 }
+                mp.release();
             }
             return beginTimeS;
         }
 
-        private boolean merge2OneVideo(String beginTimeS, String endTimeS, File[] files2Merge) {
+        private void merge2OneVideo(String beginTimeS, String endTimeS, File[] files2Merge) {
             List<Movie> listMovies = new ArrayList<>();
             List<Track> videoTracks = new LinkedList<>();
-            List<Track> audioTracks = new LinkedList<>();
             Collator myCollator = Collator.getInstance();
             for (File file : files2Merge) {
                 String shortFileName = file.getName();
@@ -110,14 +117,8 @@ class EventMerge {
             }
             for (Movie movie : listMovies) {
                 for (Track track : movie.getTracks()) {
-                    if (track.getHandler().equals("vide")) {    // excluding "audi" for event recording
+                    if (track.getHandler().equals("vide")) {    // excluding "audi"
                         videoTracks.add(track);
-                    }
-                    else if (track.getHandler().equals("soun")) {
-                        audioTracks.add(track);
-                    }
-                    else {
-                        utils.logBoth("Movie","// Invalid track // "+track.getHandler());
                     }
                 }
             }
@@ -126,12 +127,10 @@ class EventMerge {
                 Movie outputMovie = new Movie();
                 try {
                     outputMovie.addTrack(new AppendTrack(videoTracks.toArray(new Track[0])));
-                    outputMovie.addTrack(new AppendTrack(audioTracks.toArray(new Track[0])));
                     Container container = new DefaultMp4Builder().build(outputMovie);
                     FileChannel fileChannel = new RandomAccessFile(outputFile, "rw").getChannel();
                     container.writeContainer(fileChannel);
                     fileChannel.close();
-                    return true;
                 } catch (IOException e) {
                     utils.logE(logID, "IOException~ ", e);
                 }
@@ -139,7 +138,6 @@ class EventMerge {
                 utils.beepOnce(3, 1f);
                 utils.logOnly(logID, "IOException~ ");
             }
-            return false;
         }
 
         @Override
@@ -162,10 +160,9 @@ class EventMerge {
 
         @Override
         protected void onPostExecute(String doI) {
-            utils.logBoth(logID,"Post Snapshot");
+            utils.logBoth(logID,"Afert Snapshot");
             SnapShotSave snapShotSave = new SnapShotSave();
             snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
-//            new SnapShotSave().start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
         }
     }
 }

@@ -13,41 +13,39 @@ import com.github.pires.obd.commands.protocol.EchoOffCommand;
 import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
 import com.github.pires.obd.commands.protocol.ObdResetCommand;
 import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
-import com.github.pires.obd.commands.protocol.SpacesOffCommand;
 import com.github.pires.obd.enums.ObdProtocols;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-import static com.urrecliner.blackbox.Vars.ASK_SPEED_INTERVAL;
-import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
+import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
+import static com.urrecliner.blackbox.Vars.editor;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
+import static com.urrecliner.blackbox.Vars.sharedPref;
+import static com.urrecliner.blackbox.Vars.speedNow;
+import static com.urrecliner.blackbox.Vars.speedOld;
+import static com.urrecliner.blackbox.Vars.todayStr;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
+import static com.urrecliner.blackbox.Vars.vTodayKms;
 import static com.urrecliner.blackbox.Vars.viewFinder;
 
 class OBDAccess {
 
     String logID = "OBD";
-    private BluetoothAdapter btAdapter = null;
-    //            utils.log(TAG, "connectOBD  "+chosenDeviceName+" : "+chosenDeviceAddress);
-    private BluetoothSocket bSocket;
-    private BluetoothDevice bluetoothDevice;
+    private BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+    private BluetoothSocket btSocket;
     private String chosenDeviceName = null, chosenDeviceAddress = null;
-    UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    String speedNow = "speed", speedOld = "old";
-
-    //    private ObdCommand engineRpmCommand = new EngineRpmCommand();
-    private ObdCommand speedCommand = null;
-//    private ObdCommand distanceSinceCCCommand = null;
+//    private ObdCommand rpmCommand = new RPMCommand();
+    private ObdCommand speedCommand = new SpeedCommand();
+    private ObdCommand distanceSinceCCCommand = new DistanceSinceCCCommand();
 //    private ObdCommand loadCommand = new LoadCommand();
 
     void prepare() {
@@ -65,212 +63,144 @@ class OBDAccess {
             for (BluetoothDevice device : pairedDevices) {
 //                utils.log(logID, "pairedDevices ="+device.getName()+" type:"+device.getType());
                 if (device.getName().contains("OBD")) {
-                    bluetoothDevice = device;
                     chosenDeviceAddress = device.getAddress();
                     chosenDeviceName = device.getName();
-                    btAdapter.cancelDiscovery();
-                    new Timer().schedule(new TimerTask() {  // autoStart
-                        public void run() {
-                            connectOBD();
-                            if (bSocket.isConnected()) {
-                                askOBDDistance();
-                                loopAskOBDSpeed();
-                            }
-                        }
-                    }, 100);
+//                    utils.logBoth(logID,"["+chosenDeviceName+"] BlueTooth found");
                 }
             }
+            new Timer().schedule(new TimerTask() {  // autoStart
+                public void run() {
+                    connectOBD();
+                }
+            }, 2000);
+
         } else{
-            Toast.makeText(mContext, "\nNo paired devices found\n", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "No paired devices found", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private boolean connectOBD()  {
+    private void connectOBD() {
 //        utils.logBoth(logID, "connect OBD");
-        if (!step1_BuildSocket(bluetoothDevice, uuid)) return false;
-        if (!step2_ResetOBD()) return false;
-        return step3_Initialize();
-//        obdCommand(3);
-//        try {
-//            distanceSinceCCCommand = new DistanceSinceCCCommand();
-//            distanceSinceCCCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-//            utils.logBoth("OBDDist",distanceSinceCCCommand.getFormattedResult());
-//            utils.logBoth("OBDKms", distanceSinceCCCommand.getCalculatedResult()+" <><><><>");
-//            beginKms = Integer.parseInt(distanceSinceCCCommand.getCalculatedResult());
-//            todayStr = new SimpleDateFormat(FORMAT_DATE, Locale.US).format(System.currentTimeMillis());
-//            if (!todayStr.equals(sharedPref.getString("todayStr",""))) {
-//                editor = sharedPref.edit();
-//                editor.putString("todayStr", todayStr).apply();
-//                editor.putInt("beginKms", beginKms).apply();    // today's starting Kms
-//            }
-//            else
-//                beginKms = sharedPref.getInt("beginKms",beginKms);
-//            utils.logBoth(logID, todayStr +" Starting with "+beginKms+" Kms");
-//        } catch (IllegalArgumentException e) {
-//            utils.logE(logID, "IllegalArgumentException  ", e);
-//        } catch (IOException e) {
-//            utils.logBoth(logID, "/// IOException  distanceSinceCCCommand ///");
-//        } catch (Exception e){
-//            utils.logE(logID, "General Exception  ", e);
-//        }
-//        return false;
-    }
+        BluetoothDevice device = btAdapter.getRemoteDevice(chosenDeviceAddress);
+        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+//            utils.log(TAG, "connectOBD  "+chosenDeviceName+" : "+chosenDeviceAddress);
 
-    private boolean step1_BuildSocket(BluetoothDevice bluetoothDevice, UUID uuid) {
         try {
-            bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
-            bSocket.connect();
-            if (bSocket.isConnected()) {
-                utils.logBoth("socket", chosenDeviceName + " connected");
-                return true;
-            }
+            btSocket = device.createRfcommSocketToServiceRecord(uuid);
+            btSocket.connect();
+            utils.logBoth(logID,chosenDeviceName+" connected ^^ ");
         } catch (IllegalArgumentException e) {
-            utils.logE("socket", "IllegalArgumentException  ", e);
+            utils.logE(logID, "IllegalArgumentException  ", e);
 //            Toast.makeText(mContext, "Please choose Bluetooth device first", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
-            utils.logBoth("socket", "*** OBD NOT FOUND ***");
-            return true;
+            utils.logBoth(logID, "*** OBD NOT FOUND ***");
+            return;
         } catch (Exception e){
-            utils.logE("socket", "Exception  ", e);
+            utils.logE(logID, "Exception  ", e);
         }
-        return false;
-    }
-
-    private boolean step2_ResetOBD() {
-        ObdResetCommand obdResetCommand = new ObdResetCommand();
         try {
-            for (int i = 0; i < 3; i++) {
-                obdResetCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-                utils.logBoth("OBD Reset", obdResetCommand.getFormattedResult());
-                Thread.sleep(100);
-                //                SystemClock.sleep(100);
+            new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+            new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+            new ObdResetCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+        } catch (IllegalArgumentException e) {
+            utils.logE(logID, "IllegalArgumentException  ", e);
+            return;
+        } catch (IOException e) {
+            utils.logBoth(logID, "*** OBD not READY ***");
+            return;
+        } catch (Exception e){
+            utils.logE(logID, "Exception  ", e);
+            return;
+        }
+        for (int i = 0; i < 4; i++)
+            obdCommand(i);
+        try {
+            distanceSinceCCCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
+            beginKms = Integer.parseInt(distanceSinceCCCommand.getCalculatedResult());
+            todayStr = new SimpleDateFormat(FORMAT_DATE, Locale.US).format(System.currentTimeMillis());
+            if (!todayStr.equals(sharedPref.getString("todayStr",""))) {
+                editor = sharedPref.edit();
+                editor.putString("todayStr", todayStr).apply();
+                editor.putInt("beginKms", beginKms).apply();    // today's starting Kms
             }
-            return true;
+            else
+                beginKms = sharedPref.getInt("beginKms",beginKms);
+            utils.logOnly(logID, todayStr +" Starting with "+beginKms+" Kms");
+            getOBDInfoTimeBased();
         } catch (IllegalArgumentException e) {
-            utils.logE("resetOBD", "IllegalArgumentException  ", e);
+            utils.logE(logID, "IllegalArgumentException  ", e);
         } catch (IOException e) {
-            utils.logBoth("resetOBD", "*** OBD not READY ***");
+            utils.logBoth(logID, "IOException  Command ");
         } catch (Exception e){
-            utils.logE("resetOBD", "General Exception  ", e);
+            utils.logE(logID, "General Exception  ", e);
         }
-        return false;
+
     }
 
-    final private int sleepTime = 100;
-    private boolean step3_Initialize() {
+    private void obdCommand(int cmd) {
         try {
-            EchoOffCommand echoOffCommand = new EchoOffCommand();
-            echoOffCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD Echo Good",echoOffCommand.getFormattedResult());
-            Thread.sleep(sleepTime);
-            LineFeedOffCommand lineFeedOffCommand = new LineFeedOffCommand();
-            lineFeedOffCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD Line Good",lineFeedOffCommand.getFormattedResult());
-            Thread.sleep(sleepTime);
-            SelectProtocolCommand selectProtocolCommand = new SelectProtocolCommand(ObdProtocols.AUTO);
-            selectProtocolCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD Proto Good",selectProtocolCommand.getFormattedResult());
-            Thread.sleep(sleepTime);
-            SpacesOffCommand spacesOffCommand = new SpacesOffCommand();
-            spacesOffCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD space Good",spacesOffCommand.getFormattedResult());
-            Thread.sleep(sleepTime);
-            return true;
+            switch (cmd) {
+                case 0:
+                    new EchoOffCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    break;
+                case 1:
+                    new LineFeedOffCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    break;
+                case 2:
+                    new SelectProtocolCommand(ObdProtocols.AUTO).run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    break;
+                case 3:
+                    new DistanceSinceCCCommand().run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    break;
+            }
         } catch (IllegalArgumentException e) {
-            utils.logE(logID, "IllegalArgumentException", e);
+            utils.logE(logID+cmd, "IllegalArgumentException "+cmd, e);
         } catch (IOException e) {
-            utils.logE(logID, "IOException  obdCommand", e);
+            utils.logE(logID+cmd, "IOException  Command "+cmd, e);
         } catch (Exception e){
-            utils.logE(logID, "General Exception", e);
+            utils.logE(logID+cmd, "General Exception  "+cmd, e);
         }
-        return false;
     }
 
-    private Timer obdTimer = null;
+    private Timer timer = null;
     private int beginKms, nowKms;
-    private boolean noPreview = false;
-    private void loopAskOBDSpeed() {
-//        utils.logBoth(logID, "start get OBD Speed");
-
-        try {
-            bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
-            bSocket.connect();
-        } catch (Exception e) {
-            utils.logBoth("loopAskOBDSpeed connect Exception", e.toString());
-        }
-        speedCommand = new SpeedCommand();
-        obdTimer = new Timer();
-        final TimerTask obdTask = new TimerTask() {
+    private void getOBDInfoTimeBased() {
+        utils.logBoth(logID, "startOBD  ");
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                speedNow = askSpeed();
-//                try {
-////                    engineRpmCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
-////                    obdRPM = engineRpmCommand.getCalculatedResult();
-//                    speedCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-//                    speedNow = speedCommand.getCalculatedResult();
+                try {
+//                    rpmCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
+//                    obdRPM = rpmCommand.getCalculatedResult();
+                    speedCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    distanceSinceCCCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
+                    speedNow = speedCommand.getCalculatedResult();
                     if (!speedNow.equals(speedOld)) {
-//                   distanceSinceCCCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-//                   nowKms = Integer.parseInt(distanceSinceCCCommand.getCalculatedResult());
+                        nowKms = Integer.parseInt(distanceSinceCCCommand.getCalculatedResult());
                         mActivity.runOnUiThread(() -> {
                             vTextSpeed.setText(speedNow);
-//                            String s = (nowKms - beginKms) + "";
-//                            vTodayKms.setText(s);
-                            boolean offPrevView = Integer.parseInt(speedNow) > 50;
-                            if (viewFinder && offPrevView != noPreview) {
-                                noPreview = offPrevView;
-                                vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);
-                            }
-                            speedOld = speedNow;
+                            String s = (nowKms - beginKms)+"";
+                            vTodayKms.setText(s);
+                            if (viewFinder)
+                                vPreviewView.setVisibility((Integer.parseInt(speedNow) > 60) ? View.INVISIBLE:View.VISIBLE);
                         });
+                        speedOld = speedNow;
                     }
 //                    loadCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
 //                    utils.log(TAG,"3) "+ loadCommand.getCalculatedResult());
-//                } catch (Exception e) {
-//                    utils.logBoth(logID, "obd Speed Task Exception  ");
-//                    obdTimer.cancel();
-//                }
+                } catch (Exception e) {
+                    utils.logE(logID, "Exception  ", e);
+                }
             }
-        };
-        obdTimer.schedule(obdTask, 100, ASK_SPEED_INTERVAL);
-    }
-
-    private String askSpeed() {
-        try {
-            speedCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            return speedCommand.getCalculatedResult();
-        } catch (IllegalArgumentException e) {
-            utils.logE("speed", "IllegalArgumentException", e);
-        } catch (IOException e) {
-            utils.logE("speed", "IOException  obdCommand", e);
-        } catch (Exception e){
-            utils.logE("speed", "General Exception", e);
-        }
-        return "speed Err";
-    }
-
-    private boolean askOBDDistance() {
-        try {
-            DistanceSinceCCCommand distanceSinceCCCommand = new DistanceSinceCCCommand();
-            distanceSinceCCCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD Distance Good",distanceSinceCCCommand.getFormattedResult());
-            return true;
-//        } catch (IllegalArgumentException e) {
-//            utils.logE("distance", "IllegalArgumentException", e);
-//        } catch (IOException e) {
-//            utils.logE("distance", "IOException  obdCommand", e);
-        } catch (Exception e){
-//            utils.logE("distance", "General Exception", e);
-        }
-        return false;
+        }, 100, 2000);
     }
 
     void stop() {
-        if (obdTimer != null)
-            obdTimer.cancel();
-        obdTimer = null;
-//        String s = "today "+(nowKms-beginKms)+" Kms moved";
-//        utils.logBoth(logID, s);
-//        Toast.makeText(mContext,s,Toast.LENGTH_LONG).show();
+        if (timer != null)
+            timer.cancel();
+        timer = null;
+        utils.logBoth(logID, "today "+(nowKms-beginKms)+" Kms moved");
     }
 }
+//If you are connecting to a Bluetooth serial board then try using the well-known SPP UUID 00001101-0000-1000-8000-00805F9B34FB. However if you are connecting to an Android peer then please generate your own unique UUID.

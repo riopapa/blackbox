@@ -35,7 +35,6 @@ import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
-import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
@@ -146,11 +145,10 @@ class Utils {
 
     /* delete directory and files under that directory */
     boolean deleteRecursive(File fileOrDirectory) {
-        if (fileOrDirectory.isDirectory()) {
-            logBoth("Del Dir ",fileOrDirectory.toString().replace(mPackagePath.toString(),""));
+        utils.logOnly("recursive"+fileOrDirectory.isDirectory(),fileOrDirectory.toString());
+        if (fileOrDirectory.isDirectory())
             for (File child : fileOrDirectory.listFiles())
                 deleteRecursive(child);
-        }
         return fileOrDirectory.delete();
     }
 
@@ -186,11 +184,10 @@ class Utils {
 //        int pid = android.os.Process.myPid();
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
-        String log = (traces.length>5) ? traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text:
-                traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
+        String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
         Log.w(tag , log);
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME)+" "+tag+": " + log);
-        text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm:ss ")+tag+": "+text;
+        text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
         text = truncLine(text);
         final String fText = text;
         mActivity.runOnUiThread(new Runnable() {
@@ -214,7 +211,7 @@ class Utils {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
-        append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<LogE End>");
+        append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End>");
         text = vTextLogInfo.getText().toString() + "\n" + text;
         text = truncLine(text);
         final String fText = tag+" : "+text;
@@ -295,9 +292,9 @@ class Utils {
 
     private String truncLine(String str) {
         String[] strArray = str.split("\n");
-        if (strArray.length > 4) {
+        if (strArray.length > 5) {
             String result = "";
-            for (int i = strArray.length - 4; i < strArray.length; i++)
+            for (int i = strArray.length - 5; i < strArray.length; i++)
                 result += strArray[i]+"\n";
             return result.substring(0,result.length()-1);
         }
@@ -366,17 +363,16 @@ class Utils {
 
     private SoundPool soundPool = null;
     private int[] beepSound = {
-            R.raw.beep0_animato,                    //  0 event button pressed
-            R.raw.beep1_ddok,                       //  1 file limit reached
-            R.raw.beep2_dungdong,                   //  2 close app, free storage
-            R.raw.beep3_haze,                       //  3 event merge finished
-            R.raw.beep4_recording,                  //  4 record button pressed
-            R.raw.beep5_s_dew_drops,                //  5 normal merge finished
-            R.raw.beep6_stoprecording,              //  6 stop recording
-            R.raw.i_will_be_back_soon_kr,           //  7 i will be back
-            R.raw.exit_application                  //  8 exit application
+            R.raw.beep0_animato,                    //  event button pressed
+            R.raw.beep1_ddok,                       //  file limit reached
+            R.raw.beep2_dungdong,                   //  close app, free storage
+            R.raw.beep3_haze,                       //  event merge finished
+            R.raw.beep4_recording,                  //  record button pressed
+            R.raw.beep5_s_dew_drops,                //  normal merge finished
+            R.raw.beep6_stoprecording,              // stop recording
+            R.raw.i_will_be_back_soon_kr
             };
-    private int[] soundNbr = {0,0,0,0,0,0,0,0,0,0,0};
+    private int[] soundNbr = {0,0,0,0,0,0,0,0,0,0};
 
     void beepsInitiate() {
 
