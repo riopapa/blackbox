@@ -84,7 +84,7 @@ public class Vars {
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int AUTO_START_RECORDING = 5;
+    final static int DELAY_AUTO_RECORDING = 5;
     final static int DELAY_WAIT_EXIT = 5;
     final static int DELAY_I_WILL_BACK = 40;
 
@@ -107,7 +107,6 @@ public class Vars {
     static int snapMapIdx = 0;
     static NormalMerge normalMerge = new NormalMerge();
 
-    final static int ASK_SPEED_INTERVAL = 400;
     static long gpsUpdateTime = 0;
     static long nextNormalTime = 0;
     static boolean viewFinder = true;

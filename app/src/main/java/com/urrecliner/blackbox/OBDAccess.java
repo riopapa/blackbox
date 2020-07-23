@@ -28,8 +28,6 @@ import static com.urrecliner.blackbox.Vars.editor;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.sharedPref;
-import static com.urrecliner.blackbox.Vars.speedNow;
-import static com.urrecliner.blackbox.Vars.speedOld;
 import static com.urrecliner.blackbox.Vars.todayStr;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
@@ -47,7 +45,7 @@ class OBDAccess {
     private ObdCommand speedCommand = new SpeedCommand();
     private ObdCommand distanceSinceCCCommand = new DistanceSinceCCCommand();
 //    private ObdCommand loadCommand = new LoadCommand();
-
+    private String speedNow = "now", speedOld = "old";
     void prepare() {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 //        utils.logOnly(logID, "btAdaptor is "+btAdapter.toString());

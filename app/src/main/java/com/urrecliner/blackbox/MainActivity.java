@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.TextureView;
@@ -34,9 +33,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.AUTO_START_RECORDING;
+import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORD;
 import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
@@ -188,7 +186,7 @@ public class MainActivity extends Activity {
                 startHandler.sendEmptyMessage(0);
                 vBtnEvent.setImageResource(R.mipmap.event_ready);
             }
-        }, AUTO_START_RECORDING*1000);
+        }, DELAY_AUTO_RECORDING *1000);
 
         utils.deleteOldNormalEvents(mPackageNormalPath, 2);
         utils.deleteOldNormalEvents(mPackageEventPath, 4);
