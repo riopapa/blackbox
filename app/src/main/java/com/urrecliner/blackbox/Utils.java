@@ -370,9 +370,10 @@ class Utils {
             R.raw.beep4_recording,                  //  record button pressed
             R.raw.beep5_s_dew_drops,                //  normal merge finished
             R.raw.beep6_stoprecording,              // stop recording
-            R.raw.i_will_be_back_soon_kr
+            R.raw.i_will_be_back_soon_kr,           // I will back
+            R.raw.exit_application                  // Exit application
             };
-    private int[] soundNbr = {0,0,0,0,0,0,0,0,0,0};
+    private int[] soundNbr = new int[beepSound.length];
 
     void beepsInitiate() {
 

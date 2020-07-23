@@ -92,7 +92,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:contentDescription="@string/textEvent"
-            android:src="@mipmap/event_blue" />
+            android:src="@mipmap/event_ready" />
 
         <TextView
             android:id="@+id/activeEvent"

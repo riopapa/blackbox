@@ -4,6 +4,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.ImageButton;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,6 +14,7 @@ import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
+import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.vTextCountEvent;
@@ -70,8 +72,8 @@ class SnapShotSave {
         activeEventCount--;
         String text = (activeEventCount == 0) ? "" : "" + activeEventCount;
         vTextActiveCount.setText(text);
-//        ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
-//        mEventButton.setImageResource(R.mipmap.event_ready);
+        ImageButton mEventButton = mActivity.findViewById(R.id.btnEvent);
+        mEventButton.setImageResource(R.mipmap.event_ready);
        utils.logBoth(logID, thisEventPath.getName());
     }
 

@@ -76,11 +76,7 @@ public class VideoUtils {
 //                utils.logOnly(logID, "M cameraID="+cameraId);
                 StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 setCameraSize(map);
-//                int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
-//                mTotalRotation = sensorToDeviceRotation(cameraCharacteristics, deviceOrientation);
             }
-//                mPreviewReader.setOnImageAvailableListener(mOnPreviewAvailableListener, mBackgroundPreview);
-//                mPreviewReader.setOnImageAvailableListener(null, null);
         } catch (CameraAccessException e) {
             utils.logE(logID, "CameraAccessException", e);
         }

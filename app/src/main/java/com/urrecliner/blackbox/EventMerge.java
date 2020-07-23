@@ -160,7 +160,6 @@ class EventMerge {
 
         @Override
         protected void onPostExecute(String doI) {
-            utils.logBoth(logID,"Afert Snapshot");
             SnapShotSave snapShotSave = new SnapShotSave();
             snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
         }

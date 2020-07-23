@@ -107,6 +107,7 @@ public class Vars {
     static int snapMapIdx = 0;
     static NormalMerge normalMerge = new NormalMerge();
 
+    final static int ASK_SPEED_INTERVAL = 400;
     static long gpsUpdateTime = 0;
     static long nextNormalTime = 0;
     static boolean viewFinder = true;

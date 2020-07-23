@@ -41,4 +41,3 @@ class DisplayTime implements Runnable {
         displayTime.cancel();
     }
 }
-

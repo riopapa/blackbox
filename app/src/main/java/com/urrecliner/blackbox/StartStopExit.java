@@ -61,18 +61,6 @@ class StartStopExit {
     private Timer timerSnapCamera = new Timer();
     private void startCamera() {
         snapMapIdx = 0;
-//        timerSnapCamera = new Timer();
-//        final TimerTask cameraTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (mIsRecording)
-//                    cameraTimer.sendEmptyMessage(0);
-//                else
-//                    timerSnapCamera.cancel();
-//            }
-//        };
-//        timerSnapCamera.schedule(cameraTask, 100, SNAP_SHOT_INTERVAL);
-
         timerSnapCamera = new Timer();
         final TimerTask cameraTask = new TimerTask() {
             @Override
@@ -123,11 +111,11 @@ class StartStopExit {
         mExitApplication = true;
         String s = "\nExit\nBlackBox";
         utils.customToast(s, Toast.LENGTH_SHORT, Color.BLACK);
-        utils.beepOnce(8,0.5f); // Exit BlackBox
         snapBytes = null;
         if (mIsRecording)
             stopVideo();
         displayTime.stop();
+        utils.beepOnce(8,0.5f); // Exit BlackBox
         utils.logOnly(logID,s);
         new Timer().schedule(new TimerTask() {
             public void run() {

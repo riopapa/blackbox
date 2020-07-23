@@ -184,7 +184,7 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 startHandler.sendEmptyMessage(0);
-                vBtnEvent.setImageResource(R.mipmap.event_ready);
+//                vBtnEvent.setImageResource(R.mipmap.event_ready);
             }
         }, DELAY_AUTO_RECORDING *1000);
 
@@ -275,7 +275,7 @@ public class MainActivity extends Activity {
         vTextDate = findViewById(R.id.textDate);
         vTextTime = findViewById(R.id.textTime);
         vTextSpeed = findViewById(R.id.textSpeed);
-        vTodayKms = findViewById(R.id.obdKms);
+//        vTodayKms = findViewById(R.id.obdKms);
         vKm = findViewById(R.id.textKm);
         vTextLogInfo = findViewById(R.id.textLogInfo);
         vTextCountEvent = findViewById(R.id.textCountEvent);
