@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.AUTO_START_RECORDING;
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORD;
 import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
@@ -180,14 +181,15 @@ public class MainActivity extends Activity {
         displayTime.run();
         displayBattery.init();
         obdAccess.prepare();
-        new Timer().schedule(new TimerTask() {  // autoStart
+
+        new Timer().schedule(new TimerTask() {
+            @Override
             public void run() {
-                mActivity.runOnUiThread(() -> {
-                    startHandler.sendEmptyMessage(0);
-                    vBtnEvent.setImageResource(R.mipmap.event_ready);
-                });
+                startHandler.sendEmptyMessage(0);
+                vBtnEvent.setImageResource(R.mipmap.event_ready);
             }
-        }, DELAY_AUTO_RECORD*1000);
+        }, AUTO_START_RECORDING*1000);
+
         utils.deleteOldNormalEvents(mPackageNormalPath, 2);
         utils.deleteOldNormalEvents(mPackageEventPath, 4);
         utils.deleteOldLogs(5);
