@@ -41,8 +41,9 @@ import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 
 class Utils {
+    private final String LOG_PREFIX = "log_";
     private String logDate = getMilliSec2String(System.currentTimeMillis(),FORMAT_DATE);
-    private String logFile = "log_"+logDate+".txt";
+    private String logFile = LOG_PREFIX+logDate+".txt";
 
     String getMilliSec2String(long milliSec, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
@@ -145,10 +146,11 @@ class Utils {
 
     /* delete directory and files under that directory */
     boolean deleteRecursive(File fileOrDirectory) {
-        utils.logOnly("recursive"+fileOrDirectory.isDirectory(),fileOrDirectory.toString());
-        if (fileOrDirectory.isDirectory())
+        if (fileOrDirectory.isDirectory()) {
+            utils.logOnly("Delete Old Folder ", fileOrDirectory.toString());
             for (File child : fileOrDirectory.listFiles())
                 deleteRecursive(child);
+        }
         return fileOrDirectory.delete();
     }
 
@@ -168,7 +170,7 @@ class Utils {
     void deleteOldLogs(int days) {
         final SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.US);
 
-        String oldDate = "log_" + sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
+        String oldDate = LOG_PREFIX + sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
         File[] files = mPackageLogPath.listFiles();
         Collator myCollator = Collator.getInstance();
         for (File file : files) {

@@ -160,20 +160,15 @@ class OBDAccess {
         try {
             EchoOffCommand echoOffCommand = new EchoOffCommand();
             echoOffCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD Echo Good",echoOffCommand.getFormattedResult());
             Thread.sleep(sleepTime);
             LineFeedOffCommand lineFeedOffCommand = new LineFeedOffCommand();
             lineFeedOffCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD Line Good",lineFeedOffCommand.getFormattedResult());
             Thread.sleep(sleepTime);
             SelectProtocolCommand selectProtocolCommand = new SelectProtocolCommand(ObdProtocols.AUTO);
             selectProtocolCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD Proto Good",selectProtocolCommand.getFormattedResult());
             Thread.sleep(sleepTime);
             SpacesOffCommand spacesOffCommand = new SpacesOffCommand();
             spacesOffCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD space Good",spacesOffCommand.getFormattedResult());
-            Thread.sleep(sleepTime);
             return true;
         } catch (IllegalArgumentException e) {
             utils.logE(logID, "IllegalArgumentException", e);
@@ -203,18 +198,9 @@ class OBDAccess {
             @Override
             public void run() {
                 speedNow = askSpeed();
-//                try {
-////                    engineRpmCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
-////                    obdRPM = engineRpmCommand.getCalculatedResult();
-//                    speedCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-//                    speedNow = speedCommand.getCalculatedResult();
                 if (!speedNow.equals(speedOld)) {
-//                   distanceSinceCCCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-//                   nowKms = Integer.parseInt(distanceSinceCCCommand.getCalculatedResult());
                     mActivity.runOnUiThread(() -> {
                         vTextSpeed.setText(speedNow);
-//                            String s = (nowKms - beginKms) + "";
-//                            vTodayKms.setText(s);
                         boolean offPrevView = Integer.parseInt(speedNow) > 50;
                         if (viewFinder && offPrevView != noPreview) {
                             noPreview = offPrevView;
@@ -223,12 +209,6 @@ class OBDAccess {
                         speedOld = speedNow;
                     });
                 }
-//                    loadCommand.run(btSocket.getInputStream(), btSocket.getOutputStream());
-//                    utils.log(TAG,"3) "+ loadCommand.getCalculatedResult());
-//                } catch (Exception e) {
-//                    utils.logBoth(logID, "obd Speed Task Exception  ");
-//                    obdTimer.cancel();
-//                }
             }
         };
         obdTimer.schedule(obdTask, 100, ASK_SPEED_INTERVAL);
@@ -254,10 +234,6 @@ class OBDAccess {
             distanceSinceCCCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
             utils.logBoth("OBD Distance Good",distanceSinceCCCommand.getFormattedResult());
             return true;
-//        } catch (IllegalArgumentException e) {
-//            utils.logE("distance", "IllegalArgumentException", e);
-//        } catch (IOException e) {
-//            utils.logE("distance", "IOException  obdCommand", e);
         } catch (Exception e){
 //            utils.logE("distance", "General Exception", e);
         }
@@ -268,8 +244,5 @@ class OBDAccess {
         if (obdTimer != null)
             obdTimer.cancel();
         obdTimer = null;
-//        String s = "today "+(nowKms-beginKms)+" Kms moved";
-//        utils.logBoth(logID, s);
-//        Toast.makeText(mContext,s,Toast.LENGTH_LONG).show();
     }
 }
