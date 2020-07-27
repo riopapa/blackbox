@@ -95,12 +95,13 @@ public class Vars {
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder = new MediaRecorder();
     static boolean willBack = false;
+    static int speedInt = 0;
 
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
 
-    final static long INTERVAL_EVENT = 13 * 1000;
-    final static int SNAP_SHOT_INTERVAL = 240;
+    final static long INTERVAL_EVENT = 11 * 1000;
+    final static int SNAP_SHOT_INTERVAL = 200;
     final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 17 / 10) / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 5;
     static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];

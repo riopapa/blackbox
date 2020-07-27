@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import static com.urrecliner.blackbox.Vars.isCompassShown;
 import static com.urrecliner.blackbox.Vars.gpsUpdateTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
+import static com.urrecliner.blackbox.Vars.speedInt;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vCompass;
 
@@ -31,6 +32,7 @@ class GPSTracker extends Service implements LocationListener {
     double latitude = 0, longitude = 0;
     ArrayList<Double> latitudes, longitudes;
     int arraySize = 4;
+    int nowDirection = -1, oldDirection = -1;
 
     private static final float MIN_DISTANCE_DRIVE = 20;
     private static final long MIN_TIME_DRIVE_UPDATES = 2000;
@@ -106,21 +108,24 @@ class GPSTracker extends Service implements LocationListener {
         if (!isCompassShown) {
             mActivity.runOnUiThread(() -> {
                 vCompass.setVisibility(View.VISIBLE);
-//                vSatellite.setVisibility(View.VISIBLE);
             });
             isCompassShown = true;
             utils.logBoth("GPSTracker","Activated ..");
         }
-
+        if (speedInt < 10)
+            return;
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
 //        utils.logBoth("degree",GPSDegree+" : "+latitudes.get(0)+" x "+longitudes.get(0)+
 //                " > "+latitude+" x "+longitude);
-        if (!Float.isNaN(GPSDegree)) {
+        if (Float.isNaN(GPSDegree))
+            return;
+        nowDirection = (int) (GPSDegree % 360 / 10) * 10;
+        if (nowDirection != oldDirection) {
+            oldDirection = nowDirection;
             mActivity.runOnUiThread(() -> {
 //                vSatellite.setImageResource(blinkGPS ? R.mipmap.satellite1 : R.mipmap.satellite2);
-                drawCompass(GPSDegree % 360);
+                drawCompass(oldDirection);
             });
-//            blinkGPS = !blinkGPS;
         }
     }
 
@@ -138,7 +143,6 @@ class GPSTracker extends Service implements LocationListener {
         return null;
     }
 
-    // 방향 계산
     private float calcDirection(double P1_latitude, double P1_longitude, double P2_latitude, double P2_longitude)
     {
         final double CONSTANT2RADIAN = (3.141592 / 180);
@@ -163,9 +167,9 @@ class GPSTracker extends Service implements LocationListener {
         return (float) true_bearing;
     }
 
-    private float savedDegree;
+    private int savedDegree;
 
-    void drawCompass (float degree) {
+    void drawCompass (int degree) {
         RotateAnimation ra = new RotateAnimation(
                 savedDegree, -degree,
                 Animation.RELATIVE_TO_SELF, 0.5f,

@@ -17,9 +17,6 @@ import com.github.pires.obd.commands.protocol.SpacesOffCommand;
 import com.github.pires.obd.enums.ObdProtocols;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,6 +25,7 @@ import java.util.UUID;
 import static com.urrecliner.blackbox.Vars.ASK_SPEED_INTERVAL;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
+import static com.urrecliner.blackbox.Vars.speedInt;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
@@ -36,11 +34,10 @@ import static com.urrecliner.blackbox.Vars.viewFinder;
 class OBDAccess {
 
     String logID = "OBD";
-    private BluetoothAdapter btAdapter = null;
     //            utils.log(TAG, "connectOBD  "+chosenDeviceName+" : "+chosenDeviceAddress);
     private BluetoothSocket bSocket;
     private BluetoothDevice bluetoothDevice;
-    private String chosenDeviceName = null, chosenDeviceAddress = null;
+    private String chosenDeviceName = null;
     UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     String speedNow = "speed", speedOld = "old";
 
@@ -50,7 +47,7 @@ class OBDAccess {
 //    private ObdCommand loadCommand = new LoadCommand();
 
     void prepare() {
-        btAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
 //        utils.logOnly(logID, "btAdaptor is "+btAdapter.toString());
         if(btAdapter == null){
             Toast.makeText(Vars.mContext, "Device doesn't support Bluetooth", Toast.LENGTH_LONG).show();
@@ -65,13 +62,12 @@ class OBDAccess {
 //                utils.log(logID, "pairedDevices ="+device.getName()+" type:"+device.getType());
                 if (device.getName().contains("OBD")) {
                     bluetoothDevice = device;
-                    chosenDeviceAddress = device.getAddress();
+//                    chosenDeviceAddress = device.getAddress();
                     chosenDeviceName = device.getName();
                     btAdapter.cancelDiscovery();
                     new Timer().schedule(new TimerTask() {  // autoStart
                         public void run() {
-                            connectOBD();
-                            if (bSocket.isConnected()) {
+                            if (connectOBD() && bSocket.isConnected()) {
                                 askOBDDistance();
                                 loopAskOBDSpeed();
                             }
@@ -135,13 +131,14 @@ class OBDAccess {
         return false;
     }
 
+    final private int sleepTime = 100;
     private boolean step2_ResetOBD() {
         ObdResetCommand obdResetCommand = new ObdResetCommand();
         try {
             for (int i = 0; i < 3; i++) {
                 obdResetCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-                utils.logBoth("OBD Reset", obdResetCommand.getFormattedResult());
-                Thread.sleep(100);
+//                utils.logBoth("OBD Reset", obdResetCommand.getFormattedResult());
+                Thread.sleep(sleepTime);
                 //                SystemClock.sleep(100);
             }
             return true;
@@ -155,7 +152,6 @@ class OBDAccess {
         return false;
     }
 
-    final private int sleepTime = 100;
     private boolean step3_Initialize() {
         try {
             EchoOffCommand echoOffCommand = new EchoOffCommand();
@@ -181,7 +177,6 @@ class OBDAccess {
     }
 
     private Timer obdTimer = null;
-    private int beginKms, nowKms;
     private boolean noPreview = false;
     private void loopAskOBDSpeed() {
 //        utils.logBoth(logID, "start get OBD Speed");
@@ -201,7 +196,8 @@ class OBDAccess {
                 if (!speedNow.equals(speedOld)) {
                     mActivity.runOnUiThread(() -> {
                         vTextSpeed.setText(speedNow);
-                        boolean offPrevView = Integer.parseInt(speedNow) > 50;
+                        speedInt = Integer.parseInt(speedNow);
+                        boolean offPrevView =  speedInt > 50;
                         if (viewFinder && offPrevView != noPreview) {
                             noPreview = offPrevView;
                             vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);
@@ -228,16 +224,14 @@ class OBDAccess {
         return "speed Err";
     }
 
-    private boolean askOBDDistance() {
+    private void askOBDDistance() {
         try {
             DistanceSinceCCCommand distanceSinceCCCommand = new DistanceSinceCCCommand();
             distanceSinceCCCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
             utils.logBoth("OBD Distance Good",distanceSinceCCCommand.getFormattedResult());
-            return true;
         } catch (Exception e){
 //            utils.logE("distance", "General Exception", e);
         }
-        return false;
     }
 
     void stop() {

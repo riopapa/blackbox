@@ -218,7 +218,7 @@ public class MainActivity extends Activity {
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
         final File thisEventPath = new File(mPackageEventPath, utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventPath);
-        utils.logBoth(logID,"Prev Snapshot");
+//        utils.logBoth(logID,"Prev Snapshot");
         SnapShotSave snapShotSave = new SnapShotSave();
         snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
         new Timer().schedule(new TimerTask() {
@@ -259,7 +259,7 @@ public class MainActivity extends Activity {
                 if (mIsRecording)
                     stopHandler.sendEmptyMessage(0);
 //                reStarting();
-                new BeBackSoon().execute("x", "잠시 꺼둠", ""+DELAY_WAIT_EXIT);
+                new BeBackSoon().execute("x");
             }
         });
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
@@ -325,7 +325,7 @@ public class MainActivity extends Activity {
                     willBack = true;
                     if (mIsRecording)
                         stopHandler.sendEmptyMessage(0);
-                    new BeBackSoon().execute("x", "Exit & Reload", DELAY_WAIT_EXIT + "");
+                    new BeBackSoon().execute("x");
                 }
                 new Timer().schedule(new TimerTask() {
                     public void run() {

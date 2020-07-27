@@ -26,9 +26,9 @@ class SnapShotSave {
     private int idx;
 
     void start(final File thisEventPath, byte[][] snapCloned, final int snapIdx, final boolean first) {
-        final int startBias = (first) ? 100: 200; // for snapshot image sequence, dependency : snap interval, snap size
-        final int startIdx = (first) ? 0: 19;
-        final int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-22;  // to minimize snapshot image counts
+        final int startBias = (first) ? 100: 219; // for snapshot image sequence, dependency : snap interval, snap size
+        final int startIdx = (first) ? 0: 14;
+        final int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-24;  // to minimize snapshot image counts
         byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
         idx = 0;
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
@@ -47,7 +47,7 @@ class SnapShotSave {
 //                        utils.logOnly(logID, "idx="+idx);
                         if (idx < finishIdx) {
                             if (jpgBytes[idx] != null && jpgBytes[idx].length > 1) {
-                                final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (startBias+(idx*SNAP_SHOT_INTERVAL)/1130))+"."+idx+".jpg");
+                                final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (startBias+(idx*SNAP_SHOT_INTERVAL)/1200))+"."+idx+".jpg");
                                 bytes2File(jpgBytes[idx], jpgFile);
 //                                Log.w(""+idx,""+idx);
                             }
