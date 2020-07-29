@@ -81,9 +81,9 @@
         android:id="@+id/frmEvent"
         android:layout_width="120dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="16dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" >
+        android:layout_marginBottom="8dp">
 
         <ImageButton
             android:id="@+id/btnEvent"
@@ -104,6 +104,14 @@
             android:textSize="40sp" />
 
     </FrameLayout>
+
+<!--    <ZoomControls-->
+<!--        android:id="@+id/zoomControls"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true" />-->
+
 
     <!--Speed in Km-->
     <TextView

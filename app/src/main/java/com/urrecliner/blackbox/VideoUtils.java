@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -36,9 +37,11 @@ import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
+import static com.urrecliner.blackbox.Vars.cameraManager;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
+import static com.urrecliner.blackbox.Vars.mCameraId;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mContext;
@@ -60,9 +63,8 @@ import static com.urrecliner.blackbox.Vars.vPreviewView;
 public class VideoUtils {
 
     private String logID = "videoUtils";
-    private String mCameraId;
     void setupCamera() {
-        CameraManager cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
+        cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
             assert cameraManager != null;
             for(String cameraId : cameraManager.getCameraIdList()){
@@ -73,7 +75,6 @@ public class VideoUtils {
                     mCameraId = cameraId;
                 else
                     continue;
-//                utils.logOnly(logID, "M cameraID="+cameraId);
                 StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 setCameraSize(map);
             }

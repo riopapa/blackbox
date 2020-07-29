@@ -3,8 +3,10 @@ package com.urrecliner.blackbox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.hardware.Camera;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
@@ -91,7 +93,6 @@ public class Vars {
     static Handler mBackgroundImage;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
-    static CameraDevice mCameraDevice = null;
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder = new MediaRecorder();
     static boolean willBack = false;
@@ -114,4 +115,8 @@ public class Vars {
     static boolean viewFinder = true;
     static float azimuth = 0;
     static boolean isCompassShown = false;
+
+    static CameraManager cameraManager;
+    static CameraDevice mCameraDevice = null;
+    static String mCameraId = null;
 }
