@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
@@ -11,6 +12,7 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.AudioRecord;
 import android.media.Image;
@@ -71,8 +73,11 @@ public class VideoUtils {
 //                utils.logOnly(logID, "cameraID="+cameraId);
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
                 if(cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
-                        CameraCharacteristics.LENS_FACING_BACK)
+                        CameraCharacteristics.LENS_FACING_BACK) {
                     mCameraId = cameraId;
+//                    float maxzoom = (cameraCharacteristics.get(CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM))*10;
+//                    utils.logOnly("zoom","maxzoom="+maxzoom);
+                }
                 else
                     continue;
                 StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -120,7 +125,7 @@ public class VideoUtils {
                         mPreviewSize = size;
                     else if (size.getWidth() == 4032 && size.getHeight() == 2268)
                         mImageSize = size;
-                    else if (size.getWidth() == 1920 && size.getHeight() == 1080)
+                    else if (size.getWidth() == 2048 && size.getHeight() == 1152)
                         mVideoSize = size;
                 }
                 break;

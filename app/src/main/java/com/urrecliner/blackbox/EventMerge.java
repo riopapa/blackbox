@@ -46,8 +46,6 @@ import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 class EventMerge {
 
     private static String logID = "Event";
-
-    private static CountDownTimer countDownTimer;
     private static File thisEventPath;
 
     void merge(final long startTime, final File eventPath) {
@@ -84,7 +82,7 @@ class EventMerge {
                 publishProgress("<<file[] too short", "" + files2Merge.length);
             } else {
                 Arrays.sort(files2Merge);
-                endTimeS = files2Merge[files2Merge.length - 2].getName();
+                endTimeS = files2Merge[files2Merge.length - 3].getName();
                 outputFile = new File(mPackageEventPath, beginTimeS + " x" + latitude + "," + longitude + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
                 MediaPlayer mp = new MediaPlayer();

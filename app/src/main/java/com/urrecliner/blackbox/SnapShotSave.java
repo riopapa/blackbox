@@ -26,16 +26,16 @@ class SnapShotSave {
     private int idx;
 
     void start(final File thisEventPath, byte[][] snapCloned, final int snapIdx, final boolean first) {
-        final int startBias = (first) ? 100: 219; // for snapshot image sequence, dependency : snap interval, snap size
-        final int startIdx = (first) ? 0: 14;
-        final int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-24;  // to minimize snapshot image counts
+        final int startBias = (first) ? 100: 216; // for snapshot image sequence, dependency : snap interval, snap size
+        final int startIdx = (first) ? 0: 8;
+        final int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-22;  // to minimize snapshot image counts
         byte[][] jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
         idx = 0;
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
             jpgBytes[idx++] = snapCloned[i];
         for (int i = 0; i < snapIdx; i++)
             jpgBytes[idx++] = snapCloned[i];
-        final int saveInterval = 120;   // check phone CPU Capability
+        final int saveInterval = 100;   // check phone CPU Capability
 //        Handler mHandler = new Handler(Looper.getMainLooper());
 //        mHandler.postDelayed(new Runnable() {
 //            @Override

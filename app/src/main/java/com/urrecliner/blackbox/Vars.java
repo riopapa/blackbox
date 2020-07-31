@@ -101,9 +101,9 @@ public class Vars {
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
 
-    final static long INTERVAL_EVENT = 11 * 1000;
+    final static long INTERVAL_EVENT = 10 * 1000;
     final static int SNAP_SHOT_INTERVAL = 200;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 17 / 10) / SNAP_SHOT_INTERVAL);
+    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 16 / 10) / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 5;
     static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
     static int snapMapIdx = 0;
@@ -119,4 +119,5 @@ public class Vars {
     static CameraManager cameraManager;
     static CameraDevice mCameraDevice = null;
     static String mCameraId = null;
+    static Camera mCamera = null;
 }
