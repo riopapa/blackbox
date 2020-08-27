@@ -6,6 +6,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
+import android.util.Log;
 
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -22,7 +23,7 @@ public class CameraUtils {
     static void snapshotCamera() {
         mCaptureState = STATE_WAIT_LOCK;
         try {
-            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CaptureRequest.CONTROL_AF_TRIGGER_START);
+//            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CaptureRequest.CONTROL_AF_TRIGGER_START);
             mCaptureSession.capture(mCaptureRequestBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
         } catch (CameraAccessException e) {
             utils.logE("capture","SnapShot",e);
@@ -38,11 +39,11 @@ public class CameraUtils {
                             break;
                         case STATE_WAIT_LOCK:
                             mCaptureState = STATE_PREVIEW;
-                            Integer afState = captureResult.get(CaptureResult.CONTROL_AF_STATE);
-                            if(afState == CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED ||
-                                    afState == CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED) {
+//                            Integer afState = captureResult.get(CaptureResult.CONTROL_AF_STATE);
+//                            if(afState == CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED ||
+//                                    afState == CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED) {
                                 startStillCaptureRequest();
-                            }
+//                            }
                             break;
                     }
                 }
@@ -50,6 +51,8 @@ public class CameraUtils {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
+//                    float focusDistance = result.get(CaptureResult.LENS_FOCUS_DISTANCE);
+//                    Log.w("focus",""+ focusDistance);
                     process(result);
                 }
             };
@@ -59,6 +62,7 @@ public class CameraUtils {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
             mCaptureRequestBuilder.addTarget(mImageReader.getSurface());
             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
+            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6.3f); // 0.0 infinite ~ 10f nearest
         } catch (CameraAccessException e) {
             utils.logE("cameraUtils", "CameraAccessException", e);
         }

@@ -235,7 +235,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/compassImage"
-            android:src="@mipmap/compass1_news" />
+            android:src="@mipmap/compass_news" />
 
         <ImageView
             android:id="@+id/iViewArrow"
@@ -243,7 +243,7 @@
             android:layout_margin="0dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/compass1_arrow"
+            android:src="@mipmap/compass_arrow"
             android:contentDescription="@string/directionTriangle" />
 
     </FrameLayout>

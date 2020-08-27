@@ -43,7 +43,6 @@ import static com.urrecliner.blackbox.Vars.cameraManager;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mCameraId;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mContext;
@@ -64,7 +63,9 @@ import static com.urrecliner.blackbox.Vars.vPreviewView;
 
 public class VideoUtils {
 
+    String mCameraId = null;
     private String logID = "videoUtils";
+
     void setupCamera() {
         cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
@@ -90,7 +91,7 @@ public class VideoUtils {
 //        utils.logOnly(logID, "mImage "+mImageSize.getWidth()+"x"+mImageSize.getHeight()+" array "+MAX_IMAGES_SIZE);
 //        utils.logOnly(logID, "mVideo "+mVideoSize.getWidth()+"x"+mVideoSize.getHeight());
         try {
-            mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 6); // MAX_IMAGES_SIZE);
+            mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 10); // MAX_IMAGES_SIZE);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
             mPreviewReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(), ImageFormat.JPEG, 1);
         } catch (Exception e) {
@@ -216,10 +217,6 @@ public class VideoUtils {
         Image image = reader.acquireLatestImage();
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
 
-        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
-        ActivityManager activityManager = (ActivityManager) mActivity.getSystemService(ACTIVITY_SERVICE);
-        assert activityManager != null;
-        activityManager.getMemoryInfo(mi);
         byte[] bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
         if (mIsRecording) {
@@ -255,6 +252,7 @@ public class VideoUtils {
         try {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             mCaptureRequestBuilder.addTarget(previewSurface);
+            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6.1f); // 0.0 infinite ~ 10f nearest
         } catch (Exception e) {
             utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
         }
@@ -265,6 +263,7 @@ public class VideoUtils {
         try {
             recordSurface = mediaRecorder.getSurface();
             mCaptureRequestBuilder.addTarget(recordSurface);
+            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6.2f); // 0.0 infinite ~ 10f nearest
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error recordSurface ///", e);
         }
@@ -279,6 +278,7 @@ public class VideoUtils {
                 public void onConfigured(CameraCaptureSession session) {
                     mCaptureSession = session;
                     try {
+                        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6.4f); // 0.0 infinite ~ 10f nearest
                         mCaptureSession.setRepeatingRequest(
                                 mCaptureRequestBuilder.build(), null, null
                         );

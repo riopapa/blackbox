@@ -19,7 +19,7 @@
         android:required="true"/>
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="true"/>
+        android:required="false"/>
 
     <application
         android:icon="@mipmap/spy_car"
