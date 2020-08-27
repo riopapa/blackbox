@@ -5,11 +5,22 @@
     android:background="#2f022f"
     android:keepScreenOn="true">
 
+    <!--Log Info in multi lines-->
+    <TextView
+        android:id="@+id/textLogInfo"
+        android:layout_width="440dp"
+        android:layout_height="132dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/logInfo"
+        android:textColor="#cccc"
+        android:textSize="@dimen/log_size" />
+    
     <!--Event Record counts -->
     <TextView
         android:id="@+id/textEvent"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/textLogInfo"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/textEvent"
@@ -20,22 +31,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/textEvent"
+        android:layout_below="@id/textLogInfo"
         android:text="@string/zero"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textColor="#cccccc"
         android:textSize="@dimen/info_size" />
-
-    <!--Log Info in multi lines-->
-    <TextView
-        android:id="@+id/textLogInfo"
-        android:layout_width="440dp"
-        android:layout_height="132dp"
-        android:layout_below="@id/textEvent"
-        android:layout_marginStart="16dp"
-        android:text="@string/logInfo"
-        android:textColor="#cccc"
-        android:textSize="@dimen/log_size" />
 
     <!--GPS Active-->
     <ImageView
@@ -118,7 +119,7 @@
         android:id="@+id/textSpeed"
         android:layout_width="160dp"
         android:layout_height="80dp"
-        android:layout_below="@id/textLogInfo"
+        android:layout_below="@id/textEvent"
         android:layout_alignParentStart="true"
         android:layout_gravity="end"
         android:layout_marginStart="32dp"
