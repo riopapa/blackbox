@@ -14,7 +14,7 @@
         android:text="@string/logInfo"
         android:textColor="#cccc"
         android:textSize="@dimen/log_size" />
-    
+
     <!--Event Record counts -->
     <TextView
         android:id="@+id/textEvent"
@@ -30,13 +30,12 @@
         android:id="@+id/textCountEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/textEvent"
-        android:layout_below="@id/textLogInfo"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/textEvent"
         android:text="@string/zero"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:textColor="#cccccc"
-        android:textSize="@dimen/info_size" />
+        android:textSize="36sp" />
 
     <!--GPS Active-->
     <ImageView
@@ -97,11 +96,11 @@
 
         <TextView
             android:id="@+id/activeEvent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text=""
-            android:textColor="#FF0"
+            android:background="#CCC"
+            android:textColor="#000"
             android:textSize="40sp" />
 
     </FrameLayout>

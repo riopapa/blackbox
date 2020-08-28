@@ -26,11 +26,12 @@ class SnapShotSave {
     private CountDownTimer countDownTimer;
     private int idx;
     byte[][] jpgBytes;
+    long savedTime = 0;
 
     void start(final File thisEventPath, byte[][] snapCloned, final int snapIdx, final boolean first) {
-        final int startBias = (first) ? 100: 216; // for snapshot image sequence, dependency : snap interval, snap size
-        final int startIdx = (first) ? 0: 14;
-        final int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-38;  // to minimize snapshot image counts
+        final int startBias = (first) ? 100: 214; // for snapshot image sequence, dependency : snap interval, snap size
+        final int startIdx = (first) ? 0: 0;
+        final int finishIdx = (first) ? MAX_IMAGES_SIZE-6: MAX_IMAGES_SIZE-60;  // to minimize snapshot image counts
         jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
         idx = 0;
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
@@ -38,10 +39,13 @@ class SnapShotSave {
         for (int i = 0; i < snapIdx; i++)
             jpgBytes[idx++] = snapCloned[i];
         snapCloned = null;
-        final int saveInterval = 100;   // check phone CPU Capability
+        final int saveInterval = 90;   // check phone CPU Capability
         idx = startIdx;
-        countDownTimer = new CountDownTimer((saveInterval+60) * MAX_IMAGES_SIZE, saveInterval) {
+        countDownTimer = new CountDownTimer((saveInterval+20) * MAX_IMAGES_SIZE, saveInterval) {
             public void onTick(long millisUntilFinished) {
+//                Log.w(finishIdx+" milsec "+idx,""+(millisUntilFinished-savedTime));
+//                savedTime = millisUntilFinished;
+//                Log.w("idx ",""+idx);
 //                        utils.logOnly(logID, "idx="+idx);
                 if (idx < finishIdx) {
                     if (jpgBytes[idx] != null && jpgBytes[idx].length > 1) {
@@ -50,8 +54,8 @@ class SnapShotSave {
 //                                Log.w(""+idx,""+idx);
                         jpgBytes[idx] = null;
                     }
-                    idx++;
                 }
+                idx++;
             }
             public void onFinish() {
                 jpgBytes = null;
