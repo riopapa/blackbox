@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
@@ -247,7 +248,7 @@ public class MainActivity extends Activity {
 
         gpsTracker.askLocation();
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
-        final File thisEventPath = new File(mPackageEventPath, utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
+        final File thisEventPath = new File(mPackageEventPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventPath);
 //        utils.logBoth(logID,"Prev Snapshot");
         SnapShotSave snapShotSave = new SnapShotSave();

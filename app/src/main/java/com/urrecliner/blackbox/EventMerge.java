@@ -28,6 +28,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.CountEvent;
+import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
@@ -83,7 +84,7 @@ class EventMerge {
             } else {
                 Arrays.sort(files2Merge);
                 endTimeS = files2Merge[files2Merge.length - 3].getName();
-                outputFile = new File(mPackageEventPath, beginTimeS + " x" + latitude + "," + longitude + ".mp4").toString();
+                outputFile = new File(mPackageEventPath, DATE_PREFIX+beginTimeS + " x" + latitude + "," + longitude + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
                 MediaPlayer mp = new MediaPlayer();
                 try {

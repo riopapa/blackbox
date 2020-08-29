@@ -43,7 +43,6 @@ public class Vars {
     static TextView vTextTime = null;
     static TextView vTextCountEvent = null;
     static TextView vTextSpeed = null;
-    static TextView vTodayKms = null;
     static TextView vKm = null;
     static TextView vTextLogInfo = null;
     static TextView vTextActiveCount = null;
@@ -59,13 +58,12 @@ public class Vars {
     static ImageView vSatellite = null;
 
     static SharedPreferences sharedPref;
-    static SharedPreferences.Editor editor;
-    static String todayStr;
 
     static final String FORMAT_LOG_TIME = "yy-MM-dd HH.mm.ss.SSS";
     static final String FORMAT_DATE = "yy-MM-dd";
     static SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.getDefault());
     static SimpleDateFormat sdfLogTime = new SimpleDateFormat(FORMAT_LOG_TIME, Locale.getDefault());
+    static final String DATE_PREFIX = "V";
 
     private static final String PATH_PACKAGE = "BlackBox";
     private static final String PATH_EVENT = "event";
@@ -76,7 +74,7 @@ public class Vars {
     static File mPackagePath = new File(Environment.getExternalStorageDirectory(), PATH_PACKAGE);
     static File mPackageEventPath = new File(mPackagePath, PATH_EVENT);
     static File mPackageNormalPath = new File(mPackagePath, PATH_NORMAL);
-    static File mPackageNormalDatePath = new File(mPackageNormalPath, utils.getMilliSec2String(System.currentTimeMillis(), FORMAT_DATE));
+    static File mPackageNormalDatePath = new File(mPackageNormalPath, DATE_PREFIX+utils.getMilliSec2String(System.currentTimeMillis(), FORMAT_DATE));
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 

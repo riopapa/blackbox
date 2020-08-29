@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.gatherDiskSpace;
@@ -81,7 +82,7 @@ class NormalMerge {
                     utils.logE(logID, endTimeS+" parse Error", e);
                 }
                 nextNormalTime = date.getTime() - 2000;
-                outputFile = new File(mPackageNormalDatePath, beginTimeS + " x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
+                outputFile = new File(mPackageNormalDatePath, DATE_PREFIX+beginTimeS + " x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
             }
             return beginTimeS;

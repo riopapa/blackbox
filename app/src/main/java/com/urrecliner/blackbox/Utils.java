@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
+import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -156,7 +157,7 @@ class Utils {
 
     void deleteOldNormalEvents(File target, int days) {
 
-        String oldDate = sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
+        String oldDate = DATE_PREFIX+sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
         File[] oldFiles = utils.getDirectoryList(target);
         Collator myCollator = Collator.getInstance();
         for (File file : oldFiles) {
