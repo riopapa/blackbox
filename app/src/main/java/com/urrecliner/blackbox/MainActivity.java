@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CaptureRequest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -23,8 +24,10 @@ import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,12 +41,14 @@ import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
+import static com.urrecliner.blackbox.Vars.LENS_FOCUS_NEAR;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
+import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
@@ -143,6 +148,23 @@ public class MainActivity extends Activity {
         vBtnEvent = findViewById(R.id.btnEvent);
         vBtnEvent.setOnClickListener(v -> startEventSaving());
 
+        Switch sw = findViewById(R.id.nearSwitch);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {    // try near focus
+                    mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
+                    mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR);
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            switchHandler.sendEmptyMessage(0);
+                        }
+                    }, INTERVAL_EVENT * 15 / 10);
+//                } else {            // reset to far focus
+//                    mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
+                }
+            }
+        });
         setViewVars();
         setBlackBoxFolders();
         initiate();
@@ -169,7 +191,7 @@ public class MainActivity extends Activity {
             textureLP.bottomMargin = tvLP.bottomMargin+6;
             textureLP.rightMargin = tvLP.rightMargin+6;
             vPreviewView.setLayoutParams(textureLP);
-            vPreviewView.setScaleX(1.7f);
+            vPreviewView.setScaleX(1.79f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -203,6 +225,17 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) { eventRecording();
         }
     };
+    final Handler switchHandler = new Handler() {
+        public void handleMessage(Message msg) { offNearSwitch();
+        }
+    };
+
+    void offNearSwitch() {
+        Switch sw = findViewById(R.id.nearSwitch);
+        sw.setChecked(false);
+        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+//        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
+    }
 
     void startEventSaving() {
         eventHandler.sendEmptyMessage(0);

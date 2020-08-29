@@ -1,12 +1,9 @@
 package com.urrecliner.blackbox;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
-import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -14,7 +11,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.AudioRecord;
 import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
@@ -22,7 +18,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
@@ -33,7 +28,6 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static android.content.Context.ACTIVITY_SERVICE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
@@ -252,7 +246,8 @@ public class VideoUtils {
         try {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             mCaptureRequestBuilder.addTarget(previewSurface);
-            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6.1f); // 0.0 infinite ~ 10f nearest
+            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // 0.0 infinite ~ 10f nearest
         } catch (Exception e) {
             utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
         }
@@ -263,7 +258,8 @@ public class VideoUtils {
         try {
             recordSurface = mediaRecorder.getSurface();
             mCaptureRequestBuilder.addTarget(recordSurface);
-            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6.2f); // 0.0 infinite ~ 10f nearest
+//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // 0.0 infinite ~ 10f nearest
+            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error recordSurface ///", e);
         }
@@ -278,7 +274,8 @@ public class VideoUtils {
                 public void onConfigured(CameraCaptureSession session) {
                     mCaptureSession = session;
                     try {
-                        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6.4f); // 0.0 infinite ~ 10f nearest
+//                        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // 0.0 infinite ~ 10f nearest
+                        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
                         mCaptureSession.setRepeatingRequest(
                                 mCaptureRequestBuilder.build(), null, null
                         );

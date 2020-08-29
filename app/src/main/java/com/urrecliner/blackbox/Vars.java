@@ -89,7 +89,7 @@ public class Vars {
     final static int DELAY_AUTO_RECORDING = 5;
     final static int DELAY_WAIT_EXIT = 5;
     final static int DELAY_I_WILL_BACK = 40;
-
+    final static float LENS_FOCUS_NEAR = 8f;   // 0: infinite 10: nearest
     static Handler mBackgroundImage;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;

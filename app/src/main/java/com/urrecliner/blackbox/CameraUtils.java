@@ -6,7 +6,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
-import android.util.Log;
 
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -62,7 +61,8 @@ public class CameraUtils {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
             mCaptureRequestBuilder.addTarget(mImageReader.getSurface());
             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
-            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6.3f); // 0.0 infinite ~ 10f nearest
+            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // 0.0 infinite ~ 10f nearest
         } catch (CameraAccessException e) {
             utils.logE("cameraUtils", "CameraAccessException", e);
         }
