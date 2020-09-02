@@ -155,7 +155,7 @@ class Utils {
         return fileOrDirectory.delete();
     }
 
-    void deleteOldNormalEvents(File target, int days) {
+    void deleteOldFiles(File target, int days) {
 
         String oldDate = DATE_PREFIX+sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
         File[] oldFiles = utils.getDirectoryList(target);

@@ -83,7 +83,7 @@ class EventMerge {
                 publishProgress("<<file[] too short", "" + files2Merge.length);
             } else {
                 Arrays.sort(files2Merge);
-                endTimeS = files2Merge[files2Merge.length - 3].getName();
+                endTimeS = files2Merge[files2Merge.length - 2].getName();
                 outputFile = new File(mPackageEventPath, DATE_PREFIX+beginTimeS + " x" + latitude + "," + longitude + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
                 MediaPlayer mp = new MediaPlayer();

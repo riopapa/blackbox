@@ -42,8 +42,10 @@ import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
+import static com.urrecliner.blackbox.Vars.LENS_FOCUS_FAR;
 import static com.urrecliner.blackbox.Vars.LENS_FOCUS_NEAR;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
+import static com.urrecliner.blackbox.Vars.cameraManager;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
@@ -52,6 +54,7 @@ import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
+import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
@@ -155,14 +158,13 @@ public class MainActivity extends Activity {
                 if (isChecked) {    // try near focus
                     mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
                     mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR);
+                    mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {
                             switchHandler.sendEmptyMessage(0);
                         }
                     }, INTERVAL_EVENT * 15 / 10);
-//                } else {            // reset to far focus
-//                    mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
                 }
             }
         });
@@ -209,8 +211,9 @@ public class MainActivity extends Activity {
             }
         }, DELAY_AUTO_RECORDING *1000);
 
-        utils.deleteOldNormalEvents(mPackageNormalPath, 2);
-        utils.deleteOldNormalEvents(mPackageEventPath, 4);
+        utils.deleteOldFiles(mPackageNormalPath, 4);
+        utils.deleteOldFiles(mPackageEventPath, 3);
+        utils.deleteOldFiles(mPackageEventJpgPath, 3);
         utils.deleteOldLogs(5);
     }
 
@@ -235,7 +238,7 @@ public class MainActivity extends Activity {
         Switch sw = findViewById(R.id.nearSwitch);
         sw.setChecked(false);
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-//        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
+        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
     }
 
     void startEventSaving() {
@@ -248,17 +251,17 @@ public class MainActivity extends Activity {
 
         gpsTracker.askLocation();
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
-        final File thisEventPath = new File(mPackageEventPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
-        utils.readyPackageFolder(thisEventPath);
+        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
+        utils.readyPackageFolder(thisEventJpgPath);
 //        utils.logBoth(logID,"Prev Snapshot");
         SnapShotSave snapShotSave = new SnapShotSave();
-        snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx, true);
+        snapShotSave.start(thisEventJpgPath, snapBytes.clone(), snapMapIdx, true);
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
-                ev.merge(startTime, thisEventPath);
+                ev.merge(startTime, thisEventJpgPath);
             }
-        }, INTERVAL_EVENT + INTERVAL_EVENT / 5);
+        }, INTERVAL_EVENT - INTERVAL_EVENT / 4);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
@@ -326,6 +329,7 @@ public class MainActivity extends Activity {
         utils.readyPackageFolder(mPackageLogPath);
         utils.readyPackageFolder(mPackageWorkingPath);
         utils.readyPackageFolder(mPackageEventPath);
+        utils.readyPackageFolder(mPackageEventJpgPath);
         utils.readyPackageFolder(mPackageNormalPath);
         utils.readyPackageFolder(mPackageNormalDatePath);
     }

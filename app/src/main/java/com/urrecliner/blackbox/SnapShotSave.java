@@ -30,8 +30,8 @@ class SnapShotSave {
 
     void start(final File thisEventPath, byte[][] snapCloned, final int snapIdx, final boolean first) {
         final int startBias = (first) ? 100: 214; // for snapshot image sequence, dependency : snap interval, snap size
-        final int startIdx = (first) ? 0: 0;
-        final int finishIdx = (first) ? MAX_IMAGES_SIZE-6: MAX_IMAGES_SIZE-60;  // to minimize snapshot image counts
+        final int startIdx = (first) ? 0: 10;
+        final int finishIdx = (first) ? MAX_IMAGES_SIZE-2: MAX_IMAGES_SIZE-40;  // to minimize snapshot image counts
         jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
         idx = 0;
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
@@ -39,7 +39,7 @@ class SnapShotSave {
         for (int i = 0; i < snapIdx; i++)
             jpgBytes[idx++] = snapCloned[i];
         snapCloned = null;
-        final int saveInterval = 90;   // check phone CPU Capability
+        final int saveInterval = 150;   // check phone CPU Capability
         idx = startIdx;
         countDownTimer = new CountDownTimer((saveInterval+20) * MAX_IMAGES_SIZE, saveInterval) {
             public void onTick(long millisUntilFinished) {

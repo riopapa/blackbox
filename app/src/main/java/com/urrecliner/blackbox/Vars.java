@@ -67,12 +67,14 @@ public class Vars {
 
     private static final String PATH_PACKAGE = "BlackBox";
     private static final String PATH_EVENT = "event";
+    private static final String PATH_EVENT_JPG = "eventJpg";
     private static final String PATH_NORMAL = "normal";
     private static final String PATH_WORK = "work";
     private static final String PATH_LOG = "log";
 
     static File mPackagePath = new File(Environment.getExternalStorageDirectory(), PATH_PACKAGE);
     static File mPackageEventPath = new File(mPackagePath, PATH_EVENT);
+    static File mPackageEventJpgPath = new File(mPackagePath, PATH_EVENT_JPG);
     static File mPackageNormalPath = new File(mPackagePath, PATH_NORMAL);
     static File mPackageNormalDatePath = new File(mPackageNormalPath, DATE_PREFIX+utils.getMilliSec2String(System.currentTimeMillis(), FORMAT_DATE));
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
@@ -87,7 +89,8 @@ public class Vars {
     final static int DELAY_AUTO_RECORDING = 5;
     final static int DELAY_WAIT_EXIT = 5;
     final static int DELAY_I_WILL_BACK = 40;
-    final static float LENS_FOCUS_NEAR = 8f;   // 0: infinite 10: nearest
+    final static float LENS_FOCUS_FAR = 4f;   // 0: infinite 10: nearest
+    final static float LENS_FOCUS_NEAR = 7f;   // 0: infinite 10: nearest
     static Handler mBackgroundImage;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
@@ -100,7 +103,7 @@ public class Vars {
 
     final static long INTERVAL_EVENT = 12 * 1000;
     final static int SNAP_SHOT_INTERVAL = 200;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 14 / 10) / SNAP_SHOT_INTERVAL);
+    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 15 / 10) / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
     static int snapMapIdx = 0;

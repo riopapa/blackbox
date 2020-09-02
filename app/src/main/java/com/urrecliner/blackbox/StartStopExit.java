@@ -115,7 +115,7 @@ class StartStopExit {
         if (mIsRecording)
             stopVideo();
         displayTime.stop();
-        utils.beepOnce(8,0.5f); // Exit BlackBox
+        utils.beepOnce(8,0.3f); // Exit BlackBox
         utils.logOnly(logID,s);
         new Timer().schedule(new TimerTask() {
             public void run() {
