@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
@@ -44,6 +45,7 @@ import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.LENS_FOCUS_FAR;
 import static com.urrecliner.blackbox.Vars.LENS_FOCUS_NEAR;
+import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.cameraManager;
 import static com.urrecliner.blackbox.Vars.displayBattery;
@@ -261,7 +263,7 @@ public class MainActivity extends Activity {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventJpgPath);
             }
-        }, INTERVAL_EVENT - INTERVAL_EVENT / 4);
+        }, INTERVAL_EVENT - INTERVAL_EVENT / 5);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
@@ -275,6 +277,8 @@ public class MainActivity extends Activity {
     private void initiate() {
 
         mIsRecording = false;
+        snapBytes = new byte[MAX_IMAGES_SIZE][];
+        Log.w("snapBytes","size = "+snapBytes.length);
         vSatellite.setVisibility(View.INVISIBLE);
         vCompass.setVisibility(View.INVISIBLE);
         utils.beepsInitiate();

@@ -3,6 +3,7 @@ package com.urrecliner.blackbox;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
+import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
@@ -27,6 +29,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collector;
 
 import static com.urrecliner.blackbox.Vars.LENS_FOCUS_FAR;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
@@ -115,7 +118,7 @@ public class VideoUtils {
             1056x704 1.5 , 1024x768 1.3 , 960x720 1.3 , 960x540 1.8 , 800x450 1.8 , 720x720 1.0 ,
             720x480 1.5 , 640x480 1.3 , 352x288 1.2 , 320x240 1.3 , 256x144 1.8 , 176x144 1.2 ,
              */
-
+            map.getOutputFormats();
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                     if (size.getWidth() == 720 && size.getHeight() == 480)
                         mPreviewSize = size;
@@ -208,11 +211,15 @@ public class VideoUtils {
         }
     };
 
+    int maxSZ = 0;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         Image image = reader.acquireLatestImage();
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
 
         byte[] bytes = new byte[buffer.capacity()];
+        if (maxSZ < bytes.length) {
+            maxSZ = bytes.length; Log.w("maxSz","=>"+maxSZ);
+        }
         buffer.get(bytes);
         if (mIsRecording) {
             snapBytes[snapMapIdx] = bytes;

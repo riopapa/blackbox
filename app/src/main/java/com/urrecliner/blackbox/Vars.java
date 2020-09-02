@@ -103,9 +103,10 @@ public class Vars {
 
     final static long INTERVAL_EVENT = 12 * 1000;
     final static int SNAP_SHOT_INTERVAL = 200;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 15 / 10) / SNAP_SHOT_INTERVAL);
+    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 145 / 100) / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
-    static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
+    static byte [][] snapBytes;
+//    static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
     static int snapMapIdx = 0;
     static NormalMerge normalMerge = new NormalMerge();
 

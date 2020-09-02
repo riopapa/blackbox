@@ -36,6 +36,7 @@ import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
+import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapBytes;
@@ -164,8 +165,13 @@ class EventMerge {
 
         @Override
         protected void onPostExecute(String doI) {
-            SnapShotSave snapShotSave = new SnapShotSave();
-            snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
+            new Timer().schedule(new TimerTask() {
+                public void run() {
+                    SnapShotSave snapShotSave = new SnapShotSave();
+                    snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
+                }
+            }, INTERVAL_EVENT * 2);
+
         }
     }
 }

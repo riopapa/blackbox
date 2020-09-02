@@ -7,6 +7,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
+import static com.urrecliner.blackbox.Vars.LENS_FOCUS_NEAR;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
@@ -23,6 +24,7 @@ public class CameraUtils {
         mCaptureState = STATE_WAIT_LOCK;
         try {
 //            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CaptureRequest.CONTROL_AF_TRIGGER_START);
+//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // 0.0 infinite ~ 10f nearest
             mCaptureSession.capture(mCaptureRequestBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
         } catch (CameraAccessException e) {
             utils.logE("capture","SnapShot",e);
