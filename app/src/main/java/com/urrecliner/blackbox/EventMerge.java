@@ -170,7 +170,7 @@ class EventMerge {
                     SnapShotSave snapShotSave = new SnapShotSave();
                     snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
                 }
-            }, INTERVAL_EVENT * 2);
+            }, INTERVAL_EVENT * 4);
 
         }
     }
