@@ -29,7 +29,6 @@ class SnapShotSave {
     private CountDownTimer countDownTimer;
     private int idx;
     byte[][] jpgBytes;
-    long savedTime = 0;
 
     void start(final File thisEventPath, byte[][] snapCloned, final int snapIdx, final boolean first) {
         final int startBias = (first) ? 100: 214; // for snapshot image sequence, dependency : snap interval, snap size
@@ -60,7 +59,6 @@ class SnapShotSave {
                         Log.w("array size "+idx,jpgBytes[idx].length+" vs "+byteArray.length);
                         final File jpgFile = new File(thisEventPath, "SnapShot_"+("" + (startBias+(idx*SNAP_SHOT_INTERVAL)/1150))+"."+idx+".jpg");
                         bytes2File(byteArray, jpgFile);
-//                                Log.w(""+idx,""+idx);
                         jpgBytes[idx] = null; bitmap = null; converted = null;
                     }
                 }
