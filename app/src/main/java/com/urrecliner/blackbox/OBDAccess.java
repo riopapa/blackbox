@@ -189,6 +189,7 @@ class OBDAccess {
         }
         speedCommand = new SpeedCommand();
         obdTimer = new Timer();
+        int HIDE_SPEED = 50;
         final TimerTask obdTask = new TimerTask() {
             @Override
             public void run() {
@@ -197,7 +198,7 @@ class OBDAccess {
                     mActivity.runOnUiThread(() -> {
                         vTextSpeed.setText(speedNow);
                         speedInt = Integer.parseInt(speedNow);
-                        boolean offPrevView =  speedInt > 50;
+                        boolean offPrevView =  speedInt > HIDE_SPEED;
                         if (viewFinder && offPrevView != noPreview) {
                             noPreview = offPrevView;
                             vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);

@@ -106,20 +106,19 @@ class GPSTracker extends Service implements LocationListener {
 
         gpsUpdateTime = System.currentTimeMillis();
         if (!isCompassShown) {
-            mActivity.runOnUiThread(() -> {
-                vCompass.setVisibility(View.VISIBLE);
-            });
+            mActivity.runOnUiThread(() -> vCompass.setVisibility(View.VISIBLE));
             isCompassShown = true;
             utils.logBoth("GPSTracker","Activated ..");
         }
-        if (speedInt < 10)
+        int HIDE_COMPASS = 15;
+        if (speedInt < HIDE_COMPASS)
             return;
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
 //        utils.logBoth("degree",GPSDegree+" : "+latitudes.get(0)+" x "+longitudes.get(0)+
 //                " > "+latitude+" x "+longitude);
         if (Float.isNaN(GPSDegree))
             return;
-        nowDirection = (int) (GPSDegree % 360 / 10) * 10;
+        nowDirection = (int) (GPSDegree % 360 / 18) * 18;
         if (nowDirection != oldDirection) {
             oldDirection = nowDirection;
             mActivity.runOnUiThread(() -> {

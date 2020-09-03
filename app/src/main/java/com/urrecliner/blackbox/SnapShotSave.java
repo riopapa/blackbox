@@ -1,6 +1,12 @@
 package com.urrecliner.blackbox;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
+import android.util.Log;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,42 +24,34 @@ import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 class SnapShotSave {
 
     private static String logID = "SnapShot";
-    private CountDownTimer countDownTimer;
-    private int idx;
-    static byte[][] jpgBytes;
-    static int startBias;
+    private int jpgIdx;
+    byte[][] jpgBytes;
+    int startBias;
 
     void start(File path2Write, int snapIdx, boolean first) {
         jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
-        idx = 0;
+        jpgIdx = 0;
         for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
-            jpgBytes[idx++] = snapBytes[i];
+            jpgBytes[jpgIdx++] = snapBytes[i];
         for (int i = 0; i < snapIdx; i++)
-            jpgBytes[idx++] = snapBytes[i];
-        startBias = (first) ? 100: 219; // for snapshot image sequence, dependency : snap interval, snap size
-        int startIdx = (first) ? 0: 11;
-        int finishIdx = (first) ? MAX_IMAGES_SIZE-3: MAX_IMAGES_SIZE-25;  // to minimize snapshot image counts
+            jpgBytes[jpgIdx++] = snapBytes[i];
+        startBias = (first) ? 100: 216; // for snapshot image sequence, dependency : snap interval, snap size
+        int startIdx = (first) ? 0: 0;
+        int finishIdx = (first) ? MAX_IMAGES_SIZE-3: MAX_IMAGES_SIZE-15;  // to minimize snapshot image counts
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int idx = startIdx; idx < finishIdx; idx++) {
-                    if (jpgBytes[idx] != null && jpgBytes[idx].length > 1) {
-//                        Log.w("idx "+ idx,"log");
-                        File jpgFile = new File(path2Write, "SnapShot_" + ("" + (startBias + (idx * SNAP_SHOT_INTERVAL) / 1100)) + "." + idx + ".jpg");
-//                        ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
-//                        Bitmap bitmap = BitmapFactory.decodeByteArray( jpgBytes[idx], 0, jpgBytes[idx].length ) ;
-//                        Bitmap converted = bitmap.copy(Bitmap.Config.RGB_565, false);
-//                        converted.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-//                        byte[] byteArray = stream.toByteArray();
-//                        bytes2File(byteArray, jpgFile);
-//                        bitmap = null; converted = null; stream = null;
-                        bytes2File(jpgBytes[idx], jpgFile);
-                        jpgBytes[idx] = null;
-                        try {
-                            Thread.sleep(50);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                for (jpgIdx = startIdx; jpgIdx < finishIdx; jpgIdx++) {
+                    byte [] imageBytes = jpgBytes[jpgIdx];
+//                    Log.w("idx "+ jpgIdx,"log "+jpgFile.getName());
+                    if (imageBytes != null && imageBytes.length > 1) {
+                        File imageFile = new File(path2Write, "SnapShot_" + ("" + (startBias + (jpgIdx * SNAP_SHOT_INTERVAL) / 1100)) + "." + jpgIdx + ".jpg");
+                        Log.w("id",imageFile.getName());
+                        bytes2File(imageBytes, imageFile);
+//
+//                        BitMapSave bs = new BitMapSave();
+//                        bs.save(jpgBytes[jpgIdx], jpgFile);
+                        SystemClock.sleep(40);  // not to hold too long time
                     }
                 }
             }
@@ -83,22 +81,26 @@ class SnapShotSave {
         utils.logBoth(logID, thisEventPath.getName());
     }
 
-    private static void bytes2File(byte[] bytes, File file) {
+
+    void bytes2File(byte[] bytes, File file) {
 
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(file);
             fileOutputStream.write(bytes);
         } catch (IOException e) {
-            utils.logE(logID, "IOException catch", e);
+            utils.logE("snap", "IOException catch", e);
         } finally {
+            bytes = null;
             if (fileOutputStream != null) {
                 try {
                     fileOutputStream.close();
                 } catch (IOException e) {
-                    utils.logE(logID, "IOException finally", e);
+                    utils.logE("snap", "IOException finally", e);
                 }
             }
+            fileOutputStream = null;
         }
     }
+
 }

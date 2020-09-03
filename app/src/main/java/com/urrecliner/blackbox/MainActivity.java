@@ -47,7 +47,6 @@ import static com.urrecliner.blackbox.Vars.LENS_FOCUS_FAR;
 import static com.urrecliner.blackbox.Vars.LENS_FOCUS_NEAR;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
-import static com.urrecliner.blackbox.Vars.cameraManager;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
@@ -252,7 +251,7 @@ public class MainActivity extends Activity {
         utils.logBoth(logID,"Event Starting ...");
 
         gpsTracker.askLocation();
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 2;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventJpgPath);
 //        utils.logBoth(logID,"Prev Snapshot");
@@ -264,7 +263,7 @@ public class MainActivity extends Activity {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventJpgPath);
             }
-        }, INTERVAL_EVENT + INTERVAL_EVENT / 5);
+        }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
