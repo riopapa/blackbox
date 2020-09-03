@@ -111,7 +111,6 @@ class StartStopExit {
         mExitApplication = true;
         String s = "\nExit\nBlackBox";
         utils.customToast(s, Toast.LENGTH_SHORT, Color.BLACK);
-        snapBytes = null;
         if (mIsRecording)
             stopVideo();
         displayTime.stop();

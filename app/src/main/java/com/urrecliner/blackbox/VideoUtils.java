@@ -211,15 +211,15 @@ public class VideoUtils {
         }
     };
 
-    int maxSZ = 0;
+//    int maxSZ = 0;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         Image image = reader.acquireLatestImage();
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
 
         byte[] bytes = new byte[buffer.capacity()];
-        if (maxSZ < bytes.length) {
-            maxSZ = bytes.length; Log.w("maxSz","=>"+maxSZ);
-        }
+//        if (maxSZ < bytes.length) {
+//            maxSZ = bytes.length; Log.w("maxSz","=>"+maxSZ);
+//        }
         buffer.get(bytes);
         if (mIsRecording) {
             snapBytes[snapMapIdx] = bytes;

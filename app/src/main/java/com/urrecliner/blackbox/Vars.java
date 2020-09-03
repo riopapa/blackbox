@@ -80,7 +80,7 @@ public class Vars {
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
-    static long VIDEO_ONE_WORK_FILE_SIZE = 30 * 100000;
+    static long VIDEO_ONE_WORK_FILE_SIZE = 32 * 100000;
     static int VIDEO_ENCODING_RATE = 3000*1000;
     static int VIDEO_FRAME_RATE = 36;
 
@@ -101,13 +101,12 @@ public class Vars {
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
 
-    final static long INTERVAL_EVENT = 12 * 1000;
+    final static long INTERVAL_EVENT = 13 * 1000;
     final static int SNAP_SHOT_INTERVAL = 200;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 145 / 100) / SNAP_SHOT_INTERVAL);
+    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 150 / 100) / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
-//    static byte [][] snapBytes = new byte[MAX_IMAGES_SIZE][];
-    static int snapMapIdx = 0;
+     static int snapMapIdx = 0;
     static NormalMerge normalMerge = new NormalMerge();
 
     final static int ASK_SPEED_INTERVAL = 400;

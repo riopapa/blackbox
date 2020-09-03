@@ -3,8 +3,7 @@ package com.urrecliner.blackbox;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.os.CountDownTimer;
-import android.widget.ImageButton;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,23 +26,16 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
-import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
-import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vTextActiveCount;
-import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 
 class EventMerge {
 
@@ -53,7 +45,7 @@ class EventMerge {
     void merge(final long startTime, final File eventPath) {
         if (mExitApplication)
             return;
-        this.thisEventPath = eventPath;
+        thisEventPath = eventPath;
         try {
             new EventMerge.MergeFileTask().execute("" + startTime);
         } catch (Exception e) {
@@ -160,18 +152,16 @@ class EventMerge {
         }
 
         @Override
-        protected void onCancelled(String result) {
-        }
+        protected void onCancelled(String result) { }
 
         @Override
         protected void onPostExecute(String doI) {
             new Timer().schedule(new TimerTask() {
                 public void run() {
-                    SnapShotSave snapShotSave = new SnapShotSave();
-                    snapShotSave.start(thisEventPath, snapBytes.clone(), snapMapIdx,false);
+                SnapShotSave snapShotSave = new SnapShotSave();
+                snapShotSave.start(thisEventPath, snapMapIdx,false);
                 }
-            }, INTERVAL_EVENT * 4);
-
+            }, 100);
         }
     }
 }

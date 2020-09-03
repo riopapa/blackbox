@@ -256,20 +256,21 @@ public class MainActivity extends Activity {
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventJpgPath);
 //        utils.logBoth(logID,"Prev Snapshot");
+
         SnapShotSave snapShotSave = new SnapShotSave();
-        snapShotSave.start(thisEventJpgPath, snapBytes.clone(), snapMapIdx, true);
+        snapShotSave.start(thisEventJpgPath, snapMapIdx, true);
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventJpgPath);
             }
-        }, INTERVAL_EVENT - INTERVAL_EVENT / 5);
+        }, INTERVAL_EVENT + INTERVAL_EVENT / 5);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
             String text = ""+activeEventCount;
             vTextActiveCount.setText(text);
-            vBtnEvent.setImageResource(R.mipmap.event_blue);
+//            vBtnEvent.setImageResource(R.mipmap.event_blue);
             utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_LONG, Color.RED);
         });
     }
@@ -289,11 +290,11 @@ public class MainActivity extends Activity {
         vTextActiveCount.setText("");
         vExitApp = findViewById(R.id.btnExit);
         vExitApp.setOnClickListener(v -> startStopExit.exitBlackBoxApp());
-        ImageButton btnNapping = findViewById(R.id.btnIWillBack);
-        btnNapping.setOnClickListener(new View.OnClickListener() {
+        ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
+        btnBeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnNapping.setImageAlpha(50);
+                btnBeBack.setImageAlpha(50);
                 willBack = true;
                 if (mIsRecording)
                     stopHandler.sendEmptyMessage(0);
