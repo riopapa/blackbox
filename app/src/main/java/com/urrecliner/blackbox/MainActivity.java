@@ -288,7 +288,10 @@ public class MainActivity extends Activity {
         vTextCountEvent.setText(txt);
         vTextActiveCount.setText("");
         vExitApp = findViewById(R.id.btnExit);
-        vExitApp.setOnClickListener(v -> startStopExit.exitBlackBoxApp());
+        vExitApp.setOnClickListener(v -> {
+                    launchJpg2PhotoApp();
+                    startStopExit.exitBlackBoxApp();
+                });
         ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
         btnBeBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -345,6 +348,23 @@ public class MainActivity extends Activity {
         mBackgroundImage = new Handler(mBackgroundHandlerThread.getLooper());
     }
 
+    void launchJpg2PhotoApp() {
+        if (CountEvent > 0) {
+            Toast.makeText(MainActivity.this, "Processing squeeze event photos", Toast.LENGTH_LONG).show();
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxjpg");
+            if (launchIntent != null) {
+                startActivity(launchIntent);
+            }
+        }
+    }
+
+    void delayedLaunch () {
+        Intent sendIntent = getPackageManager().getLaunchIntentForPackage("com.example.app2");
+        assert sendIntent != null;
+        sendIntent.putExtra("delay", ""+DELAY_I_WILL_BACK);
+        startActivity(sendIntent);
+    }
+
     static long keyOldTime = 0, keyNowTime = 0;
     static boolean willBack = false;
     @Override
@@ -356,8 +376,10 @@ public class MainActivity extends Activity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
-                if (willBack)
+                if (willBack) {
+                    launchJpg2PhotoApp();
                     startStopExit.exitBlackBoxApp();
+                }
                 if ((keyOldTime + 20000) < keyNowTime)  // if gap is big, reset to current
                     keyOldTime = keyNowTime;
                 if ((keyOldTime + 800 > keyNowTime) &&
