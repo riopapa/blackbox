@@ -46,7 +46,7 @@ class SnapShotSave {
 //                    Log.w("idx "+ jpgIdx,"log "+jpgFile.getName());
                     if (imageBytes != null && imageBytes.length > 1) {
                         File imageFile = new File(path2Write, "SnapShot_" + ("" + (startBias + (jpgIdx * SNAP_SHOT_INTERVAL) / 1100)) + "." + jpgIdx + ".jpg");
-                        Log.w("id",imageFile.getName());
+//                        Log.w("id",imageFile.getName());
                         bytes2File(imageBytes, imageFile);
 //
 //                        BitMapSave bs = new BitMapSave();

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT;
+import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.utils;
@@ -56,14 +57,19 @@ class BeBackSoon extends AsyncTask<String, String, String> {
                 utils.beepOnce(7,0.7f); // I will be back
                 Handler mHandler = new Handler(Looper.getMainLooper());
                 mHandler.postDelayed(() -> {
-//                reStartApp();
-                    AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-                    Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
-                    assert intent != null;
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    PendingIntent alarmIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                    assert alarmMgr != null;
-                    alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK * 1000, alarmIntent);
+                    Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackbox");
+                    assert sendIntent != null;
+                    sendIntent.putExtra("delay", ""+DELAY_I_WILL_BACK);
+                    mActivity.startActivity(sendIntent);
+
+                    //                reStartApp();
+//                    AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+//                    Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
+//                    assert intent != null;
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    PendingIntent alarmIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//                    assert alarmMgr != null;
+//                    alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK * 1000, alarmIntent);
                     Runtime.getRuntime().exit(0);
                 }, 2000);
             }

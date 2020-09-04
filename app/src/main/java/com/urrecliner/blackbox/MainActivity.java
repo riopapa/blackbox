@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -119,6 +120,7 @@ public class MainActivity extends Activity {
             surfaceReady = true;
         }
     }
+    TextView textureBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,15 +129,25 @@ public class MainActivity extends Activity {
             Toast.makeText(getApplicationContext(),"Rotate Phone to Landscape, pls ",Toast.LENGTH_LONG).show();
             return;
         }
-//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         askPermission();
         setContentView(R.layout.main_activity);
-        mActivity = this; mContext = this;
+        Intent intent = getIntent();
+        int delayedStart = (intent.hasExtra("delay")) ? DELAY_I_WILL_BACK : 2000;
+        SystemClock.sleep(delayedStart);
+        prepareMain();
+        utils.deleteOldFiles(mPackageNormalPath, 4);
+        utils.deleteOldFiles(mPackageEventPath, 3);
+        utils.deleteOldFiles(mPackageEventJpgPath, 3);
+        utils.deleteOldLogs(5);
+    }
+
+    private void prepareMain() {
+        mActivity = this;
+        mContext = this;
         gpsTracker = new GPSTracker(mContext);
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vPreviewView = findViewById(R.id.previewView);
         utils.logOnly(logID, "Main Started ..");
-        final TextView textureBox = findViewById(R.id.textureBox);
         vBtnRecord = findViewById(R.id.btnRecord);
         vBtnRecord.setOnClickListener(v -> {
             utils.logBoth(logID," start button clicked");
@@ -171,8 +183,38 @@ public class MainActivity extends Activity {
         });
         setViewVars();
         setBlackBoxFolders();
-        initiate();
+        mIsRecording = false;
+        snapBytes = new byte[MAX_IMAGES_SIZE][];
+        Log.w("snapBytes","size = "+snapBytes.length);
+        vSatellite.setVisibility(View.INVISIBLE);
+        vCompass.setVisibility(View.INVISIBLE);
+        utils.beepsInitiate();
+        gpsTracker.askLocation();
+        CountEvent = utils.getDirectoryFiltered(mPackageEventPath, "mp4").length;
+        vExitApp = findViewById(R.id.btnExit);
+        vExitApp.setOnClickListener(v -> {
+            launchJpg2PhotoApp();
+            startStopExit.exitBlackBoxApp();
+        });
+        ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
+        btnBeBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnBeBack.setImageAlpha(50);
+                willBack = true;
+                if (mIsRecording)
+                    stopHandler.sendEmptyMessage(0);
+//                reStarting();
+                new BeBackSoon().execute("x");
+            }
+        });
+        vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
+        if (!mPackageNormalDatePath.exists())
+            mPackageNormalDatePath.mkdir();
+        utils.beepsInitiate();
+        startBackgroundThread();
 
+        textureBox = findViewById(R.id.textureBox);
         textureBox.setOnClickListener(v -> {
             viewFinder = !viewFinder;
             vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
@@ -203,19 +245,14 @@ public class MainActivity extends Activity {
         displayTime.run();
         displayBattery.init();
         obdAccess.prepare();
-
+        showInitialValues();
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 startHandler.sendEmptyMessage(0);
 //                vBtnEvent.setImageResource(R.mipmap.event_ready);
             }
-        }, DELAY_AUTO_RECORDING *1000);
-
-        utils.deleteOldFiles(mPackageNormalPath, 4);
-        utils.deleteOldFiles(mPackageEventPath, 3);
-        utils.deleteOldFiles(mPackageEventJpgPath, 3);
-        utils.deleteOldLogs(5);
+        }, DELAY_AUTO_RECORDING);
     }
 
     final Handler startHandler = new Handler() {
@@ -274,42 +311,12 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void initiate() {
-
-        mIsRecording = false;
-        snapBytes = new byte[MAX_IMAGES_SIZE][];
-        Log.w("snapBytes","size = "+snapBytes.length);
-        vSatellite.setVisibility(View.INVISIBLE);
-        vCompass.setVisibility(View.INVISIBLE);
-        utils.beepsInitiate();
-        gpsTracker.askLocation();
-        CountEvent = utils.getDirectoryFiltered(mPackageEventPath, "mp4").length;
-        String txt = "" + CountEvent;
-        vTextCountEvent.setText(txt);
-        vTextActiveCount.setText("");
-        vExitApp = findViewById(R.id.btnExit);
-        vExitApp.setOnClickListener(v -> {
-                    launchJpg2PhotoApp();
-                    startStopExit.exitBlackBoxApp();
-                });
-        ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
-        btnBeBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnBeBack.setImageAlpha(50);
-                willBack = true;
-                if (mIsRecording)
-                    stopHandler.sendEmptyMessage(0);
-//                reStarting();
-                new BeBackSoon().execute("x");
-            }
+    private void showInitialValues() {
+        mActivity.runOnUiThread(() -> {
+            String txt = "" + CountEvent;
+            vTextCountEvent.setText(txt);
+            vTextActiveCount.setText("");
         });
-        vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
-        if (!mPackageNormalDatePath.exists())
-            mPackageNormalDatePath.mkdir();
-        utils.beepsInitiate();
-        startBackgroundThread();
-//        directionSensor.start();
     }
 
     private void setViewVars() {
@@ -356,13 +363,6 @@ public class MainActivity extends Activity {
                 startActivity(launchIntent);
             }
         }
-    }
-
-    void delayedLaunch () {
-        Intent sendIntent = getPackageManager().getLaunchIntentForPackage("com.example.app2");
-        assert sendIntent != null;
-        sendIntent.putExtra("delay", ""+DELAY_I_WILL_BACK);
-        startActivity(sendIntent);
     }
 
     static long keyOldTime = 0, keyNowTime = 0;
