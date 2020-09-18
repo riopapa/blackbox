@@ -18,14 +18,14 @@
     <!--Event Record counts -->
     <TextView
         android:id="@+id/textEvent"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textLogInfo"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="@string/textEvent"
         android:textColor="#cccccc"
-        android:textSize="@dimen/info_size" />
+        android:textSize="16dp" />
     <TextView
         android:id="@+id/textCountEvent"
         android:layout_width="wrap_content"
@@ -35,15 +35,15 @@
         android:layout_below="@id/textEvent"
         android:text="@string/zero"
         android:textColor="#cccccc"
-        android:textSize="36sp" />
+        android:textSize="24sp" />
 
     <Switch
         android:id="@+id/nearSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="60dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="4dp"
         android:layout_marginLeft="16dp"
-        android:switchMinWidth="48dp"
+        android:switchMinWidth="40dp"
         android:layout_below="@id/textEvent"
         android:layout_toEndOf="@id/textCountEvent"
         android:checked="false"
@@ -123,7 +123,7 @@
         android:id="@+id/textSpeed"
         android:layout_width="160dp"
         android:layout_height="80dp"
-        android:layout_below="@id/textEvent"
+        android:layout_below="@id/nearSwitch"
         android:layout_alignParentStart="true"
         android:layout_gravity="end"
         android:layout_marginStart="32dp"
@@ -145,33 +145,7 @@
         android:text="@string/km"
         android:textColor="#fcfcfc"
         android:textSize="36sp" />
-    <!--
 
-        <TextView
-            android:id="@+id/obdKms"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignEnd="@id/textSpeed"
-            android:layout_below="@id/textSpeed"
-            android:layout_gravity="end"
-            android:layout_marginStart="8dp"
-            android:text="@string/underscore"
-            android:textColor="#fcfcfc"
-            android:textSize="28sp" />
-
-        <TextView
-            android:id="@+id/textKms"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignStart="@id/textKm"
-            android:layout_alignBottom="@id/obdKms"
-            android:layout_gravity="end"
-            android:layout_marginStart="4dp"
-            android:layout_toEndOf="@id/obdKms"
-            android:text="@string/kms"
-            android:textColor="#fcfcfc"
-            android:textSize="28sp" />
-    -->
     <!--Exit & Napping button-->
     <ImageButton
         android:id="@+id/btnExit"

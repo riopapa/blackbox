@@ -177,7 +177,7 @@ public class MainActivity extends Activity {
                         public void run() {
                             switchHandler.sendEmptyMessage(0);
                         }
-                    }, INTERVAL_EVENT * 15 / 10);
+                    }, INTERVAL_EVENT * 40 / 10);
                 }
             }
         });
