@@ -67,7 +67,7 @@ public class Vars {
 
     private static final String PATH_PACKAGE = "BlackBox";
     private static final String PATH_EVENT = "event";
-    private static final String PATH_EVENT_JPG = "eventJpg";
+    private static final String PATH_EVENT_JPG = "jpgTemp";
     private static final String PATH_NORMAL = "normal";
     private static final String PATH_WORK = "work";
     private static final String PATH_LOG = "log";
