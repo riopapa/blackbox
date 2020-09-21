@@ -132,16 +132,15 @@ public class MainActivity extends Activity {
         askPermission();
         setContentView(R.layout.main_activity);
         Intent intent = getIntent();
-        int delayedStart = (intent.hasExtra("delay")) ? DELAY_I_WILL_BACK : 2000;
-        SystemClock.sleep(delayedStart);
-        prepareMain();
+        String delayedStart = (intent.hasExtra("delay")) ? DELAY_I_WILL_BACK : DELAY_AUTO_RECORDING;
+        prepareMain(Integer.parseInt(delayedStart));
         utils.deleteOldFiles(mPackageNormalPath, 4);
         utils.deleteOldFiles(mPackageEventPath, 3);
         utils.deleteOldFiles(mPackageEventJpgPath, 3);
         utils.deleteOldLogs(5);
     }
 
-    private void prepareMain() {
+    private void prepareMain(int delayedStart) {
         mActivity = this;
         mContext = this;
         gpsTracker = new GPSTracker(mContext);
@@ -246,13 +245,15 @@ public class MainActivity extends Activity {
         displayBattery.init();
         obdAccess.prepare();
         showInitialValues();
+//        SystemClock.sleep(delayedStart);
+
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 startHandler.sendEmptyMessage(0);
 //                vBtnEvent.setImageResource(R.mipmap.event_ready);
             }
-        }, DELAY_AUTO_RECORDING);
+        }, delayedStart);
     }
 
     final Handler startHandler = new Handler() {
@@ -406,26 +407,6 @@ public class MainActivity extends Activity {
         }
         keyOldTime = keyNowTime;
         return super.onKeyDown(keyCode, event);
-    }
-
-    void reStarting () {
-//        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-//        assert alarmManager != null;
-//        Intent intent = new Intent(mContext, MainActivity.class);
-//        int uniqueId = 123456;
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, uniqueId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + DELAY_I_WILL_BACK *1000, pendingIntent);
-//        mActivity.finish();
-
-        AlarmManager alarmMgr = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(mContext, MainActivity.class);
-        Intent intent = getApplicationContext().getPackageManager() .getLaunchIntentForPackage(getApplicationContext().getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent alarmIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK * 1000, alarmIntent);
-//        alarmMgr.set(AlarmManager.RTC, SystemClock.elapsedRealtime() + DELAY_I_WILL_BACK * 1000, alarmIntent);
-        Runtime.getRuntime().exit(0);
     }
 
 // ↓ ↓ ↓ P E R M I S S I O N   RELATED /////// ↓ ↓ ↓ ↓  BEST CASE

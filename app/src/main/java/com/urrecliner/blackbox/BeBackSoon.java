@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -62,7 +63,7 @@ class BeBackSoon extends AsyncTask<String, String, String> {
                     sendIntent.putExtra("delay", ""+DELAY_I_WILL_BACK);
                     mActivity.startActivity(sendIntent);
 
-                    //                reStartApp();
+//                  followings are delayed load, not active after Android.P
 //                    AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
 //                    Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
 //                    assert intent != null;
@@ -70,7 +71,7 @@ class BeBackSoon extends AsyncTask<String, String, String> {
 //                    PendingIntent alarmIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 //                    assert alarmMgr != null;
 //                    alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK * 1000, alarmIntent);
-                    Runtime.getRuntime().exit(0);
+//                    Runtime.getRuntime().exit(0);
                 }, 2000);
             }
         }

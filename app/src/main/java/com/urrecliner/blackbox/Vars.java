@@ -86,9 +86,9 @@ public class Vars {
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int DELAY_AUTO_RECORDING = 5000;
+    final static String DELAY_AUTO_RECORDING = "5000";
     final static int DELAY_WAIT_EXIT = 5;
-    final static int DELAY_I_WILL_BACK = 40000;
+    final static String DELAY_I_WILL_BACK = "40000";
     final static float LENS_FOCUS_FAR = 4f;   // 0: infinite 10: nearest
     final static float LENS_FOCUS_NEAR = 7f;   // 0: infinite 10: nearest
     static Handler mBackgroundImage;
