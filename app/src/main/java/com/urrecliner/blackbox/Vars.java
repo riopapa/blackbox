@@ -74,7 +74,7 @@ public class Vars {
 
     static File mPackagePath = new File(Environment.getExternalStorageDirectory(), PATH_PACKAGE);
     static File mPackageEventPath = new File(mPackagePath, PATH_EVENT);
-    static File mPackageEventJpgPath = new File(mPackagePath, PATH_EVENT_JPG);
+    static File mPackageEventJpgTempPath = new File(mPackagePath, PATH_EVENT_JPG);
     static File mPackageNormalPath = new File(mPackagePath, PATH_NORMAL);
     static File mPackageNormalDatePath = new File(mPackageNormalPath, DATE_PREFIX+utils.getMilliSec2String(System.currentTimeMillis(), FORMAT_DATE));
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
@@ -101,9 +101,9 @@ public class Vars {
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
 
-    final static long INTERVAL_EVENT = 13 * 1000;
+    final static long INTERVAL_EVENT = 15 * 1000;
     final static int SNAP_SHOT_INTERVAL = 200;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 137 / 100) / SNAP_SHOT_INTERVAL);
+    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 128 / 100) / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
      static int snapMapIdx = 0;

@@ -1,10 +1,7 @@
 package com.urrecliner.blackbox;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -19,7 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -56,7 +52,7 @@ import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
+import static com.urrecliner.blackbox.Vars.mPackageEventJpgTempPath;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
@@ -136,7 +132,7 @@ public class MainActivity extends Activity {
         prepareMain(Integer.parseInt(delayedStart));
         utils.deleteOldFiles(mPackageNormalPath, 4);
         utils.deleteOldFiles(mPackageEventPath, 3);
-        utils.deleteOldFiles(mPackageEventJpgPath, 3);
+        utils.deleteOldFiles(mPackageEventJpgTempPath, 3);
         utils.deleteOldLogs(5);
     }
 
@@ -283,6 +279,7 @@ public class MainActivity extends Activity {
     void startEventSaving() {
         eventHandler.sendEmptyMessage(0);
     }
+
     void eventRecording() {
 
         if (!mIsRecording) return;
@@ -290,7 +287,7 @@ public class MainActivity extends Activity {
 
         gpsTracker.askLocation();
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 2;
-        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
+        final File thisEventJpgPath = new File(mPackageEventJpgTempPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventJpgPath);
 //        utils.logBoth(logID,"Prev Snapshot");
 
@@ -301,7 +298,7 @@ public class MainActivity extends Activity {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventJpgPath);
             }
-        }, INTERVAL_EVENT + INTERVAL_EVENT / 4);
+        }, INTERVAL_EVENT + INTERVAL_EVENT / 6);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
@@ -344,7 +341,7 @@ public class MainActivity extends Activity {
         utils.readyPackageFolder(mPackageLogPath);
         utils.readyPackageFolder(mPackageWorkingPath);
         utils.readyPackageFolder(mPackageEventPath);
-        utils.readyPackageFolder(mPackageEventJpgPath);
+        utils.readyPackageFolder(mPackageEventJpgTempPath);
         utils.readyPackageFolder(mPackageNormalPath);
         utils.readyPackageFolder(mPackageNormalDatePath);
     }

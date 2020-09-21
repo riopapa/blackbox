@@ -26,32 +26,42 @@ class SnapShotSave {
     private static String logID = "SnapShot";
     private int jpgIdx;
     byte[][] jpgBytes;
-    int startBias;
+    int startBias, jpgSize;
 
     void start(File path2Write, int snapIdx, boolean first) {
-        jpgBytes = new byte[MAX_IMAGES_SIZE+1][];
+        int startIdx = (first) ? 5: 0;
+        int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-40;  // to minimize snapshot image counts
+        jpgSize = finishIdx-startIdx+1;
+//        Log.w("jpgSize","is "+jpgSize);
+        jpgBytes = new byte[jpgSize][];
         jpgIdx = 0;
-        for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++)
-            jpgBytes[jpgIdx++] = snapBytes[i];
-        for (int i = 0; i < snapIdx; i++)
-            jpgBytes[jpgIdx++] = snapBytes[i];
-        startBias = (first) ? 100: 216; // for snapshot image sequence, dependency : snap interval, snap size
-        int startIdx = (first) ? 0: 0;
-        int finishIdx = (first) ? MAX_IMAGES_SIZE-3: MAX_IMAGES_SIZE-15;  // to minimize snapshot image counts
+        for (int i = snapIdx; i < MAX_IMAGES_SIZE; i++) {
+            if (jpgIdx < jpgSize) {
+                jpgBytes[jpgIdx++] = snapBytes[i];
+                snapBytes[i] = null;
+            }
+        }
+        for (int i = 0; i < snapIdx-1; i++) {
+            if (jpgIdx < jpgSize) {
+                jpgBytes[jpgIdx++] = snapBytes[i];
+                snapBytes[i] = null;
+            }
+        }
+        startBias = (first) ? 100: 300; // for snapshot image sequence, dependency : snap interval, snap size
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (jpgIdx = startIdx; jpgIdx < finishIdx; jpgIdx++) {
+                for (jpgIdx = 0; jpgIdx < jpgSize; jpgIdx++) {
                     byte [] imageBytes = jpgBytes[jpgIdx];
 //                    Log.w("idx "+ jpgIdx,"log "+jpgFile.getName());
                     if (imageBytes != null && imageBytes.length > 1) {
-                        File imageFile = new File(path2Write, "SnapShot_" + ("" + (startBias + (jpgIdx * SNAP_SHOT_INTERVAL) / 1100)) + "." + jpgIdx + ".jpg");
+                        File imageFile = new File(path2Write, "SnapShot_" + ("" + (startBias + jpgIdx)) + ".jpg");
 //                        Log.w("id",imageFile.getName());
                         bytes2File(imageBytes, imageFile);
 //
 //                        BitMapSave bs = new BitMapSave();
 //                        bs.save(jpgBytes[jpgIdx], jpgFile);
-                        SystemClock.sleep(40);  // not to hold too long time
+                        SystemClock.sleep(30);  // not to hold too long time
                     }
                 }
             }
