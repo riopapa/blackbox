@@ -64,6 +64,7 @@ import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.startStopExit;
+import static com.urrecliner.blackbox.Vars.tryNear;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -87,6 +88,8 @@ import static com.urrecliner.blackbox.Vars.viewFinder;
 public class MainActivity extends Activity {
 
     private static final String logID = "Main";
+    private static Switch nearSW;
+
     boolean surfaceReady = false;
     private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -163,17 +166,9 @@ public class MainActivity extends Activity {
         Switch sw = findViewById(R.id.nearSwitch);
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {    // try near focus
-                    mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
-                    mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR);
-                    mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
-                    new Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            switchHandler.sendEmptyMessage(0);
-                        }
-                    }, INTERVAL_EVENT * 40 / 10);
-                }
+                tryNear = isChecked;
+                if (isChecked)
+                    onNearSwitch();
             }
         });
         setViewVars();
@@ -214,7 +209,7 @@ public class MainActivity extends Activity {
             viewFinder = !viewFinder;
             vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
         });
-
+        nearSW = findViewById(R.id.nearSwitch);
         vPreviewView.post(() -> {
             readyCamera();
             vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
@@ -264,16 +259,29 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) { eventRecording();
         }
     };
-    final Handler switchHandler = new Handler() {
+    static final Handler switchHandler = new Handler() {
         public void handleMessage(Message msg) { offNearSwitch();
         }
     };
 
-    void offNearSwitch() {
-        Switch sw = findViewById(R.id.nearSwitch);
-        sw.setChecked(false);
-        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
+    static void onNearSwitch() {
+        tryNear = true;
+        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
+        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6f); // NEAR = 7f
+//        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                switchHandler.sendEmptyMessage(0);
+            }
+        }, INTERVAL_EVENT * 40 / 10);
+    }
+    static void offNearSwitch() {
+        tryNear = false;
+        nearSW.setChecked(false);
+        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // FAR = 4f, INFINITE = 0f
+//        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR);
     }
 
     void startEventSaving() {

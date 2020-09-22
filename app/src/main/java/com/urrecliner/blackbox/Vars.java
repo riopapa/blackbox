@@ -97,7 +97,7 @@ public class Vars {
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder = new MediaRecorder();
     static int speedInt = 0;
-
+    static boolean tryNear = false;
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
 
