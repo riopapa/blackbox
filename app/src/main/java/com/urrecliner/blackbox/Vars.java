@@ -86,11 +86,11 @@ public class Vars {
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static String DELAY_AUTO_RECORDING = "5000";
+    final static String DELAY_AUTO_RECORDING = "3000";
     final static int DELAY_WAIT_EXIT = 5;
     final static String DELAY_I_WILL_BACK = "40000";
-    final static float LENS_FOCUS_FAR = 4f;   // 0: infinite 10: nearest
-    final static float LENS_FOCUS_NEAR = 7f;   // 0: infinite 10: nearest
+    final static float LENS_FOCUS_FAR = 3f;   // 0: infinite 10: nearest
+    final static float LENS_FOCUS_NEAR = 6f;   // 0: infinite 10: nearest
     static Handler mBackgroundImage;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
@@ -103,7 +103,7 @@ public class Vars {
 
     final static long INTERVAL_EVENT = 15 * 1000;
     final static int SNAP_SHOT_INTERVAL = 200;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 128 / 100) / SNAP_SHOT_INTERVAL);
+    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 130 / 100) / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
      static int snapMapIdx = 0;

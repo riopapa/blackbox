@@ -191,7 +191,7 @@ class OBDAccess {
         speedCommand = new SpeedCommand();
         obdTimer = new Timer();
         int HIDE_SPEED = 50;
-        int NEAR_FOCUS = 20;
+        int NEAR_FOCUS = 30;
         final TimerTask obdTask = new TimerTask() {
             @Override
             public void run() {

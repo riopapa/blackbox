@@ -265,9 +265,11 @@ public class MainActivity extends Activity {
     };
 
     static void onNearSwitch() {
+        utils.logBoth("nearSwitch","switched to NEAR");
         tryNear = true;
+        nearSW.setChecked(true);
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
-        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 6f); // NEAR = 7f
+        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // NEAR = 7f
 //        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
         new Timer().schedule(new TimerTask() {
             @Override
@@ -277,10 +279,11 @@ public class MainActivity extends Activity {
         }, INTERVAL_EVENT * 40 / 10);
     }
     static void offNearSwitch() {
+        utils.logBoth("nearSwitch","switched to FAR");
         tryNear = false;
         nearSW.setChecked(false);
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // FAR = 4f, INFINITE = 0f
+//        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 3f); // FAR = 4f, INFINITE = 0f
 //        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR);
     }
 

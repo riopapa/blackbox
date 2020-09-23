@@ -35,7 +35,7 @@
         android:layout_below="@id/textEvent"
         android:text="@string/zero"
         android:textColor="#cccccc"
-        android:textSize="24sp" />
+        android:textSize="32sp" />
 
     <Switch
         android:id="@+id/nearSwitch"
