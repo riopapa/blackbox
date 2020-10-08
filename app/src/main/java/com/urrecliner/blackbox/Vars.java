@@ -55,7 +55,6 @@ public class Vars {
     static TextureView vPreviewView;
     static ImageButton vBtnRecord;
     static ImageView vCompass = null;
-    static ImageView vSatellite = null;
 
     static SharedPreferences sharedPref;
 
@@ -86,9 +85,9 @@ public class Vars {
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static String DELAY_AUTO_RECORDING = "3000";
-    final static int DELAY_WAIT_EXIT = 5;
-    final static String DELAY_I_WILL_BACK = "40000";
+    final static int DELAY_AUTO_RECORDING = 3000;
+    final static int DELAY_WAIT_EXIT = 4;
+    final static int DELAY_I_WILL_BACK = 40000; // 40000;
     final static float LENS_FOCUS_FAR = 3f;   // 0: infinite 10: nearest
     final static float LENS_FOCUS_NEAR = 6f;   // 0: infinite 10: nearest
     static Handler mBackgroundImage;
@@ -97,7 +96,7 @@ public class Vars {
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder = new MediaRecorder();
     static int speedInt = 0;
-    static boolean tryNear = false;
+    static boolean nowIsNear = false;
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
 

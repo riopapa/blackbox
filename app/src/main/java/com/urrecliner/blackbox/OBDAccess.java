@@ -26,7 +26,7 @@ import static com.urrecliner.blackbox.Vars.ASK_SPEED_INTERVAL;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.speedInt;
-import static com.urrecliner.blackbox.Vars.tryNear;
+import static com.urrecliner.blackbox.Vars.nowIsNear;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
@@ -191,7 +191,7 @@ class OBDAccess {
         speedCommand = new SpeedCommand();
         obdTimer = new Timer();
         int HIDE_SPEED = 50;
-        int NEAR_FOCUS = 30;
+        int NEAR_FOCUS = 40;
         final TimerTask obdTask = new TimerTask() {
             @Override
             public void run() {
@@ -205,8 +205,11 @@ class OBDAccess {
                             noPreview = offPrevView;
                             vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);
                         }
-                        if (speedInt < NEAR_FOCUS && !tryNear) {
+                        if (!nowIsNear && speedInt < NEAR_FOCUS) {
                             MainActivity.onNearSwitch();
+                        }
+                        if (nowIsNear && speedInt > NEAR_FOCUS) {
+                            MainActivity.offNearSwitch();
                         }
                         speedOld = speedNow;
                     });

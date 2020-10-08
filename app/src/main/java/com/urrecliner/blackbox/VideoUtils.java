@@ -268,6 +268,7 @@ public class VideoUtils {
             mCaptureRequestBuilder.addTarget(recordSurface);
             mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // 0.0 infinite ~ 10f nearest
             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error recordSurface ///", e);
         }

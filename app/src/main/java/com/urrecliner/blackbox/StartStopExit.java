@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
@@ -42,20 +43,32 @@ class StartStopExit {
             videoUtils.prepareRecord();
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error", e);
+            reRunApplication();
         }
         try {
             mediaRecorder.start();
         } catch (Exception e) {
             utils.logE(logID, "Start Error", e);
+            reRunApplication();
         }
         try {
             startCamera();
             startNormal();
         } catch (Exception e) {
             utils.logE(logID, "Start Camera, Normal Error", e);
+            reRunApplication();
         }
     }
 
+    static void reRunApplication() {
+        utils.logOnly("rerun","/// application reloaded ///");
+        Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
+        assert sendIntent != null;
+        mContext.startActivity(sendIntent);
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//        sendIntent.putExtra("delay", "" + DELAY_I_WILL_BACK);
+
+    }
     private Handler cameraTimer = new Handler() {
         public void handleMessage(Message msg) { cameraUtils.snapshotCamera(); }
     };

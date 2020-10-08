@@ -11,7 +11,6 @@ import static com.urrecliner.blackbox.Vars.gpsUpdateTime;
 import static com.urrecliner.blackbox.Vars.isCompassShown;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vCompass;
-import static com.urrecliner.blackbox.Vars.vSatellite;
 import static com.urrecliner.blackbox.Vars.vTextTime;
 
 class DisplayTime implements Runnable {
@@ -29,7 +28,6 @@ class DisplayTime implements Runnable {
                     utils.logBoth("GPS","GPS not Active");
                     isCompassShown = false;
                     gpsTracker.askLocation();
-//                    vSatellite.setVisibility(View.INVISIBLE);
                     vCompass.setVisibility(View.INVISIBLE);
                 }
             }

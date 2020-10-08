@@ -28,6 +28,7 @@ public class CameraUtils {
             mCaptureSession.capture(mCaptureRequestBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
         } catch (CameraAccessException e) {
             utils.logE("capture","SnapShot",e);
+            StartStopExit.reRunApplication();
         }
     }
 

@@ -122,7 +122,6 @@ class GPSTracker extends Service implements LocationListener {
         if (nowDirection != oldDirection) {
             oldDirection = nowDirection;
             mActivity.runOnUiThread(() -> {
-//                vSatellite.setImageResource(blinkGPS ? R.mipmap.satellite1 : R.mipmap.satellite2);
                 drawCompass(oldDirection);
             });
         }

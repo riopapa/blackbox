@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -40,7 +41,6 @@ import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
-import static com.urrecliner.blackbox.Vars.LENS_FOCUS_FAR;
 import static com.urrecliner.blackbox.Vars.LENS_FOCUS_NEAR;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
@@ -64,13 +64,12 @@ import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.startStopExit;
-import static com.urrecliner.blackbox.Vars.tryNear;
+import static com.urrecliner.blackbox.Vars.nowIsNear;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
 import static com.urrecliner.blackbox.Vars.vCompass;
 import static com.urrecliner.blackbox.Vars.vExitApp;
-import static com.urrecliner.blackbox.Vars.vSatellite;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vKm;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
@@ -129,17 +128,19 @@ public class MainActivity extends Activity {
             return;
         }
         askPermission();
-        setContentView(R.layout.main_activity);
         Intent intent = getIntent();
-        String delayedStart = (intent.hasExtra("delay")) ? DELAY_I_WILL_BACK : DELAY_AUTO_RECORDING;
-        prepareMain(Integer.parseInt(delayedStart));
+        int delayedTime = (intent.hasExtra("delay")) ? DELAY_I_WILL_BACK : DELAY_AUTO_RECORDING;
+        if (delayedTime > DELAY_AUTO_RECORDING)
+            SystemClock.sleep(delayedTime);
+        setContentView(R.layout.main_activity);
+        prepareMain();
         utils.deleteOldFiles(mPackageNormalPath, 4);
         utils.deleteOldFiles(mPackageEventPath, 3);
         utils.deleteOldFiles(mPackageEventJpgTempPath, 3);
         utils.deleteOldLogs(5);
     }
 
-    private void prepareMain(int delayedStart) {
+    private void prepareMain() {
         mActivity = this;
         mContext = this;
         gpsTracker = new GPSTracker(mContext);
@@ -166,7 +167,7 @@ public class MainActivity extends Activity {
         Switch sw = findViewById(R.id.nearSwitch);
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                tryNear = isChecked;
+                nowIsNear = isChecked;
                 if (isChecked)
                     onNearSwitch();
             }
@@ -176,7 +177,6 @@ public class MainActivity extends Activity {
         mIsRecording = false;
         snapBytes = new byte[MAX_IMAGES_SIZE][];
         Log.w("snapBytes","size = "+snapBytes.length);
-        vSatellite.setVisibility(View.INVISIBLE);
         vCompass.setVisibility(View.INVISIBLE);
         utils.beepsInitiate();
         gpsTracker.askLocation();
@@ -244,7 +244,7 @@ public class MainActivity extends Activity {
                 startHandler.sendEmptyMessage(0);
 //                vBtnEvent.setImageResource(R.mipmap.event_ready);
             }
-        }, delayedStart);
+        }, DELAY_AUTO_RECORDING);
     }
 
     final Handler startHandler = new Handler() {
@@ -265,27 +265,38 @@ public class MainActivity extends Activity {
     };
 
     static void onNearSwitch() {
-        utils.logBoth("nearSwitch","switched to NEAR");
-        tryNear = true;
+//        utils.logBoth("nearSwitch","switched to NEAR");
+        nowIsNear = true;
         nearSW.setChecked(true);
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
         mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // NEAR = 7f
 //        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                switchHandler.sendEmptyMessage(0);
-            }
-        }, INTERVAL_EVENT * 40 / 10);
+//        new Timer().schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                switchHandler.sendEmptyMessage(0);
+//            }
+//        }, INTERVAL_EVENT * 40 / 10);
     }
     static void offNearSwitch() {
-        utils.logBoth("nearSwitch","switched to FAR");
-        tryNear = false;
+//        utils.logBoth("nearSwitch","switched to FAR");
+        nowIsNear = false;
         nearSW.setChecked(false);
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 //        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 3f); // FAR = 4f, INFINITE = 0f
 //        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR);
     }
+
+//    static void control_Exposure(int percent) {
+//            int brightness = (int) (minCompensationRange + (maxCompensationRange - minCompensationRange) * (percent / 100f));
+//        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, brightness);
+//        }
+
+//        private void applySettings() {
+//            captureSession.setRepeatingRequest(previewRequestBuilder.build(), null, null);
+//        }
+
+//    }
 
     void startEventSaving() {
         eventHandler.sendEmptyMessage(0);
@@ -342,7 +353,6 @@ public class MainActivity extends Activity {
         vTextBattery = findViewById(R.id.textBattery);
         vImgBattery = findViewById(R.id.imgBattery);
         vCompass = findViewById(R.id.iVCompass);
-        vSatellite = findViewById(R.id.gpsActive);
         vBtnRecord = findViewById(R.id.btnRecord);
         vTextSpeed.setText("_");
     }

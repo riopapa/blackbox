@@ -5,6 +5,29 @@
     android:background="#2f022f"
     android:keepScreenOn="true">
 
+    <!--Date and Time-->
+    <TextView
+        android:id="@+id/textDate"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/mm_dd"
+        android:textColor="#fcfcfc"
+        android:textSize="32sp" />
+    <TextView
+        android:id="@+id/textTime"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/textDate"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:text="@string/_00_00"
+        android:textColor="#fcfcfc"
+        android:textSize="36sp" />
+
+
     <!--Log Info in multi lines-->
     <TextView
         android:id="@+id/textLogInfo"
@@ -12,6 +35,7 @@
         android:layout_height="132dp"
         android:layout_marginStart="8dp"
         android:text="@string/logInfo"
+        android:layout_toEndOf="@id/textDate"
         android:textColor="#cccc"
         android:textSize="@dimen/log_size" />
 
@@ -50,7 +74,7 @@
         android:textOff="OFF"
         android:textOn="ON"/>
 
-    <!--GPS Active-->
+    <!--GPS Active
     <ImageView
         android:id="@+id/gpsActive"
         android:layout_width="32dp"
@@ -61,33 +85,7 @@
         android:layout_alignStart="@id/frmRecord"
         android:contentDescription="@string/compassImage"
         android:src="@mipmap/satellite1" />
-
-    <!--Date and Time-->
-    <TextView
-        android:id="@+id/textDate"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        android:gravity="center"
-        android:layout_toEndOf="@id/textLogInfo"
-        android:layout_toStartOf="@id/frmRecord"
-        android:text="@string/mm_dd"
-        android:textColor="#fcfcfc"
-        android:textSize="24sp" />
-    <TextView
-        android:id="@+id/textTime"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_below="@+id/textDate"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@id/textLogInfo"
-        android:layout_toStartOf="@id/frmRecord"
-        android:gravity="center"
-        android:text="@string/_00_00"
-        android:textColor="#fcfcfc"
-        android:textSize="30sp" />
+-->
 
     <!--Record start button and count Fragment-->
     <FrameLayout
@@ -126,7 +124,7 @@
         android:layout_below="@id/nearSwitch"
         android:layout_alignParentStart="true"
         android:layout_gravity="end"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="8dp"
         android:gravity="end"
@@ -153,7 +151,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="80dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/km"
         android:src="@mipmap/exit_app" />
@@ -203,9 +201,9 @@
     <FrameLayout
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_toEndOf="@id/textLogInfo"
-        android:layout_marginTop="16dp"
-        android:layout_below="@id/textTime" >
+        android:layout_marginTop="8dp"
+        android:layout_alignStart="@id/frmEvent"
+        android:layout_below="@id/textLogInfo" >
 
         <ImageView
             android:id="@+id/iVCompass"
