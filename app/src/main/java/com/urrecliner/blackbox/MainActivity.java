@@ -38,7 +38,6 @@ import java.util.TimerTask;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.LENS_FOCUS_NEAR;
@@ -129,15 +128,12 @@ public class MainActivity extends Activity {
         }
         askPermission();
         Intent intent = getIntent();
-        int delayedTime = (intent.hasExtra("delay")) ? DELAY_I_WILL_BACK : DELAY_AUTO_RECORDING;
-        if (delayedTime > DELAY_AUTO_RECORDING)
-            SystemClock.sleep(delayedTime);
         setContentView(R.layout.main_activity);
-        prepareMain();
         utils.deleteOldFiles(mPackageNormalPath, 4);
         utils.deleteOldFiles(mPackageEventPath, 3);
         utils.deleteOldFiles(mPackageEventJpgTempPath, 3);
         utils.deleteOldLogs(5);
+        prepareMain();
     }
 
     private void prepareMain() {
@@ -164,8 +160,8 @@ public class MainActivity extends Activity {
         vBtnEvent = findViewById(R.id.btnEvent);
         vBtnEvent.setOnClickListener(v -> startEventSaving());
 
-        Switch sw = findViewById(R.id.nearSwitch);
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        nearSW = findViewById(R.id.nearSwitch);
+        nearSW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 nowIsNear = isChecked;
                 if (isChecked)
@@ -187,16 +183,13 @@ public class MainActivity extends Activity {
             startStopExit.exitBlackBoxApp();
         });
         ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
-        btnBeBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnBeBack.setImageAlpha(50);
-                willBack = true;
-                if (mIsRecording)
-                    stopHandler.sendEmptyMessage(0);
+        btnBeBack.setOnClickListener(v -> {
+            btnBeBack.setImageAlpha(50);
+            willBack = true;
+            if (mIsRecording)
+                stopHandler.sendEmptyMessage(0);
 //                reStarting();
-                new BeBackSoon().execute("x");
-            }
+            new BeBackSoon().execute("x");
         });
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
         if (!mPackageNormalDatePath.exists())
@@ -209,7 +202,6 @@ public class MainActivity extends Activity {
             viewFinder = !viewFinder;
             vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
         });
-        nearSW = findViewById(R.id.nearSwitch);
         vPreviewView.post(() -> {
             readyCamera();
             vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);

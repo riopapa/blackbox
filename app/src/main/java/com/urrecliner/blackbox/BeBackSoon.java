@@ -13,7 +13,6 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
-import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
 import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
@@ -56,32 +55,32 @@ class BeBackSoon extends AsyncTask<String, String, String> {
         switch (xcode) {
             case "x":
                 if (!mExitApplication) {
-                    utils.beepOnce(7,0.7f); // I will be back
+//                    utils.beepOnce(7,0.7f); // I will be back
                     Handler mHandler = new Handler(Looper.getMainLooper());
                     mHandler.postDelayed(() -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {    // s8 is 28 android.P
-                            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {    // s8 is 28 android.P
+                            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxwait");
                             assert sendIntent != null;
-                            sendIntent.putExtra("delay", "" + DELAY_I_WILL_BACK);
+//                            sendIntent.putExtra("delay", DELAY_I_WILL_BACK);
                             mActivity.startActivity(sendIntent);
                             System.exit(0);
                             android.os.Process.killProcess(android.os.Process.myPid());
-                        } else {
+//                        } else {
 //                  followings are delayed load, not active after Android.P
-                            AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-                            Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
-                            assert intent != null;
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            PendingIntent alarmIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                            assert alarmMgr != null;
+//                            AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+//                            Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
+//                            assert intent != null;
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            PendingIntent alarmIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                            assert alarmMgr != null;
 //                        alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK, alarmIntent);
-                            alarmMgr.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + DELAY_I_WILL_BACK ,alarmIntent);
-                            mActivity.finish();
+//                            alarmMgr.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + DELAY_I_WILL_BACK ,alarmIntent);
+//                            mActivity.finish();
                             //                        Runtime.getRuntime().exit(0);
 //                            System.exit(0);
 //                            android.os.Process.killProcess(android.os.Process.myPid());
-                        }
-                    }, 2000);
+//                        }
+                    }, 1000);
                 }
                 break;
             default :

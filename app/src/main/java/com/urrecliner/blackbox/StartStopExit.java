@@ -9,8 +9,6 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.DELAY_I_WILL_BACK;
-import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.cameraUtils;
@@ -23,7 +21,6 @@ import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.normalMerge;
 import static com.urrecliner.blackbox.Vars.obdAccess;
-import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
