@@ -29,8 +29,8 @@ class SnapShotSave {
     int startBias;
 
     void start(File path2Write, int snapStartIdx, boolean first) {
-        int startIdx = (first) ? 15: 0;
-        int finishIdx = (first) ? MAX_IMAGES_SIZE-1: MAX_IMAGES_SIZE-30;  // to minimize snapshot image counts
+        int startIdx = (first) ? 5: 0;
+        int finishIdx = (first) ? MAX_IMAGES_SIZE: MAX_IMAGES_SIZE-20;  // to minimize snapshot image counts
         Log.w("start","startIdx "+startIdx+" ~ finish "+finishIdx);
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         jpgIdx = 0;
@@ -74,7 +74,6 @@ class SnapShotSave {
 
         if (!first)
             sayEventCompleted(path2Write);
-
     }
 
     private void sayEventCompleted(File thisEventPath) {

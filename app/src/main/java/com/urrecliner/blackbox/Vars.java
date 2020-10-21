@@ -100,9 +100,9 @@ public class Vars {
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
 
-    final static long INTERVAL_EVENT = 15 * 1000;
-    final static int SNAP_SHOT_INTERVAL = 200;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 130 / 100) / SNAP_SHOT_INTERVAL);
+    final static long INTERVAL_EVENT = 140 * 100;
+    final static int SNAP_SHOT_INTERVAL = 180;
+    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 114 / 100) / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
      static int snapMapIdx = 0;

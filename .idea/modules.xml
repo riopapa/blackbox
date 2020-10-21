@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BlackBox.iml" filepath="$PROJECT_DIR$/BlackBox.iml" group="BlackBox" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="BlackBox/app" />
+      <module fileurl="file://$PROJECT_DIR$/BlackBox.iml" filepath="$PROJECT_DIR$/BlackBox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BlackBox.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BlackBox.app.iml" />
     </modules>
   </component>
 </project>

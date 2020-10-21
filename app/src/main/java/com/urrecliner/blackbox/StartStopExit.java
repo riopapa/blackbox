@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.cameraUtils;
@@ -131,6 +132,11 @@ class StartStopExit {
             public void run() {
                 mActivity.finish();
                 mActivity.finishAffinity();
+                if (CountEvent> 0) {
+                    Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxjpg");
+                    assert sendIntent != null;
+                    mActivity.startActivity(sendIntent);
+                }
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }

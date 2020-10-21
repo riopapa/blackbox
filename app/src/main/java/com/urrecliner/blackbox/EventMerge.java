@@ -45,6 +45,12 @@ class EventMerge {
     void merge(final long startTime, final File eventPath) {
         if (mExitApplication)
             return;
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                SnapShotSave snapShotSave = new SnapShotSave();
+                snapShotSave.start(thisEventPath, snapMapIdx,false);
+            }
+        }, 10);
         thisEventPath = eventPath;
         try {
             new EventMerge.MergeFileTask().execute("" + startTime);
@@ -157,12 +163,6 @@ class EventMerge {
 
         @Override
         protected void onPostExecute(String doI) {
-            new Timer().schedule(new TimerTask() {
-                public void run() {
-                SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.start(thisEventPath, snapMapIdx,false);
-                }
-            }, 10);
         }
     }
 }
