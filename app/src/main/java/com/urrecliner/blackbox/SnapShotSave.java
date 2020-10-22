@@ -1,19 +1,12 @@
 package com.urrecliner.blackbox;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.CountDownTimer;
 import android.os.SystemClock;
-import android.util.Log;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.snapBytes;
@@ -29,20 +22,6 @@ class SnapShotSave {
     int startBias;
 
     void start(File path2Write, int snapPointer, final int phase) {
-        int startIdx = 0;
-        int finishIdx = 0;
-        switch (phase) {
-            case 1:
-                startIdx = 0; finishIdx = MAX_IMAGES_SIZE; startBias = 100;
-                break;
-            case 2:
-                startIdx = 20; finishIdx = MAX_IMAGES_SIZE; startBias = 200;
-                break;
-            case 3:
-                startIdx = 20; finishIdx = MAX_IMAGES_SIZE; startBias = 300;
-                break;
-        }
-//        Log.w("start copy","to jpg array "+startIdx+" ~ finish "+finishIdx);
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         jpgIdx = 0;
         for (int i = snapPointer; i < MAX_IMAGES_SIZE; i++) {
@@ -53,12 +32,23 @@ class SnapShotSave {
             jpgBytes[jpgIdx++] = snapBytes[i];
             snapBytes[i] = null;
         }
-        int finalStartIdx = startIdx;
-        int finalFinishIdx = finishIdx;
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (jpgIdx = finalStartIdx; jpgIdx < finalFinishIdx; jpgIdx++) {
+                int startIdx = 0;
+                switch (phase) {
+                    case 1:
+                        startIdx = 0; startBias = 100;
+                        break;
+                    case 2:
+                        startIdx = 20; startBias = 200;
+                        break;
+                    case 3:
+                        startIdx = 20; startBias = 300;
+                        break;
+                }
+
+                for (jpgIdx = startIdx; jpgIdx < MAX_IMAGES_SIZE; jpgIdx++) {
                     byte [] imageBytes = jpgBytes[jpgIdx];
                     if (imageBytes != null && imageBytes.length > 1) {
                         File imageFile = new File(path2Write, "SnapShot_" + ("" + (startBias + jpgIdx)) + ".jpg");
@@ -77,15 +67,12 @@ class SnapShotSave {
 
     private void sayEventCompleted(File thisEventPath) {
         utils.beepOnce(3, 1f);
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                String countStr = "" + ++CountEvent;
-                vTextCountEvent.setText(countStr);
-                activeEventCount--;
-                String text = (activeEventCount == 0) ? "" : "" + activeEventCount;
-                vTextActiveCount.setText(text);
-            }
+        mActivity.runOnUiThread(() -> {
+            String countStr = "" + ++CountEvent;
+            vTextCountEvent.setText(countStr);
+            activeEventCount--;
+            String text = (activeEventCount == 0) ? "" : "" + activeEventCount;
+            vTextActiveCount.setText(text);
         });
 
         utils.logBoth(logID, thisEventPath.getName());
@@ -101,7 +88,6 @@ class SnapShotSave {
         } catch (IOException e) {
             utils.logE("snap", "IOException catch", e);
         } finally {
-            bytes = null;
             if (fileOutputStream != null) {
                 try {
                     fileOutputStream.close();
@@ -109,7 +95,6 @@ class SnapShotSave {
                     utils.logE("snap", "IOException finally", e);
                 }
             }
-            fileOutputStream = null;
         }
     }
 

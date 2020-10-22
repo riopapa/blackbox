@@ -40,7 +40,7 @@ import static com.urrecliner.blackbox.Vars.utils;
 
 class NormalMerge {
 
-    private static String logID = "NormMerge";
+    private static final String logID = "NormMerge";
 
     void merge() {
         if (mExitApplication)
@@ -141,7 +141,7 @@ class NormalMerge {
             String debugText = values[0];
             TextView mLogInfo = mActivity.findViewById(R.id.textLogInfo);
             mLogInfo.setText(debugText);
-            if (values[0].substring(0,1).equals("<")) {
+            if (values[0].startsWith("<")) {
                 utils.customToast(debugText, Toast.LENGTH_SHORT, Color.RED);
     //                utils.logE("1", debugText);
             }

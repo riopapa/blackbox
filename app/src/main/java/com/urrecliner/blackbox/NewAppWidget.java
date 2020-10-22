@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -72,7 +71,7 @@ public class NewAppWidget extends AppWidgetProvider {
         ComponentName thisAppWidget = new ComponentName(context.getPackageName(), NewAppWidget.class.getName());
         int[] appWidgets = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
-        final String action = intent.getAction();
+//        final String action = intent.getAction();
 //        Log.w("onReceive", "action:" + action);
 
 //        if(action != null && action.equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {

@@ -121,9 +121,7 @@ class GPSTracker extends Service implements LocationListener {
         nowDirection = (int) (GPSDegree % 360 / 18) * 18;
         if (nowDirection != oldDirection) {
             oldDirection = nowDirection;
-            mActivity.runOnUiThread(() -> {
-                drawCompass(oldDirection);
-            });
+            mActivity.runOnUiThread(() -> drawCompass(oldDirection));
         }
     }
 

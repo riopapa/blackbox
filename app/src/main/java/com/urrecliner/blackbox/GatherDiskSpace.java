@@ -30,7 +30,7 @@ class GatherDiskSpace implements Runnable {
                     }
                     utils.logBoth("Disk", "Size squeezed");
                 } else {
-                    utils.logOnly("No FreeSize", "Something wrong");
+                    utils.logBoth("No FreeSize", "DISK SPACE Something wrong");
                 }
             }
         }
