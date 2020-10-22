@@ -45,13 +45,13 @@ class EventMerge {
     void merge(final long startTime, final File eventPath) {
         if (mExitApplication)
             return;
+        thisEventPath = eventPath;
         new Timer().schedule(new TimerTask() {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.start(thisEventPath, snapMapIdx,false);
+                snapShotSave.start(thisEventPath, snapMapIdx,3);
             }
         }, 10);
-        thisEventPath = eventPath;
         try {
             new EventMerge.MergeFileTask().execute("" + startTime);
         } catch (Exception e) {
@@ -83,7 +83,6 @@ class EventMerge {
             } else {
                 Arrays.sort(files2Merge);
                 endTimeS = files2Merge[files2Merge.length - 2].getName();
-                Log.w("Event Last Time", endTimeS);
                 outputFile = new File(mPackageEventPath, DATE_PREFIX+beginTimeS + " x" + latitude + "," + longitude + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
                 MediaPlayer mp = new MediaPlayer();

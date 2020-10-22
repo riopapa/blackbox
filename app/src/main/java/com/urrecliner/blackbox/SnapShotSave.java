@@ -28,51 +28,50 @@ class SnapShotSave {
     byte[][] jpgBytes;
     int startBias;
 
-    void start(File path2Write, int snapStartIdx, boolean first) {
-        int startIdx = (first) ? 5: 0;
-        int finishIdx = (first) ? MAX_IMAGES_SIZE: MAX_IMAGES_SIZE-20;  // to minimize snapshot image counts
-        Log.w("start","startIdx "+startIdx+" ~ finish "+finishIdx);
+    void start(File path2Write, int snapPointer, final int phase) {
+        int startIdx = 0;
+        int finishIdx = 0;
+        switch (phase) {
+            case 1:
+                startIdx = 0; finishIdx = MAX_IMAGES_SIZE; startBias = 100;
+                break;
+            case 2:
+                startIdx = 20; finishIdx = MAX_IMAGES_SIZE; startBias = 200;
+                break;
+            case 3:
+                startIdx = 20; finishIdx = MAX_IMAGES_SIZE; startBias = 300;
+                break;
+        }
+//        Log.w("start copy","to jpg array "+startIdx+" ~ finish "+finishIdx);
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         jpgIdx = 0;
-        for (int i = snapStartIdx; i < MAX_IMAGES_SIZE; i++) {
-//            if (jpgIdx < MAX_IMAGES_SIZE) {
-//                Log.w("jpgIdx "+jpgIdx,"loop i= "+i);
-                jpgBytes[jpgIdx++] = snapBytes[i];
-                snapBytes[i] = null;
-//            }
+        for (int i = snapPointer; i < MAX_IMAGES_SIZE; i++) {
+            jpgBytes[jpgIdx++] = snapBytes[i];
+            snapBytes[i] = null;
         }
-        for (int i = 0; i < snapStartIdx-1; i++) {
-//            if (jpgIdx < MAX_IMAGES_SIZE) {
-//                Log.w("jpgIdx "+jpgIdx,"loop i= "+i);
-                jpgBytes[jpgIdx++] = snapBytes[i];
-                snapBytes[i] = null;
-//            }
+        for (int i = 0; i < snapPointer; i++) {
+            jpgBytes[jpgIdx++] = snapBytes[i];
+            snapBytes[i] = null;
         }
-        startBias = (first) ? 100: 300; // for snapshot image sequence, dependency : snap interval, snap size
+        int finalStartIdx = startIdx;
+        int finalFinishIdx = finishIdx;
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (jpgIdx = startIdx; jpgIdx < finishIdx; jpgIdx++) {
+                for (jpgIdx = finalStartIdx; jpgIdx < finalFinishIdx; jpgIdx++) {
                     byte [] imageBytes = jpgBytes[jpgIdx];
-//                    Log.w("idx "+ jpgIdx,"log "+jpgFile.getName());
                     if (imageBytes != null && imageBytes.length > 1) {
                         File imageFile = new File(path2Write, "SnapShot_" + ("" + (startBias + jpgIdx)) + ".jpg");
-//                        Log.w("id",imageFile.getName());
                         bytes2File(imageBytes, imageFile);
                         jpgBytes[jpgIdx] = null;
-//
-//                        BitMapSave bs = new BitMapSave();
-//                        bs.save(jpgBytes[jpgIdx], jpgFile);
-                        SystemClock.sleep(30);  // not to hold too long time
+                        SystemClock.sleep(30);  // not to hold all the time
                     }
                 }
             }
         });
         th.start();
-//                SnapAsyncTask snapAsyncTask = new SnapAsyncTask();
-//                snapAsyncTask.execute(""+idx);
 
-        if (!first)
+        if (phase == 3)
             sayEventCompleted(path2Write);
     }
 

@@ -300,19 +300,26 @@ public class MainActivity extends Activity {
         utils.logBoth(logID,"Event Starting ...");
 
         gpsTracker.askLocation();
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 2;
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 3;
         final File thisEventJpgPath = new File(mPackageEventJpgTempPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventJpgPath);
 //        utils.logBoth(logID,"Prev Snapshot");
 
         SnapShotSave snapShotSave = new SnapShotSave();
-        snapShotSave.start(thisEventJpgPath, snapMapIdx, true);
+        snapShotSave.start(thisEventJpgPath, snapMapIdx, 1);
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                SnapShotSave snapShotSave = new SnapShotSave();
+                snapShotSave.start(thisEventJpgPath, snapMapIdx, 2);
+            }
+        }, INTERVAL_EVENT * 2 / 3);
+
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventJpgPath);
             }
-        }, INTERVAL_EVENT + INTERVAL_EVENT / 30);
+        }, INTERVAL_EVENT * 120 / 100);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
