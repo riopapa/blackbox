@@ -26,7 +26,6 @@ import static com.urrecliner.blackbox.Vars.ASK_SPEED_INTERVAL;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.speedInt;
-import static com.urrecliner.blackbox.Vars.nowIsNear;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
@@ -40,7 +39,7 @@ class OBDAccess {
     private BluetoothDevice bluetoothDevice;
     private String chosenDeviceName = null;
     UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    String speedNow = "speed", speedOld = "old";
+    String speedString = "speed", speedOld = "old";
 
     //    private ObdCommand engineRpmCommand = new EngineRpmCommand();
     private ObdCommand speedCommand = null;
@@ -191,27 +190,21 @@ class OBDAccess {
         speedCommand = new SpeedCommand();
         obdTimer = new Timer();
         int HIDE_SPEED = 50;
-        int NEAR_FOCUS = 40;
         final TimerTask obdTask = new TimerTask() {
             @Override
             public void run() {
-                speedNow = askSpeed();
-                if (!speedNow.equals(speedOld)) {
+                speedString = askSpeed();
+                if (!speedString.equals(speedOld)) {
                     mActivity.runOnUiThread(() -> {
-                        vTextSpeed.setText(speedNow);
-                        speedInt = Integer.parseInt(speedNow);
+                        vTextSpeed.setText(speedString);
+                        speedInt = Integer.parseInt(speedString);
                         boolean offPrevView =  speedInt > HIDE_SPEED;
                         if (viewFinder && offPrevView != noPreview) {
                             noPreview = offPrevView;
                             vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);
                         }
-                        if (!nowIsNear && speedInt < NEAR_FOCUS) {
-                            MainActivity.onNearSwitch();
-                        }
-                        if (nowIsNear && speedInt > NEAR_FOCUS) {
-                            MainActivity.offNearSwitch();
-                        }
-                        speedOld = speedNow;
+                        MainActivity.focusChange(speedInt);
+                        speedOld = speedString;
                     });
                 }
             }

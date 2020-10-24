@@ -61,18 +61,18 @@
         android:textColor="#cccccc"
         android:textSize="32sp" />
 
-    <Switch
-        android:id="@+id/nearSwitch"
-        android:layout_width="60dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="16dp"
-        android:switchMinWidth="40dp"
-        android:layout_below="@id/textEvent"
-        android:layout_toEndOf="@id/textCountEvent"
-        android:checked="false"
-        android:textOff="OFF"
-        android:textOn="ON"/>
+<!--    <Switch-->
+<!--        android:id="@+id/nearSwitch"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="32dp"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:layout_marginLeft="16dp"-->
+<!--        android:switchMinWidth="40dp"-->
+<!--        android:layout_below="@id/textEvent"-->
+<!--        android:layout_toEndOf="@id/textCountEvent"-->
+<!--        android:checked="false"-->
+<!--        android:textOff="OFF"-->
+<!--        android:textOn="ON"/>-->
 
     <!--GPS Active
     <ImageView
@@ -121,11 +121,13 @@
         android:id="@+id/textSpeed"
         android:layout_width="160dp"
         android:layout_height="80dp"
-        android:layout_below="@id/nearSwitch"
+        android:layout_below="@id/textCountEvent"
+        android:layout_above="@id/btnExit"
         android:layout_alignParentStart="true"
         android:layout_gravity="end"
         android:layout_marginStart="16dp"
         android:layout_marginTop="0dp"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:gravity="end"
         android:text="@string/underscore"

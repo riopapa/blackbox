@@ -16,14 +16,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -40,7 +38,6 @@ import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
-import static com.urrecliner.blackbox.Vars.LENS_FOCUS_NEAR;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
@@ -63,7 +60,6 @@ import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.startStopExit;
-import static com.urrecliner.blackbox.Vars.nowIsNear;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -86,7 +82,6 @@ import static com.urrecliner.blackbox.Vars.viewFinder;
 public class MainActivity extends Activity {
 
     private static final String logID = "Main";
-    private static Switch nearSW;
 
     boolean surfaceReady = false;
     private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
@@ -129,9 +124,9 @@ public class MainActivity extends Activity {
         askPermission();
         Intent intent = getIntent();
         setContentView(R.layout.main_activity);
-        utils.deleteOldFiles(mPackageNormalPath, 4);
-        utils.deleteOldFiles(mPackageEventPath, 3);
-        utils.deleteOldFiles(mPackageEventJpgTempPath, 3);
+        utils.deleteOldFiles(mPackageNormalPath, 3);
+//        utils.deleteOldFiles(mPackageEventPath, 3);
+        utils.deleteOldFiles(mPackageEventJpgTempPath, 4);
         utils.deleteOldLogs(5);
         prepareMain();
     }
@@ -160,14 +155,14 @@ public class MainActivity extends Activity {
         vBtnEvent = findViewById(R.id.btnEvent);
         vBtnEvent.setOnClickListener(v -> startEventSaving());
 
-        nearSW = findViewById(R.id.nearSwitch);
-        nearSW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                nowIsNear = isChecked;
-                if (isChecked)
-                    onNearSwitch();
-            }
-        });
+//        nearSW = findViewById(R.id.nearSwitch);
+//        nearSW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                nowIsNear = isChecked;
+//                if (isChecked)
+//                    onNearSwitch();
+//            }
+//        });
         setViewVars();
         setBlackBoxFolders();
         mIsRecording = false;
@@ -251,17 +246,28 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) { eventRecording();
         }
     };
-    static final Handler switchHandler = new Handler() {
-        public void handleMessage(Message msg) { offNearSwitch();
-        }
-    };
+//    static final Handler switchHandler = new Handler() {
+//        public void handleMessage(Message msg) { offNearSwitch();
+//        }
+//    };
 
-    static void onNearSwitch() {
+    static float lens_focus = 0f;    // 0: infinite 10: nearest
+    static void focusChange(int speed) {
 //        utils.logBoth("nearSwitch","switched to NEAR");
-        nowIsNear = true;
-        nearSW.setChecked(true);
-        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
-        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // NEAR = 7f
+        float focus = 0;
+        if (speed < 20)
+            focus = 9f;
+        else if (speed < 30)
+            focus = 8f;
+        else if (speed < 50)
+            focus = 5f;
+        else
+            focus = 2f;
+        if (focus != lens_focus) {
+            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
+            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
+            lens_focus = focus;
+        }
 //        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
 //        new Timer().schedule(new TimerTask() {
 //            @Override
@@ -270,14 +276,29 @@ public class MainActivity extends Activity {
 //            }
 //        }, INTERVAL_EVENT * 40 / 10);
     }
-    static void offNearSwitch() {
-//        utils.logBoth("nearSwitch","switched to FAR");
-        nowIsNear = false;
-        nearSW.setChecked(false);
-        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-//        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 3f); // FAR = 4f, INFINITE = 0f
-//        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR);
-    }
+
+//    static void onNearSwitch() {
+////        utils.logBoth("nearSwitch","switched to NEAR");
+//        nowIsNear = true;
+//        nearSW.setChecked(true);
+//        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
+//        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // NEAR = 7f
+////        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
+////        new Timer().schedule(new TimerTask() {
+////            @Override
+////            public void run() {
+////                switchHandler.sendEmptyMessage(0);
+////            }
+////        }, INTERVAL_EVENT * 40 / 10);
+//    }
+//    static void offNearSwitch() {
+////        utils.logBoth("nearSwitch","switched to FAR");
+//        nowIsNear = false;
+//        nearSW.setChecked(false);
+//        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+////        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 3f); // FAR = 4f, INFINITE = 0f
+////        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR);
+//    }
 
 //    static void control_Exposure(int percent) {
 //            int brightness = (int) (minCompensationRange + (maxCompensationRange - minCompensationRange) * (percent / 100f));

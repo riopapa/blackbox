@@ -88,21 +88,21 @@ public class Vars {
     final static int DELAY_AUTO_RECORDING = 3000;
     final static int DELAY_WAIT_EXIT = 4;
 //    final static int DELAY_I_WILL_BACK = 40000; // 40000;
-    final static float LENS_FOCUS_FAR = 3f;   // 0: infinite 10: nearest
-    final static float LENS_FOCUS_NEAR = 7f;   // 0: infinite 10: nearest
+//    final static float LENS_FOCUS_FAR = 3f;
+//    final static float LENS_FOCUS_MID = 5f;   // 0: infinite 10: nearest
+//    final static float LENS_FOCUS_NEAR = 7.5f;   // 0: infinite 10: nearest
     static Handler mBackgroundImage;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder = new MediaRecorder();
     static int speedInt = 0;
-    static boolean nowIsNear = false;
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
 
     final static long INTERVAL_EVENT = 140 * 100;
-    final static int SNAP_SHOT_INTERVAL = 170;
-    final static int MAX_IMAGES_SIZE = (int) ((INTERVAL_EVENT * 107 / 100) / SNAP_SHOT_INTERVAL);
+    final static int SNAP_SHOT_INTERVAL = 180;
+    final static int MAX_IMAGES_SIZE = (int) (INTERVAL_EVENT * 107 / 100 / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
