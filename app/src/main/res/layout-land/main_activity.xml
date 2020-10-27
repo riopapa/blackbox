@@ -240,7 +240,6 @@
             android:id="@+id/imgBattery"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/battery_none"
             android:gravity="center"
             android:layout_gravity="center"
             android:contentDescription="@string/todo" />

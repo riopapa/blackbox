@@ -4,6 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.BatteryManager;
 import android.view.View;
 
@@ -16,9 +21,7 @@ import static com.urrecliner.blackbox.Vars.vPreviewView;
 
 class DisplayBattery extends BroadcastReceiver {
 
-    private int [] batteryMipmap = { R.mipmap.battery_none, R.mipmap.battery_level90, R.mipmap.battery_level70, R.mipmap.battery_level50, R.mipmap.battery_level30};
     private int batteryPrev = 0;
-    private BroadcastReceiver mPowerOn = null, mPowerOff = null;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -60,27 +63,34 @@ class DisplayBattery extends BroadcastReceiver {
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
         int batteryPct = (int) (level * 100 / (float) scale);
-        int batteryNow;
-        if (isCharging) {
-            if (batteryPct > 85)
-                batteryNow = batteryMipmap[1];
-            else if (batteryPct > 70)
-                batteryNow = batteryMipmap[2];
-            else if (batteryPct > 50)
-                batteryNow = batteryMipmap[3];
-            else
-                batteryNow = batteryMipmap[4];
-            if (batteryPct < 50)
-                vPreviewView.setVisibility(View.INVISIBLE);
-        } else
-            batteryNow = batteryMipmap[0];
-        if (batteryNow != batteryPrev) {
+        if (batteryPct < 50)
+            vPreviewView.setVisibility(View.INVISIBLE);
+        if (batteryPct != batteryPrev) {
             mActivity.runOnUiThread(() -> {
-                vImgBattery.setImageResource(batteryNow);
+                String s = ""+batteryPct;
+                vTextBattery.setText(s);
+                batteryPrev = batteryPct;
+                drawBattery(batteryPct, isCharging);
             });
-            batteryPrev = batteryNow;
+            batteryPrev = batteryPct;
         }
-        String s = ""+batteryPct;
-        vTextBattery.setText(s);
     }
+
+    final int CIRCLE_RADIUS = 200, CIRCLE_WIDTH = 16;
+    void drawBattery(int batteryPCT, boolean isCharging) {
+        Bitmap bitmap = Bitmap.createBitmap(CIRCLE_RADIUS, CIRCLE_RADIUS, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        Paint paint = new Paint();
+        final RectF rect = new RectF();
+        rect.set(CIRCLE_WIDTH, CIRCLE_WIDTH, CIRCLE_RADIUS - CIRCLE_WIDTH, CIRCLE_RADIUS - CIRCLE_WIDTH);
+        paint.setColor((isCharging) ? Color.GREEN : Color.GRAY);
+        paint.setStrokeWidth(CIRCLE_WIDTH);
+        paint.setAntiAlias(true);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawArc(rect, -90, batteryPCT*360/100 , false, paint);
+        vImgBattery.setImageBitmap(bitmap);
+    }
+
 }
