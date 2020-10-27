@@ -211,7 +211,7 @@ class Utils {
     }
 
     void logE(String tag, String text, Exception e) {
-        beepOnce(0, 1f);
+        beepOnce(0, .6f);
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
@@ -227,7 +227,7 @@ class Utils {
         });
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  ": " + log);
         e.printStackTrace();
-        beepOnce(1, 1f);
+        beepOnce(1, .6f);
     }
 
     String getStackTrace(Exception e) {

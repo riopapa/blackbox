@@ -51,7 +51,6 @@ class DisplayBattery extends BroadcastReceiver {
     }
 
     void showBattery() {
-//        utils.log("show"," detected");
         boolean isCharging;
         IntentFilter intFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = mContext.registerReceiver(null, intFilter);
@@ -60,9 +59,9 @@ class DisplayBattery extends BroadcastReceiver {
         isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                 status == BatteryManager.BATTERY_STATUS_FULL;
 
-        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        int batteryPct = (int) (level * 100 / (float) scale);
+        int batteryLevel = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int batteryScale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        int batteryPct = (int) (batteryLevel * 100 / (float) batteryScale);
         if (batteryPct < 50)
             vPreviewView.setVisibility(View.INVISIBLE);
         if (batteryPct != batteryPrev) {
@@ -72,7 +71,6 @@ class DisplayBattery extends BroadcastReceiver {
                 batteryPrev = batteryPct;
                 drawBattery(batteryPct, isCharging);
             });
-            batteryPrev = batteryPct;
         }
     }
 
