@@ -255,12 +255,14 @@ public class MainActivity extends Activity {
     static void focusChange(int speed) {
 //        utils.logBoth("nearSwitch","switched to NEAR");
         float focus = 0;
-        if (speed < 20)
+        if (speed < 2)
             focus = 9f;
+        else if (speed < 20)
+            focus = 7f;
         else if (speed < 30)
-            focus = 8f;
+            focus = 6f;
         else if (speed < 50)
-            focus = 5f;
+            focus = 4f;
         else
             focus = 2f;
         if (focus != lens_focus) {
