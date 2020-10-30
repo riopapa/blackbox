@@ -87,7 +87,7 @@ class DisplayBattery extends BroadcastReceiver {
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
-        canvas.drawArc(rect, -90, batteryPCT*360/100 , false, paint);
+        canvas.drawArc(rect, 90-(180*batteryPCT/100), batteryPCT*360/100 , false, paint);
         vImgBattery.setImageBitmap(bitmap);
     }
 
