@@ -51,7 +51,7 @@ class EventMerge {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.start(thisEventPath, snapMapIdx,3);
             }
-        }, 10);
+        }, 1200);
         try {
             new EventMerge.MergeFileTask().execute("" + startTime);
         } catch (Exception e) {
@@ -148,7 +148,7 @@ class EventMerge {
             String debugText = values[0];
             TextView mLogInfo = mActivity.findViewById(R.id.textLogInfo);
             mLogInfo.setText(debugText);
-            if (values[0].substring(0, 1).equals("<")) {
+            if (values[0].startsWith("<")) {
                 utils.customToast(debugText, Toast.LENGTH_SHORT, Color.RED);
 //                utils.logE("1", debugText);
             } else {
