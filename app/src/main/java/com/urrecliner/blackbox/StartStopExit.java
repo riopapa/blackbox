@@ -92,7 +92,7 @@ class StartStopExit {
         final TimerTask normalTask = new TimerTask() {
             @Override
             public void run() {
-                if (mIsRecording)
+                if (mIsRecording && !mExitApplication)
                     normalMerge.merge();
             }
         };
@@ -128,19 +128,19 @@ class StartStopExit {
         displayTime.stop();
         utils.beepOnce(8,0.3f); // Exit BlackBox
         utils.logOnly(logID,s);
+        mActivity.finish();
+        mActivity.finishAffinity();
         new Timer().schedule(new TimerTask() {
             public void run() {
-                mActivity.finish();
-                mActivity.finishAffinity();
-                if (CountEvent> 0) {
-                    Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxjpg");
-                    assert sendIntent != null;
-                    mActivity.startActivity(sendIntent);
-                }
+//                if (CountEvent> 0) {
+//                    Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxjpg");
+//                    assert sendIntent != null;
+//                    mActivity.startActivity(sendIntent);
+//                }
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
-        }, 3000);
+        }, 2000);
     }
 
 }

@@ -53,7 +53,7 @@ class EventMerge {
             }
         }, 1200);
         try {
-            new EventMerge.MergeFileTask().execute("" + startTime);
+            new MergeFileTask().execute("" + startTime);
         } catch (Exception e) {
             utils.logE(logID, "Exception: ", e);
         }

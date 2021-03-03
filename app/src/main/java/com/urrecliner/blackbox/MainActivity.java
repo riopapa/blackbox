@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +47,7 @@ import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mPackageEventJpgTempPath;
+import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
@@ -126,7 +125,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_activity);
         utils.deleteOldFiles(mPackageNormalPath, 3);
 //        utils.deleteOldFiles(mPackageEventPath, 3);
-        utils.deleteOldFiles(mPackageEventJpgTempPath, 4);
+        utils.deleteOldFiles(mPackageEventJpgPath, 4);
         utils.deleteOldLogs(5);
         prepareMain();
     }
@@ -174,7 +173,7 @@ public class MainActivity extends Activity {
         CountEvent = utils.getDirectoryFiltered(mPackageEventPath, "mp4").length;
         vExitApp = findViewById(R.id.btnExit);
         vExitApp.setOnClickListener(v -> {
-            launchJpg2PhotoApp();
+//            launchJpg2PhotoApp();
             startStopExit.exitBlackBoxApp();
         });
         ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
@@ -251,11 +250,13 @@ public class MainActivity extends Activity {
 //        }
 //    };
 
-    static float lens_focus = 0f;    // 0: infinite 10: nearest
+    static float save_focus = 0f;    // 0: infinite 10: nearest
     static void focusChange(int speed) {
 //        utils.logBoth("nearSwitch","switched to NEAR");
         float focus = 0;
-        if (speed < 2)
+        if (speed < 5)
+            focus = 9.5f;
+        else if (speed < 10)
             focus = 9f;
         else if (speed < 20)
             focus = 7f;
@@ -265,10 +266,10 @@ public class MainActivity extends Activity {
             focus = 4f;
         else
             focus = 2f;
-        if (focus != lens_focus) {
+        if (focus != save_focus) {
             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
             mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
-            lens_focus = focus;
+            save_focus = focus;
         }
 //        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
 //        new Timer().schedule(new TimerTask() {
@@ -323,8 +324,8 @@ public class MainActivity extends Activity {
         utils.logBoth(logID,"Event Starting ...");
 
         gpsTracker.askLocation();
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 3;
-        final File thisEventJpgPath = new File(mPackageEventJpgTempPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT ;
+        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
         utils.readyPackageFolder(thisEventJpgPath);
 //        utils.logBoth(logID,"Prev Snapshot");
 
@@ -335,14 +336,14 @@ public class MainActivity extends Activity {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.start(thisEventJpgPath, snapMapIdx, 2);
             }
-        }, INTERVAL_EVENT * 2 / 3);
+        }, INTERVAL_EVENT * 4 / 5);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventJpgPath);
             }
-        }, INTERVAL_EVENT * 120 / 100);
+        }, INTERVAL_EVENT * 130 / 100);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
@@ -384,7 +385,7 @@ public class MainActivity extends Activity {
         utils.readyPackageFolder(mPackageLogPath);
         utils.readyPackageFolder(mPackageWorkingPath);
         utils.readyPackageFolder(mPackageEventPath);
-        utils.readyPackageFolder(mPackageEventJpgTempPath);
+        utils.readyPackageFolder(mPackageEventJpgPath);
         utils.readyPackageFolder(mPackageNormalPath);
         utils.readyPackageFolder(mPackageNormalDatePath);
     }
@@ -396,15 +397,15 @@ public class MainActivity extends Activity {
         mBackgroundImage = new Handler(mBackgroundHandlerThread.getLooper());
     }
 
-    void launchJpg2PhotoApp() {
-        if (CountEvent > 0) {
-            Toast.makeText(MainActivity.this, "Processing squeeze event photos", Toast.LENGTH_LONG).show();
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxjpg");
-            if (launchIntent != null) {
-                startActivity(launchIntent);
-            }
-        }
-    }
+//    void launchJpg2PhotoApp() {
+//        if (CountEvent > 0) {
+//            Toast.makeText(MainActivity.this, "Processing squeeze event photos", Toast.LENGTH_LONG).show();
+//            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxjpg");
+//            if (launchIntent != null) {
+//                startActivity(launchIntent);
+//            }
+//        }
+//    }
 
     static long keyOldTime = 0, keyNowTime = 0;
     static boolean willBack = false;
@@ -418,7 +419,7 @@ public class MainActivity extends Activity {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
                 if (willBack) {
-                    launchJpg2PhotoApp();
+//                    launchJpg2PhotoApp();
                     startStopExit.exitBlackBoxApp();
                 }
                 if ((keyOldTime + 20000) < keyNowTime)  // if gap is big, reset to current

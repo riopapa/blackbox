@@ -35,34 +35,22 @@ class SnapShotSave {
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                int startIdx = 0;
-                switch (phase) {
-                    case 1:
-                        startIdx = 0; startBias = 100;
-                        break;
-                    case 2:
-                        startIdx = 20; startBias = 200;
-                        break;
-                    case 3:
-                        startIdx = 20; startBias = 300;
-                        break;
-                }
-
-                for (jpgIdx = startIdx; jpgIdx < MAX_IMAGES_SIZE; jpgIdx++) {
+                startBias = phase * 100;
+                for (jpgIdx = 0; jpgIdx < MAX_IMAGES_SIZE; jpgIdx++) {
                     byte [] imageBytes = jpgBytes[jpgIdx];
                     if (imageBytes != null && imageBytes.length > 1) {
                         File imageFile = new File(path2Write, "SnapShot_" + ("" + (startBias + jpgIdx)) + ".jpg");
                         bytes2File(imageBytes, imageFile);
                         jpgBytes[jpgIdx] = null;
-                        SystemClock.sleep(30);  // not to hold all the time
+                        SystemClock.sleep(20);  // not to hold all the time
                     }
                 }
+                if (phase == 3)
+                    sayEventCompleted(path2Write);
             }
         });
         th.start();
 
-        if (phase == 3)
-            sayEventCompleted(path2Write);
     }
 
     private void sayEventCompleted(File thisEventPath) {

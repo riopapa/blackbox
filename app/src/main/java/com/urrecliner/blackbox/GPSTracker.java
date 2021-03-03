@@ -110,8 +110,7 @@ class GPSTracker extends Service implements LocationListener {
             isCompassShown = true;
             utils.logBoth("GPSTracker","Activated ..");
         }
-        int HIDE_COMPASS = 15;
-        if (speedInt < HIDE_COMPASS)
+        if (speedInt < 15) // if speed is < xx then no update
             return;
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
 //        utils.logBoth("degree",GPSDegree+" : "+latitudes.get(0)+" x "+longitudes.get(0)+

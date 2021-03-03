@@ -22,7 +22,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-import static com.urrecliner.blackbox.Vars.ASK_SPEED_INTERVAL;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.speedInt;
@@ -33,8 +32,8 @@ import static com.urrecliner.blackbox.Vars.viewFinder;
 
 class OBDAccess {
 
+    final static int ASK_SPEED_INTERVAL = 400;
     String logID = "OBD";
-    //            utils.log(TAG, "connectOBD  "+chosenDeviceName+" : "+chosenDeviceAddress);
     private BluetoothSocket bSocket;
     private BluetoothDevice bluetoothDevice;
     private String chosenDeviceName = null;
@@ -48,7 +47,6 @@ class OBDAccess {
 
     void prepare() {
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-//        utils.logOnly(logID, "btAdaptor is "+btAdapter.toString());
         if(btAdapter == null){
             Toast.makeText(Vars.mContext, "Device doesn't support Bluetooth", Toast.LENGTH_LONG).show();
             return;
@@ -189,7 +187,7 @@ class OBDAccess {
         }
         speedCommand = new SpeedCommand();
         obdTimer = new Timer();
-        int HIDE_SPEED = 50;
+        int HIDE_SPEED = 40;
         final TimerTask obdTask = new TimerTask() {
             @Override
             public void run() {

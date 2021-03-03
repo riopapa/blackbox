@@ -32,7 +32,6 @@ public class Vars {
     static VideoUtils videoUtils = new VideoUtils();
     static CameraUtils cameraUtils = new CameraUtils();
     static StartStopExit startStopExit = new StartStopExit();
-    static GatherDiskSpace gatherDiskSpace = new GatherDiskSpace();
     static OBDAccess obdAccess = new OBDAccess();
     static DirectionSensor directionSensor = new DirectionSensor();
     static DisplayBattery displayBattery = new DisplayBattery();
@@ -66,14 +65,14 @@ public class Vars {
 
     private static final String PATH_PACKAGE = "BlackBox";
     private static final String PATH_EVENT = "event";
-    private static final String PATH_EVENT_JPG = "jpgTemp";
+    private static final String PATH_EVENT_JPG = "eventPhoto";
     private static final String PATH_NORMAL = "normal";
     private static final String PATH_WORK = "work";
     private static final String PATH_LOG = "log";
 
     static File mPackagePath = new File(Environment.getExternalStorageDirectory(), PATH_PACKAGE);
     static File mPackageEventPath = new File(mPackagePath, PATH_EVENT);
-    static File mPackageEventJpgTempPath = new File(mPackagePath, PATH_EVENT_JPG);
+    static File mPackageEventJpgPath = new File(mPackagePath, PATH_EVENT_JPG);
     static File mPackageNormalPath = new File(mPackagePath, PATH_NORMAL);
     static File mPackageNormalDatePath = new File(mPackageNormalPath, DATE_PREFIX+utils.getMilliSec2String(System.currentTimeMillis(), FORMAT_DATE));
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
@@ -85,7 +84,7 @@ public class Vars {
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int DELAY_AUTO_RECORDING = 3000;
+    final static int DELAY_AUTO_RECORDING = 5000;
     final static int DELAY_WAIT_EXIT = 4;
 //    final static int DELAY_I_WILL_BACK = 40000; // 40000;
 //    final static float LENS_FOCUS_FAR = 3f;
@@ -100,15 +99,14 @@ public class Vars {
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
 
-    final static long INTERVAL_EVENT = 140 * 100;
-    final static int SNAP_SHOT_INTERVAL = 180;
-    final static int MAX_IMAGES_SIZE = (int) (INTERVAL_EVENT * 102 / 100 / SNAP_SHOT_INTERVAL);
+    final static long INTERVAL_EVENT = 120 * 100;
+    final static int SNAP_SHOT_INTERVAL = 155;
+    final static int MAX_IMAGES_SIZE = (int) (INTERVAL_EVENT * 103 / 100 / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
     static NormalMerge normalMerge = new NormalMerge();
 
-    final static int ASK_SPEED_INTERVAL = 400;
     static long gpsUpdateTime = 0;
     static long nextNormalTime = 0;
     static boolean viewFinder = true;

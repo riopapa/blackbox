@@ -3,7 +3,6 @@ package com.urrecliner.blackbox;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
-import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -23,12 +22,21 @@ import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
+import com.google.android.gms.common.util.IOUtils;
+
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.InflaterOutputStream;
 
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
@@ -210,15 +218,31 @@ public class VideoUtils {
     };
 
 //    int maxSZ = 0;
+    long comp = 0L;
+    int cnt = 0;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         Image image = reader.acquireLatestImage();
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
 
         byte[] bytes = new byte[buffer.capacity()];
+        buffer.get(bytes);
 //        if (maxSZ < bytes.length) {
 //            maxSZ = bytes.length; Log.w("maxSz","=>"+maxSZ);
 //        }
-        buffer.get(bytes);
+//        try {
+//            byte[] byte2 = compress(bytes);
+//            byte[] byte3 = decompress(byte2);
+//            int szO = bytes.length;
+//            int szN = byte2.length;
+//            int sz3 = byte3.length;
+//            float rate = (float) (szN*100)/ (float)szO;
+////            comp += (long) rate;
+////            cnt++;
+////
+//            Log.w("bytes ", ""+szO+" = "+sz3+" "+szN+" "+rate);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         if (mIsRecording) {
             snapBytes[snapMapIdx] = bytes;
             snapMapIdx++;
@@ -227,6 +251,66 @@ public class VideoUtils {
         }
         image.close();
     };
+
+    byte[] compressZ(byte [] value) throws Exception {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        GZIPOutputStream gzipOutStream =new GZIPOutputStream( new BufferedOutputStream(byteArrayOutputStream));
+        gzipOutStream.write(value);
+        gzipOutStream.finish();
+        gzipOutStream.close();
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    byte[] decompressZ(final byte[] compressed) throws IOException {
+        final StringBuilder outStr = new StringBuilder();
+//        if ((compressed == null) || (compressed.length == 0)) {
+//            return "";
+//        }
+        if (isCompressed(compressed)) {
+            final GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(compressed));
+            return IOUtils.toByteArray(gis);
+        } else {
+            return compressed;
+        }
+    }
+
+    boolean isCompressed(final byte[] compressed) {
+        return (compressed[0] == (byte) (GZIPInputStream.GZIP_MAGIC)) && (compressed[1] == (byte) (GZIPInputStream.GZIP_MAGIC >> 8));
+    }
+
+
+    byte[] compress(byte[] in) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            DeflaterOutputStream defl = new DeflaterOutputStream(out);
+            defl.write(in);
+            defl.flush();
+            defl.close();
+
+            return out.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(150);
+            return null;
+        }
+    }
+
+    byte[] decompress(byte[] in) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            InflaterOutputStream infl = new InflaterOutputStream(out);
+            infl.write(in);
+            infl.flush();
+            infl.close();
+
+            return out.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(150);
+            return null;
+        }
+    }
+
 
     private boolean isPrepared = false;
     private SurfaceTexture surface_Preview = null;
