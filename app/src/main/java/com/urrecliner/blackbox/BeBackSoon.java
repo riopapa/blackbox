@@ -36,10 +36,6 @@ class BeBackSoon extends AsyncTask<String, String, String> {
             }
             downCount--;
         }
-//        Handler mHandler = new Handler(Looper.getMainLooper());
-//        mHandler.postDelayed(() -> {
-//            utils.displayCount("I will be back in "+ DELAY_I_WILL_BACK +" secs.",Toast.LENGTH_LONG, Color.BLACK);
-//        }, 100);
         return "Done";
     }
     protected void onProgressUpdate(String... s) {
@@ -64,12 +60,3 @@ class BeBackSoon extends AsyncTask<String, String, String> {
         }, 500);
     }
 }
-//                            AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-//                            Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
-//                            assert intent != null;
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            PendingIntent alarmIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                            assert alarmMgr != null;
-//                        alarmMgr.set(AlarmManager.RTC, System.currentTimeMillis() + DELAY_I_WILL_BACK, alarmIntent);
-//                            alarmMgr.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + DELAY_I_WILL_BACK ,alarmIntent);
-//                            mActivity.finish();

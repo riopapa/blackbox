@@ -187,24 +187,23 @@ class OBDAccess {
         }
         speedCommand = new SpeedCommand();
         obdTimer = new Timer();
-        int HIDE_SPEED = 40;
         final TimerTask obdTask = new TimerTask() {
             @Override
             public void run() {
-                speedString = askSpeed();
-                if (!speedString.equals(speedOld)) {
-                    mActivity.runOnUiThread(() -> {
-                        vTextSpeed.setText(speedString);
-                        speedInt = Integer.parseInt(speedString);
-                        boolean offPrevView =  speedInt > HIDE_SPEED;
-                        if (viewFinder && offPrevView != noPreview) {
-                            noPreview = offPrevView;
-                            vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);
-                        }
-                        MainActivity.focusChange(speedInt);
-                        speedOld = speedString;
-                    });
-                }
+            speedString = askSpeed();
+            if (!speedString.equals(speedOld)) {
+                mActivity.runOnUiThread(() -> {
+                    vTextSpeed.setText(speedString);
+                    speedInt = Integer.parseInt(speedString);
+                    boolean offPrevView =  speedInt > 40; // hide video if over 40 Kms
+                    if (viewFinder && offPrevView != noPreview) {
+                        noPreview = offPrevView;
+                        vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);
+                    }
+                    MainActivity.focusChange(speedInt);
+                    speedOld = speedString;
+                });
+            }
             }
         };
         obdTimer.schedule(obdTask, 100, ASK_SPEED_INTERVAL);

@@ -39,7 +39,7 @@ class SnapShotSave {
                 for (jpgIdx = 0; jpgIdx < MAX_IMAGES_SIZE; jpgIdx++) {
                     byte [] imageBytes = jpgBytes[jpgIdx];
                     if (imageBytes != null && imageBytes.length > 1) {
-                        File imageFile = new File(path2Write, "SnapShot_" + ("" + (startBias + jpgIdx)) + ".jpg");
+                        File imageFile = new File(path2Write, "CameraShot_" + ("" + (startBias + jpgIdx)) + ".jpg");
                         bytes2File(imageBytes, imageFile);
                         jpgBytes[jpgIdx] = null;
                         SystemClock.sleep(20);  // not to hold all the time
