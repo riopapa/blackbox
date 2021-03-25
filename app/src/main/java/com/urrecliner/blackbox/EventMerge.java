@@ -27,8 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
-import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
-import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
+import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
@@ -39,7 +38,7 @@ import static com.urrecliner.blackbox.Vars.utils;
 
 class EventMerge {
 
-    private static String logID = "Event";
+    private static final String logID = "Event";
     private static File thisEventPath;
 
     void merge(final long startTime, final File eventPath) {
@@ -74,7 +73,7 @@ class EventMerge {
             long startTime = Long.parseLong(inputParams[0]);
             File[] files2Merge;
 
-            beginTimeS = utils.getMilliSec2String(startTime, FORMAT_LOG_TIME);
+            beginTimeS = utils.getMilliSec2String(startTime, FORMAT_TIME);
             double latitude = gpsTracker.getLatitude();
             double longitude = gpsTracker.getLongitude();
             files2Merge = utils.getDirectoryList(mPackageWorkingPath);

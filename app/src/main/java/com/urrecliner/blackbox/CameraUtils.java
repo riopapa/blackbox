@@ -26,8 +26,7 @@ public class CameraUtils {
 //            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // 0.0 infinite ~ 10f nearest
             mCaptureSession.capture(mCaptureRequestBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
         } catch (CameraAccessException e) {
-            utils.logE("capture","SnapShot",e);
-            StartStopExit.reRunApplication();
+            StartStopExit.reRunApplication("CameraAccessException",e);
         }
     }
 

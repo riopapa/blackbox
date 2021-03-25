@@ -22,24 +22,15 @@ import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
-import com.google.android.gms.common.util.IOUtils;
-
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.zip.DeflaterOutputStream;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-import java.util.zip.InflaterOutputStream;
 
+import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
-import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
@@ -134,22 +125,6 @@ public class VideoUtils {
                         mVideoSize = size;
                 }
                 break;
-            case "Lenovo TB-8704F":
-                /* Lenovo TB-8704F
-                1440x1080 1.3 , 1280x960 1.3 , 1280x800 1.6 , 1280x720 1.8 , 1040x780 1.3 , 864x480 1.8 , 640x640 1.0 , 800x480 1.7 ,
-                 720x480 1.5 , 768x432 1.8 , 640x480 1.3 , 480x640 0.8 , 576x432 1.3 , 640x360 1.8 , 480x360 1.3 , 480x320 1.5 ,
-                  384x288 1.3 , 352x288 1.2 , 320x240 1.3 , 240x320 0.8 , 240x160 1.5 , 176x144 1.2 ,
-                 */
-
-                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 720 && size.getHeight() == 480)
-                        mPreviewSize = size;
-                    else if (size.getWidth() == 1440 && size.getHeight() == 1080)
-                        mImageSize = size;
-                    else if (size.getWidth() == 1280 && size.getHeight() == 800)
-                        mVideoSize = size;
-                }
-                break;
             case "LM-G710N":
                 /* LG G7
                     4656x3492 1.3 , 4656x2620 1.8 , 4656x2218 2.1 , 4160x3120 1.3 , 4160x2080 2.0 , 4000x3000 1.3 ,
@@ -217,32 +192,12 @@ public class VideoUtils {
         }
     };
 
-//    int maxSZ = 0;
-    long comp = 0L;
-    int cnt = 0;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         Image image = reader.acquireLatestImage();
         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
 
         byte[] bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
-//        if (maxSZ < bytes.length) {
-//            maxSZ = bytes.length; Log.w("maxSz","=>"+maxSZ);
-//        }
-//        try {
-//            byte[] byte2 = compress(bytes);
-//            byte[] byte3 = decompress(byte2);
-//            int szO = bytes.length;
-//            int szN = byte2.length;
-//            int sz3 = byte3.length;
-//            float rate = (float) (szN*100)/ (float)szO;
-////            comp += (long) rate;
-////            cnt++;
-////
-//            Log.w("bytes ", ""+szO+" = "+sz3+" "+szN+" "+rate);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         if (mIsRecording) {
             snapBytes[snapMapIdx] = bytes;
             snapMapIdx++;
@@ -251,66 +206,6 @@ public class VideoUtils {
         }
         image.close();
     };
-
-    byte[] compressZ(byte [] value) throws Exception {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        GZIPOutputStream gzipOutStream =new GZIPOutputStream( new BufferedOutputStream(byteArrayOutputStream));
-        gzipOutStream.write(value);
-        gzipOutStream.finish();
-        gzipOutStream.close();
-        return byteArrayOutputStream.toByteArray();
-    }
-
-    byte[] decompressZ(final byte[] compressed) throws IOException {
-        final StringBuilder outStr = new StringBuilder();
-//        if ((compressed == null) || (compressed.length == 0)) {
-//            return "";
-//        }
-        if (isCompressed(compressed)) {
-            final GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(compressed));
-            return IOUtils.toByteArray(gis);
-        } else {
-            return compressed;
-        }
-    }
-
-    boolean isCompressed(final byte[] compressed) {
-        return (compressed[0] == (byte) (GZIPInputStream.GZIP_MAGIC)) && (compressed[1] == (byte) (GZIPInputStream.GZIP_MAGIC >> 8));
-    }
-
-
-    byte[] compress(byte[] in) {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            DeflaterOutputStream defl = new DeflaterOutputStream(out);
-            defl.write(in);
-            defl.flush();
-            defl.close();
-
-            return out.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(150);
-            return null;
-        }
-    }
-
-    byte[] decompress(byte[] in) {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            InflaterOutputStream infl = new InflaterOutputStream(out);
-            infl.write(in);
-            infl.flush();
-            infl.close();
-
-            return out.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(150);
-            return null;
-        }
-    }
-
 
     private boolean isPrepared = false;
     private SurfaceTexture surface_Preview = null;
@@ -399,62 +294,31 @@ public class VideoUtils {
         mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
         mediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-        mediaRecorder.setOutputFile(getOutputFileName(0).toString());
+        mediaRecorder.setOutputFile(getNextFileName(0).toString());
         mediaRecorder.setMaxFileSize(VIDEO_ONE_WORK_FILE_SIZE);
         mediaRecorder.prepare();
-        mediaRecorder.setNextOutputFile(getOutputFileName(3000));
-        setUpNextFile();
-    }
-
-    private File getOutputFileName(long after) {
-        String time = utils.getMilliSec2String(System.currentTimeMillis() + after, FORMAT_LOG_TIME);
-        return new File(mPackageWorkingPath, time + ".mp4");
-    }
-
-    private void setUpNextFile() {
+        mediaRecorder.setNextOutputFile(getNextFileName(3000));
 
         mediaRecorder.setOnInfoListener((mediaRecorder, what, extra) -> {
-            switch (what) {
-                case MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED:
-                    utils.logOnly(logID,"MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED");
-//                    startStopExit.stopVideo();
-//                    startStopExit.startVideo();
-                    utils.logBoth(logID, "***** MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED ***");
-                    mediaRecorder.stop();
-                    mediaRecorder.reset();
-                    break;
-                case MediaRecorder.MEDIA_RECORDER_INFO_NEXT_OUTPUT_FILE_STARTED:
-                    prepareNextFile();
-                    break;
-                default:
-//                        utils.log("d","default " + what);
+            if (what == MediaRecorder.MEDIA_RECORDER_INFO_NEXT_OUTPUT_FILE_STARTED) {
+                assignNextFile();
             }
         });
     }
 
-    private final Handler nextFileHandler = new Handler() {
-        public void handleMessage(Message msg) { assignNextFile();
-        }
-    };
-    private void prepareNextFile() {
-        if (mIsRecording && !mExitApplication) {
-            new Timer().schedule(new TimerTask() {
-                public void run() {
-                    nextFileHandler.sendEmptyMessage(0);
-                }
-            }, 100);
-        }
+    private File getNextFileName(long after) {
+        String time = utils.getMilliSec2String(System.currentTimeMillis() + after, FORMAT_TIME);
+        return new File(mPackageWorkingPath, time + ".mp4");
     }
 
     private int nextCount = 0;
     private void assignNextFile() {
         if (mIsRecording) {
             try {
-                File nextFileName = getOutputFileName(3000);
+                File nextFileName = getNextFileName(3000);
                 mediaRecorder.setNextOutputFile(nextFileName);
                 String s = ++nextCount + "";
                 vTextRecord.setText(s);
-//                utils.log("assign " + s, nextFileName.toString());
             } catch (IOException e) {
                 utils.logE("Error", "nxtFile", e);
             }

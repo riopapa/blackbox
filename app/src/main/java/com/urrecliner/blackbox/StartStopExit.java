@@ -40,26 +40,24 @@ class StartStopExit {
         try {
             videoUtils.prepareRecord();
         } catch (Exception e) {
-            utils.logE(logID, "Prepare Error", e);
-            reRunApplication();
+            reRunApplication("Prepare Error", e);
         }
         try {
             mediaRecorder.start();
         } catch (Exception e) {
-            utils.logE(logID, "Start Error", e);
-            reRunApplication();
+            reRunApplication("Start Error", e);
         }
         try {
             startCamera();
             startNormal();
         } catch (Exception e) {
-            utils.logE(logID, "Start Camera, Normal Error", e);
-            reRunApplication();
+            reRunApplication("Start Camera, Normal Error", e);
         }
     }
 
-    static void reRunApplication() {
-        utils.logOnly("rerun","/// application reloaded ///");
+    static void reRunApplication(String msg, Exception e) {
+        Toast.makeText(mContext,"Exception "+msg,Toast.LENGTH_LONG).show();
+        utils.logE("return","/// application reloaded ///",e);
         Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
         assert sendIntent != null;
         mContext.startActivity(sendIntent);

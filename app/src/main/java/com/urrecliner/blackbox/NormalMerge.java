@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
-import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
+import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -33,7 +33,7 @@ import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
 import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.nextNormalTime;
-import static com.urrecliner.blackbox.Vars.sdfLogTime;
+import static com.urrecliner.blackbox.Vars.sdfTime;
 import static com.urrecliner.blackbox.Vars.utils;
 
 class NormalMerge {
@@ -61,7 +61,7 @@ class NormalMerge {
         protected String doInBackground(String... inputParams) {
             if (nextNormalTime == 0)
                 nextNormalTime = System.currentTimeMillis() - INTERVAL_NORMAL - 10000;
-            beginTimeS = utils.getMilliSec2String(nextNormalTime, FORMAT_LOG_TIME);
+            beginTimeS = utils.getMilliSec2String(nextNormalTime, FORMAT_TIME);
             File []files2Merge;
             files2Merge = utils.getDirectoryList(mPackageWorkingPath);
             if (files2Merge.length < 5) {
@@ -73,7 +73,7 @@ class NormalMerge {
 //                utils.logBoth(logID, beginTimeS+" to "+endTimeS+" len="+files2Merge.length);
                 Date date = null;
                 try {
-                    date = sdfLogTime.parse(endTimeS);
+                    date = sdfTime.parse(endTimeS);
                 } catch (ParseException e) {
                     utils.logE(logID, endTimeS+" parse Error", e);
                 }

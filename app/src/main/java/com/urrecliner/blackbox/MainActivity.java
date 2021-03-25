@@ -124,8 +124,8 @@ public class MainActivity extends Activity {
         Intent intent = getIntent();
         setContentView(R.layout.main_activity);
         utils.deleteOldFiles(mPackageNormalPath, 3);
-//        utils.deleteOldFiles(mPackageEventPath, 3);
         utils.deleteOldFiles(mPackageEventJpgPath, 4);
+        utils.deleteOldFiles(mPackageWorkingPath, -3);
         utils.deleteOldLogs(5);
         prepareMain();
     }
@@ -137,6 +137,7 @@ public class MainActivity extends Activity {
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vPreviewView = findViewById(R.id.previewView);
         utils.logOnly(logID, "Main Started ..");
+        startStopExit = new StartStopExit();
         vBtnRecord = findViewById(R.id.btnRecord);
         vBtnRecord.setOnClickListener(v -> {
             utils.logBoth(logID," start button clicked");

@@ -58,9 +58,11 @@ public class Vars {
     static SharedPreferences sharedPref;
 
     static final String FORMAT_LOG_TIME = "yy-MM-dd HH.mm.ss.SSS";
+    static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
     static SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.getDefault());
     static SimpleDateFormat sdfLogTime = new SimpleDateFormat(FORMAT_LOG_TIME, Locale.getDefault());
+    static SimpleDateFormat sdfTime = new SimpleDateFormat(FORMAT_TIME, Locale.getDefault());
     static final String DATE_PREFIX = "V";
 
     private static final String PATH_PACKAGE = "BlackBox";
@@ -78,7 +80,7 @@ public class Vars {
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
-    static long VIDEO_ONE_WORK_FILE_SIZE = 32 * 100000;
+    static long VIDEO_ONE_WORK_FILE_SIZE = 48 * 100000;
     static int VIDEO_ENCODING_RATE = 3000*1000;
     static int VIDEO_FRAME_RATE = 36;
 
