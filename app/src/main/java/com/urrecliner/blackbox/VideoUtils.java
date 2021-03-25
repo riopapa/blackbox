@@ -15,10 +15,9 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
+
+import androidx.core.content.ContextCompat;
+
 import android.util.Size;
 import android.view.Surface;
 
@@ -26,8 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
@@ -41,7 +38,6 @@ import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mImageSize;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
