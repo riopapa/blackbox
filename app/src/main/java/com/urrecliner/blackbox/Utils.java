@@ -28,23 +28,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static android.content.ContentValues.TAG;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
-import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
+import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
-import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
-
 class Utils {
     private final String LOG_PREFIX = "log_";
-    private String logDate = getMilliSec2String(System.currentTimeMillis(),FORMAT_DATE);
-    private String logFile = LOG_PREFIX+logDate+".txt";
+    private final String logDate = getMilliSec2String(System.currentTimeMillis(),FORMAT_DATE);
+    private final String logFile = LOG_PREFIX+logDate+".txt";
 
     String getMilliSec2String(long milliSec, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
@@ -54,59 +51,6 @@ class Utils {
     String getNowTimeString(String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
         return dateFormat.format(System.currentTimeMillis());
-    }
-
-    static class ScreenInfo {
-        int width, height;
-        int widthPixels, heightPixels;
-        int densityDpi;
-        float xdpi, ydpi;
-//        int screenWidth, screenHeight;
-        double screenInch;
-        String screenType;
-        ScreenInfo() {}
-    }
-
-    ScreenInfo getScreenSize(Activity activity) {
-        ScreenInfo screenInfo = new ScreenInfo();
-        Display display = activity.getWindowManager().getDefaultDisplay();
-//        String displayName = display.getName();  // minSdkVersion=17+
-//        Log.w("screen", "displayName  = " + displayName);
-
-// display size in pixels
-        Point size = new Point();
-        display.getSize(size);
-        screenInfo.width = size.x;
-        screenInfo.height = size.y;
-// pixels, dpi
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        screenInfo.heightPixels = metrics.heightPixels;
-        screenInfo.widthPixels = metrics.widthPixels;
-        screenInfo.densityDpi = metrics.densityDpi;
-        screenInfo.xdpi = metrics.xdpi;
-        screenInfo.ydpi = metrics.ydpi;
-        screenInfo.screenInch = Math.sqrt(Math.pow(screenInfo.width/screenInfo.xdpi,2)+Math.pow(screenInfo.height/screenInfo.ydpi,2));
-//
-//// deprecated
-//        int screenHeight = display.getHeight();
-//        int screenWidth = display.getWidth();
-//        Log.w(TAG, "screenHeight = " + screenHeight);
-//        Log.w(TAG, "screenWidth  = " + screenWidth);
-
-// orientation (either ORIENTATION_LANDSCAPE, ORIENTATION_PORTRAIT)
-//        int orientation = activity.getResources().getConfiguration().orientation;
-//        Log.w(TAG, "orientation  = " + orientation);
-        int screenSize = activity.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        if (screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE)
-            screenInfo.screenType = "L";
-        else if (screenSize == Configuration.SCREENLAYOUT_SIZE_NORMAL)
-            screenInfo.screenType = "N";
-        else if (screenSize == Configuration.SCREENLAYOUT_SIZE_SMALL)
-            screenInfo.screenType = "S";
-        else
-            screenInfo.screenType = "U";
-        return screenInfo;
     }
 
     boolean readyPackageFolder (File dir){
@@ -129,30 +73,13 @@ class Utils {
         return files;
     }
 
-    /* delete files within directory if name is less than fileName */
-
-    void deleteFiles(File directory, String fileName) {
-
-        File[] files = directory.listFiles();
-        if(null!=files){
-            Collator myCollator = Collator.getInstance();
-            for (File file : files) {
-                String shortFileName = file.getName();
-                if (myCollator.compare(shortFileName, fileName) < 0) {
-                    file.delete();
-                }
-            }
-        }
-    }
-
-    /* delete directory and files under that directory */
-    boolean deleteRecursive(File fileOrDirectory) {
+    void deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory()) {
             utils.logOnly("Delete Old Folder ", fileOrDirectory.toString());
             for (File child : fileOrDirectory.listFiles())
                 deleteRecursive(child);
         }
-        return fileOrDirectory.delete();
+        fileOrDirectory.delete();
     }
 
     void deleteOldFiles(File target, int days) {
@@ -189,7 +116,7 @@ class Utils {
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
         Log.w(tag , log);
-        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME)+" "+tag+": " + log);
+        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME)+" "+tag+": " + log);
         text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
         text = truncLine(text);
         final String fText = text;
@@ -207,7 +134,7 @@ class Utils {
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
         Log.w(tag , log);
-        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  ": " + log);
+        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  ": " + log);
     }
 
     void logE(String tag, String text, Exception e) {
@@ -215,7 +142,7 @@ class Utils {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
-        append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End>");
+        append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End>");
         text = vTextLogInfo.getText().toString() + "\n" + text;
         text = truncLine(text);
         final String fText = tag+" : "+text;
@@ -225,7 +152,7 @@ class Utils {
                 vTextLogInfo.setText(fText);
             }
         });
-        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_LOG_TIME) +  ": " + log);
+        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  ": " + log);
         e.printStackTrace();
         beepOnce(1, .6f);
     }

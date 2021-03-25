@@ -3,7 +3,6 @@ package com.urrecliner.blackbox;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -35,7 +34,7 @@ import java.util.TimerTask;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.FORMAT_LOG_TIME;
+import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
@@ -83,25 +82,20 @@ public class MainActivity extends Activity {
     private static final String logID = "Main";
 
     boolean surfaceReady = false;
-    private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
+    private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             readyCamera();
         }
         @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-        }
-
-        @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
             surfaceTexture.release();
-//            emExoPlayer.blockingClearSurface();
             return true;
         }
-
         @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-        }
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) { }
+        @Override
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) { }
     };
 
     void readyCamera() {
@@ -121,7 +115,6 @@ public class MainActivity extends Activity {
             return;
         }
         askPermission();
-        Intent intent = getIntent();
         setContentView(R.layout.main_activity);
         utils.deleteOldFiles(mPackageNormalPath, 3);
         utils.deleteOldFiles(mPackageEventJpgPath, 4);
@@ -254,7 +247,7 @@ public class MainActivity extends Activity {
     static float save_focus = 0f;    // 0: infinite 10: nearest
     static void focusChange(int speed) {
 //        utils.logBoth("nearSwitch","switched to NEAR");
-        float focus = 0;
+        float focus;
         if (speed < 5)
             focus = 9.5f;
         else if (speed < 10)
@@ -326,7 +319,7 @@ public class MainActivity extends Activity {
 
         gpsTracker.askLocation();
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT ;
-        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_LOG_TIME));
+        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME));
         utils.readyPackageFolder(thisEventJpgPath);
 //        utils.logBoth(logID,"Prev Snapshot");
 

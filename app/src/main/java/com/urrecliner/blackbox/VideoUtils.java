@@ -18,13 +18,18 @@ import android.os.Build;
 
 import androidx.core.content.ContextCompat;
 
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
@@ -278,9 +283,10 @@ public class VideoUtils {
         isPrepared = true;
     }
 
-    private void setupMediaRecorder() throws IOException {
+    private void setupMediaRecorder() {
 
         utils.logBoth(logID," setup Media");
+        mediaRecorder = new MediaRecorder();
 
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);    // 1. setAudioSource
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);    // 2. setVideoSource
@@ -292,8 +298,16 @@ public class VideoUtils {
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mediaRecorder.setOutputFile(getNextFileName(0).toString());
         mediaRecorder.setMaxFileSize(VIDEO_ONE_WORK_FILE_SIZE);
-        mediaRecorder.prepare();
-        mediaRecorder.setNextOutputFile(getNextFileName(3000));
+        try {
+            mediaRecorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            mediaRecorder.setNextOutputFile(getNextFileName(2000));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         mediaRecorder.setOnInfoListener((mediaRecorder, what, extra) -> {
             if (what == MediaRecorder.MEDIA_RECORDER_INFO_NEXT_OUTPUT_FILE_STARTED) {
@@ -310,14 +324,18 @@ public class VideoUtils {
     private int nextCount = 0;
     private void assignNextFile() {
         if (mIsRecording) {
-            try {
-                File nextFileName = getNextFileName(3000);
-                mediaRecorder.setNextOutputFile(nextFileName);
-                String s = ++nextCount + "";
-                vTextRecord.setText(s);
-            } catch (IOException e) {
-                utils.logE("Error", "nxtFile", e);
-            }
+            String s = ++nextCount + "";
+            vTextRecord.setText(s);
+            new Timer().schedule(new TimerTask() {
+                public void run() {
+                    try {
+                        mediaRecorder.setNextOutputFile(getNextFileName(2000));
+                    } catch (IOException e) {
+                        utils.logE("Error", "nxtFile", e);
+                    }
+                }
+            }, 2000);
+
         }
     }
 

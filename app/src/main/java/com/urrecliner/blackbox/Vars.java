@@ -57,11 +57,9 @@ public class Vars {
 
     static SharedPreferences sharedPref;
 
-    static final String FORMAT_LOG_TIME = "yy-MM-dd HH.mm.ss.SSS";
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
     static SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.getDefault());
-    static SimpleDateFormat sdfLogTime = new SimpleDateFormat(FORMAT_LOG_TIME, Locale.getDefault());
     static SimpleDateFormat sdfTime = new SimpleDateFormat(FORMAT_TIME, Locale.getDefault());
     static final String DATE_PREFIX = "V";
 
@@ -96,7 +94,7 @@ public class Vars {
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
     static boolean mIsRecording;
-    static MediaRecorder mediaRecorder = new MediaRecorder();
+    static MediaRecorder mediaRecorder;
     static int speedInt = 0;
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
