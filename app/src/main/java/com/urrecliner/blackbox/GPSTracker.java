@@ -10,7 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -78,12 +78,6 @@ class GPSTracker extends Service implements LocationListener {
         }
     }
 
-//    public void stopUsingGPS(){
-//        if(locationManager != null){
-//            locationManager.removeUpdates(GPSTracker.this);
-//        }
-//    }
-
     double getLatitude() { return latitude; }
     double getLongitude() { return longitude; }
 
@@ -113,8 +107,6 @@ class GPSTracker extends Service implements LocationListener {
         if (speedInt < 15) // if speed is < xx then no update
             return;
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
-//        utils.logBoth("degree",GPSDegree+" : "+latitudes.get(0)+" x "+longitudes.get(0)+
-//                " > "+latitude+" x "+longitude);
         if (Float.isNaN(GPSDegree))
             return;
         nowDirection = (int) (GPSDegree % 360 / 18) * 18;
@@ -143,19 +135,18 @@ class GPSTracker extends Service implements LocationListener {
         final double CONSTANT2RADIAN = (3.141592 / 180);
         final double CONSTANT2DEGREE = (180 / 3.141592);
 
-        double Cur_Lat_radian = P1_latitude * CONSTANT2RADIAN;
-        double Cur_Lon_radian = P1_longitude * CONSTANT2RADIAN;
+        double lat1Rad = P1_latitude * CONSTANT2RADIAN;
+        double lng1Rad = P1_longitude * CONSTANT2RADIAN;
 
-        double Dest_Lat_radian = P2_latitude * CONSTANT2RADIAN;
-        double Dest_Lon_radian = P2_longitude * CONSTANT2RADIAN;
+        double lat2Rad = P2_latitude * CONSTANT2RADIAN;
+        double lng2Rad = P2_longitude * CONSTANT2RADIAN;
 
-        // radian distance
         double radian_distance =
-                Math.acos(Math.sin(Cur_Lat_radian) * Math.sin(Dest_Lat_radian) + Math.cos(Cur_Lat_radian) * Math.cos(Dest_Lat_radian) * Math.cos(Cur_Lon_radian - Dest_Lon_radian));
-        double radian_bearing = Math.acos((Math.sin(Dest_Lat_radian) - Math.sin(Cur_Lat_radian) * Math.cos(radian_distance)) / (Math.cos(Cur_Lat_radian) * Math.sin(radian_distance)));        // acos의 인수로 주어지는 x는 360분법의 각도가 아닌 radian(호도)값이다.
+                Math.acos(Math.sin(lat1Rad) * Math.sin(lat2Rad) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.cos(lng1Rad - lng2Rad));
+        double radian_bearing = Math.acos((Math.sin(lat2Rad) - Math.sin(lat1Rad) * Math.cos(radian_distance)) / (Math.cos(lat1Rad) * Math.sin(radian_distance)));
 
         double true_bearing;
-        if (Math.sin(Dest_Lon_radian - Cur_Lon_radian) < 0)
+        if (Math.sin(lng2Rad - lng1Rad) < 0)
             true_bearing = 360 - radian_bearing * CONSTANT2DEGREE;
         else
             true_bearing = radian_bearing * CONSTANT2DEGREE;
