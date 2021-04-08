@@ -116,10 +116,10 @@ public class MainActivity extends Activity {
         }
         askPermission();
         setContentView(R.layout.main_activity);
-        utils.deleteOldFiles(mPackageNormalPath, 3);
+        utils.deleteOldFiles(mPackageNormalPath, 5);
         utils.deleteOldFiles(mPackageEventJpgPath, 4);
         utils.deleteOldFiles(mPackageWorkingPath, -3);
-        utils.deleteOldLogs(5);
+        utils.deleteOldLogs(7);
         prepareMain();
     }
 
@@ -249,20 +249,24 @@ public class MainActivity extends Activity {
 //        utils.logBoth("nearSwitch","switched to NEAR");
         float focus;
         if (speed < 5)
-            focus = 9.5f;
+            focus = 9.7f;
         else if (speed < 10)
             focus = 9f;
         else if (speed < 20)
             focus = 7f;
         else if (speed < 30)
-            focus = 6f;
-        else if (speed < 50)
-            focus = 4f;
+            focus = 5f;
+//        else if (speed < 50)
+//            focus = 4f;
         else
-            focus = 2f;
+            focus = 1f;
         if (focus != save_focus) {
-            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
-            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
+            if (focus == 1f) {
+                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
+            } else {
+                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
+                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
+            }
             save_focus = focus;
         }
 //        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2f022f"
+    android:background="#2B052B"
     android:keepScreenOn="true">
 
     <!--Date and Time-->
@@ -13,7 +13,7 @@
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:text="@string/mm_dd"
-        android:textColor="#fcfcfc"
+        android:textColor="@color/colorText"
         android:textSize="32sp" />
     <TextView
         android:id="@+id/textTime"
@@ -24,10 +24,9 @@
         android:layout_marginTop="0dp"
         android:gravity="center"
         android:text="@string/_00_00"
-        android:textColor="#fcfcfc"
+        android:textColor="@color/colorText"
         android:textSize="36sp" />
-
-
+    
     <!--Log Info in multi lines-->
     <TextView
         android:id="@+id/textLogInfo"
@@ -36,7 +35,7 @@
         android:layout_marginStart="8dp"
         android:text="@string/logInfo"
         android:layout_toEndOf="@id/textDate"
-        android:textColor="#cccc"
+        android:textColor="@color/colorText"
         android:textSize="@dimen/log_size" />
 
     <!--Event Record counts -->
@@ -48,7 +47,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:text="@string/textEvent"
-        android:textColor="#cccccc"
+        android:textColor="@color/colorText"
         android:textSize="16dp" />
     <TextView
         android:id="@+id/textCountEvent"
@@ -58,34 +57,8 @@
         android:layout_marginTop="4dp"
         android:layout_below="@id/textEvent"
         android:text="@string/zero"
-        android:textColor="#cccccc"
+        android:textColor="@color/colorText"
         android:textSize="32sp" />
-
-<!--    <Switch-->
-<!--        android:id="@+id/nearSwitch"-->
-<!--        android:layout_width="60dp"-->
-<!--        android:layout_height="32dp"-->
-<!--        android:layout_marginTop="4dp"-->
-<!--        android:layout_marginLeft="16dp"-->
-<!--        android:switchMinWidth="40dp"-->
-<!--        android:layout_below="@id/textEvent"-->
-<!--        android:layout_toEndOf="@id/textCountEvent"-->
-<!--        android:checked="false"-->
-<!--        android:textOff="OFF"-->
-<!--        android:textOn="ON"/>-->
-
-    <!--GPS Active
-    <ImageView
-        android:id="@+id/gpsActive"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_above="@id/frmBattery"
-        android:layout_below="@id/frmRecord"
-        android:layout_alignStart="@id/frmRecord"
-        android:contentDescription="@string/compassImage"
-        android:src="@mipmap/satellite1" />
--->
 
     <!--Record start button and count Fragment-->
     <FrameLayout
@@ -130,7 +103,7 @@
         android:layout_marginEnd="8dp"
         android:gravity="end"
         android:text="@string/underscore"
-        android:textColor="#fcfcfc"
+        android:textColor="@color/colorText"
         android:textSize="64sp" />
 
     <TextView
@@ -142,7 +115,7 @@
         android:layout_marginBottom="80dp"
         android:layout_toEndOf="@id/textSpeed"
         android:text="@string/km"
-        android:textColor="#fcfcfc"
+        android:textColor="@color/colorText"
         android:textSize="36sp" />
 
     <!--Exit & Napping button-->
@@ -252,7 +225,7 @@
             android:layout_gravity="center"
             android:text="@string/percent"
             android:textStyle="bold"
-            android:textColor="#eee"
+            android:textColor="@color/colorText"
             android:textSize="28sp" />
     </FrameLayout>
 
@@ -265,7 +238,7 @@
         android:layout_alignBottom="@id/btnExit"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/back_border_only" />
+        android:background="@drawable/texture_border" />
 
     <TextureView
         android:id="@+id/previewView"

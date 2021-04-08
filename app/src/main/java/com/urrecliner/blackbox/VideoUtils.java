@@ -330,11 +330,11 @@ public class VideoUtils {
                 public void run() {
                     try {
                         mediaRecorder.setNextOutputFile(getNextFileName(2000));
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         utils.logE("Error", "nxtFile", e);
                     }
                 }
-            }, 2000);
+            }, 50);
 
         }
     }
