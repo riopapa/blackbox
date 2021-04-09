@@ -3,7 +3,6 @@ package com.urrecliner.blackbox;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 

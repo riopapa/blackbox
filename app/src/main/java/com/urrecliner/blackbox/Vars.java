@@ -3,7 +3,6 @@ package com.urrecliner.blackbox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.hardware.Camera;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
@@ -78,9 +77,9 @@ public class Vars {
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
-    static long VIDEO_ONE_WORK_FILE_SIZE = 48 * 100000;
-    static int VIDEO_ENCODING_RATE = 3000*1000;
-    static int VIDEO_FRAME_RATE = 36;
+    static long VIDEO_ONE_WORK_FILE_SIZE = 80 * 100000;
+    static int VIDEO_ENCODING_RATE = 8000*1000;
+    static int VIDEO_FRAME_RATE = 32;
 
     static int CountEvent;
     static int activeEventCount = 0;

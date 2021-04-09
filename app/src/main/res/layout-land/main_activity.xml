@@ -8,16 +8,16 @@
     <!--Date and Time-->
     <TextView
         android:id="@+id/textDate"
-        android:layout_width="160dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:gravity="center"
         android:text="@string/mm_dd"
         android:textColor="@color/colorText"
-        android:textSize="32sp" />
+        android:textSize="48sp" />
     <TextView
         android:id="@+id/textTime"
-        android:layout_width="160dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_below="@+id/textDate"
@@ -25,7 +25,7 @@
         android:gravity="center"
         android:text="@string/_00_00"
         android:textColor="@color/colorText"
-        android:textSize="36sp" />
+        android:textSize="56sp" />
 
     <!--Log Info in multi lines-->
     <TextView
@@ -43,7 +43,7 @@
         android:id="@+id/textEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textLogInfo"
+        android:layout_above="@id/textCountEvent"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:text="@string/textEvent"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="4dp"
-        android:layout_below="@id/textEvent"
+        android:layout_alignParentBottom="true"
         android:text="@string/zero"
         android:textColor="@color/colorText"
         android:textSize="32sp" />
@@ -125,7 +125,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="120dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/km"
         android:src="@mipmap/exit_app" />
@@ -133,11 +133,11 @@
     <ImageButton
         android:id="@+id/btnIWillBack"
         style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@id/btnExit"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="24dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/km"
         android:src="@mipmap/i_will_be_back" />
@@ -149,7 +149,7 @@
         android:layout_height="90dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp" >
 
         <ImageButton
@@ -168,7 +168,36 @@
             android:text="@string/zero"
             android:textColor="#00FF00"
             android:textSize="24sp" />
+    </FrameLayout>
 
+    <!--  Battery  -->
+    <FrameLayout
+        android:id="@+id/frmBattery"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@id/textureBox"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="16dp">
+
+        <ImageView
+            android:id="@+id/imgBattery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:contentDescription="@string/todo" />
+
+        <TextView
+            android:id="@+id/textBattery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="@string/percent"
+            android:textStyle="bold"
+            android:textColor="@color/colorText"
+            android:textSize="28sp" />
     </FrameLayout>
 
     <!--Compass-->
@@ -197,36 +226,6 @@
             android:src="@mipmap/compass_arrow"
             android:contentDescription="@string/directionTriangle" />
 
-    </FrameLayout>
-
-    <!--  Battery  -->
-    <FrameLayout
-        android:id="@+id/frmBattery"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@id/textureBox"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="30dp">
-
-        <ImageView
-            android:id="@+id/imgBattery"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:contentDescription="@string/todo" />
-
-        <TextView
-            android:id="@+id/textBattery"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:text="@string/percent"
-            android:textStyle="bold"
-            android:textColor="@color/colorText"
-            android:textSize="28sp" />
     </FrameLayout>
 
     <!--draw box around texture view -->

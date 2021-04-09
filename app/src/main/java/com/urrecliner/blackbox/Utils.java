@@ -35,7 +35,6 @@ import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
-import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 class Utils {
@@ -43,17 +42,7 @@ class Utils {
     private final String logDate = getMilliSec2String(System.currentTimeMillis(),FORMAT_DATE);
     private final String logFile = LOG_PREFIX+logDate+".txt";
 
-    String getMilliSec2String(long milliSec, String format) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        return dateFormat.format(new Date(milliSec));
-    }
-
-    String getNowTimeString(String format) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        return dateFormat.format(System.currentTimeMillis());
-    }
-
-    boolean readyPackageFolder (File dir){
+    public boolean readyPackageFolder (File dir){
         try {
             if (!dir.exists()) return dir.mkdirs();
             else
@@ -64,53 +53,17 @@ class Utils {
         return false;
     }
 
-    File[] getDirectoryList(File fullPath) {
+    public File[] getDirectoryList(File fullPath) {
         return fullPath.listFiles();
     }
 
-    File[] getDirectoryFiltered(File fullPath, final String fileType) {
+    public File[] getDirectoryFiltered(File fullPath, final String fileType) {
         File[] files = fullPath.listFiles(file -> (file.getPath().endsWith(fileType) && file.length() > 100));
         return files;
     }
 
-    void deleteRecursive(File fileOrDirectory) {
-        if (fileOrDirectory.isDirectory()) {
-            utils.logOnly("Delete Old Folder ", fileOrDirectory.toString());
-            for (File child : fileOrDirectory.listFiles())
-                deleteRecursive(child);
-        }
-        fileOrDirectory.delete();
-    }
 
-    void deleteOldFiles(File target, int days) {
-
-        String oldDate = DATE_PREFIX+sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
-        File[] oldFiles = utils.getDirectoryList(target);
-        Collator myCollator = Collator.getInstance();
-        for (File file : oldFiles) {
-            String shortFileName = file.getName();
-            if (!shortFileName.substring(0,1).equals(".") && myCollator.compare(shortFileName, oldDate) < 0) {
-                deleteRecursive(file);
-            }
-        }
-    }
-
-    void deleteOldLogs(int days) {
-        final SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.US);
-
-        String oldDate = LOG_PREFIX + sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
-        File[] files = mPackageLogPath.listFiles();
-        Collator myCollator = Collator.getInstance();
-        for (File file : files) {
-            String shortFileName = file.getName();
-            if (myCollator.compare(shortFileName, oldDate) < 0) {
-                if (!file.delete())
-                    Log.e("file","Delete Error "+file);
-            }
-        }
-    }
-
-    void logBoth(String tag, String text) {
+    public void logBoth(String tag, String text) {
 //        int pid = android.os.Process.myPid();
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
@@ -128,7 +81,7 @@ class Utils {
         });
     }
 
-    void logOnly (String tag, String text) {
+    public void logOnly (String tag, String text) {
 //        int pid = android.os.Process.myPid();
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
@@ -137,7 +90,7 @@ class Utils {
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  ": " + log);
     }
 
-    void logE(String tag, String text, Exception e) {
+    public void logE(String tag, String text, Exception e) {
         beepOnce(0, .6f);
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
@@ -174,6 +127,99 @@ class Utils {
 
     private String traceClassName(String s) {
         return s.substring(s.lastIndexOf(".")+1);
+    }
+
+
+
+    void append2file (File directory, String filename, String text) {
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+        try {
+            File file = new File(directory, filename);
+            if (!file.exists()) {
+                if(!file.createNewFile()) {
+                    Log.e("createFile"," Error");
+                }
+            }
+            fw = new FileWriter(file.getAbsoluteFile(), true);
+            bw = new BufferedWriter(fw);
+            bw.write("\n" + text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bw != null) bw.close();
+                if (fw != null) fw.close();
+            } catch (IOException e) {
+                String s = directory.toString() + filename + " close~" + e.toString();
+                Log.e("appendIOExcept2",  e.getMessage());
+            }
+        }
+    }
+
+    void write2file (File directory, String filename, String text) {
+        final File file = new File(directory, filename);
+        try
+        {
+            file.createNewFile();
+            FileOutputStream fOut = new FileOutputStream(file);
+            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+            myOutWriter.write(text);
+            myOutWriter.close();
+            fOut.flush();
+            fOut.close();
+        }
+        catch (IOException e) {
+            String s = file.toString() + " Err:" + e.toString();
+            e.printStackTrace();
+        }
+    }
+
+    String getMilliSec2String(long milliSec, String format) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        return dateFormat.format(new Date(milliSec));
+    }
+
+    String getNowTimeString(String format) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        return dateFormat.format(System.currentTimeMillis());
+    }
+
+    void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+            logOnly("Delete Old Folder ", fileOrDirectory.toString());
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursive(child);
+        }
+        fileOrDirectory.delete();
+    }
+
+    void deleteOldFiles(File target, int days) {
+
+        String oldDate = DATE_PREFIX+sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
+        File[] oldFiles = getDirectoryList(target);
+        Collator myCollator = Collator.getInstance();
+        for (File file : oldFiles) {
+            String shortFileName = file.getName();
+            if (!shortFileName.substring(0,1).equals(".") && myCollator.compare(shortFileName, oldDate) < 0) {
+                deleteRecursive(file);
+            }
+        }
+    }
+
+    void deleteOldLogs(int days) {
+        final SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.US);
+
+        String oldDate = LOG_PREFIX + sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
+        File[] files = mPackageLogPath.listFiles();
+        Collator myCollator = Collator.getInstance();
+        for (File file : files) {
+            String shortFileName = file.getName();
+            if (myCollator.compare(shortFileName, oldDate) < 0) {
+                if (!file.delete())
+                    Log.e("file","Delete Error "+file);
+            }
+        }
     }
 
     void customToast  (final String text, final int short_Long, final int foreColor) {
@@ -231,50 +277,6 @@ class Utils {
             return result.substring(0,result.length()-1);
         }
         return str;
-    }
-
-    void append2file (File directory, String filename, String text) {
-        BufferedWriter bw = null;
-        FileWriter fw = null;
-        try {
-            File file = new File(directory, filename);
-            if (!file.exists()) {
-                if(!file.createNewFile()) {
-                    Log.e("createFile"," Error");
-                }
-            }
-            fw = new FileWriter(file.getAbsoluteFile(), true);
-            bw = new BufferedWriter(fw);
-            bw.write("\n" + text);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bw != null) bw.close();
-                if (fw != null) fw.close();
-            } catch (IOException e) {
-                String s = directory.toString() + filename + " close~" + e.toString();
-                Log.e("appendIOExcept2",  e.getMessage());
-            }
-        }
-    }
-
-    void write2file (File directory, String filename, String text) {
-        final File file = new File(directory, filename);
-        try
-        {
-            file.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(file);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.write(text);
-            myOutWriter.close();
-            fOut.flush();
-            fOut.close();
-        }
-        catch (IOException e) {
-            String s = file.toString() + " Err:" + e.toString();
-            e.printStackTrace();
-        }
     }
 
 //    public void singleBeep(Activity activity,int type) {
