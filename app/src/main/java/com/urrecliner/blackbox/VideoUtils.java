@@ -15,16 +15,11 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Build;
-
 import androidx.core.content.ContextCompat;
-
-import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -83,9 +78,6 @@ public class VideoUtils {
         } catch (CameraAccessException e) {
             utils.logE(logID, "CameraAccessException", e);
         }
-//        utils.logOnly(logID, "mPrev "+mPreviewSize.getWidth()+"x"+mPreviewSize.getHeight());
-//        utils.logOnly(logID, "mImage "+mImageSize.getWidth()+"x"+mImageSize.getHeight()+" array "+MAX_IMAGES_SIZE);
-//        utils.logOnly(logID, "mVideo "+mVideoSize.getWidth()+"x"+mVideoSize.getHeight());
         try {
             mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 10); // MAX_IMAGES_SIZE);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
@@ -324,8 +316,6 @@ public class VideoUtils {
     private int nextCount = 0;
     private void assignNextFile() {
         if (mIsRecording) {
-            String s = ++nextCount + "";
-            vTextRecord.setText(s);
             new Timer().schedule(new TimerTask() {
                 public void run() {
                     try {
@@ -334,43 +324,10 @@ public class VideoUtils {
                         utils.logE("Error", "nxtFile", e);
                     }
                 }
-            }, 50);
-
+            }, 10);
+            String s = ++nextCount + "";
+            vTextRecord.setText(s);
         }
     }
 
-//    void startPreview() {
-//        utils.logOnly(logID, "startPreview 1");
-//
-//        surface_Preview = vPreviewView.getSurfaceTexture();
-//        surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-//
-//        Surface preview_Surface = new Surface(surface_Preview);
-//
-//        try {
-//            mPrevBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-//            mPrevBuilder.addTarget(preview_Surface);
-//            mCameraDevice.createCaptureSession(Arrays.asList(preview_Surface, mPreviewReader.getSurface()),
-//                    new CameraCaptureSession.StateCallback() {
-//                        @Override
-//                        public void onConfigured(CameraCaptureSession session) {
-////                            utils.log(logID, "onConfigured: startPreview");
-//                            mPrevSession = session;
-//                            try {
-//                                mPrevSession.setRepeatingRequest(mPrevBuilder.build(),
-//                                        null, mBackgroundPreview);
-//                            } catch (Exception e) {
-//                                utils.logBoth(logID, "mPreSession error"+e.toString());
-//                            }
-//                        }
-//                        @Override
-//                        public void onConfigureFailed(CameraCaptureSession session) {
-//                            utils.logOnly(logID, "onConfigureFailed: startPreview");
-//                        }
-//                    }, null);
-//        } catch (Exception e) {
-//            utils.logE(logID, "// startPreview //", e);
-//        }
-//        utils.logOnly(logID, "startPreview 2");
-//    }
 }
