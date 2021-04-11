@@ -16,6 +16,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import androidx.annotation.NonNull;
+
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;

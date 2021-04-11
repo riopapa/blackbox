@@ -9,7 +9,6 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.cameraUtils;
@@ -35,7 +34,7 @@ class StartStopExit {
         utils.logBoth(logID, "Start Recording ---");
         mIsRecording = true;
         vBtnRecord.setImageResource(R.mipmap.on_recording);
-        vBtnEvent.setImageResource(R.mipmap.event_ready);
+        vBtnEvent.setImageResource(R.mipmap.event_shot);
 //        utils.logBoth(logID, "Step 1 prepareRecord");
         try {
             videoUtils.prepareRecord();

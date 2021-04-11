@@ -34,6 +34,7 @@ import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 class EventMerge {
 
@@ -88,7 +89,7 @@ class EventMerge {
                     mp.setDataSource(outputFile);
                     mp.prepare();
                 } catch (IOException e) {
-                    utils.logE(logID, "IOException: ", e);
+                    publishProgress("<<Event IO>>" , "" + files2Merge.length);
                 }
                 mp.release();
             }
@@ -108,7 +109,7 @@ class EventMerge {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
-                        utils.logBoth(logID, "mergeOne~ " + file.toString());
+                        publishProgress("<<Event Merge>>" , "" + files2Merge.length);
                     }
                 }
             }
@@ -143,15 +144,12 @@ class EventMerge {
 
         @Override
         protected void onProgressUpdate(String... values) {
-            String debugText = values[0];
-            TextView mLogInfo = mActivity.findViewById(R.id.textLogInfo);
-            mLogInfo.setText(debugText);
+            String str = values[0];
+            utils.logBoth("Event", str);
             if (values[0].startsWith("<")) {
-                utils.customToast(debugText, Toast.LENGTH_SHORT, Color.RED);
-//                utils.logE("1", debugText);
+                utils.customToast(str, Toast.LENGTH_SHORT, Color.RED);
             } else {
-                utils.customToast(debugText, Toast.LENGTH_SHORT, Color.YELLOW);
-//                utils.log("2", debugText);
+                utils.customToast(str, Toast.LENGTH_SHORT, Color.YELLOW);
             }
         }
 

@@ -88,8 +88,6 @@ class NormalMerge {
             List<Movie> listMovies = new ArrayList<>();
             List<Track> videoTracks = new LinkedList<>();
             List<Track> audioTracks = new LinkedList<>();
-    //            Log.w("#of files","files2Merge "+files2Merge.length);
-    //            Log.w("time","begin " +beginTimeS+" end "+endTimeS);
             for (File file : files2Merge) {
                 String shortFileName = file.getName();
                 Collator myCollator = Collator.getInstance();
@@ -100,7 +98,7 @@ class NormalMerge {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
-                        utils.logE(logID, "mergeOne~ ", e);
+                        utils.logE(logID, "<mergeOne~> ", e);
                     }
                 }
             }
@@ -109,7 +107,7 @@ class NormalMerge {
                     if (track.getHandler().equals("vide")) {
                         videoTracks.add(track);
                     }
-                    else { // track.getHandler().equals("soun")
+                    else {
                         audioTracks.add(track);
                     }
                 }
@@ -125,7 +123,7 @@ class NormalMerge {
                         container.writeContainer(fileChannel);
                         fileChannel.close();
                 } catch (IOException e) {
-                    utils.logE(logID,"IOException~ ", e);
+                    utils.logE(logID,"<IOException~> ", e);
                 }
             } else {
                 utils.beepOnce(3, 1f);
@@ -134,16 +132,15 @@ class NormalMerge {
 
         @Override
         protected void onProgressUpdate(String... values) {
-            String debugText = values[0];
-            TextView mLogInfo = mActivity.findViewById(R.id.textLogInfo);
-            mLogInfo.setText(debugText);
-            if (values[0].startsWith("<")) {
-                utils.customToast(debugText, Toast.LENGTH_SHORT, Color.RED);
-    //                utils.logE("1", debugText);
+            String str = values[0];
+            utils.logBoth("Event", str);
+            if (str.startsWith("<")) {
+                utils.customToast(str, Toast.LENGTH_SHORT, Color.RED);
+    //                utils.logE("1", str);
             }
             else {
-                utils.customToast(debugText, Toast.LENGTH_SHORT, Color.YELLOW);
-    //                utils.log("2", debugText);
+                utils.customToast(str, Toast.LENGTH_SHORT, Color.YELLOW);
+    //                utils.log("2", str);
             }
         }
         @Override

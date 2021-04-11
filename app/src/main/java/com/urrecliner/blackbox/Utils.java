@@ -96,8 +96,7 @@ class Utils {
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
         append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End>");
-        text = vTextLogInfo.getText().toString() + "\n" + text;
-        text = truncLine(text);
+        text = truncLine(vTextLogInfo.getText().toString() + "\n" + text);
         final String fText = tag+" : "+text;
         mActivity.runOnUiThread(new Runnable() {
             @Override
@@ -128,8 +127,6 @@ class Utils {
     private String traceClassName(String s) {
         return s.substring(s.lastIndexOf(".")+1);
     }
-
-
 
     void append2file (File directory, String filename, String text) {
         BufferedWriter bw = null;
@@ -269,14 +266,12 @@ class Utils {
     }
 
     private String truncLine(String str) {
-        String[] strArray = str.split("\n");
-        if (strArray.length > 5) {
-            String result = "";
-            for (int i = strArray.length - 5; i < strArray.length; i++)
-                result += strArray[i]+"\n";
-            return result.substring(0,result.length()-1);
-        }
-        return str;
+        String[] strs = str.split("\n");
+        String result = "";
+        int begLine = (strs.length > 4) ? strs.length-4 : 0;
+        for (int i = begLine; i < strs.length; i++)
+            result += strs[i]+"\n";
+        return result;
     }
 
 //    public void singleBeep(Activity activity,int type) {

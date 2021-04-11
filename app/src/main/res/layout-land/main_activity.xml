@@ -31,14 +31,13 @@
     <TextView
         android:id="@+id/textLogInfo"
         android:layout_width="440dp"
-        android:layout_height="132dp"
+        android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:text="@string/logInfo"
         android:layout_toEndOf="@id/textDate"
         android:textColor="@color/colorText"
         android:textSize="@dimen/log_size" />
 
-    <!--Event Record counts -->
     <TextView
         android:id="@+id/textEvent"
         android:layout_width="wrap_content"
@@ -58,35 +57,6 @@
         android:text="@string/zero"
         android:textColor="@color/colorText"
         android:textSize="40sp" />
-
-    <!--Record start button and count Fragment-->
-    <FrameLayout
-        android:id="@+id/frmEvent"
-        android:layout_width="120dp"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp">
-
-        <ImageButton
-            android:id="@+id/btnEvent"
-            style="@android:style/Widget.Material.Light.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:contentDescription="@string/textEvent"
-            android:src="@mipmap/event_ready" />
-
-        <TextView
-            android:id="@+id/activeEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:background="#CCC"
-            android:textColor="#000"
-            android:textSize="40sp" />
-
-    </FrameLayout>
 
     <!--Speed in Km-->
     <TextView
@@ -121,10 +91,10 @@
     <ImageButton
         android:id="@+id/btnExit"
         style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="140dp"
+        android:layout_marginStart="100dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/km"
         android:src="@mipmap/exit_app" />
@@ -132,10 +102,11 @@
     <ImageButton
         android:id="@+id/btnIWillBack"
         style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@id/btnExit"
+        android:layout_marginLeft="32dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/km"
         android:src="@mipmap/i_will_be_back" />
@@ -167,6 +138,8 @@
             android:textColor="#00FF00"
             android:textSize="24sp" />
     </FrameLayout>
+
+    <!--Record start button and count Fragment-->
 
     <!--  Battery  -->
     <FrameLayout
@@ -200,16 +173,17 @@
 
     <!--Compass-->
     <FrameLayout
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:id="@+id/fcompass"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginTop="8dp"
-        android:layout_alignStart="@id/frmEvent"
+        android:layout_alignLeft="@id/textLogInfo"
+        android:layout_marginLeft="40dp"
         android:layout_below="@id/textLogInfo" >
 
         <ImageView
             android:id="@+id/iVCompass"
             android:layout_gravity="center"
-            android:layout_margin="0dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/compassImage"
@@ -223,6 +197,36 @@
             android:layout_height="match_parent"
             android:src="@mipmap/compass_arrow"
             android:contentDescription="@string/directionTriangle" />
+    </FrameLayout>
+
+    <!--Event button & counts -->
+
+    <FrameLayout
+        android:id="@+id/frmEvent"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@id/fcompass"
+        android:layout_alignRight="@id/fcompass"
+        android:layout_marginBottom="8dp">
+
+        <ImageButton
+            android:id="@+id/btnEvent"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/textEvent"
+            android:background="#00000000"
+            android:src="@mipmap/event_shot" />
+
+        <TextView
+            android:id="@+id/activeEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:background="#CCC"
+            android:textColor="#000"
+            android:textSize="40sp" />
 
     </FrameLayout>
 
