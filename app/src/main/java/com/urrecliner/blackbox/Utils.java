@@ -64,7 +64,6 @@ class Utils {
 
 
     public void logBoth(String tag, String text) {
-//        int pid = android.os.Process.myPid();
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
@@ -271,7 +270,7 @@ class Utils {
         int begLine = (strs.length > 4) ? strs.length-4 : 0;
         for (int i = begLine; i < strs.length; i++)
             result += strs[i]+"\n";
-        return result;
+        return result.substring(0,result.length()-2);
     }
 
 //    public void singleBeep(Activity activity,int type) {

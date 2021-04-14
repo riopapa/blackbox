@@ -120,8 +120,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_activity);
         utils.deleteOldFiles(mPackageNormalPath, 5);
         utils.deleteOldFiles(mPackageEventJpgPath, 4);
-        utils.deleteOldFiles(mPackageWorkingPath, -3);
         utils.deleteOldLogs(7);
+//        utils.deleteOldFiles(mPackageWorkingPath, -3);
         prepareMain();
     }
 
