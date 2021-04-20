@@ -11,7 +11,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import androidx.core.app.ActivityCompat;
+
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static com.urrecliner.blackbox.Vars.isCompassShown;
@@ -19,7 +24,6 @@ import static com.urrecliner.blackbox.Vars.gpsUpdateTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.speedInt;
 import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vWheel;
 
 class GPSTracker extends Service implements LocationListener {
 
@@ -30,13 +34,23 @@ class GPSTracker extends Service implements LocationListener {
     ArrayList<Double> latitudes, longitudes;
     int arraySize = 4;
     int nowDirection, oldDirection = -99;
-
+    ImageView [] newsView;
     private static final float MIN_DISTANCE_DRIVE = 20;
     private static final long MIN_TIME_DRIVE_UPDATES = 2000;
     protected LocationManager locationManager;
 
     public GPSTracker(Context context) {
         this.mContext = context;
+    }
+
+    void init() {
+        isCompassShown = false;
+        newsView = new ImageView[5];
+        for (int i = 0; i < 5; i++) {
+            newsView[i] = mActivity.findViewById(newsIds[i]);
+            ImageView iv = newsView[i];
+            iv.setVisibility(View.INVISIBLE);
+        }
     }
 
     void askLocation() {
@@ -71,6 +85,7 @@ class GPSTracker extends Service implements LocationListener {
         latitudes = new ArrayList<>(); longitudes = new ArrayList<>();
         for (int i = 0; i < arraySize; i++) {
             latitudes.add(latitude + (double) i * 0.00001f); longitudes.add(longitude + (double) i * 0.0001f); }
+
     }
 
     double getLatitude() { return latitude; }
@@ -91,7 +106,15 @@ class GPSTracker extends Service implements LocationListener {
 
         gpsUpdateTime = System.currentTimeMillis();
         if (!isCompassShown) {
-            mActivity.runOnUiThread(() -> vWheel.setVisibility(View.VISIBLE));
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < 5; i++) {
+                        ImageView v = newsView[i];
+                        v.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
             isCompassShown = true;
             utils.logBoth("GPSTracker","Activated ..");
         }
@@ -146,9 +169,30 @@ class GPSTracker extends Service implements LocationListener {
         return (float) true_bearing;
     }
 
-    void drawCompass (int degree) {
+    private final int[] yellows = {R.mipmap.yellow_nw, R.mipmap.yellow_i, R.mipmap.yellow_n,
+            R.mipmap.yellow_i, R.mipmap.yellow_ne, R.mipmap.yellow_i, R.mipmap.yellow_e,
+            R.mipmap.yellow_i, R.mipmap.yellow_se, R.mipmap.yellow_i, R.mipmap.yellow_s,
+            R.mipmap.yellow_i, R.mipmap.yellow_sw, R.mipmap.yellow_i, R.mipmap.yellow_w,
+            R.mipmap.yellow_i, R.mipmap.yellow_nw, R.mipmap.yellow_i, R.mipmap.yellow_n};
+    private final int[] greens = {R.mipmap.green_nw, R.mipmap.green_i, R.mipmap.green_n,
+            R.mipmap.green_i, R.mipmap.green_ne, R.mipmap.green_i, R.mipmap.green_e,
+            R.mipmap.green_i, R.mipmap.green_se, R.mipmap.green_i, R.mipmap.green_s,
+            R.mipmap.green_i, R.mipmap.green_sw, R.mipmap.green_i, R.mipmap.green_w,
+            R.mipmap.green_i, R.mipmap.green_nw, R.mipmap.green_i, R.mipmap.green_n};
 
-        vWheel.selectIndex(degree);
+    private final int[] newsIds = { R.id.news_0, R.id.news_1, R.id.news_2, R.id.news_3, R.id.news_4};
+
+    void drawCompass (int dirIdx) {
+
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < 5; i++) {
+                        ImageView v = newsView[i];
+                        v.setImageResource((i==2) ? greens[i+dirIdx-2]: yellows[i+dirIdx-2]);
+                    }
+                }
+            });
 
 //        RotateAnimation ra = new RotateAnimation(
 //                savedDegree, -degree,

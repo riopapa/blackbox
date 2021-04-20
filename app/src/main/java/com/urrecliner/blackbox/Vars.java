@@ -52,7 +52,6 @@ public class Vars {
     static ImageButton vBtnEvent = null;
     static TextureView vPreviewView;
     static ImageButton vBtnRecord;
-    static WheelView vWheel = null;
 
     static SharedPreferences sharedPref;
 

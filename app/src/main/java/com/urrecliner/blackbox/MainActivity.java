@@ -29,8 +29,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -64,7 +62,6 @@ import static com.urrecliner.blackbox.Vars.startStopExit;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
-import static com.urrecliner.blackbox.Vars.vWheel;
 import static com.urrecliner.blackbox.Vars.vExitApp;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vKm;
@@ -119,18 +116,18 @@ public class MainActivity extends Activity {
         }
         askPermission();
         setContentView(R.layout.main_activity);
-        utils.deleteOldFiles(mPackageNormalPath, 5);
-        utils.deleteOldFiles(mPackageEventJpgPath, 4);
-        utils.deleteOldLogs(7);
+        utils.deleteOldFiles(mPackageNormalPath, 7);
+        utils.deleteOldFiles(mPackageEventJpgPath, 5);
+        utils.deleteOldLogs(10);
 //        utils.deleteOldFiles(mPackageWorkingPath, -3);
         prepareMain();
-        prepareWheel();
     }
 
     private void prepareMain() {
         mActivity = this;
         mContext = this;
         gpsTracker = new GPSTracker(mContext);
+        gpsTracker.init();
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vPreviewView = findViewById(R.id.previewView);
         utils.logOnly(logID, "Main Started ..");
@@ -231,27 +228,6 @@ public class MainActivity extends Activity {
             }
         }, DELAY_AUTO_RECORDING);
     }
-
-    final String[] arr = {"•","W","•","NW","•","N","•","NE","•","E","•","SE","•","S","•","SW","•","W","•","NW","•","N","•"};
-    final int[] yellows = { R.mipmap.yellow_i, R.mipmap.yellow_w, R.mipmap.yellow_i, R.mipmap.yellow_nw,
-                            R.mipmap.yellow_i, R.mipmap.yellow_n, R.mipmap.yellow_i, R.mipmap.yellow_ne,
-                            R.mipmap.yellow_i, R.mipmap.yellow_e, R.mipmap.yellow_i, R.mipmap.yellow_se,
-                            R.mipmap.yellow_i, R.mipmap.yellow_s, R.mipmap.yellow_i, R.mipmap.yellow_sw,
-                            R.mipmap.yellow_i, R.mipmap.yellow_w, R.mipmap.yellow_i, R.mipmap.yellow_nw};
-    final int[] greens = {  R.mipmap.green_i, R.mipmap.green_w, R.mipmap.green_i, R.mipmap.green_nw,
-                            R.mipmap.green_i, R.mipmap.green_n, R.mipmap.green_i, R.mipmap.green_ne,
-                            R.mipmap.green_i, R.mipmap.green_e, R.mipmap.green_i, R.mipmap.green_se,
-                            R.mipmap.green_i, R.mipmap.green_s, R.mipmap.green_i, R.mipmap.green_sw,
-                            R.mipmap.green_i, R.mipmap.green_w, R.mipmap.green_i, R.mipmap.green_nw};
-
-    List<String> wheelVals;
-    private void prepareWheel() {
-        wheelVals = new ArrayList<>();
-        wheelVals = Arrays.asList(arr);
-        vWheel.setItems(wheelVals);
-        vWheel.selectIndex(5);
-    }
-
 
     final Handler startHandler = new Handler() {
         public void handleMessage(Message msg) { startStopExit.startVideo();
@@ -399,7 +375,6 @@ public class MainActivity extends Activity {
         vTextRecord = findViewById(R.id.textCountRecords);
         vTextBattery = findViewById(R.id.textBattery);
         vImgBattery = findViewById(R.id.imgBattery);
-        vWheel = findViewById(R.id.wheel);
         vBtnRecord = findViewById(R.id.btnRecord);
         vTextSpeed.setText("_");
     }

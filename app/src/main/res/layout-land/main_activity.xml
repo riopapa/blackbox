@@ -173,40 +173,65 @@
             android:textSize="28sp" />
     </FrameLayout>
 
-    <com.urrecliner.blackbox.WheelView
-        android:id="@+id/wheel"
-        android:layout_width="280dp"
-        android:layout_height="40dp"
+    <!--  N E W S  -->
+
+    <LinearLayout
+        android:id="@+id/news"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:gravity="center"
         android:layout_marginTop="0dp"
+        android:orientation="horizontal"
         android:layout_alignStart="@id/textLogInfo"
         android:layout_marginStart="30dp"
-        android:layout_below="@id/textLogInfo"
-        android:background="@color/wheelBack"
-        app:lwvMarkTextSize="48sp"
-        app:lwvCenterMarkTextSize="48sp"
-        app:lwvCursorSize="16sp"
-        app:lwvMarkRatio="0.5"
-        app:lwvMarkColor="@color/wheelBar"
-        app:lwvHighlightColor="@color/wheelHighLight" />
+        android:layout_below="@id/textLogInfo">
+        <ImageView
+            android:id="@+id/news_0"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/yellow_e"/>
+        <ImageView
+            android:id="@+id/news_1"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/green_i"/>
+        <ImageView
+            android:id="@+id/news_2"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/green_ne"/>
+        <ImageView
+            android:id="@+id/news_3"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/green_i"/>
+        <ImageView
+            android:id="@+id/news_4"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/yellow_se"/>
+    </LinearLayout>
 
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_alignTop="@id/wheel"
+        android:layout_alignTop="@id/news"
+        android:layout_marginBottom="8dp"
         android:src="@mipmap/mark"
-        android:layout_alignStart="@id/wheel"
-        android:layout_alignEnd="@id/wheel"
+        android:layout_alignStart="@id/news"
+        android:layout_alignEnd="@id/news"
         />
 
     <!--Event button & counts -->
 
     <FrameLayout
         android:id="@+id/frmEvent"
+        android:visibility="invisible"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@id/wheel"
-        android:layout_alignRight="@id/wheel"
+        android:layout_alignLeft="@id/news"
+        android:layout_alignRight="@id/news"
         android:layout_marginBottom="8dp">
 
         <ImageButton
