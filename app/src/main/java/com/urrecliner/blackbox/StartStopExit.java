@@ -15,6 +15,7 @@ import static com.urrecliner.blackbox.Vars.cameraUtils;
 import static com.urrecliner.blackbox.Vars.directionSensor;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
+import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
@@ -26,6 +27,7 @@ import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
 import static com.urrecliner.blackbox.Vars.videoUtils;
+import static com.urrecliner.blackbox.Vars.zoom;
 
 class StartStopExit {
 
@@ -34,7 +36,6 @@ class StartStopExit {
         utils.logBoth(logID, "Start Recording ---");
         mIsRecording = true;
         vBtnRecord.setImageResource(R.mipmap.on_recording);
-        vBtnEvent.setImageResource(R.mipmap.event_shot);
 //        utils.logBoth(logID, "Step 1 prepareRecord");
         try {
             videoUtils.prepareRecord();
@@ -71,6 +72,7 @@ class StartStopExit {
     private void startCamera() {
         snapMapIdx = 0;
         timerSnapCamera = new Timer();
+        zoom.setZoom(mCaptureRequestBuilder, 1.3f);
         final TimerTask cameraTask = new TimerTask() {
             @Override
             public void run() {

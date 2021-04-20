@@ -9,8 +9,9 @@ import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.gpsUpdateTime;
 import static com.urrecliner.blackbox.Vars.isCompassShown;
+import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vCompass;
+import static com.urrecliner.blackbox.Vars.vWheel;
 import static com.urrecliner.blackbox.Vars.vTextTime;
 
 class DisplayTime implements Runnable {
@@ -28,11 +29,12 @@ class DisplayTime implements Runnable {
                     utils.logBoth("GPS","GPS not Active"+" ");
                     isCompassShown = false;
                     gpsTracker.askLocation();
-                    vCompass.setVisibility(View.INVISIBLE);
+
+//                    vWheel.setVisibility(View.INVISIBLE);
                 }
             }
         };
-        displayTime.schedule(tt, 100, 59000);
+        displayTime.schedule(tt, 100, 58000);
     }
 
     void stop() {

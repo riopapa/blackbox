@@ -59,7 +59,7 @@ class SnapShotSave {
             String countStr = "" + ++CountEvent;
             vTextCountEvent.setText(countStr);
             activeEventCount--;
-            String text = (activeEventCount == 0) ? "" : "" + activeEventCount;
+            String text = (activeEventCount == 0) ? "" : " "+activeEventCount+" ";
             vTextActiveCount.setText(text);
         });
 

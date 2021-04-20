@@ -15,7 +15,11 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.math.MathUtils;
+
 import android.util.Size;
 import android.view.Surface;
 
@@ -51,11 +55,13 @@ import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
+import static com.urrecliner.blackbox.Vars.zoom;
 
 public class VideoUtils {
 
     String mCameraId = null;
     private String logID = "videoUtils";
+    CameraCharacteristics cameraCharacteristics;
 
     void setupCamera() {
         cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
@@ -63,7 +69,7 @@ public class VideoUtils {
             assert cameraManager != null;
             for(String cameraId : cameraManager.getCameraIdList()){
 //                utils.logOnly(logID, "cameraID="+cameraId);
-                CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
+                cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
                 if(cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
                         CameraCharacteristics.LENS_FACING_BACK) {
                     mCameraId = cameraId;
@@ -74,6 +80,7 @@ public class VideoUtils {
                     continue;
                 StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 setCameraSize(map);
+
             }
         } catch (CameraAccessException e) {
             utils.logE(logID, "CameraAccessException", e);
@@ -85,6 +92,7 @@ public class VideoUtils {
         } catch (Exception e) {
             utils.logE(logID, "Exception ", e);
         }
+
     }
 
     private void setCameraSize(StreamConfigurationMap map) {
@@ -229,6 +237,10 @@ public class VideoUtils {
         } catch (Exception e) {
             utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
         }
+
+        zoom = new Zoom(cameraCharacteristics);
+        zoom.setZoom(mCaptureRequestBuilder, 1.3f);
+
         if (previewSurface == null) {
             utils.logBoth(logID, "previewSurface is null ====");
             return;

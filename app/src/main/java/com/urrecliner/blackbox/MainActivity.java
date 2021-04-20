@@ -17,7 +17,6 @@ import android.os.HandlerThread;
 import android.os.Message;
 import androidx.annotation.NonNull;
 
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
@@ -30,6 +29,8 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -63,7 +64,7 @@ import static com.urrecliner.blackbox.Vars.startStopExit;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
-import static com.urrecliner.blackbox.Vars.vCompass;
+import static com.urrecliner.blackbox.Vars.vWheel;
 import static com.urrecliner.blackbox.Vars.vExitApp;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vKm;
@@ -123,6 +124,7 @@ public class MainActivity extends Activity {
         utils.deleteOldLogs(7);
 //        utils.deleteOldFiles(mPackageWorkingPath, -3);
         prepareMain();
+        prepareWheel();
     }
 
     private void prepareMain() {
@@ -142,6 +144,7 @@ public class MainActivity extends Activity {
                 startStopExit.startVideo();
             }
         });
+
 
 //        Utils.ScreenInfo screenInfo = utils.getScreenSize(mActivity);
 //        utils.logOnly(logID,"Screen Type is "+screenInfo.screenType);
@@ -163,7 +166,7 @@ public class MainActivity extends Activity {
         mIsRecording = false;
         snapBytes = new byte[MAX_IMAGES_SIZE][];
         Log.w("snapBytes","size = "+snapBytes.length);
-        vCompass.setVisibility(View.INVISIBLE);
+//        vWheel.setVisibility(View.INVISIBLE);
         utils.beepsInitiate();
         gpsTracker.askLocation();
         CountEvent = utils.getDirectoryFiltered(mPackageEventPath, "mp4").length;
@@ -228,6 +231,27 @@ public class MainActivity extends Activity {
             }
         }, DELAY_AUTO_RECORDING);
     }
+
+    final String[] arr = {"•","W","•","NW","•","N","•","NE","•","E","•","SE","•","S","•","SW","•","W","•","NW","•","N","•"};
+    final int[] yellows = { R.mipmap.yellow_i, R.mipmap.yellow_w, R.mipmap.yellow_i, R.mipmap.yellow_nw,
+                            R.mipmap.yellow_i, R.mipmap.yellow_n, R.mipmap.yellow_i, R.mipmap.yellow_ne,
+                            R.mipmap.yellow_i, R.mipmap.yellow_e, R.mipmap.yellow_i, R.mipmap.yellow_se,
+                            R.mipmap.yellow_i, R.mipmap.yellow_s, R.mipmap.yellow_i, R.mipmap.yellow_sw,
+                            R.mipmap.yellow_i, R.mipmap.yellow_w, R.mipmap.yellow_i, R.mipmap.yellow_nw};
+    final int[] greens = {  R.mipmap.green_i, R.mipmap.green_w, R.mipmap.green_i, R.mipmap.green_nw,
+                            R.mipmap.green_i, R.mipmap.green_n, R.mipmap.green_i, R.mipmap.green_ne,
+                            R.mipmap.green_i, R.mipmap.green_e, R.mipmap.green_i, R.mipmap.green_se,
+                            R.mipmap.green_i, R.mipmap.green_s, R.mipmap.green_i, R.mipmap.green_sw,
+                            R.mipmap.green_i, R.mipmap.green_w, R.mipmap.green_i, R.mipmap.green_nw};
+
+    List<String> wheelVals;
+    private void prepareWheel() {
+        wheelVals = new ArrayList<>();
+        wheelVals = Arrays.asList(arr);
+        vWheel.setItems(wheelVals);
+        vWheel.selectIndex(5);
+    }
+
 
     final Handler startHandler = new Handler() {
         public void handleMessage(Message msg) { startStopExit.startVideo();
@@ -347,7 +371,7 @@ public class MainActivity extends Activity {
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
-            String text = ""+activeEventCount;
+            String text = " "+activeEventCount+" ";
             vTextActiveCount.setText(text);
 //            vBtnEvent.setImageResource(R.mipmap.event_blue);
             utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_LONG, Color.RED);
@@ -375,7 +399,7 @@ public class MainActivity extends Activity {
         vTextRecord = findViewById(R.id.textCountRecords);
         vTextBattery = findViewById(R.id.textBattery);
         vImgBattery = findViewById(R.id.imgBattery);
-        vCompass = findViewById(R.id.iVCompass);
+        vWheel = findViewById(R.id.wheel);
         vBtnRecord = findViewById(R.id.btnRecord);
         vTextSpeed.setText("_");
     }

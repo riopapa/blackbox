@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import androidx.core.app.ActivityCompat;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import java.util.ArrayList;
 
 import static com.urrecliner.blackbox.Vars.isCompassShown;
@@ -21,23 +19,21 @@ import static com.urrecliner.blackbox.Vars.gpsUpdateTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.speedInt;
 import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vCompass;
+import static com.urrecliner.blackbox.Vars.vWheel;
 
 class GPSTracker extends Service implements LocationListener {
 
     private final Context mContext;
     boolean isGPSEnabled = false;
-//    boolean isNetworkEnabled = false;
-    Location location; // Location
+    Location location;
     double latitude = 0, longitude = 0;
     ArrayList<Double> latitudes, longitudes;
     int arraySize = 4;
-    int nowDirection = -1, oldDirection = -1;
+    int nowDirection, oldDirection = -99;
 
     private static final float MIN_DISTANCE_DRIVE = 20;
     private static final long MIN_TIME_DRIVE_UPDATES = 2000;
     protected LocationManager locationManager;
-//    private boolean blinkGPS = false;
 
     public GPSTracker(Context context) {
         this.mContext = context;
@@ -74,8 +70,7 @@ class GPSTracker extends Service implements LocationListener {
         }
         latitudes = new ArrayList<>(); longitudes = new ArrayList<>();
         for (int i = 0; i < arraySize; i++) {
-            latitudes.add(latitude + (double) i * 0.00001f); longitudes.add(longitude + (double) i * 0.0001f);
-        }
+            latitudes.add(latitude + (double) i * 0.00001f); longitudes.add(longitude + (double) i * 0.0001f); }
     }
 
     double getLatitude() { return latitude; }
@@ -84,10 +79,6 @@ class GPSTracker extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
 //        utils.logBoth("location","location changed "+location.getLatitude()+" x "+location.getLongitude());
-        updateCompass(location);
-    }
-
-    private void updateCompass(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
 //        utils.log("gps"," lat "+latitude+" x "+longitude);
@@ -100,18 +91,20 @@ class GPSTracker extends Service implements LocationListener {
 
         gpsUpdateTime = System.currentTimeMillis();
         if (!isCompassShown) {
-            mActivity.runOnUiThread(() -> vCompass.setVisibility(View.VISIBLE));
+            mActivity.runOnUiThread(() -> vWheel.setVisibility(View.VISIBLE));
             isCompassShown = true;
             utils.logBoth("GPSTracker","Activated ..");
         }
-        if (speedInt < 15) // if speed is < xx then no update
+        if (speedInt < 10) // if speed is < xx then no update, OBD should be connected
             return;
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
         if (Float.isNaN(GPSDegree))
             return;
-        nowDirection = (int) (GPSDegree % 360 / 18) * 18;
+        nowDirection = (int) ((GPSDegree % 360) / 22.5) + 5;
+        utils.logBoth("nowDirection","GPSDegree="+GPSDegree+" nowDirection="+nowDirection);
         if (nowDirection != oldDirection) {
             oldDirection = nowDirection;
+            utils.logBoth("NEWS", GPSDegree+"="+nowDirection);
             mActivity.runOnUiThread(() -> drawCompass(oldDirection));
         }
     }
@@ -153,19 +146,20 @@ class GPSTracker extends Service implements LocationListener {
         return (float) true_bearing;
     }
 
-    private int savedDegree;
-
     void drawCompass (int degree) {
-        RotateAnimation ra = new RotateAnimation(
-                savedDegree, -degree,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-        ra.setDuration(20);
 
-        // set the animation after the end of the reservation status
-        ra.setFillAfter(true);
-        vCompass.startAnimation(ra);
-        savedDegree = -degree;
+        vWheel.selectIndex(degree);
+
+//        RotateAnimation ra = new RotateAnimation(
+//                savedDegree, -degree,
+//                Animation.RELATIVE_TO_SELF, 0.5f,
+//                Animation.RELATIVE_TO_SELF, 0.5f);
+//        ra.setDuration(20);
+//
+//        // set the animation after the end of the reservation status
+//        ra.setFillAfter(true);
+//        vWheel.startAnimation(ra);
+//        savedDegree = -degree;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.urrecliner.blackbox;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -19,6 +20,10 @@ class BeBackSoon extends AsyncTask<String, String, String> {
 
     private String xcode, title;
     private int downCount;
+
+    BeBackSoon() {
+        title = mContext.getString(R.string.i_will_back);
+    }
 //    @Override
 //    protected void onPreExecute() {
 //        super.onPreExecute();
@@ -27,7 +32,6 @@ class BeBackSoon extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... s) {
         xcode = s[0];   // currently 'x' only
-        title = mContext.getString(R.string.i_will_back);
         downCount = DELAY_WAIT_EXIT;
         while (downCount > 0) {
             if (!mExitApplication) {

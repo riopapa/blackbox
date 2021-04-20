@@ -13,6 +13,7 @@ import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.zoom;
 
 public class CameraUtils {
     private static final int STATE_WAIT_LOCK = 1;

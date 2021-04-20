@@ -1,15 +1,10 @@
 package com.urrecliner.blackbox;
 
-import android.app.Activity;
-import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Handler;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -62,7 +57,6 @@ class Utils {
         return files;
     }
 
-
     public void logBoth(String tag, String text) {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
@@ -70,8 +64,7 @@ class Utils {
         Log.w(tag , log);
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME)+" "+tag+": " + log);
         text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
-        text = truncLine(text);
-        final String fText = text;
+        final String fText = last4Lines(text);
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -95,7 +88,7 @@ class Utils {
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
         append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End>");
-        text = truncLine(vTextLogInfo.getText().toString() + "\n" + text);
+        text = last4Lines(vTextLogInfo.getText().toString() + "\n" + text+"\n");
         final String fText = tag+" : "+text;
         mActivity.runOnUiThread(new Runnable() {
             @Override
@@ -264,13 +257,16 @@ class Utils {
         toast.show();
     }
 
-    private String truncLine(String str) {
+    private String last4Lines(String str) {
         String[] strs = str.split("\n");
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int begLine = (strs.length > 4) ? strs.length-4 : 0;
-        for (int i = begLine; i < strs.length; i++)
-            result += strs[i]+"\n";
-        return result.substring(0,result.length()-2);
+        for (int i = begLine; i < strs.length; ) {
+            result.append(strs[i]);
+            if (++i< strs.length)
+                result.append("\n");
+        }
+        return result.toString();
     }
 
 //    public void singleBeep(Activity activity,int type) {

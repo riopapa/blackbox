@@ -5,4 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorText">#FFFFFF</color>
 
+    <color name="wheelBack">#2B052B</color>
+    <color name="wheelBar">#A513A5</color>
+    <color name="wheelHighLight">#FFFFFF</color>
+    <color name="wheelNormalLight">#AEAE03</color>
+    <color name="wheelOutline">#2EEF0E</color>
+
 </resources>

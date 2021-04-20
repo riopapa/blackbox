@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#2B052B"
     android:keepScreenOn="true">
 
@@ -31,7 +32,7 @@
     <TextView
         android:id="@+id/textLogInfo"
         android:layout_width="440dp"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_marginStart="8dp"
         android:text="@string/logInfo"
         android:layout_toEndOf="@id/textDate"
@@ -44,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/textCountEvent"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/textEvent"
         android:textColor="@color/colorText"
         android:textSize="16dp" />
@@ -171,33 +173,30 @@
             android:textSize="28sp" />
     </FrameLayout>
 
-    <!--Compass-->
-    <FrameLayout
-        android:id="@+id/fcompass"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        android:layout_marginTop="8dp"
-        android:layout_alignLeft="@id/textLogInfo"
-        android:layout_marginLeft="60dp"
-        android:layout_below="@id/textLogInfo" >
+    <com.urrecliner.blackbox.WheelView
+        android:id="@+id/wheel"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="0dp"
+        android:layout_alignStart="@id/textLogInfo"
+        android:layout_marginStart="30dp"
+        android:layout_below="@id/textLogInfo"
+        android:background="@color/wheelBack"
+        app:lwvMarkTextSize="48sp"
+        app:lwvCenterMarkTextSize="48sp"
+        app:lwvCursorSize="16sp"
+        app:lwvMarkRatio="0.5"
+        app:lwvMarkColor="@color/wheelBar"
+        app:lwvHighlightColor="@color/wheelHighLight" />
 
-        <ImageView
-            android:id="@+id/iVCompass"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/compassImage"
-            android:src="@mipmap/compass_news" />
-
-        <ImageView
-            android:id="@+id/iViewArrow"
-            android:layout_gravity="center"
-            android:layout_margin="0dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@mipmap/compass_arrow"
-            android:contentDescription="@string/directionTriangle" />
-    </FrameLayout>
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignTop="@id/wheel"
+        android:src="@mipmap/mark"
+        android:layout_alignStart="@id/wheel"
+        android:layout_alignEnd="@id/wheel"
+        />
 
     <!--Event button & counts -->
 
@@ -206,8 +205,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@id/fcompass"
-        android:layout_alignRight="@id/fcompass"
+        android:layout_alignLeft="@id/wheel"
+        android:layout_alignRight="@id/wheel"
         android:layout_marginBottom="8dp">
 
         <ImageButton
@@ -221,6 +220,7 @@
 
         <TextView
             android:id="@+id/activeEvent"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""

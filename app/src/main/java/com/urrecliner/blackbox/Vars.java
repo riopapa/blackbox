@@ -52,7 +52,7 @@ public class Vars {
     static ImageButton vBtnEvent = null;
     static TextureView vPreviewView;
     static ImageButton vBtnRecord;
-    static ImageView vCompass = null;
+    static WheelView vWheel = null;
 
     static SharedPreferences sharedPref;
 
@@ -114,4 +114,5 @@ public class Vars {
 
     static CameraManager cameraManager;
     static CameraDevice mCameraDevice = null;
+    static Zoom zoom;
 }
