@@ -35,6 +35,7 @@ import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
+import static com.urrecliner.blackbox.Vars.cameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.cameraManager;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
@@ -50,6 +51,8 @@ import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
+import static com.urrecliner.blackbox.Vars.previewSurface;
+import static com.urrecliner.blackbox.Vars.recordSurface;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
@@ -61,7 +64,6 @@ public class VideoUtils {
 
     String mCameraId = null;
     private String logID = "videoUtils";
-    CameraCharacteristics cameraCharacteristics;
 
     void setupCamera() {
         cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
@@ -210,8 +212,7 @@ public class VideoUtils {
 
     private boolean isPrepared = false;
     private SurfaceTexture surface_Preview = null;
-    private Surface previewSurface = null;
-    private Surface recordSurface = null;
+
     void prepareRecord() {
 
         if (isPrepared)
@@ -238,9 +239,6 @@ public class VideoUtils {
             utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
         }
 
-        zoom = new Zoom(cameraCharacteristics);
-        zoom.setZoom(mCaptureRequestBuilder, 1.3f);
-
         if (previewSurface == null) {
             utils.logBoth(logID, "previewSurface is null ====");
             return;
@@ -258,33 +256,46 @@ public class VideoUtils {
             utils.logBoth(logID, "recordSurface is null ------");
             return;
         }
+        buildCameraSession(1.3f);
+        isPrepared = true;
+
+//        try {
+//            mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);
+//        } catch (Exception e) { e.printStackTrace();}
+    }
+
+    void buildCameraSession(float zoomFactor) {
         try {
             mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface, mImageReader.getSurface()),
-            new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onConfigured(CameraCaptureSession session) {
-                    mCaptureSession = session;
-                    try {
-//                       mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
-//                        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-                        mCaptureSession.setRepeatingRequest(
-                                mCaptureRequestBuilder.build(), null, null
-                        );
-                    } catch (CameraAccessException e) {
-                        utils.logBoth(logID, "setRepeatingRequest Error");
-                    }
-                }
-
-                @Override
-                public void onConfigureFailed(CameraCaptureSession session) {
-                    utils.logBoth(logID, "onConfigureFailed: while prepareRecord");
-                }
-            }, null);
-
+                    cameraStateCallBack(zoomFactor), null);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error BB ", e);
         }
-        isPrepared = true;
+    }
+
+    private CameraCaptureSession.StateCallback cameraStateCallBack(float zoomFactor) {
+        return new CameraCaptureSession.StateCallback() {
+            @Override
+            public void onConfigured(CameraCaptureSession session) {
+                mCaptureSession = session;
+                zoom = new Zoom(cameraCharacteristics);
+                zoom.setZoom(mCaptureRequestBuilder, zoomFactor);
+                try {
+//                       mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
+//                        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+                    mCaptureSession.setRepeatingRequest(
+                            mCaptureRequestBuilder.build(), null, null
+                    );
+                } catch (CameraAccessException e) {
+                    utils.logBoth(logID, "setRepeatingRequest Error");
+                }
+            }
+
+            @Override
+            public void onConfigureFailed(CameraCaptureSession session) {
+                utils.logBoth(logID, "onConfigureFailed: while prepareRecord");
+            }
+        };
     }
 
     private void setupMediaRecorder() {

@@ -31,7 +31,7 @@
     <!--Log Info in multi lines-->
     <TextView
         android:id="@+id/textLogInfo"
-        android:layout_width="440dp"
+        android:layout_width="400dp"
         android:layout_height="120dp"
         android:layout_marginStart="8dp"
         android:text="@string/logInfo"
@@ -108,7 +108,7 @@
         android:layout_height="74dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@id/btnExit"
-        android:layout_marginLeft="32dp"
+        android:layout_marginLeft="64dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/km"
         android:src="@mipmap/i_will_be_back" />
@@ -175,69 +175,69 @@
 
     <!--  N E W S  -->
 
+    <ImageView
+        android:id="@+id/news_mark"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/textLogInfo"
+        android:layout_marginTop="8dp"
+        android:src="@mipmap/mark"
+        android:layout_alignStart="@id/newsLine"
+        android:layout_alignEnd="@id/newsLine"
+        />
+
     <LinearLayout
-        android:id="@+id/news"
-        android:layout_width="300dp"
-        android:layout_height="80dp"
+        android:id="@+id/newsLine"
+        android:layout_width="275dp"
+        android:layout_height="70dp"
         android:gravity="center"
+        android:layout_below="@id/news_mark"
         android:layout_marginTop="0dp"
         android:orientation="horizontal"
         android:layout_alignStart="@id/textLogInfo"
-        android:layout_marginStart="30dp"
-        android:layout_below="@id/textLogInfo">
+        android:layout_marginStart="30dp">
         <ImageView
             android:id="@+id/news_0"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="match_parent"
             android:src="@mipmap/yellow_e"/>
         <ImageView
             android:id="@+id/news_1"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="match_parent"
             android:src="@mipmap/green_i"/>
         <ImageView
             android:id="@+id/news_2"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="match_parent"
             android:src="@mipmap/green_ne"/>
         <ImageView
             android:id="@+id/news_3"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="match_parent"
             android:src="@mipmap/green_i"/>
         <ImageView
             android:id="@+id/news_4"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="match_parent"
             android:src="@mipmap/yellow_se"/>
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignTop="@id/news"
-        android:layout_marginBottom="8dp"
-        android:src="@mipmap/mark"
-        android:layout_alignStart="@id/news"
-        android:layout_alignEnd="@id/news"
-        />
 
     <!--Event button & counts -->
 
     <FrameLayout
         android:id="@+id/frmEvent"
-        android:visibility="invisible"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@id/news"
-        android:layout_alignRight="@id/news"
+        android:layout_alignLeft="@id/newsLine"
+        android:layout_alignRight="@id/newsLine"
         android:layout_marginBottom="8dp">
 
         <ImageButton
             android:id="@+id/btnEvent"
             android:layout_gravity="center"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:contentDescription="@string/textEvent"
             android:background="#00000000"
@@ -251,7 +251,7 @@
             android:text=""
             android:background="#CCC"
             android:textColor="#000"
-            android:textSize="40sp" />
+            android:textSize="36sp" />
 
     </FrameLayout>
 

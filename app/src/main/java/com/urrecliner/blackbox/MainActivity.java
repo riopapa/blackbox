@@ -38,13 +38,16 @@ import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
+import static com.urrecliner.blackbox.Vars.cameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
+import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
@@ -76,6 +79,7 @@ import static com.urrecliner.blackbox.Vars.vTextTime;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.videoUtils;
 import static com.urrecliner.blackbox.Vars.viewFinder;
+import static com.urrecliner.blackbox.Vars.zoom;
 
 public class MainActivity extends Activity {
 
@@ -323,6 +327,21 @@ public class MainActivity extends Activity {
         if (!mIsRecording) return;
         utils.logBoth(logID,"Event Starting ...");
 
+        cameraZoomIn = new Timer();
+        zoomFactor = 1.2f;
+        TimerTask cameraTask = new TimerTask() {
+            @Override
+            public void run() {
+                if (zoomFactor < 1.8f) {
+                    videoUtils.buildCameraSession(zoomFactor);
+                    zoomFactor += 0.07f;
+                }
+                else
+                    cameraZoomIn.cancel();
+            }
+        };
+//        cameraZoomIn.schedule(cameraTask, 100, 100);
+
         gpsTracker.askLocation();
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT ;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME));
@@ -352,6 +371,11 @@ public class MainActivity extends Activity {
 //            vBtnEvent.setImageResource(R.mipmap.event_blue);
             utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_LONG, Color.RED);
         });
+    }
+
+    private Timer cameraZoomIn = new Timer();
+    private float zoomFactor;
+    private void zoomInCamera() {
     }
 
     private void showInitialValues() {

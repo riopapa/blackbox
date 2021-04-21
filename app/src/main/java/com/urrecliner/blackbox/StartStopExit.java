@@ -16,6 +16,7 @@ import static com.urrecliner.blackbox.Vars.directionSensor;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
+import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
@@ -71,8 +72,12 @@ class StartStopExit {
     private Timer timerSnapCamera = new Timer();
     private void startCamera() {
         snapMapIdx = 0;
-        timerSnapCamera = new Timer();
-        zoom.setZoom(mCaptureRequestBuilder, 1.3f);
+//        timerSnapCamera = new Timer();
+//        try {
+//            zoom.setZoom(mCaptureRequestBuilder, 1.2f);
+//            mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);
+//        } catch (Exception e) { e.printStackTrace();}
+
         final TimerTask cameraTask = new TimerTask() {
             @Override
             public void run() {

@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 
+import static com.urrecliner.blackbox.Vars.utils;
+
 public class Zoom
 {
     private static final float DEFAULT_ZOOM_FACTOR = 1.0f;
@@ -42,12 +44,10 @@ public class Zoom
         this.hasSupport = (Float.compare(this.maxZoom, Zoom.DEFAULT_ZOOM_FACTOR) > 0);
     }
 
-    public void setZoom(@NonNull final CaptureRequest.Builder builder, final float zoom)
+    public void setZoom(CaptureRequest.Builder builder, float zoom)
     {
-        if (this.hasSupport == false)
-        {
+        if (!this.hasSupport)
             return;
-        }
 
         final float newZoom = MathUtils.clamp(zoom, Zoom.DEFAULT_ZOOM_FACTOR, this.maxZoom);
 

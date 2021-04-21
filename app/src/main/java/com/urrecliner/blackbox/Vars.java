@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
@@ -12,6 +13,7 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Size;
+import android.view.Surface;
 import android.view.TextureView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -94,8 +96,6 @@ public class Vars {
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder;
     static int speedInt = 0;
-    static CaptureRequest.Builder mCaptureRequestBuilder;
-    static CameraCaptureSession mCaptureSession;
 
     final static long INTERVAL_EVENT = 120 * 100;
     final static int SNAP_SHOT_INTERVAL = 155;
@@ -113,5 +113,11 @@ public class Vars {
 
     static CameraManager cameraManager;
     static CameraDevice mCameraDevice = null;
+    static CameraCharacteristics cameraCharacteristics;
+    static CaptureRequest.Builder mCaptureRequestBuilder;
+    static CameraCaptureSession mCaptureSession;
+    static Surface previewSurface = null;
+    static Surface recordSurface = null;
+
     static Zoom zoom;
 }

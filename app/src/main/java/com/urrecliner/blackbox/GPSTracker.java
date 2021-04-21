@@ -44,12 +44,13 @@ class GPSTracker extends Service implements LocationListener {
     }
 
     void init() {
-        isCompassShown = false;
         newsView = new ImageView[5];
         for (int i = 0; i < 5; i++) {
             newsView[i] = mActivity.findViewById(newsIds[i]);
-            ImageView iv = newsView[i];
-            iv.setVisibility(View.INVISIBLE);
+//            if (!isCompassShown) {
+//                ImageView iv = newsView[i];
+//                iv.setVisibility(View.INVISIBLE);
+//            }
         }
     }
 
@@ -116,18 +117,17 @@ class GPSTracker extends Service implements LocationListener {
                 }
             });
             isCompassShown = true;
-            utils.logBoth("GPSTracker","Activated ..");
+            utils.logBoth("GPSTracker","Run ..");
         }
         if (speedInt < 10) // if speed is < xx then no update, OBD should be connected
             return;
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
         if (Float.isNaN(GPSDegree))
             return;
-        nowDirection = (int) ((GPSDegree % 360) / 22.5) + 5;
-        utils.logBoth("nowDirection","GPSDegree="+GPSDegree+" nowDirection="+nowDirection);
+        nowDirection = (int) ((GPSDegree % 360) / 22.5);
         if (nowDirection != oldDirection) {
             oldDirection = nowDirection;
-            utils.logBoth("NEWS", GPSDegree+"="+nowDirection);
+//            utils.logBoth("NEWS","GPSDegree="+GPSDegree+" nowDirection="+nowDirection);
             mActivity.runOnUiThread(() -> drawCompass(oldDirection));
         }
     }
@@ -182,14 +182,22 @@ class GPSTracker extends Service implements LocationListener {
 
     private final int[] newsIds = { R.id.news_0, R.id.news_1, R.id.news_2, R.id.news_3, R.id.news_4};
 
-    void drawCompass (int dirIdx) {
+    void drawCompass (int dirIdx) { // 0: N, 8: S
 
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     for (int i = 0; i < 5; i++) {
                         ImageView v = newsView[i];
-                        v.setImageResource((i==2) ? greens[i+dirIdx-2]: yellows[i+dirIdx-2]);
+                        switch (i) {
+                            case 0:
+                            case 4:
+                                v.setImageResource(yellows[i + dirIdx]);
+                                break;
+                            default:
+                                v.setImageResource(greens[i + dirIdx]);
+                                break;
+                        }
                     }
                 }
             });
