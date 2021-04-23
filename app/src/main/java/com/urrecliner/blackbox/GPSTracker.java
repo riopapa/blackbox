@@ -124,7 +124,7 @@ class GPSTracker extends Service implements LocationListener {
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
         if (Float.isNaN(GPSDegree))
             return;
-        nowDirection = (int) ((GPSDegree % 360) / 22.5);
+        nowDirection = (int) (((360+GPSDegree) % 360) / 22.5);
         if (nowDirection != oldDirection) {
             oldDirection = nowDirection;
 //            utils.logBoth("NEWS","GPSDegree="+GPSDegree+" nowDirection="+nowDirection);
@@ -173,12 +173,14 @@ class GPSTracker extends Service implements LocationListener {
             R.mipmap.yellow_i, R.mipmap.yellow_ne, R.mipmap.yellow_i, R.mipmap.yellow_e,
             R.mipmap.yellow_i, R.mipmap.yellow_se, R.mipmap.yellow_i, R.mipmap.yellow_s,
             R.mipmap.yellow_i, R.mipmap.yellow_sw, R.mipmap.yellow_i, R.mipmap.yellow_w,
-            R.mipmap.yellow_i, R.mipmap.yellow_nw, R.mipmap.yellow_i, R.mipmap.yellow_n};
+            R.mipmap.yellow_i, R.mipmap.yellow_nw, R.mipmap.yellow_i, R.mipmap.yellow_n,
+            R.mipmap.yellow_i, R.mipmap.yellow_ne};
     private final int[] greens = {R.mipmap.green_nw, R.mipmap.green_i, R.mipmap.green_n,
             R.mipmap.green_i, R.mipmap.green_ne, R.mipmap.green_i, R.mipmap.green_e,
             R.mipmap.green_i, R.mipmap.green_se, R.mipmap.green_i, R.mipmap.green_s,
             R.mipmap.green_i, R.mipmap.green_sw, R.mipmap.green_i, R.mipmap.green_w,
-            R.mipmap.green_i, R.mipmap.green_nw, R.mipmap.green_i, R.mipmap.green_n};
+            R.mipmap.green_i, R.mipmap.green_nw, R.mipmap.green_i, R.mipmap.green_n,
+            R.mipmap.green_i, R.mipmap.green_ne};
 
     private final int[] newsIds = { R.id.news_0, R.id.news_1, R.id.news_2, R.id.news_3, R.id.news_4};
 
@@ -189,6 +191,7 @@ class GPSTracker extends Service implements LocationListener {
                 public void run() {
                     for (int i = 0; i < 5; i++) {
                         ImageView v = newsView[i];
+                        utils.logBoth("NEWS "+speedInt,dirIdx+" "+(i+dirIdx));
                         switch (i) {
                             case 0:
                             case 4:

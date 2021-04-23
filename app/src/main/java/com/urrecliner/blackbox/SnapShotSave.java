@@ -45,7 +45,7 @@ class SnapShotSave {
                         File imageFile = new File(path2Write, "CameraShot_" + ("" + (startBias + jpgIdx)) + ".jpg");
                         bytes2File(imageBytes, imageFile);
                         jpgBytes[jpgIdx] = null;
-                        SystemClock.sleep(20);  // not to hold all the time
+                        SystemClock.sleep(10);  // not to hold all the time
                     }
                 }
                 if (phase == 3)
@@ -64,11 +64,11 @@ class SnapShotSave {
             activeEventCount--;
             String text = (activeEventCount == 0) ? "" : " "+activeEventCount+" ";
             vTextActiveCount.setText(text);
-            if (activeEventCount == 0)
-                try {
-                    zoom.setZoom(mCaptureRequestBuilder, 1.2f);
-                    mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);
-                } catch (Exception e) { e.printStackTrace();}
+//            if (activeEventCount == 0)
+//                try {
+//                    zoom.setZoom(mCaptureRequestBuilder, 1.3f);
+//                    mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);
+//                } catch (Exception e) { e.printStackTrace();}
         });
 
         utils.logBoth(logID, thisEventPath.getName());

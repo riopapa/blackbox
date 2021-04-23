@@ -60,7 +60,7 @@ public class Zoom
                 centerY - deltaY,
                 centerX + deltaX,
                 centerY + deltaY);
-
+//        utils.logOnly("zoomed","zoom="+zoom+" center "+centerX+"x"+centerY+" delta "+deltaX+"x"+deltaY);
         builder.set(CaptureRequest.SCALER_CROP_REGION, this.mCropRegion);
     }
 }

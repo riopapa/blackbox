@@ -148,11 +148,9 @@ class NormalMerge {
             utils.logOnly(logID, "canceled result:"+result);
         }
 
-        boolean checkFreeSpace = true;
         @Override
         protected void onPostExecute(String doI ) {
-            checkFreeSpace = !checkFreeSpace;
-            if (checkFreeSpace && mPackagePath.getFreeSpace() / 1000L < 500000) { // 500Mb free storage ;
+            if (mPackagePath.getFreeSpace() / 1000L < 500*1000) { // 500Mb free storage ;
                 new GatherDiskSpace().run();
             }
         }

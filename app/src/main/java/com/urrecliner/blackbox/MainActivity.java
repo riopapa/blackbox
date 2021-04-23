@@ -166,7 +166,7 @@ public class MainActivity extends Activity {
         setBlackBoxFolders();
         mIsRecording = false;
         snapBytes = new byte[MAX_IMAGES_SIZE][];
-        Log.w("snapBytes","size = "+snapBytes.length);
+        utils.logOnly("snapBytes","size = "+snapBytes.length);
 //        vWheel.setVisibility(View.INVISIBLE);
         utils.beepsInitiate();
         gpsTracker.askLocation();

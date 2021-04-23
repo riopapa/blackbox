@@ -169,11 +169,6 @@ class Utils {
         return dateFormat.format(new Date(milliSec));
     }
 
-    String getNowTimeString(String format) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        return dateFormat.format(System.currentTimeMillis());
-    }
-
     void deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory()) {
             logOnly("Delete Old Folder ", fileOrDirectory.toString());
