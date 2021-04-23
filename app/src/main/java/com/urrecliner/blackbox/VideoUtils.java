@@ -16,9 +16,7 @@ import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Build;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.math.MathUtils;
 
 import android.util.Size;
 import android.view.Surface;
@@ -40,7 +38,7 @@ import static com.urrecliner.blackbox.Vars.cameraManager;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
+import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mImageReader;
@@ -102,6 +100,7 @@ public class VideoUtils {
         String model = Build.MODEL;
 //        utils.logBoth(logID, "CamSize on "+model);
 //        dumpVariousCameraSizes(map);
+        map.getOutputFormats();
 
         switch (model) {
             case "SM-G950N":
@@ -118,7 +117,6 @@ public class VideoUtils {
             1056x704 1.5 , 1024x768 1.3 , 960x720 1.3 , 960x540 1.8 , 800x450 1.8 , 720x720 1.0 ,
             720x480 1.5 , 640x480 1.3 , 352x288 1.2 , 320x240 1.3 , 256x144 1.8 , 176x144 1.2 ,
              */
-            map.getOutputFormats();
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                     if (size.getWidth() == 720 && size.getHeight() == 480)
                         mPreviewSize = size;
@@ -129,13 +127,13 @@ public class VideoUtils {
                 }
                 break;
             case "LM-G710N":
-                /* LG G7
-                    4656x3492 1.3 , 4656x2620 1.8 , 4656x2218 2.1 , 4160x3120 1.3 , 4160x2080 2.0 , 4000x3000 1.3 ,
-                    4000x2250 1.8 , 3840x2160 1.8 , 3492x3492 1.0 , 3264x2448 1.3 , 3264x1836 1.8 , 3264x1632 2.0 ,
-                    3264x1554 2.1 , 2560x1920 1.3 , 2560x1440 1.8 , 2560x1080 2.4 , 2048x1536 1.3 , 1920x1080 1.8 ,
-                    1440x1080 1.3 , 1440x960 1.5 , 1440x720 2.0 , 1408x1152 1.2 , 1280x768 1.7 , 1280x960 1.3 ,
-                    1280x720 1.8 , 960x720 1.3 , 960x540 1.8 , 720x720 1.0 , 720x540 1.3 , 720x480 1.5 , 640x480 1.3
-                 */
+            /* LG G7
+                4656x3492 1.3 , 4656x2620 1.8 , 4656x2218 2.1 , 4160x3120 1.3 , 4160x2080 2.0 , 4000x3000 1.3 ,
+                4000x2250 1.8 , 3840x2160 1.8 , 3492x3492 1.0 , 3264x2448 1.3 , 3264x1836 1.8 , 3264x1632 2.0 ,
+                3264x1554 2.1 , 2560x1920 1.3 , 2560x1440 1.8 , 2560x1080 2.4 , 2048x1536 1.3 , 1920x1080 1.8 ,
+                1440x1080 1.3 , 1440x960 1.5 , 1440x720 2.0 , 1408x1152 1.2 , 1280x768 1.7 , 1280x960 1.3 ,
+                1280x720 1.8 , 960x720 1.3 , 960x540 1.8 , 720x720 1.0 , 720x540 1.3 , 720x480 1.5 , 640x480 1.3
+             */
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                     if (size.getWidth() == 720 && size.getHeight() == 480)
                         mPreviewSize = size;
@@ -231,9 +229,9 @@ public class VideoUtils {
             utils.logE(logID, "Prepare surface_Preview Error BB ///", e);
         }
         try {
-            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-            mCaptureRequestBuilder.addTarget(previewSurface);
-            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+            mCaptureRequestVideoBuilder.addTarget(previewSurface);
+            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
 //            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // 0.0 infinite ~ 10f nearest
         } catch (Exception e) {
             utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
@@ -245,10 +243,10 @@ public class VideoUtils {
         }
         try {
             recordSurface = mediaRecorder.getSurface();
-            mCaptureRequestBuilder.addTarget(recordSurface);
-            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 2f); // 0.0 infinite ~ 10f nearest
-            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
+            mCaptureRequestVideoBuilder.addTarget(recordSurface);
+            mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 2f); // 0.0 infinite ~ 10f nearest
+            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error recordSurface ///", e);
         }
@@ -279,12 +277,12 @@ public class VideoUtils {
             public void onConfigured(CameraCaptureSession session) {
                 mCaptureSession = session;
                 zoom = new Zoom(cameraCharacteristics);
-                zoom.setZoom(mCaptureRequestBuilder, zoomFactor);
+                zoom.setZoom(mCaptureRequestVideoBuilder, zoomFactor);
                 try {
 //                       mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
 //                        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
                     mCaptureSession.setRepeatingRequest(
-                            mCaptureRequestBuilder.build(), null, null
+                            mCaptureRequestVideoBuilder.build(), null, null
                     );
                 } catch (CameraAccessException e) {
                     utils.logBoth(logID, "setRepeatingRequest Error");

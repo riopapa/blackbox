@@ -15,8 +15,6 @@ import static com.urrecliner.blackbox.Vars.cameraUtils;
 import static com.urrecliner.blackbox.Vars.directionSensor;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
-import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
@@ -25,10 +23,8 @@ import static com.urrecliner.blackbox.Vars.normalMerge;
 import static com.urrecliner.blackbox.Vars.obdAccess;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
 import static com.urrecliner.blackbox.Vars.videoUtils;
-import static com.urrecliner.blackbox.Vars.zoom;
 
 class StartStopExit {
 

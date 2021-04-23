@@ -114,7 +114,8 @@ public class Vars {
     static CameraManager cameraManager;
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics cameraCharacteristics;
-    static CaptureRequest.Builder mCaptureRequestBuilder;
+    static CaptureRequest.Builder mCaptureRequestVideoBuilder;
+    static CaptureRequest.Builder mCaptureRequestPhotoBuilder;
     static CameraCaptureSession mCaptureSession;
     static Surface previewSurface = null;
     static Surface recordSurface = null;

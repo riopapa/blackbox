@@ -9,11 +9,10 @@ import android.hardware.camera2.TotalCaptureResult;
 
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
+import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
 import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.zoom;
 
 public class CameraUtils {
     private static final int STATE_WAIT_LOCK = 1;
@@ -25,7 +24,8 @@ public class CameraUtils {
         try {
 //            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CaptureRequest.CONTROL_AF_TRIGGER_START);
 //            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // 0.0 infinite ~ 10f nearest
-            mCaptureSession.capture(mCaptureRequestBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
+
+            mCaptureSession.capture(mCaptureRequestVideoBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
         } catch (CameraAccessException e) {
             StartStopExit.reRunApplication("CameraAccessException",e);
         }
@@ -60,9 +60,9 @@ public class CameraUtils {
 
     private static void startStillCaptureRequest() {
         try {
-            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
-            mCaptureRequestBuilder.addTarget(mImageReader.getSurface());
-            mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
+            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
+            mCaptureRequestVideoBuilder.addTarget(mImageReader.getSurface());
+            mCaptureRequestVideoBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
 //            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
 //            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // 0.0 infinite ~ 10f nearest
         } catch (CameraAccessException e) {

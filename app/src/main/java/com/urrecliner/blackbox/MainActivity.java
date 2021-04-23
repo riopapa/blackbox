@@ -17,7 +17,6 @@ import android.os.HandlerThread;
 import android.os.Message;
 import androidx.annotation.NonNull;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
@@ -38,16 +37,13 @@ import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
-import static com.urrecliner.blackbox.Vars.cameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
-import static com.urrecliner.blackbox.Vars.mCaptureSession;
+import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
@@ -79,7 +75,6 @@ import static com.urrecliner.blackbox.Vars.vTextTime;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.videoUtils;
 import static com.urrecliner.blackbox.Vars.viewFinder;
-import static com.urrecliner.blackbox.Vars.zoom;
 
 public class MainActivity extends Activity {
 
@@ -268,10 +263,10 @@ public class MainActivity extends Activity {
             focus = 1f;
         if (focus != save_focus) {
             if (focus == 1f) {
-                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
+                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
             } else {
-                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
-                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
+                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
+                mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
             }
             save_focus = focus;
         }
