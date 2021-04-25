@@ -45,9 +45,9 @@ class EventMerge {
         new Timer().schedule(new TimerTask() {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.start(thisEventPath, snapMapIdx,3);
+                snapShotSave.startSave(thisEventPath, snapMapIdx,3);
             }
-        }, 1200);
+        }, 2000);
         try {
             new MergeFileTask().execute("" + startTime);
         } catch (Exception e) {

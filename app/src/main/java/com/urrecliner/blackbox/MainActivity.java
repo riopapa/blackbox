@@ -73,7 +73,6 @@ import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vTextTime;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
-import static com.urrecliner.blackbox.Vars.videoMain;
 import static com.urrecliner.blackbox.Vars.viewFinder;
 
 public class MainActivity extends Activity {
@@ -306,16 +305,15 @@ public class MainActivity extends Activity {
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT ;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME));
         utils.readyPackageFolder(thisEventJpgPath);
-//        utils.logBoth(logID,"Prev Snapshot");
 
         SnapShotSave snapShotSave = new SnapShotSave();
-        snapShotSave.start(thisEventJpgPath, snapMapIdx, 1);
+        snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 1);
         new Timer().schedule(new TimerTask() {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.start(thisEventJpgPath, snapMapIdx, 2);
+                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
             }
-        }, INTERVAL_EVENT * 4 / 5);
+        }, INTERVAL_EVENT * 7 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
@@ -373,16 +371,6 @@ public class MainActivity extends Activity {
         mBackgroundHandlerThread.start();
         mBackgroundImage = new Handler(mBackgroundHandlerThread.getLooper());
     }
-
-//    void launchJpg2PhotoApp() {
-//        if (CountEvent > 0) {
-//            Toast.makeText(MainActivity.this, "Processing squeeze event photos", Toast.LENGTH_LONG).show();
-//            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxjpg");
-//            if (launchIntent != null) {
-//                startActivity(launchIntent);
-//            }
-//        }
-//    }
 
     static long keyOldTime = 0, keyNowTime = 0;
     static boolean willBack = false;

@@ -62,7 +62,7 @@ import static com.urrecliner.blackbox.Vars.zoom;
 
 public class VideoMain {
 
-    private String logID = "videoMain";
+    private final String logID = "videoMain";
     final float zoomFactor = 1.23f;
 
     private boolean isPrepared = false;

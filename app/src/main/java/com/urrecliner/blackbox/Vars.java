@@ -78,7 +78,7 @@ public class Vars {
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
-    static long VIDEO_ONE_WORK_FILE_SIZE = 8000*1000;
+    static long VIDEO_ONE_WORK_FILE_SIZE = 6000*1000;
     static int VIDEO_ENCODING_RATE = 9000*1000;
     static int VIDEO_FRAME_RATE = 32;
 
@@ -98,8 +98,8 @@ public class Vars {
     static int speedInt = 0;
 
     final static long INTERVAL_EVENT = 140 * 100;
-    final static int SNAP_SHOT_INTERVAL = 150;
-    final static int MAX_IMAGES_SIZE = (int) (INTERVAL_EVENT * 82 / 100 / SNAP_SHOT_INTERVAL);
+    final static int SNAP_SHOT_INTERVAL = 160;
+    final static int MAX_IMAGES_SIZE = 81; // (int) (INTERVAL_EVENT * 82 / 100 / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;

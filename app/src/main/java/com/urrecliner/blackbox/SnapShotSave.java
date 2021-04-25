@@ -16,41 +16,40 @@ import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 
 class SnapShotSave {
 
-    private static String logID = "SnapShot";
-    private int jpgIdx;
     byte[][] jpgBytes;
     int startBias;
 
-    void start(File path2Write, int snapPointer, final int phase) {
+    void startSave(File path2Write, int snapPointer, final int phase) {
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
-        jpgIdx = 0;
+        int jpgIdx = 0;
+        int maxSize = (phase == 3) ? 35: MAX_IMAGES_SIZE;
         for (int i = snapPointer; i < MAX_IMAGES_SIZE; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
             snapBytes[i] = null;
+            if (jpgIdx > maxSize)
+                break;
         }
         for (int i = 0; i < snapPointer; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
             snapBytes[i] = null;
+            if (jpgIdx > maxSize)
+                break;
         }
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                startBias = phase * 100;
-                for (jpgIdx = 0; jpgIdx < MAX_IMAGES_SIZE; jpgIdx++) {
-                    byte [] imageBytes = jpgBytes[jpgIdx];
-                    if (imageBytes != null && imageBytes.length > 1) {
-                        File imageFile = new File(path2Write, "CameraShot_" + ("" + (startBias + jpgIdx)) + ".jpg");
-                        bytes2File(imageBytes, imageFile);
-                        jpgBytes[jpgIdx] = null;
-                        SystemClock.sleep(80);  // not to hold all the time
-                    }
+        Thread th = new Thread(() -> {
+            startBias = phase * 100;
+            for (int i = 0; i < maxSize; i++) {
+                byte [] imageBytes = jpgBytes[i];
+                if (imageBytes != null && imageBytes.length > 1) {
+                    File imageFile = new File(path2Write, "CameraShot_" + ("" + (startBias + i)) + ".jpg");
+                    bytes2File(imageBytes, imageFile);
+                    jpgBytes[i] = null;
+                    SystemClock.sleep(80);  // not to hold all the time
                 }
-                if (phase == 3)
-                    sayEventCompleted(path2Write);
             }
+            if (phase == 3)
+                sayEventCompleted(path2Write);
         });
         th.start();
-
     }
 
     private void sayEventCompleted(File thisEventPath) {
@@ -68,6 +67,7 @@ class SnapShotSave {
 //                } catch (Exception e) { e.printStackTrace();}
         });
 
+        String logID = "SnapShot";
         utils.logBoth(logID, thisEventPath.getName());
     }
 
