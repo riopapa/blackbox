@@ -30,8 +30,8 @@ public class Vars {
     static boolean mExitApplication = false;
 
     static Utils utils = new Utils();
-    static VideoUtils videoUtils = new VideoUtils();
-    static CameraUtils cameraUtils = new CameraUtils();
+    static VideoMain videoMain = new VideoMain();
+    static PhotoCapture photoCapture = new PhotoCapture();
     static StartStopExit startStopExit = new StartStopExit();
     static OBDAccess obdAccess = new OBDAccess();
     static DirectionSensor directionSensor = new DirectionSensor();

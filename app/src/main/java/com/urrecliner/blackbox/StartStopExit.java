@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
-import static com.urrecliner.blackbox.Vars.cameraUtils;
+import static com.urrecliner.blackbox.Vars.photoCapture;
 import static com.urrecliner.blackbox.Vars.directionSensor;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -24,7 +24,7 @@ import static com.urrecliner.blackbox.Vars.obdAccess;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
-import static com.urrecliner.blackbox.Vars.videoUtils;
+import static com.urrecliner.blackbox.Vars.videoMain;
 
 class StartStopExit {
 
@@ -35,7 +35,7 @@ class StartStopExit {
         vBtnRecord.setImageResource(R.mipmap.on_recording);
 //        utils.logBoth(logID, "Step 1 prepareRecord");
         try {
-            videoUtils.prepareRecord();
+            videoMain.prepareRecord();
         } catch (Exception e) {
             reRunApplication("Prepare Error", e);
         }
@@ -63,7 +63,7 @@ class StartStopExit {
 
     }
     private Handler cameraTimer = new Handler() {
-        public void handleMessage(Message msg) { cameraUtils.snapshotCamera(); }
+        public void handleMessage(Message msg) { photoCapture.snapshotCamera(); }
     };
     private Timer timerSnapCamera = new Timer();
     private void startCamera() {

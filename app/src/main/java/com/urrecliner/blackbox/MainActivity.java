@@ -73,14 +73,15 @@ import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vTextTime;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
-import static com.urrecliner.blackbox.Vars.videoUtils;
+import static com.urrecliner.blackbox.Vars.videoMain;
 import static com.urrecliner.blackbox.Vars.viewFinder;
 
 public class MainActivity extends Activity {
 
     private static final String logID = "Main";
-
+    CameraSub cameraSub;
     boolean surfaceReady = false;
+
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -97,13 +98,6 @@ public class MainActivity extends Activity {
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) { }
     };
 
-    void readyCamera() {
-        if (!surfaceReady) {
-            videoUtils.setupCamera();
-            videoUtils.connectCamera();
-            surfaceReady = true;
-        }
-    }
     TextView textureBox;
 
     @Override
@@ -119,6 +113,7 @@ public class MainActivity extends Activity {
         utils.deleteOldFiles(mPackageEventJpgPath, 5);
         utils.deleteOldLogs();
 //        utils.deleteOldFiles(mPackageWorkingPath, -3);
+        cameraSub = new CameraSub();
         prepareMain();
     }
 
@@ -273,6 +268,14 @@ public class MainActivity extends Activity {
 //        }
 
 //    }
+
+    void readyCamera() {
+        if (!surfaceReady) {
+            cameraSub.setupCamera();
+            cameraSub.connectCamera();
+            surfaceReady = true;
+        }
+    }
 
     void startEventSaving() {
         eventHandler.sendEmptyMessage(0);

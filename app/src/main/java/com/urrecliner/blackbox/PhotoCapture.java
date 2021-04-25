@@ -14,7 +14,7 @@ import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.utils;
 
-public class CameraUtils {
+public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
     private static final int STATE_PREVIEW = 0;
     private static int mCaptureState = STATE_PREVIEW;
