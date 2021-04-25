@@ -18,6 +18,8 @@ import android.os.Build;
 
 import androidx.core.content.ContextCompat;
 
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Size;
 import android.view.Surface;
 
@@ -254,7 +256,7 @@ public class VideoUtils {
             utils.logBoth(logID, "recordSurface is null ------");
             return;
         }
-        buildCameraSession(1.3f);
+        buildCameraSession(1.3f);   // zoomFactor
         isPrepared = true;
 
 //        try {
@@ -262,13 +264,35 @@ public class VideoUtils {
 //        } catch (Exception e) { e.printStackTrace();}
     }
 
+    Handler zoomHandler;
+    private void startBackgroundLooper() {
+        HandlerThread mBackgroundHandlerThread;
+        mBackgroundHandlerThread = new HandlerThread("Zooming");
+        mBackgroundHandlerThread.start();
+        zoomHandler = new Handler(mBackgroundHandlerThread.getLooper());
+    }
+
     void buildCameraSession(float zoomFactor) {
-        try {
-            mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface, mImageReader.getSurface()),
-                    cameraStateCallBack(zoomFactor), null);
-        } catch (Exception e) {
-            utils.logE(logID, "Prepare Error BB ", e);
-        }
+//        startBackgroundLooper();
+        Handler mHandler = new Handler();
+        Thread t = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                mHandler.post(new Runnable(){
+                    @Override
+                    public void run() {
+                        try {
+                            mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface, mImageReader.getSurface()),
+                                    cameraStateCallBack(zoomFactor), null);
+                        } catch (Exception e) {
+                            utils.logE(logID, "Prepare Error BB ", e);
+                        }
+                    }
+                });
+            } });
+        t.start();
+
+
     }
 
     private CameraCaptureSession.StateCallback cameraStateCallBack(float zoomFactor) {
@@ -278,6 +302,7 @@ public class VideoUtils {
                 mCaptureSession = session;
                 zoom = new Zoom(cameraCharacteristics);
                 zoom.setZoom(mCaptureRequestVideoBuilder, zoomFactor);
+                utils.logOnly("zoom set","setZoom to "+zoomFactor);
                 try {
 //                       mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR);
 //                        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);

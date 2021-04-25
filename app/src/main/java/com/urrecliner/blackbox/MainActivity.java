@@ -323,19 +323,20 @@ public class MainActivity extends Activity {
         utils.logBoth(logID,"Event Starting ...");
 
         cameraZoomIn = new Timer();
-        zoomFactor = 1.2f;
+        zoomFactor = 1.818f;
         TimerTask cameraTask = new TimerTask() {
             @Override
             public void run() {
-                if (zoomFactor < 1.8f) {
+                if (zoomFactor < 2.8f) {
+                    utils.logOnly("zoom","change factor "+zoomFactor);
                     videoUtils.buildCameraSession(zoomFactor);
-                    zoomFactor += 0.07f;
+                    zoomFactor += 0.1f;
                 }
                 else
                     cameraZoomIn.cancel();
             }
         };
-//        cameraZoomIn.schedule(cameraTask, 100, 100);
+        cameraZoomIn.schedule(cameraTask, 100, 100);
 
         gpsTracker.askLocation();
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT ;
