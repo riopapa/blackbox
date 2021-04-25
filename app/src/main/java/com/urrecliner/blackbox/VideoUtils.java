@@ -256,7 +256,7 @@ public class VideoUtils {
             utils.logBoth(logID, "recordSurface is null ------");
             return;
         }
-        buildCameraSession(1.3f);   // zoomFactor
+        buildCameraSession(1.23f);   // zoomFactor
         isPrepared = true;
 
 //        try {
@@ -264,35 +264,14 @@ public class VideoUtils {
 //        } catch (Exception e) { e.printStackTrace();}
     }
 
-    Handler zoomHandler;
-    private void startBackgroundLooper() {
-        HandlerThread mBackgroundHandlerThread;
-        mBackgroundHandlerThread = new HandlerThread("Zooming");
-        mBackgroundHandlerThread.start();
-        zoomHandler = new Handler(mBackgroundHandlerThread.getLooper());
-    }
-
     void buildCameraSession(float zoomFactor) {
 //        startBackgroundLooper();
-        Handler mHandler = new Handler();
-        Thread t = new Thread(new Runnable(){
-            @Override
-            public void run() {
-                mHandler.post(new Runnable(){
-                    @Override
-                    public void run() {
-                        try {
-                            mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface, mImageReader.getSurface()),
-                                    cameraStateCallBack(zoomFactor), null);
-                        } catch (Exception e) {
-                            utils.logE(logID, "Prepare Error BB ", e);
-                        }
-                    }
-                });
-            } });
-        t.start();
-
-
+        try {
+            mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface, mImageReader.getSurface()),
+                    cameraStateCallBack(zoomFactor), null);
+        } catch (Exception e) {
+            utils.logE(logID, "Prepare Error BB ", e);
+        }
     }
 
     private CameraCaptureSession.StateCallback cameraStateCallBack(float zoomFactor) {

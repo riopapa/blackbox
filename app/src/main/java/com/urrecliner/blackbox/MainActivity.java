@@ -322,21 +322,21 @@ public class MainActivity extends Activity {
         if (!mIsRecording) return;
         utils.logBoth(logID,"Event Starting ...");
 
-        cameraZoomIn = new Timer();
-        zoomFactor = 1.818f;
-        TimerTask cameraTask = new TimerTask() {
-            @Override
-            public void run() {
-                if (zoomFactor < 2.8f) {
-                    utils.logOnly("zoom","change factor "+zoomFactor);
-                    videoUtils.buildCameraSession(zoomFactor);
-                    zoomFactor += 0.1f;
-                }
-                else
-                    cameraZoomIn.cancel();
-            }
-        };
-        cameraZoomIn.schedule(cameraTask, 100, 100);
+//        cameraZoomIn = new Timer();
+//        zoomFactor = 1.818f;
+//        TimerTask cameraTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                if (zoomFactor < 2.8f) {
+//                    utils.logOnly("zoom","change factor "+zoomFactor);
+//                    videoUtils.buildCameraSession(zoomFactor);
+//                    zoomFactor += 0.1f;
+//                }
+//                else
+//                    cameraZoomIn.cancel();
+//            }
+//        };
+//        cameraZoomIn.schedule(cameraTask, 100, 100);
 
         gpsTracker.askLocation();
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT ;
@@ -367,11 +367,6 @@ public class MainActivity extends Activity {
 //            vBtnEvent.setImageResource(R.mipmap.event_blue);
             utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_LONG, Color.RED);
         });
-    }
-
-    private Timer cameraZoomIn = new Timer();
-    private float zoomFactor;
-    private void zoomInCamera() {
     }
 
     private void showInitialValues() {

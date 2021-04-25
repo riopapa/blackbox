@@ -42,7 +42,7 @@ class SnapShotSave {
                         File imageFile = new File(path2Write, "CameraShot_" + ("" + (startBias + jpgIdx)) + ".jpg");
                         bytes2File(imageBytes, imageFile);
                         jpgBytes[jpgIdx] = null;
-                        SystemClock.sleep(10);  // not to hold all the time
+                        SystemClock.sleep(80);  // not to hold all the time
                     }
                 }
                 if (phase == 3)
