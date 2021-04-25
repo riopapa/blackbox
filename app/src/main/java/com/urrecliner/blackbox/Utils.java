@@ -28,6 +28,7 @@ import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
+import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
@@ -37,24 +38,21 @@ class Utils {
     private final String logDate = getMilliSec2String(System.currentTimeMillis(),FORMAT_DATE);
     private final String logFile = LOG_PREFIX+logDate+".txt";
 
-    public boolean readyPackageFolder (File dir){
+    public void readyPackageFolder (File dir){
         try {
-            if (!dir.exists()) return dir.mkdirs();
-            else
-                return true;
+            if (!dir.exists()) dir.mkdirs();
         } catch (Exception e) {
             Log.e("creating Folder error", dir + "_" + e.toString());
         }
-        return false;
     }
 
     public File[] getDirectoryList(File fullPath) {
         return fullPath.listFiles();
     }
 
-    public File[] getDirectoryFiltered(File fullPath, final String fileType) {
-        File[] files = fullPath.listFiles(file -> (file.getPath().endsWith(fileType) && file.length() > 100));
-        return files;
+    public int getRecordEventCount() {
+        File[] files = mPackageEventPath.listFiles(file -> (file.getPath().endsWith("mp4") && file.length() > 100));
+        return (files == null)? 0: files.length;
     }
 
     public void logBoth(String tag, String text) {
@@ -83,22 +81,17 @@ class Utils {
     }
 
     public void logE(String tag, String text, Exception e) {
-        beepOnce(0, .6f);
+        beepOnce(0, .7f);
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
         append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End>");
         text = last4Lines(vTextLogInfo.getText().toString() + "\n" + text+"\n");
         final String fText = tag+" : "+text;
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                vTextLogInfo.setText(fText);
-            }
-        });
+        mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  ": " + log);
         e.printStackTrace();
-        beepOnce(1, .6f);
+        beepOnce(1, .7f);
     }
 
     String getStackTrace(Exception e) {
@@ -107,7 +100,7 @@ class Utils {
         return errors.toString();
     }
 
-    static private String []omits = { "performResume", "performCreate", "dispatch", "callActivityOnResume", "access$",
+    static private final String []omits = { "performResume", "performCreate", "dispatch", "callActivityOnResume", "access$",
             "handleReceiver", "handleMessage", "dispatchKeyEvent", "moveToState", "mainLoop"};
     private String traceName (String s) {
         for (String o : omits) {
@@ -141,28 +134,28 @@ class Utils {
                 if (fw != null) fw.close();
             } catch (IOException e) {
                 String s = directory.toString() + filename + " close~" + e.toString();
-                Log.e("appendIOExcept2",  e.getMessage());
+                Log.e("appendIOExcept2",  s);
             }
         }
     }
-
-    void write2file (File directory, String filename, String text) {
-        final File file = new File(directory, filename);
-        try
-        {
-            file.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(file);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.write(text);
-            myOutWriter.close();
-            fOut.flush();
-            fOut.close();
-        }
-        catch (IOException e) {
-            String s = file.toString() + " Err:" + e.toString();
-            e.printStackTrace();
-        }
-    }
+//
+//    void write2file (File directory, String filename, String text) {
+//        final File file = new File(directory, filename);
+//        try
+//        {
+//            file.createNewFile();
+//            FileOutputStream fOut = new FileOutputStream(file);
+//            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+//            myOutWriter.write(text);
+//            myOutWriter.close();
+//            fOut.flush();
+//            fOut.close();
+//        }
+//        catch (IOException e) {
+//            String s = file.toString() + " Err:" + e.toString();
+//            e.printStackTrace();
+//        }
+//    }
 
     String getMilliSec2String(long milliSec, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
@@ -171,7 +164,7 @@ class Utils {
 
     void deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory()) {
-            logOnly("Delete Old Folder ", fileOrDirectory.toString());
+//            logOnly("Delete Old Folder ", fileOrDirectory.toString());
             for (File child : fileOrDirectory.listFiles())
                 deleteRecursive(child);
         }
@@ -191,40 +184,40 @@ class Utils {
         }
     }
 
-    void deleteOldLogs(int days) {
+    void deleteOldLogs() {
+        final int days = 10;
         final SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.US);
 
         String oldDate = LOG_PREFIX + sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
         File[] files = mPackageLogPath.listFiles();
-        Collator myCollator = Collator.getInstance();
-        for (File file : files) {
-            String shortFileName = file.getName();
-            if (myCollator.compare(shortFileName, oldDate) < 0) {
-                if (!file.delete())
-                    Log.e("file","Delete Error "+file);
+        if (files != null) {
+            Collator myCollator = Collator.getInstance();
+            for (File file : files) {
+                String shortFileName = file.getName();
+                if (myCollator.compare(shortFileName, oldDate) < 0) {
+                    if (!file.delete())
+                        Log.e("file", "Delete Error " + file);
+                }
             }
         }
     }
 
     void customToast  (final String text, final int short_Long, final int foreColor) {
 
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast toast = Toast.makeText(mContext, text, short_Long);
-                toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
-                View toastView = toast.getView(); // This'll return the default View of the Toast.
-                TextView toastMessage = toastView.findViewById(android.R.id.message);
-                toastMessage.setTextSize(24);
-                int backColor = foreColor ^ 0xececec;
-                toastMessage.setTextColor(foreColor);
-                toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.blackbox_app, 0, 0, 0);
-                toastMessage.setCompoundDrawablePadding(16);
-                toastMessage.setPadding(4,4,24,4);
-                toastView.setBackgroundColor(backColor);
-                toast.show();
+        mActivity.runOnUiThread(() -> {
+            Toast toast = Toast.makeText(mContext, text, short_Long);
+            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
+            View toastView = toast.getView(); // This'll return the default View of the Toast.
+            TextView toastMessage = toastView.findViewById(android.R.id.message);
+            toastMessage.setTextSize(24);
+            int backColor = foreColor ^ 0xececec;
+            toastMessage.setTextColor(foreColor);
+            toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.blackbox_app, 0, 0, 0);
+            toastMessage.setCompoundDrawablePadding(16);
+            toastMessage.setPadding(4,4,24,4);
+            toastView.setBackgroundColor(backColor);
+            toast.show();
 //                log("customToast",text);
-            }
         });
     }
 
@@ -281,7 +274,7 @@ class Utils {
 //    }
 
     private SoundPool soundPool = null;
-    private int[] beepSound = {
+    private final int[] beepSound = {
             R.raw.beep0_animato,                    //  event button pressed
             R.raw.beep1_ddok,                       //  file limit reached
             R.raw.beep2_dungdong,                   //  close app, free storage

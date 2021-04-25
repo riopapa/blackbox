@@ -15,7 +15,7 @@ public class Zoom
     private static final float DEFAULT_ZOOM_FACTOR = 1.0f;
 
     @NonNull
-    private final Rect mCropRegion = new Rect();
+    private final Rect cropArea = new Rect();
 
     public final float maxZoom;
 
@@ -56,11 +56,11 @@ public class Zoom
         final int deltaX  = (int)((0.5f * this.mSensorSize.width()) / newZoom);
         final int deltaY  = (int)((0.5f * this.mSensorSize.height()) / newZoom);
 
-        this.mCropRegion.set(centerX - deltaX,
+        this.cropArea.set(centerX - deltaX,
                 centerY - deltaY,
                 centerX + deltaX,
                 centerY + deltaY);
-//        utils.logOnly("zoomed","zoom="+zoom+" center "+centerX+"x"+centerY+" delta "+deltaX+"x"+deltaY);
-        builder.set(CaptureRequest.SCALER_CROP_REGION, this.mCropRegion);
+        utils.logOnly("zoomed","zoom="+zoom+" width="+this.mSensorSize.width() +">"+(deltaX*2)+" height="+this.mSensorSize.height()+">"+(deltaY*2));
+        builder.set(CaptureRequest.SCALER_CROP_REGION, this.cropArea);
     }
 }

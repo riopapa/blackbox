@@ -55,7 +55,7 @@ public class NewAppWidget extends AppWidgetProvider {
 
     @NonNull
     public static RemoteViews updateHomeButton(Context context) {
-        int cnt = utils.getDirectoryFiltered(mPackageEventPath, "mp4").length;
+        int cnt = utils.getRecordEventCount();
         String widgetText = (cnt > 0) ? "\n"+cnt:"\nNone";
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.homepage_widget);
         views.setTextViewText(R.id.homeWidget_text1, widgetText);

@@ -3,7 +3,6 @@ package com.urrecliner.blackbox;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coremedia.iso.boxes.Container;
@@ -28,13 +27,11 @@ import java.util.TimerTask;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 class EventMerge {
 

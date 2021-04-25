@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_activity);
         utils.deleteOldFiles(mPackageNormalPath, 7);
         utils.deleteOldFiles(mPackageEventJpgPath, 5);
-        utils.deleteOldLogs(10);
+        utils.deleteOldLogs();
 //        utils.deleteOldFiles(mPackageWorkingPath, -3);
         prepareMain();
     }
@@ -149,26 +149,16 @@ public class MainActivity extends Activity {
         vBtnEvent = findViewById(R.id.btnEvent);
         vBtnEvent.setOnClickListener(v -> startEventSaving());
 
-//        nearSW = findViewById(R.id.nearSwitch);
-//        nearSW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                nowIsNear = isChecked;
-//                if (isChecked)
-//                    onNearSwitch();
-//            }
-//        });
         setViewVars();
         setBlackBoxFolders();
         mIsRecording = false;
         snapBytes = new byte[MAX_IMAGES_SIZE][];
         utils.logOnly("snapBytes","size = "+snapBytes.length);
-//        vWheel.setVisibility(View.INVISIBLE);
         utils.beepsInitiate();
         gpsTracker.askLocation();
-        CountEvent = utils.getDirectoryFiltered(mPackageEventPath, "mp4").length;
+        CountEvent = utils.getRecordEventCount();
         vExitApp = findViewById(R.id.btnExit);
         vExitApp.setOnClickListener(v -> {
-//            launchJpg2PhotoApp();
             startStopExit.exitBlackBoxApp();
         });
         ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
@@ -256,9 +246,9 @@ public class MainActivity extends Activity {
         else if (speed < 20)
             focus = 7f;
         else if (speed < 30)
+            focus = 6f;
+        else if (speed < 40)
             focus = 5f;
-//        else if (speed < 50)
-//            focus = 4f;
         else
             focus = 1f;
         if (focus != save_focus) {
@@ -270,37 +260,8 @@ public class MainActivity extends Activity {
             }
             save_focus = focus;
         }
-//        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
-//        new Timer().schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                switchHandler.sendEmptyMessage(0);
-//            }
-//        }, INTERVAL_EVENT * 40 / 10);
     }
 
-//    static void onNearSwitch() {
-////        utils.logBoth("nearSwitch","switched to NEAR");
-//        nowIsNear = true;
-//        nearSW.setChecked(true);
-//        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
-//        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // NEAR = 7f
-////        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, 3);
-////        new Timer().schedule(new TimerTask() {
-////            @Override
-////            public void run() {
-////                switchHandler.sendEmptyMessage(0);
-////            }
-////        }, INTERVAL_EVENT * 40 / 10);
-//    }
-//    static void offNearSwitch() {
-////        utils.logBoth("nearSwitch","switched to FAR");
-//        nowIsNear = false;
-//        nearSW.setChecked(false);
-//        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-////        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 3f); // FAR = 4f, INFINITE = 0f
-////        mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR);
-//    }
 
 //    static void control_Exposure(int percent) {
 //            int brightness = (int) (minCompensationRange + (maxCompensationRange - minCompensationRange) * (percent / 100f));
@@ -364,7 +325,6 @@ public class MainActivity extends Activity {
         mActivity.runOnUiThread(() -> {
             String text = " "+activeEventCount+" ";
             vTextActiveCount.setText(text);
-//            vBtnEvent.setImageResource(R.mipmap.event_blue);
             utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_LONG, Color.RED);
         });
     }
