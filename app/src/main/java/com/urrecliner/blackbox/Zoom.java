@@ -60,7 +60,7 @@ public class Zoom
                 centerY - deltaY,
                 centerX + deltaX,
                 centerY + deltaY);
-        utils.logOnly("zoomed","zoom="+zoom+" width="+this.mSensorSize.width() +">"+(deltaX*2)+" height="+this.mSensorSize.height()+">"+(deltaY*2));
+//        utils.logOnly("zoomed","zoom="+zoom+" width="+this.mSensorSize.width() +">"+(deltaX*2)+" height="+this.mSensorSize.height()+">"+(deltaY*2));
         builder.set(CaptureRequest.SCALER_CROP_REGION, this.cropArea);
     }
 }
