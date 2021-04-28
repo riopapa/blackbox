@@ -22,6 +22,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.speedInt;
@@ -178,13 +179,18 @@ class OBDAccess {
     private boolean noPreview = false;
     private void loopAskOBDSpeed() {
 //        utils.logBoth(logID, "start get OBD Speed");
+        MainActivity.focusChange(speedInt);
 
-        try {
-            bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
-            bSocket.connect();
-        } catch (Exception e) {
-            utils.logBoth("loopAskOBDSpeed connect Exception", e.toString());
-        }
+//        new Timer().schedule(new TimerTask() {  // autoStart
+//            public void run() {
+//                try {
+//                    bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
+//                    bSocket.connect();
+//                } catch (Exception e) {
+//                    utils.logBoth("loopAskOBDSpeed connect Exception", e.toString());
+//                }
+//            }
+//        }, 1000);
         speedCommand = new SpeedCommand();
         obdTimer = new Timer();
         final TimerTask obdTask = new TimerTask() {
@@ -200,13 +206,16 @@ class OBDAccess {
                         noPreview = offPrevView;
                         vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);
                     }
+                    if (speedOld.equals("old")) {
+                        lNewsLine.setVisibility(View.VISIBLE);
+                    }
                     MainActivity.focusChange(speedInt);
                     speedOld = speedString;
                 });
             }
             }
         };
-        obdTimer.schedule(obdTask, 100, ASK_SPEED_INTERVAL);
+        obdTimer.schedule(obdTask, 200, ASK_SPEED_INTERVAL);
     }
 
     private String askSpeed() {

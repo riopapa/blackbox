@@ -12,11 +12,13 @@ import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Handler;
+import android.text.Layout;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
@@ -50,6 +52,7 @@ public class Vars {
     static TextView vTextBattery = null;
     static ImageView vImgBattery = null;
     static ImageView vExitApp = null;
+    static LinearLayout lNewsLine = null;
 
     static ImageButton vBtnEvent = null;
     static TextureView vPreviewView;
@@ -85,11 +88,7 @@ public class Vars {
     static int CountEvent;
     static int activeEventCount = 0;
     final static int DELAY_AUTO_RECORDING = 5000;
-    final static int DELAY_WAIT_EXIT = 4;
-//    final static int DELAY_I_WILL_BACK = 40000; // 40000;
-//    final static float LENS_FOCUS_FAR = 3f;
-//    final static float LENS_FOCUS_MID = 5f;   // 0: infinite 10: nearest
-//    final static float LENS_FOCUS_NEAR = 7.5f;   // 0: infinite 10: nearest
+    final static int DELAY_WAIT_EXIT_SECONDS = 3;
     static Handler mBackgroundImage;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
@@ -97,9 +96,9 @@ public class Vars {
     static MediaRecorder mediaRecorder;
     static int speedInt = 0;
 
-    final static long INTERVAL_EVENT = 140 * 100;
-    final static int SNAP_SHOT_INTERVAL = 160;
-    final static int MAX_IMAGES_SIZE = 81; // (int) (INTERVAL_EVENT * 82 / 100 / SNAP_SHOT_INTERVAL);
+    final static long INTERVAL_EVENT = 14 * 1000;
+    final static int SNAP_SHOT_INTERVAL = 155;
+    final static int MAX_IMAGES_SIZE = 110; // (int) (INTERVAL_EVENT * 82 / 100 / SNAP_SHOT_INTERVAL);
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;

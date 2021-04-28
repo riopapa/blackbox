@@ -18,11 +18,16 @@ class SnapShotSave {
 
     byte[][] jpgBytes;
     int startBias;
+    int maxSize;
 
     void startSave(File path2Write, int snapPointer, final int phase) {
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         int jpgIdx = 0;
-        int maxSize = (phase == 3) ? 35: MAX_IMAGES_SIZE;
+        maxSize = MAX_IMAGES_SIZE - 20;
+        if (phase == 2)
+            maxSize = MAX_IMAGES_SIZE - 30;
+        else if (phase == 3)
+            maxSize = 40;
         for (int i = snapPointer; i < MAX_IMAGES_SIZE; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
             snapBytes[i] = null;
@@ -36,14 +41,14 @@ class SnapShotSave {
                 break;
         }
         Thread th = new Thread(() -> {
-            startBias = phase * 100;
+            startBias = phase * 200;
             for (int i = 0; i < maxSize; i++) {
                 byte [] imageBytes = jpgBytes[i];
                 if (imageBytes != null && imageBytes.length > 1) {
                     File imageFile = new File(path2Write, "CameraShot_" + ("" + (startBias + i)) + ".jpg");
                     bytes2File(imageBytes, imageFile);
                     jpgBytes[i] = null;
-                    SystemClock.sleep(80);  // not to hold all the time
+                    SystemClock.sleep(85);  // not to hold all the time
                 }
             }
             if (phase == 3)

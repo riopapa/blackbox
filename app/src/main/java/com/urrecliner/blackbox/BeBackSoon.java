@@ -1,6 +1,5 @@
 package com.urrecliner.blackbox;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -10,7 +9,7 @@ import android.os.Process;
 import android.os.SystemClock;
 import android.widget.Toast;
 
-import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT;
+import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT_SECONDS;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
@@ -32,7 +31,7 @@ class BeBackSoon extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... s) {
         xcode = s[0];   // currently 'x' only
-        downCount = DELAY_WAIT_EXIT;
+        downCount = DELAY_WAIT_EXIT_SECONDS;
         while (downCount > 0) {
             if (!mExitApplication) {
                 publishProgress("" + downCount);

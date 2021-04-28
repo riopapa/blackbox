@@ -191,7 +191,7 @@ class GPSTracker extends Service implements LocationListener {
                 public void run() {
                     for (int i = 0; i < 5; i++) {
                         ImageView v = newsView[i];
-                        utils.logBoth("NEWS "+speedInt,dirIdx+" "+(i+dirIdx));
+//                        utils.logBoth("NEWS "+speedInt,dirIdx+" "+(i+dirIdx));
                         switch (i) {
                             case 0:
                             case 4:

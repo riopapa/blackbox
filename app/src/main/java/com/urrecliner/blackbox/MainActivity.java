@@ -21,9 +21,9 @@ import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -41,6 +41,7 @@ import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
+import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
@@ -96,9 +97,7 @@ public class MainActivity extends Activity {
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) { }
     };
-
-    TextView textureBox;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +122,7 @@ public class MainActivity extends Activity {
         gpsTracker.init();
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         vPreviewView = findViewById(R.id.previewView);
+        FrameLayout framePreview = findViewById(R.id.framePreview);
         utils.logOnly(logID, "Main Started ..");
         startStopExit = new StartStopExit();
         vBtnRecord = findViewById(R.id.btnRecord);
@@ -170,8 +170,7 @@ public class MainActivity extends Activity {
         utils.beepsInitiate();
         startBackgroundThread();
 
-        textureBox = findViewById(R.id.textureBox);
-        textureBox.setOnClickListener(v -> {
+        framePreview.setOnClickListener(v -> {
             viewFinder = !viewFinder;
             vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
         });
@@ -186,13 +185,14 @@ public class MainActivity extends Activity {
             float centerY = viewRect.centerY();
             matrix.postRotate(-90, centerX, centerY);
             vPreviewView.setTransform(matrix);
-            RelativeLayout.LayoutParams textureLP = (RelativeLayout.LayoutParams) vPreviewView.getLayoutParams();
-            RelativeLayout.LayoutParams tvLP = (RelativeLayout.LayoutParams) textureBox.getLayoutParams();
-            textureLP.setMargins(0,0,0,0);
-            textureLP.bottomMargin = tvLP.bottomMargin+6;
-            textureLP.rightMargin = tvLP.rightMargin+6;
-            vPreviewView.setLayoutParams(textureLP);
-            vPreviewView.setScaleX(1.79f);
+            vPreviewView.setScaleX(2.5f);
+//            RelativeLayout.LayoutParams textureLP = (RelativeLayout.LayoutParams) vPreviewView.getLayoutParams();
+//            RelativeLayout.LayoutParams tvLP = (RelativeLayout.LayoutParams) textureBox.getLayoutParams();
+//            textureLP.setMargins(0,0,0,0);
+//            textureLP.bottomMargin = tvLP.bottomMargin+6;
+//            textureLP.rightMargin = tvLP.rightMargin+6;
+//            vPreviewView.setLayoutParams(textureLP);
+//            vPreviewView.setScaleX(1.79f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -210,6 +210,7 @@ public class MainActivity extends Activity {
 //                vBtnEvent.setImageResource(R.mipmap.event_ready);
             }
         }, DELAY_AUTO_RECORDING);
+        lNewsLine = (LinearLayout) findViewById(R.id.newsLine);
     }
 
     final Handler startHandler = new Handler() {
@@ -229,25 +230,26 @@ public class MainActivity extends Activity {
 //        }
 //    };
 
-    static float save_focus = 0f;    // 0: infinite 10: nearest
+    static float save_focus = -1f;    // 0: infinite 10: nearest
     static void focusChange(int speed) {
 //        utils.logBoth("nearSwitch","switched to NEAR");
         float focus;
         if (speed < 5)
-            focus = 9.7f;
-        else if (speed < 10)
             focus = 9f;
+        else if (speed < 10)
+            focus = 8.5f;
         else if (speed < 20)
             focus = 7f;
         else if (speed < 30)
             focus = 6f;
-        else if (speed < 40)
-            focus = 5f;
+//        else if (speed < 40)
+//            focus = 5f;
         else
             focus = 1f;
         if (focus != save_focus) {
             if (focus == 1f) {
-                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
+                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+                mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f);
             } else {
                 mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
                 mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
@@ -301,26 +303,32 @@ public class MainActivity extends Activity {
 //        };
 //        cameraZoomIn.schedule(cameraTask, 100, 100);
 
-        gpsTracker.askLocation();
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT ;
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME));
         utils.readyPackageFolder(thisEventJpgPath);
 
-        SnapShotSave snapShotSave = new SnapShotSave();
-        snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 1);
         new Timer().schedule(new TimerTask() {
             public void run() {
-                SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
+                SnapShotSave snapShotSave1 = new SnapShotSave();
+                snapShotSave1.startSave(thisEventJpgPath, snapMapIdx, 1);
             }
-        }, INTERVAL_EVENT * 7 / 10);
+        }, 10);
+
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                SnapShotSave snapShotSave2 = new SnapShotSave();
+                snapShotSave2.startSave(thisEventJpgPath, snapMapIdx, 2);
+            }
+        }, INTERVAL_EVENT * 8 / 10);
+
+        gpsTracker.askLocation();
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventJpgPath);
             }
-        }, INTERVAL_EVENT * 130 / 100);
+        }, INTERVAL_EVENT * 120 / 100);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
