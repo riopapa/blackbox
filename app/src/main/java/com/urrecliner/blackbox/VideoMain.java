@@ -78,7 +78,7 @@ public class VideoMain {
             surface_Preview = vPreviewView.getSurfaceTexture();
             surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         } catch (Exception e) {
-            utils.logE(logID, "Prepare Error preView AA ///", e);
+            utils.logE(logID, "preView AA ///", e);
         }
 
         if (preparePrevSurface()) return;
@@ -109,7 +109,7 @@ public class VideoMain {
         try {
             previewSurface = new Surface(surface_Preview);
         } catch (Exception e) {
-            utils.logE(logID, "Prepare surface_Preview Error BB ///", e);
+            utils.logE(logID, "Preview Error BB ///", e);
         }
         try {
             mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
@@ -121,7 +121,7 @@ public class VideoMain {
         }
 
         if (previewSurface == null) {
-            utils.logBoth(logID, "previewSurface is null ====");
+            utils.logBoth(logID, "previewSurface is null");
             return true;
         }
         return false;
@@ -168,8 +168,8 @@ public class VideoMain {
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);    // 2. setVideoSource
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);   // 3. setOutputFormat
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);  // 4. setAudioEncoder
-        mediaRecorder.setVideoEncodingBitRate(VIDEO_ENCODING_RATE); // 1000000
         mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
+        mediaRecorder.setVideoEncodingBitRate(VIDEO_ENCODING_RATE);
         mediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mediaRecorder.setOutputFile(getNextFileName(0).toString());

@@ -137,7 +137,7 @@
         android:layout_marginEnd="8dp"
         android:gravity="end"
         android:text="@string/underscore"
-        android:textColor="@color/colorText"
+        android:textColor="@color/speedColor"
         android:textSize="64sp" />
 
     <TextView
@@ -210,33 +210,21 @@
 
     <!--  N E W S  -->
 
-    <ImageView
-        android:id="@+id/news_mark"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_below="@id/textLogInfo"
-        android:layout_marginTop="0dp"
-        android:src="@mipmap/mark"
-        android:layout_alignStart="@id/newsLine"
-        android:layout_alignEnd="@id/newsLine"
-        />
-
     <LinearLayout
         android:id="@+id/newsLine"
         android:layout_width="275dp"
         android:layout_height="70dp"
         android:gravity="center"
-        android:visibility="invisible"
-        android:layout_below="@id/news_mark"
-        android:layout_marginTop="0dp"
+        android:layout_below="@id/news_mark1"
+        android:layout_marginTop="-12dp"
         android:orientation="horizontal"
         android:layout_alignStart="@id/textLogInfo"
-        android:layout_marginStart="30dp">
+        android:layout_marginStart="0dp">
         <ImageView
             android:id="@+id/news_0"
             android:layout_width="55dp"
             android:layout_height="match_parent"
-            android:src="@mipmap/yellow_e"/>
+            android:src="@mipmap/yellow_ne"/>
         <ImageView
             android:id="@+id/news_1"
             android:layout_width="55dp"
@@ -246,7 +234,7 @@
             android:id="@+id/news_2"
             android:layout_width="55dp"
             android:layout_height="match_parent"
-            android:src="@mipmap/green_ne"/>
+            android:src="@mipmap/green_e"/>
         <ImageView
             android:id="@+id/news_3"
             android:layout_width="55dp"
@@ -258,6 +246,29 @@
             android:layout_height="match_parent"
             android:src="@mipmap/yellow_se"/>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/news_mark1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/textLogInfo"
+        android:layout_marginTop="0dp"
+        android:src="@mipmap/mark"
+        android:layout_alignStart="@id/newsLine"
+        android:layout_alignEnd="@id/newsLine"
+        />
+
+    <ImageView
+        android:id="@+id/news_mark2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/newsLine"
+        android:rotation="180"
+        android:src="@mipmap/mark"
+        android:layout_alignStart="@id/newsLine"
+        android:layout_alignEnd="@id/newsLine"
+        android:layout_marginTop="-12dp"
+        />
 
     <!--Preview  -->
     <FrameLayout

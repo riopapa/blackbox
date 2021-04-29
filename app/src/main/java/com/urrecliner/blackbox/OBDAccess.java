@@ -3,6 +3,7 @@ package com.urrecliner.blackbox;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
 
@@ -180,17 +181,19 @@ class OBDAccess {
     private void loopAskOBDSpeed() {
 //        utils.logBoth(logID, "start get OBD Speed");
         MainActivity.focusChange(speedInt);
-
-//        new Timer().schedule(new TimerTask() {  // autoStart
-//            public void run() {
-//                try {
-//                    bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
-//                    bSocket.connect();
-//                } catch (Exception e) {
-//                    utils.logBoth("loopAskOBDSpeed connect Exception", e.toString());
-//                }
-//            }
-//        }, 1000);
+        String model = Build.MODEL;
+        switch (model) {
+            case "SM-G950N":
+                try {
+                    bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
+                    bSocket.connect();
+                } catch (Exception e) {
+                    utils.logBoth("loopAskOBDSpeed connect Exception", e.toString());
+                }
+                break;
+            case "SM-G965N":
+                break;
+        }
         speedCommand = new SpeedCommand();
         obdTimer = new Timer();
         final TimerTask obdTask = new TimerTask() {

@@ -135,11 +135,6 @@ public class MainActivity extends Activity {
             }
         });
 
-
-//        Utils.ScreenInfo screenInfo = utils.getScreenSize(mActivity);
-//        utils.logOnly(logID,"Screen Type is "+screenInfo.screenType);
-//        utils.logOnly(logID,"Screen Inch is "+screenInfo.screenInch);
-
         vBtnEvent = findViewById(R.id.btnEvent);
         vBtnEvent.setOnClickListener(v -> startEventSaving());
 
@@ -185,14 +180,7 @@ public class MainActivity extends Activity {
             float centerY = viewRect.centerY();
             matrix.postRotate(-90, centerX, centerY);
             vPreviewView.setTransform(matrix);
-            vPreviewView.setScaleX(2.5f);
-//            RelativeLayout.LayoutParams textureLP = (RelativeLayout.LayoutParams) vPreviewView.getLayoutParams();
-//            RelativeLayout.LayoutParams tvLP = (RelativeLayout.LayoutParams) textureBox.getLayoutParams();
-//            textureLP.setMargins(0,0,0,0);
-//            textureLP.bottomMargin = tvLP.bottomMargin+6;
-//            textureLP.rightMargin = tvLP.rightMargin+6;
-//            vPreviewView.setLayoutParams(textureLP);
-//            vPreviewView.setScaleX(1.79f);
+            vPreviewView.setScaleX(1.9f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -225,10 +213,6 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) { eventRecording();
         }
     };
-//    static final Handler switchHandler = new Handler() {
-//        public void handleMessage(Message msg) { offNearSwitch();
-//        }
-//    };
 
     static float save_focus = -1f;    // 0: infinite 10: nearest
     static void focusChange(int speed) {
@@ -239,20 +223,20 @@ public class MainActivity extends Activity {
         else if (speed < 10)
             focus = 8.5f;
         else if (speed < 20)
-            focus = 7f;
-        else if (speed < 30)
-            focus = 6f;
+            focus = 8f;
+//        else if (speed < 30)
+//            focus = 6f;
 //        else if (speed < 40)
 //            focus = 5f;
         else
             focus = 1f;
         if (focus != save_focus) {
             if (focus == 1f) {
-                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
                 mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f);
+                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
             } else {
-                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
                 mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
+                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
             }
             save_focus = focus;
         }
@@ -360,7 +344,7 @@ public class MainActivity extends Activity {
         vTextBattery = findViewById(R.id.textBattery);
         vImgBattery = findViewById(R.id.imgBattery);
         vBtnRecord = findViewById(R.id.btnRecord);
-        vTextSpeed.setText("_");
+        vTextSpeed.setText("__");
     }
 
     private void setBlackBoxFolders() {

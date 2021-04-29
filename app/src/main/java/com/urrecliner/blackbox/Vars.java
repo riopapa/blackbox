@@ -82,8 +82,8 @@ public class Vars {
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
     static long VIDEO_ONE_WORK_FILE_SIZE = 6000*1000;
-    static int VIDEO_ENCODING_RATE = 9000*1000;
-    static int VIDEO_FRAME_RATE = 32;
+    static int VIDEO_ENCODING_RATE = 10*1000*1000;
+    static int VIDEO_FRAME_RATE = 60;
 
     static int CountEvent;
     static int activeEventCount = 0;
