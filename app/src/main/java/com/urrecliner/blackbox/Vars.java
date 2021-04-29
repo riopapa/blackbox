@@ -3,6 +3,7 @@ package com.urrecliner.blackbox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
@@ -117,4 +118,6 @@ public class Vars {
     static CaptureRequest.Builder mCaptureRequestPhotoBuilder;
     static CameraCaptureSession mCaptureSession;
     static Surface recordSurface = null;
+    static Rect cropArea;
+
 }

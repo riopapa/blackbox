@@ -7,6 +7,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
+import static com.urrecliner.blackbox.Vars.cropArea;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
@@ -22,9 +23,6 @@ public class PhotoCapture {
     static void snapshotCamera() {
         mCaptureState = STATE_WAIT_LOCK;
         try {
-//            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CaptureRequest.CONTROL_AF_TRIGGER_START);
-//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // 0.0 infinite ~ 10f nearest
-
             mCaptureSession.capture(mCaptureRequestVideoBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
         } catch (CameraAccessException e) {
             StartStopExit.reRunApplication("CameraAccessException",e);
@@ -40,21 +38,15 @@ public class PhotoCapture {
                             break;
                         case STATE_WAIT_LOCK:
                             mCaptureState = STATE_PREVIEW;
-
-//                            Integer afState = captureResult.get(CaptureResult.CONTROL_AF_STATE);
-//                            if(afState == CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED ||
-//                                    afState == CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED) {
-                                startStillCaptureRequest();
-//                            }
+                            startStillCaptureRequest();
                             break;
                     }
                 }
 
                 @Override
-                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
+                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request,
+                                               TotalCaptureResult result)                 {
                     super.onCaptureCompleted(session, request, result);
-//                    float focusDistance = result.get(CaptureResult.LENS_FOCUS_DISTANCE);
-//                    Log.w("focus",""+ focusDistance);
                     process(result);
                 }
             };
@@ -64,8 +56,7 @@ public class PhotoCapture {
             mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             mCaptureRequestVideoBuilder.addTarget(mImageReader.getSurface());
             mCaptureRequestVideoBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
-//            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_FAR); // 0.0 infinite ~ 10f nearest
+            mCaptureRequestVideoBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea);
         } catch (CameraAccessException e) {
             utils.logE("cameraUtils", "CameraAccessException", e);
         }

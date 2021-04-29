@@ -1,8 +1,10 @@
 package com.urrecliner.blackbox;
 
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
@@ -19,11 +21,13 @@ import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.urrecliner.blackbox.Vars.cameraCharacteristics;
+import static com.urrecliner.blackbox.Vars.cropArea;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mImageReader;
+import static com.urrecliner.blackbox.Vars.mImageSize;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
@@ -37,7 +41,7 @@ import static com.urrecliner.blackbox.Vars.vPreviewView;
 public class VideoMain {
 
     private final String logID = "videoMain";
-    final float zoomFactor = 1.23f;
+    final float zoomFactor = 1.20f;
 
     private boolean isPrepared = false;
     private SurfaceTexture surface_Preview = null;
@@ -149,6 +153,7 @@ public class VideoMain {
                 } catch (CameraAccessException e) {
                     utils.logBoth(logID, "setRepeatingRequest Error");
                 }
+                cropArea = calcPhotoZoom (zoomFactor);
             }
 
             @Override
@@ -157,6 +162,20 @@ public class VideoMain {
             }
         };
     }
+
+    private Rect calcPhotoZoom(float zoom) {
+        int centerX = mImageSize.getWidth() / 2;
+        int centerY = mImageSize.getHeight() / 2;
+        int deltaX  = (int)((0.5f * mImageSize.getWidth()) / zoom);
+        int deltaY  = (int)((0.5f * mImageSize.getHeight()) / zoom);
+        Rect cropArea = new Rect();
+        cropArea.set(centerX - deltaX,
+                centerY - deltaY,
+                centerX + deltaX,
+                centerY + deltaY);
+        return cropArea;
+    }
+
 
     private void setupMediaRecorder() {
 
