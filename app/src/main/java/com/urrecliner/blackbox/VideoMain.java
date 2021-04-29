@@ -1,64 +1,38 @@
 package com.urrecliner.blackbox;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.Image;
-import android.media.ImageReader;
 import android.media.MediaRecorder;
-import android.os.Build;
-
-import androidx.core.content.ContextCompat;
-
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.util.Size;
 import android.view.Surface;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
-import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.urrecliner.blackbox.Vars.cameraCharacteristics;
-import static com.urrecliner.blackbox.Vars.cameraManager;
 import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
-import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mImageReader;
-import static com.urrecliner.blackbox.Vars.mImageSize;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
-import static com.urrecliner.blackbox.Vars.previewSurface;
 import static com.urrecliner.blackbox.Vars.recordSurface;
-import static com.urrecliner.blackbox.Vars.snapBytes;
-import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
-import static com.urrecliner.blackbox.Vars.zoom;
 
 public class VideoMain {
 
@@ -67,6 +41,8 @@ public class VideoMain {
 
     private boolean isPrepared = false;
     private SurfaceTexture surface_Preview = null;
+    private Surface previewSurface = null;
+    private Surface photoSurface = null;
 
     void prepareRecord() {
 
@@ -83,9 +59,32 @@ public class VideoMain {
 
         if (preparePrevSurface()) return;
         if (prepareVideoSurface()) return;
+        if (preparePhotoSurface()) return;
 
         buildCameraSession();   // zoomFactor
         isPrepared = true;
+    }
+
+    private boolean preparePrevSurface() {
+        try {
+            previewSurface = new Surface(surface_Preview);
+        } catch (Exception e) {
+            utils.logE(logID, "Preview Error BB ///", e);
+        }
+        try {
+            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
+            mCaptureRequestVideoBuilder.addTarget(previewSurface);
+            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+            mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
+        } catch (Exception e) {
+            utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
+        }
+
+        if (previewSurface == null) {
+            utils.logBoth(logID, "previewSurface is null");
+            return true;
+        }
+        return false;
     }
 
     private boolean prepareVideoSurface() {
@@ -105,23 +104,23 @@ public class VideoMain {
         return false;
     }
 
-    private boolean preparePrevSurface() {
+    private boolean preparePhotoSurface() {
         try {
-            previewSurface = new Surface(surface_Preview);
+            photoSurface = mImageReader.getSurface();
         } catch (Exception e) {
             utils.logE(logID, "Preview Error BB ///", e);
         }
         try {
-            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-            mCaptureRequestVideoBuilder.addTarget(previewSurface);
-            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-            mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
+//            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
+            mCaptureRequestVideoBuilder.addTarget(photoSurface);
+//            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+//            mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
         } catch (Exception e) {
-            utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
+            utils.logE(logID, "Prepare mCaptureRequestBuilder photo CC ///", e);
         }
 
         if (previewSurface == null) {
-            utils.logBoth(logID, "previewSurface is null");
+            utils.logBoth(logID, "photoSurface is null");
             return true;
         }
         return false;
@@ -129,7 +128,7 @@ public class VideoMain {
 
     void buildCameraSession() {
         try {
-            mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface, mImageReader.getSurface()),
+            mCameraDevice.createCaptureSession(Arrays.asList(recordSurface, photoSurface, previewSurface),
                     cameraStateCallBack(), null);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error BB ", e);

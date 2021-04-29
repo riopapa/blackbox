@@ -22,7 +22,7 @@ public class PhotoCapture {
     static void snapshotCamera() {
         mCaptureState = STATE_WAIT_LOCK;
         try {
-//            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CaptureRequest.CONTROL_AF_TRIGGER_START);
+//            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CaptureRequest.CONTROL_AF_TRIGGER_START);
 //            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, LENS_FOCUS_NEAR); // 0.0 infinite ~ 10f nearest
 
             mCaptureSession.capture(mCaptureRequestVideoBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
@@ -40,6 +40,7 @@ public class PhotoCapture {
                             break;
                         case STATE_WAIT_LOCK:
                             mCaptureState = STATE_PREVIEW;
+
 //                            Integer afState = captureResult.get(CaptureResult.CONTROL_AF_STATE);
 //                            if(afState == CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED ||
 //                                    afState == CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED) {
@@ -60,7 +61,7 @@ public class PhotoCapture {
 
     private static void startStillCaptureRequest() {
         try {
-            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
+            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             mCaptureRequestVideoBuilder.addTarget(mImageReader.getSurface());
             mCaptureRequestVideoBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
 //            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);

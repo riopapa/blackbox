@@ -82,7 +82,7 @@ public class Vars {
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
     static long VIDEO_ONE_WORK_FILE_SIZE = 6000*1000;
-    static int VIDEO_ENCODING_RATE = 10*1000*1000;
+    static int VIDEO_ENCODING_RATE = 50*1000*1000;
     static int VIDEO_FRAME_RATE = 60;
 
     static int CountEvent;
@@ -116,8 +116,5 @@ public class Vars {
     static CaptureRequest.Builder mCaptureRequestVideoBuilder;
     static CaptureRequest.Builder mCaptureRequestPhotoBuilder;
     static CameraCaptureSession mCaptureSession;
-    static Surface previewSurface = null;
     static Surface recordSurface = null;
-
-    static Zoom zoom;
 }
