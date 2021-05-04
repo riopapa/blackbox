@@ -4,7 +4,6 @@ import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
@@ -20,11 +19,12 @@ import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
-import static com.urrecliner.blackbox.Vars.cameraCharacteristics;
+import static com.urrecliner.blackbox.Vars.cropArea2;
+import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.cropArea;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
+import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mImageSize;
@@ -33,6 +33,7 @@ import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
+import static com.urrecliner.blackbox.Vars.photoSurface;
 import static com.urrecliner.blackbox.Vars.recordSurface;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
@@ -46,7 +47,6 @@ public class VideoMain {
     private boolean isPrepared = false;
     private SurfaceTexture surface_Preview = null;
     private Surface previewSurface = null;
-    private Surface photoSurface = null;
 
     void prepareRecord() {
 
@@ -76,10 +76,10 @@ public class VideoMain {
             utils.logE(logID, "Preview Error BB ///", e);
         }
         try {
-            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
-            mCaptureRequestVideoBuilder.addTarget(previewSurface);
-            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-            mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
+            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+            mCaptureRequestBuilder.addTarget(previewSurface);
+            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
         } catch (Exception e) {
             utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
         }
@@ -94,10 +94,10 @@ public class VideoMain {
     private boolean prepareVideoSurface() {
         try {
             recordSurface = mediaRecorder.getSurface();
-            mCaptureRequestVideoBuilder.addTarget(recordSurface);
-            mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
-            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
+            mCaptureRequestBuilder.addTarget(recordSurface);
+//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
+            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+//            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error recordSurface ///", e);
         }
@@ -116,7 +116,7 @@ public class VideoMain {
         }
         try {
 //            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
-            mCaptureRequestVideoBuilder.addTarget(photoSurface);
+            mCaptureRequestBuilder.addTarget(photoSurface);
 //            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
 //            mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
         } catch (Exception e) {
@@ -144,16 +144,17 @@ public class VideoMain {
             @Override
             public void onConfigured(CameraCaptureSession session) {
                 mCaptureSession = session;
-                new Zoom(cameraCharacteristics, mCaptureRequestVideoBuilder, zoomFactor);
+                new Zoom(mCameraCharacteristics, mCaptureRequestBuilder, zoomFactor);
 //                utils.logOnly("zoom set","setZoom to "+zoomFactor);
                 try {
                     mCaptureSession.setRepeatingRequest(
-                            mCaptureRequestVideoBuilder.build(), null, null
+                            mCaptureRequestBuilder.build(), null, null
                     );
                 } catch (CameraAccessException e) {
                     utils.logBoth(logID, "setRepeatingRequest Error");
                 }
                 cropArea = calcPhotoZoom (zoomFactor);
+                cropArea2 = calcPhotoZoom (zoomFactor * 1.2f);
             }
 
             @Override
@@ -175,7 +176,6 @@ public class VideoMain {
                 centerY + deltaY);
         return cropArea;
     }
-
 
     private void setupMediaRecorder() {
 

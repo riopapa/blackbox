@@ -47,7 +47,7 @@ class EventMerge {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventPath, snapMapIdx,3);
             }
-        }, 2000);
+        }, 1000);
         try {
             new MergeFileTask().execute("" + startTime);
         } catch (Exception e) {

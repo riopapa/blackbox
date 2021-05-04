@@ -1,5 +1,6 @@
 package com.urrecliner.blackbox;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
@@ -18,9 +19,10 @@ import androidx.core.content.ContextCompat;
 
 import java.nio.ByteBuffer;
 
+import static android.content.Context.ACTIVITY_SERVICE;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.cameraCharacteristics;
-import static com.urrecliner.blackbox.Vars.cameraManager;
+import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
+import static com.urrecliner.blackbox.Vars.mCameraManager;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -41,19 +43,19 @@ public class CameraSub {
 
     String mCameraId = null;
     void setupCamera() {
-        cameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
+        mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
-            assert cameraManager != null;
-            for(String cameraId : cameraManager.getCameraIdList()){
+            assert mCameraManager != null;
+            for(String cameraId : mCameraManager.getCameraIdList()){
 //                utils.logOnly(logID, "cameraID="+cameraId);
-                cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
-                if(cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
+                mCameraCharacteristics = mCameraManager.getCameraCharacteristics(cameraId);
+                if(mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
                         CameraCharacteristics.LENS_FACING_BACK) {
                     mCameraId = cameraId;
                 }
                 else
                     continue;
-                StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 setCameraSize(map);
 
             }
@@ -168,12 +170,23 @@ public class CameraSub {
         }
     };
 
+    Image image;
+    ByteBuffer buffer;
+    byte[] bytes;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
-        Image image = reader.acquireLatestImage();
-        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-
-        byte[] bytes = new byte[buffer.capacity()];
-        buffer.get(bytes);
+//        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+//        ActivityManager activityManager = (ActivityManager) mActivity.getSystemService(ACTIVITY_SERVICE);
+//        activityManager.getMemoryInfo(mi);
+//        double availableKs = mi.availMem / 0x100L;
+//        utils.logOnly("mem "+snapMapIdx,"mem ="+availableKs);
+        try {
+            image = reader.acquireLatestImage();
+            buffer = image.getPlanes()[0].getBuffer();
+            bytes = new byte[buffer.capacity()];
+            buffer.get(bytes);
+        } catch (Exception e) {
+            utils.logE("img " + snapMapIdx, "image buffer short " + snapMapIdx, e);
+        }
         if (mIsRecording) {
             snapBytes[snapMapIdx] = bytes;
             snapMapIdx++;

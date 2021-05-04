@@ -82,8 +82,8 @@ public class Vars {
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
-    static long VIDEO_ONE_WORK_FILE_SIZE = 6000*1000;
-    static int VIDEO_ENCODING_RATE = 50*1000*1000;
+    static long VIDEO_ONE_WORK_FILE_SIZE = 8000*1000;
+    static int VIDEO_ENCODING_RATE = 45*1000*1000;
     static int VIDEO_FRAME_RATE = 60;
 
     static int CountEvent;
@@ -98,8 +98,8 @@ public class Vars {
     static int speedInt = 0;
 
     final static long INTERVAL_EVENT = 14 * 1000;
-    final static int SNAP_SHOT_INTERVAL = 155;
-    final static int MAX_IMAGES_SIZE = 110; // (int) (INTERVAL_EVENT * 82 / 100 / SNAP_SHOT_INTERVAL);
+    final static int SNAP_SHOT_INTERVAL = 263;
+    final static int MAX_IMAGES_SIZE = 94;
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
@@ -111,13 +111,14 @@ public class Vars {
     static float azimuth = 0;
     static boolean isCompassShown = false;
 
-    static CameraManager cameraManager;
+    static CameraManager mCameraManager;
     static CameraDevice mCameraDevice = null;
-    static CameraCharacteristics cameraCharacteristics;
-    static CaptureRequest.Builder mCaptureRequestVideoBuilder;
-    static CaptureRequest.Builder mCaptureRequestPhotoBuilder;
+    static CameraCharacteristics mCameraCharacteristics;
+    static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
     static Surface recordSurface = null;
-    static Rect cropArea;
+    static Surface photoSurface = null;
+
+    static Rect cropArea, cropArea2;
 
 }

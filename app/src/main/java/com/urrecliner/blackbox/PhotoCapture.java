@@ -8,11 +8,14 @@ import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
 import static com.urrecliner.blackbox.Vars.cropArea;
+import static com.urrecliner.blackbox.Vars.cropArea2;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
+import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
+import static com.urrecliner.blackbox.Vars.photoSurface;
+import static com.urrecliner.blackbox.Vars.recordSurface;
 import static com.urrecliner.blackbox.Vars.utils;
 
 public class PhotoCapture {
@@ -23,7 +26,7 @@ public class PhotoCapture {
     static void snapshotCamera() {
         mCaptureState = STATE_WAIT_LOCK;
         try {
-            mCaptureSession.capture(mCaptureRequestVideoBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
+            mCaptureSession.capture(mCaptureRequestBuilder.build(), mCameraCaptureCallback, mBackgroundImage);
         } catch (CameraAccessException e) {
             StartStopExit.reRunApplication("CameraAccessException",e);
         }
@@ -51,14 +54,23 @@ public class PhotoCapture {
                 }
             };
 
+//    static int swCount = 0;
     private static void startStillCaptureRequest() {
-        try {
-            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-            mCaptureRequestVideoBuilder.addTarget(mImageReader.getSurface());
-            mCaptureRequestVideoBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
-            mCaptureRequestVideoBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea);
-        } catch (CameraAccessException e) {
-            utils.logE("cameraUtils", "CameraAccessException", e);
-        }
+//        try {
+//            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+//            mCaptureRequestBuilder.addTarget(photoSurface);
+//            mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
+//            swCount++;
+//            if (swCount == 1)
+//                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea2);
+//            else if (swCount == 2)
+//                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea2);
+//            else {
+//                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea);
+//                swCount = 0;
+//            }
+//        } catch (CameraAccessException e) {
+//            utils.logE("cameraUtils", "CameraAccessException", e);
+//        }
     }
 }

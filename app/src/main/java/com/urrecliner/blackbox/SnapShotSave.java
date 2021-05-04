@@ -23,9 +23,9 @@ class SnapShotSave {
     void startSave(File path2Write, int snapPointer, final int phase) {
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         int jpgIdx = 0;
-        maxSize = MAX_IMAGES_SIZE - 20;
+        maxSize = MAX_IMAGES_SIZE - 1;
         if (phase == 2)
-            maxSize = MAX_IMAGES_SIZE - 30;
+            maxSize = MAX_IMAGES_SIZE - 1;
         else if (phase == 3)
             maxSize = 40;
         for (int i = snapPointer; i < MAX_IMAGES_SIZE; i++) {
@@ -48,7 +48,7 @@ class SnapShotSave {
                     File imageFile = new File(path2Write, "CameraShot_" + ("" + (startBias + i)) + ".jpg");
                     bytes2File(imageBytes, imageFile);
                     jpgBytes[i] = null;
-                    SystemClock.sleep(85);  // not to hold all the time
+                    SystemClock.sleep(40);  // not to hold all the time
                 }
             }
             if (phase == 3)

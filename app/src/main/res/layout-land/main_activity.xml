@@ -15,7 +15,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp" >
+        android:layout_marginTop="16dp" >
 
         <ImageButton
             android:id="@+id/btnRecord"
@@ -43,7 +43,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/frameRecord"
         android:layout_marginLeft="4dp"
-        android:layout_marginTop="8dp" >
+        android:layout_marginTop="16dp" >
 
         <ImageView
             android:id="@+id/imgBattery"
@@ -64,29 +64,6 @@
             android:textColor="@color/colorText"
             android:textSize="28sp" />
     </FrameLayout>
-
-    <!--  Event Count  -->
-    <TextView
-        android:id="@+id/textEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/frameBattery"
-        android:text="@string/textEvent"
-        android:textColor="@color/colorText"
-        android:textSize="16dp" />
-    <TextView
-        android:id="@+id/textCountEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_below="@id/textEvent"
-        android:layout_alignEnd="@id/textEvent"
-        android:text="@string/zero"
-        android:textColor="@color/colorText"
-        android:textSize="40sp" />
 
     <!--Date and Time-->
     <TextView
@@ -115,7 +92,7 @@
     <!--Log Info in multi lines-->
     <TextView
         android:id="@+id/textLogInfo"
-        android:layout_width="400dp"
+        android:layout_width="440dp"
         android:layout_height="120dp"
         android:layout_marginStart="8dp"
         android:text="@string/logInfo"
@@ -178,7 +155,7 @@
     <!--Event button & counts -->
 
     <FrameLayout
-        android:id="@+id/frmEvent"
+        android:id="@+id/frameEvent"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
@@ -207,6 +184,28 @@
 
     </FrameLayout>
 
+    <!--  Event Count  -->
+    <TextView
+        android:id="@+id/textEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_alignTop="@id/frameEvent"
+        android:layout_toRightOf="@id/frameEvent"
+        android:text="@string/textEvent"
+        android:textColor="@color/colorText"
+        android:textSize="16dp" />
+    <TextView
+        android:id="@+id/textCountEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textEvent"
+        android:layout_alignEnd="@id/textEvent"
+        android:layout_alignParentBottom="true"
+        android:text="@string/zero"
+        android:textColor="@color/colorText"
+        android:textSize="40sp" />
+
 
     <!--  N E W S  -->
 
@@ -215,6 +214,7 @@
         android:layout_width="275dp"
         android:layout_height="70dp"
         android:gravity="center"
+        android:visibility="invisible"
         android:layout_below="@id/news_mark1"
         android:layout_marginTop="-12dp"
         android:orientation="horizontal"

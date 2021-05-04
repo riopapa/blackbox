@@ -44,7 +44,7 @@ import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestVideoBuilder;
+import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
@@ -232,11 +232,11 @@ public class MainActivity extends Activity {
             focus = 1f;
         if (focus != save_focus) {
             if (focus == 1f) {
-                mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f);
-                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f);
+                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
             } else {
-                mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
-                mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
+                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
+                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
             }
             save_focus = focus;
         }
@@ -303,7 +303,7 @@ public class MainActivity extends Activity {
                 SnapShotSave snapShotSave2 = new SnapShotSave();
                 snapShotSave2.startSave(thisEventJpgPath, snapMapIdx, 2);
             }
-        }, INTERVAL_EVENT * 8 / 10);
+        }, INTERVAL_EVENT * 5 / 10);
 
         gpsTracker.askLocation();
 
