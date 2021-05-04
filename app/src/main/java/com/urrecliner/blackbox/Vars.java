@@ -119,6 +119,6 @@ public class Vars {
     static Surface recordSurface = null;
     static Surface photoSurface = null;
 
-    static Rect cropArea, cropArea2;
+    static Rect cropArea;
 
 }

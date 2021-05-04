@@ -19,7 +19,6 @@ import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
-import static com.urrecliner.blackbox.Vars.cropArea2;
 import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.cropArea;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -154,7 +153,6 @@ public class VideoMain {
                     utils.logBoth(logID, "setRepeatingRequest Error");
                 }
                 cropArea = calcPhotoZoom (zoomFactor);
-                cropArea2 = calcPhotoZoom (zoomFactor * 1.2f);
             }
 
             @Override

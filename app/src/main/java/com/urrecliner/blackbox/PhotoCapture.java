@@ -2,21 +2,13 @@ package com.urrecliner.blackbox;
 
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
-import static com.urrecliner.blackbox.Vars.cropArea;
-import static com.urrecliner.blackbox.Vars.cropArea2;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
-import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
-import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
-import static com.urrecliner.blackbox.Vars.photoSurface;
-import static com.urrecliner.blackbox.Vars.recordSurface;
-import static com.urrecliner.blackbox.Vars.utils;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
