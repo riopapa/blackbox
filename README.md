@@ -2,25 +2,24 @@
 **blackbox** is the android application to take video records while driving
 
 - recording normal videos into today folder with start/stop button and auto start function
-- when event button touched, make separate video with multiple camera snaps
-- create separate text file containing GPS coordinates
+- when event button touched, make separate video with multiple camera snapshots, event video file contains GPS info in file name
 - provides small monitor screen
-- show car speed, and direction with rotating compass image
-- old normal video recording automatically will be removed if remaining space is less then 2Gb
+- show car speed, and direction
+- remove old normal video recording automatically if remaining space is small
 - provides big home widget for easy launch
 
 <H1>Screenshots and How to operate</H1>
 
 <H3>Main Screen</H3>
 
-- Display GPS icon if GPS is active
 - Display event record counts
 - Display current date/time
 - Display preview screen
 - Display Compass
-- Display speed in Kilometer, accumulated today drive Kilometers
+- Display current speed in Kilometer
 - Start/Stop recording button
-- Emergency Recoding button (without audio)
+- Emergency Recoding button (with audio)
+- Pause button
 - Exit button
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -43,6 +42,11 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 ```
 
 <H1>Comments</H1>
@@ -60,13 +64,16 @@
 - FragmentCompat.OnRequestPermissionsResultCallback
 camera.open, release power cable connection status
 - MediaRecorder : recording, MEDIA_RECORDER_INFO_NEXT_OUTPUT_FILE_STARTED
+- CameraDevice : supports MediaRecorder, Preview Screen, Screen shot simultaniously
+- OBDII : access car bluetooth device
 
 <H3>Updates / Changes</H3>
 
+- 2021.05.05 : androidx applied, capture imageshot
 - 2019.02.09 : README.md fully revised
 
 <H3>Issues not fixed yet</H3>
 
-- Unexpected shut down sometime, sorry :-p
+- Unexpected shut down sometime (untracable), sorry :-p
 
 <H3>Thanks all persons in GitHub for good examples.</H3>
