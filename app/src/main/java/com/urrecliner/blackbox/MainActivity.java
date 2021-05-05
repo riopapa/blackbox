@@ -303,7 +303,14 @@ public class MainActivity extends Activity {
                 SnapShotSave snapShotSave2 = new SnapShotSave();
                 snapShotSave2.startSave(thisEventJpgPath, snapMapIdx, 2);
             }
-        }, INTERVAL_EVENT * 5 / 10);
+        }, INTERVAL_EVENT * 7 / 10);
+
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                SnapShotSave snapShotSave3 = new SnapShotSave();
+                snapShotSave3.startSave(thisEventJpgPath, snapMapIdx,3);
+            }
+        }, INTERVAL_EVENT * 14 / 10);
 
         gpsTracker.askLocation();
 
@@ -312,7 +319,7 @@ public class MainActivity extends Activity {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime, thisEventJpgPath);
             }
-        }, INTERVAL_EVENT * 120 / 100);
+        }, INTERVAL_EVENT * 12 / 10);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

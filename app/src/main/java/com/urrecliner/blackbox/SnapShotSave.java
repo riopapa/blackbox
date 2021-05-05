@@ -21,13 +21,13 @@ class SnapShotSave {
     int maxSize;
 
     void startSave(File path2Write, int snapPointer, final int phase) {
-        jpgBytes = new byte[MAX_IMAGES_SIZE][];
         int jpgIdx = 0;
-        maxSize = MAX_IMAGES_SIZE - 1;
+        maxSize = MAX_IMAGES_SIZE - 3;
         if (phase == 2)
-            maxSize = MAX_IMAGES_SIZE - 1;
+            maxSize = MAX_IMAGES_SIZE - 3;
         else if (phase == 3)
-            maxSize = 40;
+            maxSize = MAX_IMAGES_SIZE - 16;
+        jpgBytes = new byte[MAX_IMAGES_SIZE][];
         for (int i = snapPointer; i < MAX_IMAGES_SIZE; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
             snapBytes[i] = null;
@@ -51,31 +51,9 @@ class SnapShotSave {
                     SystemClock.sleep(40);  // not to hold all the time
                 }
             }
-            if (phase == 3)
-                sayEventCompleted(path2Write);
         });
         th.start();
     }
-
-    private void sayEventCompleted(File thisEventPath) {
-        utils.beepOnce(3, 1f);
-        mActivity.runOnUiThread(() -> {
-            String countStr = "" + ++CountEvent;
-            vTextCountEvent.setText(countStr);
-            activeEventCount--;
-            String text = (activeEventCount == 0) ? "" : " "+activeEventCount+" ";
-            vTextActiveCount.setText(text);
-//            if (activeEventCount == 0)
-//                try {
-//                    zoom.setZoom(mCaptureRequestBuilder, 1.3f);
-//                    mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);
-//                } catch (Exception e) { e.printStackTrace();}
-        });
-
-        String logID = "SnapShot";
-        utils.logBoth(logID, thisEventPath.getName());
-    }
-
 
     void bytes2File(byte[] bytes, File file) {
 

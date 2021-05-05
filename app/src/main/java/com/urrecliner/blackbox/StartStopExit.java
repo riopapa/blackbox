@@ -45,7 +45,7 @@ class StartStopExit {
             reRunApplication("Start Error", e);
         }
         try {
-            startCamera();
+//            startCamera(); ???
             startNormal();
         } catch (Exception e) {
             reRunApplication("Start Camera, Normal Error", e);
@@ -68,12 +68,6 @@ class StartStopExit {
     private Timer timerSnapCamera = new Timer();
     private void startCamera() {
         snapMapIdx = 0;
-//        timerSnapCamera = new Timer();
-//        try {
-//            zoom.setZoom(mCaptureRequestBuilder, 1.2f);
-//            mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);
-//        } catch (Exception e) { e.printStackTrace();}
-
         final TimerTask cameraTask = new TimerTask() {
             @Override
             public void run() {
@@ -83,7 +77,7 @@ class StartStopExit {
                     timerSnapCamera.cancel();
             }
         };
-        timerSnapCamera.schedule(cameraTask, 100, SNAP_SHOT_INTERVAL);
+        timerSnapCamera.schedule(cameraTask, SNAP_SHOT_INTERVAL, SNAP_SHOT_INTERVAL);
     }
 
     private Timer normalTimer;

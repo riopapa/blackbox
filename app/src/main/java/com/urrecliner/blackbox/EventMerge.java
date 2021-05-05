@@ -24,14 +24,19 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
+import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
+import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vTextActiveCount;
+import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 
 class EventMerge {
 
@@ -42,12 +47,6 @@ class EventMerge {
         if (mExitApplication)
             return;
         thisEventPath = eventPath;
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventPath, snapMapIdx,3);
-            }
-        }, 1000);
         try {
             new MergeFileTask().execute("" + startTime);
         } catch (Exception e) {
@@ -155,6 +154,17 @@ class EventMerge {
 
         @Override
         protected void onPostExecute(String doI) {
+            utils.beepOnce(3, 1f);
+            mActivity.runOnUiThread(() -> {
+                String countStr = "" + ++CountEvent;
+                vTextCountEvent.setText(countStr);
+                activeEventCount--;
+                String text = (activeEventCount == 0) ? "" : " "+activeEventCount+" ";
+                vTextActiveCount.setText(text);
+            });
+
+            String logID = "SnapShot";
+            utils.logBoth(logID, thisEventPath.getName());
         }
     }
 }

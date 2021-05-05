@@ -98,8 +98,8 @@ public class Vars {
     static int speedInt = 0;
 
     final static long INTERVAL_EVENT = 14 * 1000;
-    final static int SNAP_SHOT_INTERVAL = 263;
-    final static int MAX_IMAGES_SIZE = 94;
+    final static long SNAP_SHOT_INTERVAL = 120;
+    final static int MAX_IMAGES_SIZE = 122;
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;

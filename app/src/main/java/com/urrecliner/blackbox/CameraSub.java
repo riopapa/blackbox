@@ -1,6 +1,5 @@
 package com.urrecliner.blackbox;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
@@ -19,8 +18,8 @@ import androidx.core.content.ContextCompat;
 
 import java.nio.ByteBuffer;
 
-import static android.content.Context.ACTIVITY_SERVICE;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.mCameraManager;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -173,12 +172,15 @@ public class CameraSub {
     Image image;
     ByteBuffer buffer;
     byte[] bytes;
+    long shotTime = 0;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
-//        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
-//        ActivityManager activityManager = (ActivityManager) mActivity.getSystemService(ACTIVITY_SERVICE);
-//        activityManager.getMemoryInfo(mi);
-//        double availableKs = mi.availMem / 0x100L;
-//        utils.logOnly("mem "+snapMapIdx,"mem ="+availableKs);
+        long  nowTime = System.currentTimeMillis();
+        if ((nowTime- shotTime) < SNAP_SHOT_INTERVAL)
+            return;
+        if (shotTime == 0)
+            shotTime = nowTime;
+        else
+            shotTime += SNAP_SHOT_INTERVAL;
         try {
             image = reader.acquireLatestImage();
             buffer = image.getPlanes()[0].getBuffer();
