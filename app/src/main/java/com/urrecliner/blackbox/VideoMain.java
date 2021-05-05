@@ -16,10 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
-import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
-import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
-import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
+import static com.urrecliner.blackbox.Vars.cropBigger;
 import static com.urrecliner.blackbox.Vars.cropArea;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -41,8 +38,6 @@ import static com.urrecliner.blackbox.Vars.vPreviewView;
 public class VideoMain {
 
     private final String logID = "videoMain";
-    final float zoomFactor = 1.20f;
-
     private boolean isPrepared = false;
     private SurfaceTexture surface_Preview = null;
     private Surface previewSurface = null;
@@ -65,7 +60,7 @@ public class VideoMain {
         if (preparePhotoSurface()) return;
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
 
-        buildCameraSession();   // zoomFactor
+        buildCameraSession();
         isPrepared = true;
     }
 
@@ -138,21 +133,21 @@ public class VideoMain {
         }
     }
 
+    final float CROP_ZOOM = 1.15f, CROP_ZOOM_BIGGER = 1.5f;
     private CameraCaptureSession.StateCallback cameraStateCallBack() {
         return new CameraCaptureSession.StateCallback() {
             @Override
             public void onConfigured(CameraCaptureSession session) {
                 mCaptureSession = session;
-                new Zoom(mCameraCharacteristics, mCaptureRequestBuilder, zoomFactor);
-//                utils.logOnly("zoom set","setZoom to "+zoomFactor);
+                cropArea = calcPhotoZoom (CROP_ZOOM);
+                cropBigger = calcPhotoZoom (CROP_ZOOM_BIGGER);
+//                new Zoom(mCameraCharacteristics, mCaptureRequestBuilder, zoomFactor);
+                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea);
                 try {
-                    mCaptureSession.setRepeatingRequest(
-                            mCaptureRequestBuilder.build(), null, null
-                    );
+                    mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);
                 } catch (CameraAccessException e) {
                     utils.logBoth(logID, "setRepeatingRequest Error");
                 }
-                cropArea = calcPhotoZoom (zoomFactor);
             }
 
             @Override
@@ -176,6 +171,10 @@ public class VideoMain {
     }
 
     private void setupMediaRecorder() {
+
+        final int VIDEO_FRAME_RATE = 60;
+        final int VIDEO_ENCODING_RATE = 45*1000*1000;
+        final long VIDEO_ONE_WORK_FILE_SIZE = 8000*1000;
 
         utils.logBoth(logID," setup Media");
         mediaRecorder = new MediaRecorder();

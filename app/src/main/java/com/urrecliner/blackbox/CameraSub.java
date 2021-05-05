@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat;
 import java.nio.ByteBuffer;
 
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.mCameraManager;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -173,6 +172,7 @@ public class CameraSub {
         }
     };
 
+    final static long SNAP_SHOT_INTERVAL = 114;
     Image image;
     ByteBuffer buffer;
     byte[] bytes;

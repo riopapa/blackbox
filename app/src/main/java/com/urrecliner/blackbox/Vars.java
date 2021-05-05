@@ -82,10 +82,6 @@ public class Vars {
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
     static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
 
-    static long VIDEO_ONE_WORK_FILE_SIZE = 8000*1000;
-    static int VIDEO_ENCODING_RATE = 45*1000*1000;
-    static int VIDEO_FRAME_RATE = 60;
-
     static int CountEvent;
     static int activeEventCount = 0;
     final static int DELAY_AUTO_RECORDING = 5000;
@@ -98,7 +94,6 @@ public class Vars {
     static int speedInt = 0;
 
     final static long INTERVAL_EVENT = 14 * 1000;
-    final static long SNAP_SHOT_INTERVAL = 120;
     final static int MAX_IMAGES_SIZE = 122;
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
@@ -108,7 +103,6 @@ public class Vars {
     static long gpsUpdateTime = 0;
     static long nextNormalTime = 0;
     static boolean viewFinder = true;
-    static float azimuth = 0;
     static boolean isCompassShown = false;
 
     static CameraManager mCameraManager;
@@ -118,7 +112,5 @@ public class Vars {
     static CameraCaptureSession mCaptureSession;
     static Surface recordSurface = null;
     static Surface photoSurface = null;
-
-    static Rect cropArea;
-
+    static Rect cropArea, cropBigger;
 }

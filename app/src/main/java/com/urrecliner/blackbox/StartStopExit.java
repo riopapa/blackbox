@@ -10,7 +10,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
-import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.photoCapture;
 import static com.urrecliner.blackbox.Vars.directionSensor;
 import static com.urrecliner.blackbox.Vars.displayTime;
@@ -28,7 +27,7 @@ import static com.urrecliner.blackbox.Vars.videoMain;
 
 class StartStopExit {
 
-    private String logID = "StartStop";
+    private final String logID = "StartStop";
     void startVideo() {
         utils.logBoth(logID, "Start Recording ---");
         mIsRecording = true;
@@ -45,7 +44,7 @@ class StartStopExit {
             reRunApplication("Start Error", e);
         }
         try {
-//            startCamera(); ???
+            snapBiggerCamera();
             startNormal();
         } catch (Exception e) {
             reRunApplication("Start Camera, Normal Error", e);
@@ -62,11 +61,12 @@ class StartStopExit {
 //        sendIntent.putExtra("delay", "" + DELAY_I_WILL_BACK);
 
     }
-    private Handler cameraTimer = new Handler() {
-        public void handleMessage(Message msg) { photoCapture.snapshotCamera(); }
+    private final static Handler cameraTimer = new Handler() {
+        public void handleMessage(Message msg) { photoCapture.zoomShotCamera(); }
     };
-    private Timer timerSnapCamera = new Timer();
-    private void startCamera() {
+    private final Timer timerSnapCamera = new Timer();
+    final long BIGGER_SNAPSHOT_INTERVAL = 600;
+    private void snapBiggerCamera() {
         snapMapIdx = 0;
         final TimerTask cameraTask = new TimerTask() {
             @Override
@@ -77,7 +77,7 @@ class StartStopExit {
                     timerSnapCamera.cancel();
             }
         };
-        timerSnapCamera.schedule(cameraTask, SNAP_SHOT_INTERVAL, SNAP_SHOT_INTERVAL);
+        timerSnapCamera.schedule(cameraTask, 300, BIGGER_SNAPSHOT_INTERVAL);
     }
 
     private Timer normalTimer;

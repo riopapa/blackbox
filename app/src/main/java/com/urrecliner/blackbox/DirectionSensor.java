@@ -1,22 +1,17 @@
 package com.urrecliner.blackbox;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import static android.content.Context.SENSOR_SERVICE;
 import static android.hardware.Sensor.TYPE_ACCELEROMETER;
-import static com.urrecliner.blackbox.Vars.azimuth;
-import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.startStopExit;
 
 public class DirectionSensor implements SensorEventListener{
 
-    private String logID = "DirSensor";
     private SensorManager sensorManager;
     private Sensor rotationVector, accelerometer, magnetometer;
     private float[] rotationMatrix = new float[9];
@@ -27,27 +22,28 @@ public class DirectionSensor implements SensorEventListener{
     private boolean lastAccelerometerSet = false;
     private boolean lastMagnetometerSet = false;
 
-    public void start(){
-        sensorManager = (SensorManager)mActivity.getSystemService(SENSOR_SERVICE);
+//    public void start(){
+//        sensorManager = (SensorManager)mActivity.getSystemService(SENSOR_SERVICE);
+//
+//        if(sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) == null) {
+//            if(sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) == null || sensorManager.getDefaultSensor(TYPE_ACCELEROMETER) == null) {
+//                noSensorAlert();
+//            }
+//            else {
+//                accelerometer = sensorManager.getDefaultSensor(TYPE_ACCELEROMETER);
+//                magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+//
+//                haveSensor = sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+//                haveSensor2 = sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+//            }
+//        }
+//        else {
+//            rotationVector = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+//            haveSensor = sensorManager.registerListener(this, rotationVector, SensorManager.SENSOR_DELAY_NORMAL);
+//        }
+//    }
 
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) == null) {
-            if(sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) == null || sensorManager.getDefaultSensor(TYPE_ACCELEROMETER) == null) {
-                noSensorAlert();
-            }
-            else {
-                accelerometer = sensorManager.getDefaultSensor(TYPE_ACCELEROMETER);
-                magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
-                haveSensor = sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-                haveSensor2 = sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
-            }
-        }
-        else {
-            rotationVector = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-            haveSensor = sensorManager.registerListener(this, rotationVector, SensorManager.SENSOR_DELAY_NORMAL);
-        }
-    }
-
+    float azimuth = 0;
     @Override
     public void onSensorChanged(SensorEvent event) {
         int type = event.sensor.getType();
@@ -86,35 +82,12 @@ public class DirectionSensor implements SensorEventListener{
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-//        if ((!haveSensor || sensor.getType() != Sensor.TYPE_ROTATION_VECTOR)
-//                && (!haveSensor2 || (sensor.getType() != Sensor.TYPE_ACCELEROMETER
-//                && sensor.getType() != Sensor.TYPE_MAGNETIC_FIELD))) {
-//            return;
-//        }
-//
-//        if (accuracy == SensorManager.SENSOR_STATUS_ACCURACY_LOW && !calibrateVid.isPlaying()) {
-//            calibrateVid.setVisibility(View.VISIBLE);
-//            compassImg.setVisibility(View.INVISIBLE);
-//            azimuthTxt.setVisibility(View.INVISIBLE);
-//            calibrateVid.start();
-//        }
-//        else {
-//            calibrateVid.setVisibility(View.INVISIBLE);
-//            compassImg.setVisibility(View.VISIBLE);
-//            azimuthTxt.setVisibility(View.VISIBLE);
-//            calibrateVid.stopPlayback();
-//        }
     }
 
     private void noSensorAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
         alertDialog.setMessage("Your device does not support the simply_compass.")
                 .setCancelable(false)
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        startStopExit.exitBlackBoxApp();
-                    }
-                });
+                .setNegativeButton("Close", (dialog, i) -> startStopExit.exitBlackBoxApp());
     }
 }
