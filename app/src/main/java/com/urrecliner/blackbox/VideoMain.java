@@ -47,7 +47,7 @@ public class VideoMain {
     private SurfaceTexture surface_Preview = null;
     private Surface previewSurface = null;
 
-    void prepareRecord() {
+    void prepareRecord() throws CameraAccessException {
 
         if (isPrepared)
             return;
@@ -59,68 +59,68 @@ public class VideoMain {
         } catch (Exception e) {
             utils.logE(logID, "preView AA ///", e);
         }
-
+        mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
         if (preparePrevSurface()) return;
         if (prepareVideoSurface()) return;
         if (preparePhotoSurface()) return;
+        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
 
         buildCameraSession();   // zoomFactor
         isPrepared = true;
     }
 
     private boolean preparePrevSurface() {
-        try {
+//        try {
             previewSurface = new Surface(surface_Preview);
-        } catch (Exception e) {
-            utils.logE(logID, "Preview Error BB ///", e);
-        }
-        try {
-            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+//        } catch (Exception e) {
+//            utils.logE(logID, "Preview Error BB ///", e);
+//        }
+//        try {
             mCaptureRequestBuilder.addTarget(previewSurface);
             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
-        } catch (Exception e) {
-            utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
-        }
-
-        if (previewSurface == null) {
-            utils.logBoth(logID, "previewSurface is null");
-            return true;
-        }
+//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
+//        } catch (Exception e) {
+//            utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
+//        }
+//
+//        if (previewSurface == null) {
+//            utils.logBoth(logID, "previewSurface is null");
+//            return true;
+//        }
         return false;
     }
 
     private boolean prepareVideoSurface() {
-        try {
+//        try {
             recordSurface = mediaRecorder.getSurface();
             mCaptureRequestBuilder.addTarget(recordSurface);
 //            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
 //            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
-        } catch (Exception e) {
-            utils.logE(logID, "Prepare Error recordSurface ///", e);
-        }
-        if (recordSurface == null) {
-            utils.logBoth(logID, "recordSurface is null ------");
-            return true;
-        }
+//        } catch (Exception e) {
+//            utils.logE(logID, "Prepare Error recordSurface ///", e);
+//        }
+//        if (recordSurface == null) {
+//            utils.logBoth(logID, "recordSurface is null ------");
+//            return true;
+//        }
         return false;
     }
 
     private boolean preparePhotoSurface() {
-        try {
+//        try {
             photoSurface = mImageReader.getSurface();
-        } catch (Exception e) {
-            utils.logE(logID, "Preview Error BB ///", e);
-        }
-        try {
+//        } catch (Exception e) {
+//            utils.logE(logID, "Preview Error BB ///", e);
+//        }
+//        try {
 //            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
             mCaptureRequestBuilder.addTarget(photoSurface);
 //            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
 //            mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
-        } catch (Exception e) {
-            utils.logE(logID, "Prepare mCaptureRequestBuilder photo CC ///", e);
-        }
+//        } catch (Exception e) {
+//            utils.logE(logID, "Prepare mCaptureRequestBuilder photo CC ///", e);
+//        }
 
         if (previewSurface == null) {
             utils.logBoth(logID, "photoSurface is null");

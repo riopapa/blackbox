@@ -198,14 +198,14 @@ public class MainActivity extends Activity {
 //                vBtnEvent.setImageResource(R.mipmap.event_ready);
             }
         }, DELAY_AUTO_RECORDING);
-        lNewsLine = (LinearLayout) findViewById(R.id.newsLine);
+        lNewsLine = findViewById(R.id.newsLine);
     }
 
-    final Handler startHandler = new Handler() {
+    final static Handler startHandler = new Handler() {
         public void handleMessage(Message msg) { startStopExit.startVideo();
         }
     };
-    final Handler stopHandler = new Handler() {
+    final static Handler stopHandler = new Handler() {
         public void handleMessage(Message msg) { startStopExit.stopVideo();
         }
     };
@@ -221,9 +221,9 @@ public class MainActivity extends Activity {
         if (speed < 5)
             focus = 9f;
         else if (speed < 10)
-            focus = 8.5f;
-        else if (speed < 20)
             focus = 8f;
+//        else if (speed < 20)
+//            focus = 8f;
 //        else if (speed < 30)
 //            focus = 6f;
 //        else if (speed < 40)
@@ -232,7 +232,8 @@ public class MainActivity extends Activity {
             focus = 1f;
         if (focus != save_focus) {
             if (focus == 1f) {
-                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f);
+//                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f);
+                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
                 mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
             } else {
                 mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);

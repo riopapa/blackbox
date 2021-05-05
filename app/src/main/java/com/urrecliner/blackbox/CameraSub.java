@@ -122,15 +122,15 @@ public class CameraSub {
         }
     }
 
-    private void dumpVariousCameraSizes(StreamConfigurationMap map) {
-
-        String sb = "// DUMP CAMERA POSSIBLE SIZES // ";
-        for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-            sb += size.getWidth()+"x"+ size.getHeight()+
-                    String.format(" %,3.1f , ", (float)size.getWidth() / (float)size.getHeight());
-        }
-        utils.logOnly("Camera Size",sb);
-    }
+//    private void dumpVariousCameraSizes(StreamConfigurationMap map) {
+//
+//        String sb = "// DUMP CAMERA POSSIBLE SIZES // ";
+//        for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+//            sb += size.getWidth()+"x"+ size.getHeight()+
+//                    String.format(" %,3.1f , ", (float)size.getWidth() / (float)size.getHeight());
+//        }
+//        utils.logOnly("Camera Size",sb);
+//    }
 
     void connectCamera() {
         CameraManager cameraManager = (CameraManager) mActivity.getSystemService(Context.CAMERA_SERVICE);
@@ -145,13 +145,17 @@ public class CameraSub {
         }
     }
 
-    private CameraDevice.StateCallback mCameraDeviceStateCallback = new CameraDevice.StateCallback() {
+    private final CameraDevice.StateCallback mCameraDeviceStateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(CameraDevice camera) {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
             if(mIsRecording) {
-                videoMain.prepareRecord();
+                try {
+                    videoMain.prepareRecord();
+                } catch (CameraAccessException e) {
+                    e.printStackTrace();
+                }
                 mediaRecorder.start();
             }
         }
