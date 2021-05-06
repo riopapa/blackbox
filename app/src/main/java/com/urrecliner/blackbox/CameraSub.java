@@ -15,7 +15,6 @@ import android.os.Build;
 import android.util.Size;
 
 import androidx.core.content.ContextCompat;
-
 import java.nio.ByteBuffer;
 
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
@@ -172,7 +171,7 @@ public class CameraSub {
         }
     };
 
-    final static long SNAP_SHOT_INTERVAL = 114;
+    final static long SNAP_SHOT_INTERVAL = 124;
     Image image;
     ByteBuffer buffer;
     byte[] bytes;
@@ -190,6 +189,7 @@ public class CameraSub {
             buffer = image.getPlanes()[0].getBuffer();
             bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
+            image.close();
         } catch (Exception e) {
             utils.logE("img " + snapMapIdx, "image buffer short " + snapMapIdx, e);
         }
@@ -199,6 +199,6 @@ public class CameraSub {
             if (snapMapIdx >= MAX_IMAGES_SIZE)
                 snapMapIdx = 0;
         }
-        image.close();
     };
+
 }

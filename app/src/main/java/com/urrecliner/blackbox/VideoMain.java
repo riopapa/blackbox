@@ -133,7 +133,7 @@ public class VideoMain {
         }
     }
 
-    final float CROP_ZOOM = 1.15f, CROP_ZOOM_BIGGER = 1.5f;
+    final float CROP_ZOOM = 1.17f, CROP_ZOOM_BIGGER = 1.55f;
     private CameraCaptureSession.StateCallback cameraStateCallBack() {
         return new CameraCaptureSession.StateCallback() {
             @Override

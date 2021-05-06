@@ -304,14 +304,21 @@ public class MainActivity extends Activity {
                 SnapShotSave snapShotSave2 = new SnapShotSave();
                 snapShotSave2.startSave(thisEventJpgPath, snapMapIdx, 2);
             }
-        }, INTERVAL_EVENT * 7 / 10);
+        }, INTERVAL_EVENT * 5 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 SnapShotSave snapShotSave3 = new SnapShotSave();
                 snapShotSave3.startSave(thisEventJpgPath, snapMapIdx,3);
             }
-        }, INTERVAL_EVENT * 14 / 10);
+        }, INTERVAL_EVENT * 10 / 10);
+
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                SnapShotSave snapShotSave3 = new SnapShotSave();
+                snapShotSave3.startSave(thisEventJpgPath, snapMapIdx,4);
+            }
+        }, INTERVAL_EVENT * 15 / 10);
 
         gpsTracker.askLocation();
 

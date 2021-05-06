@@ -5,43 +5,40 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.activeEventCount;
-import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vTextActiveCount;
-import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 
 class SnapShotSave {
 
-    byte[][] jpgBytes;
     int startBias;
     int maxSize;
 
-    void startSave(File path2Write, int snapPointer, final int phase) {
+    void startSave(File path2Write, final int snapPos, final int phase) {
+        byte[][] jpgBytes;
         int jpgIdx = 0;
-        maxSize = MAX_IMAGES_SIZE - 3;
+        maxSize = MAX_IMAGES_SIZE - 50;
         if (phase == 2)
-            maxSize = MAX_IMAGES_SIZE - 3;
+            maxSize = MAX_IMAGES_SIZE - 50;
         else if (phase == 3)
-            maxSize = MAX_IMAGES_SIZE - 16;
+            maxSize = MAX_IMAGES_SIZE - 60;
+        else if (phase == 4)
+            maxSize = MAX_IMAGES_SIZE - 50;
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
-        for (int i = snapPointer; i < MAX_IMAGES_SIZE; i++) {
+        for (int i = snapPos; i < MAX_IMAGES_SIZE; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
             snapBytes[i] = null;
             if (jpgIdx > maxSize)
                 break;
         }
-        for (int i = 0; i < snapPointer; i++) {
+        for (int i = 0; i < snapPos; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
             snapBytes[i] = null;
             if (jpgIdx > maxSize)
                 break;
         }
         Thread th = new Thread(() -> {
-            startBias = phase * 200;
+            startBias = phase * 100;
             for (int i = 0; i < maxSize; i++) {
                 byte [] imageBytes = jpgBytes[i];
                 if (imageBytes != null && imageBytes.length > 1) {

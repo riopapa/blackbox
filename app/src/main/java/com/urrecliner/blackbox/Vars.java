@@ -37,7 +37,7 @@ public class Vars {
     static PhotoCapture photoCapture = new PhotoCapture();
     static StartStopExit startStopExit = new StartStopExit();
     static OBDAccess obdAccess = new OBDAccess();
-    static DirectionSensor directionSensor = new DirectionSensor();
+//    static DirectionSensor directionSensor = new DirectionSensor();
     static DisplayBattery displayBattery = new DisplayBattery();
     static GPSTracker gpsTracker;
     static DisplayTime displayTime = new DisplayTime();
@@ -94,11 +94,10 @@ public class Vars {
     static int speedInt = 0;
 
     final static long INTERVAL_EVENT = 14 * 1000;
-    final static int MAX_IMAGES_SIZE = 122;
+    final static int MAX_IMAGES_SIZE = 130;
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
-    static NormalMerge normalMerge = new NormalMerge();
 
     static long gpsUpdateTime = 0;
     static long nextNormalTime = 0;

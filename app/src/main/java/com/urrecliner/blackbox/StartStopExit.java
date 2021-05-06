@@ -11,14 +11,12 @@ import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.photoCapture;
-import static com.urrecliner.blackbox.Vars.directionSensor;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
-import static com.urrecliner.blackbox.Vars.normalMerge;
 import static com.urrecliner.blackbox.Vars.obdAccess;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
@@ -57,15 +55,13 @@ class StartStopExit {
         Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
         assert sendIntent != null;
         mContext.startActivity(sendIntent);
-//        android.os.Process.killProcess(android.os.Process.myPid());
-//        sendIntent.putExtra("delay", "" + DELAY_I_WILL_BACK);
 
     }
     private final static Handler cameraTimer = new Handler() {
         public void handleMessage(Message msg) { photoCapture.zoomShotCamera(); }
     };
     private final Timer timerSnapCamera = new Timer();
-    final long BIGGER_SNAPSHOT_INTERVAL = 600;
+    final long BIGGER_SNAPSHOT_INTERVAL = 300;
     private void snapBiggerCamera() {
         snapMapIdx = 0;
         final TimerTask cameraTask = new TimerTask() {
@@ -77,11 +73,12 @@ class StartStopExit {
                     timerSnapCamera.cancel();
             }
         };
-        timerSnapCamera.schedule(cameraTask, 300, BIGGER_SNAPSHOT_INTERVAL);
+        timerSnapCamera.schedule(cameraTask, 1000, BIGGER_SNAPSHOT_INTERVAL);
     }
 
     private Timer normalTimer;
     private void startNormal() {
+        NormalMerge normalMerge = new NormalMerge();
         normalTimer = new Timer();
         final TimerTask normalTask = new TimerTask() {
             @Override
@@ -107,7 +104,7 @@ class StartStopExit {
 //            videoUtils.startPreview();
             normalTimer.cancel();
             obdAccess.stop();
-            directionSensor.stop();
+//            directionSensor.stop();
         } catch (Exception e) {
             utils.logE(logID, "Stop 2", e);
         }
