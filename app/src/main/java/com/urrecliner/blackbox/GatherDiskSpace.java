@@ -13,6 +13,9 @@ class GatherDiskSpace implements Runnable {
     }
 
     public void run() {
+        if (mPackagePath.getFreeSpace() / 1000L > 2000*1000) // more than 2Gb free storage ;
+            return;
+
         /* delete old directory / files if storage is less than xx */
         File[] files = utils.getDirectoryList(mPackageNormalPath);
         if (files.length > 0) { // if any previous folder

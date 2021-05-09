@@ -39,6 +39,7 @@ import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
+import static com.urrecliner.blackbox.Vars.gatherDiskSpace;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
@@ -113,6 +114,7 @@ public class MainActivity extends Activity {
 //        utils.deleteOldFiles(mPackageWorkingPath, -3);
         cameraSub = new CameraSub();
         prepareMain();
+        gatherDiskSpace.run();
     }
 
     private void prepareMain() {

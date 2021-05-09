@@ -36,6 +36,8 @@ public class Vars {
     static VideoMain videoMain = new VideoMain();
     static PhotoCapture photoCapture = new PhotoCapture();
     static StartStopExit startStopExit = new StartStopExit();
+    static GatherDiskSpace gatherDiskSpace = new GatherDiskSpace();
+
     static OBDAccess obdAccess = new OBDAccess();
 //    static DirectionSensor directionSensor = new DirectionSensor();
     static DisplayBattery displayBattery = new DisplayBattery();

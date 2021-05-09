@@ -12,10 +12,8 @@ import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.Collator;
@@ -63,12 +61,7 @@ class Utils {
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME)+" "+tag+": " + log);
         text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
         final String fText = last4Lines(text);
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                vTextLogInfo.setText(fText);
-            }
-        });
+        mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
     }
 
     public void logOnly (String tag, String text) {
@@ -207,7 +200,7 @@ class Utils {
         mActivity.runOnUiThread(() -> {
             Toast toast = Toast.makeText(mContext, text, short_Long);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
-            View toastView = toast.getView(); // This'll return the default View of the Toast.
+            View toastView = toast.getView();
             TextView toastMessage = toastView.findViewById(android.R.id.message);
             toastMessage.setTextSize(24);
             int backColor = foreColor ^ 0xececec;
@@ -225,7 +218,7 @@ class Utils {
 
         Toast toast = Toast.makeText(mContext, text, short_Long);
         toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
-        View toastView = toast.getView(); // This'll return the default View of the Toast.
+        View toastView = toast.getView();
 
         /* And now you can get the TextView of the default View of the Toast. */
         TextView tm = toastView.findViewById(android.R.id.message);
@@ -246,12 +239,12 @@ class Utils {
     }
 
     private String last4Lines(String str) {
-        String[] strs = str.split("\n");
+        String[] lines = str.split("\n");
         StringBuilder result = new StringBuilder();
-        int begLine = (strs.length > 4) ? strs.length-4 : 0;
-        for (int i = begLine; i < strs.length; ) {
-            result.append(strs[i]);
-            if (++i< strs.length)
+        int begLine = (lines.length > 4) ? lines.length-4 : 0;
+        for (int i = begLine; i < lines.length; ) {
+            result.append(lines[i]);
+            if (++i< lines.length)
                 result.append("\n");
         }
         return result.toString();
@@ -285,7 +278,7 @@ class Utils {
             R.raw.i_will_be_back_soon_kr,           // I will back
             R.raw.exit_application                  // Exit application
             };
-    private int[] soundNbr = new int[beepSound.length];
+    private final int[] soundNbr = new int[beepSound.length];
 
     void beepsInitiate() {
 

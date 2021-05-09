@@ -27,6 +27,7 @@ import java.util.List;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
+import static com.urrecliner.blackbox.Vars.gatherDiskSpace;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
@@ -150,9 +151,7 @@ class NormalMerge {
 
         @Override
         protected void onPostExecute(String doI ) {
-            if (mPackagePath.getFreeSpace() / 1000L < 500*1000) { // 500Mb free storage ;
-                new GatherDiskSpace().run();
-            }
+            gatherDiskSpace.run();
         }
     }
 }
