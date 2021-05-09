@@ -168,6 +168,8 @@ class Utils {
 
         String oldDate = DATE_PREFIX+sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
         File[] oldFiles = getDirectoryList(target);
+        if (oldFiles == null)
+            return;
         Collator myCollator = Collator.getInstance();
         for (File file : oldFiles) {
             String shortFileName = file.getName();

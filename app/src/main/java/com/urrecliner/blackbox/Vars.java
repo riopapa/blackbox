@@ -71,14 +71,14 @@ public class Vars {
 
     private static final String PATH_PACKAGE = "BlackBox";
     private static final String PATH_EVENT = "event";
-    private static final String PATH_EVENT_JPG = "eventPhoto";
+    private static final String PATH_EVENT_JPG = "eventJpg";
     private static final String PATH_NORMAL = "normal";
     private static final String PATH_WORK = "work";
     private static final String PATH_LOG = "log";
 
     static File mPackagePath = new File(Environment.getExternalStorageDirectory(), PATH_PACKAGE);
     static File mPackageEventPath = new File(mPackagePath, PATH_EVENT);
-    static File mPackageEventJpgPath = new File(mPackagePath, PATH_EVENT_JPG);
+    static File mPackageEventJpgPath = new File(mPackageEventPath, PATH_EVENT_JPG);
     static File mPackageNormalPath = new File(mPackagePath, PATH_NORMAL);
     static File mPackageNormalDatePath = new File(mPackageNormalPath, DATE_PREFIX+utils.getMilliSec2String(System.currentTimeMillis(), FORMAT_DATE));
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
