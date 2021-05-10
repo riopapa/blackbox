@@ -110,6 +110,7 @@ public class Vars {
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;
     static CaptureRequest.Builder mCaptureRequestBuilder;
+    static CaptureRequest.Builder mCapturePhotoBuilder;
     static CameraCaptureSession mCaptureSession;
     static Surface recordSurface = null;
     static Surface photoSurface = null;

@@ -20,6 +20,7 @@ import static com.urrecliner.blackbox.Vars.cropBigger;
 import static com.urrecliner.blackbox.Vars.cropArea;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
+import static com.urrecliner.blackbox.Vars.mCapturePhotoBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mImageReader;
@@ -59,11 +60,24 @@ public class VideoMain {
         if (prepareVideoSurface()) return;
         if (preparePhotoSurface()) return;
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
+        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_ON);
+//        readyCapturePhoto();
 
         buildCameraSession();
         isPrepared = true;
     }
 
+    private void readyCapturePhoto()  {
+        try {
+            mCapturePhotoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            mCapturePhotoBuilder.addTarget(photoSurface);
+            mCapturePhotoBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
+//            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서
+            mCapturePhotoBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropBigger);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
     private boolean preparePrevSurface() {
 //        try {
             previewSurface = new Surface(surface_Preview);
@@ -133,7 +147,7 @@ public class VideoMain {
         }
     }
 
-    final float CROP_ZOOM = 1.17f, CROP_ZOOM_BIGGER = 1.55f;
+    final float CROP_ZOOM = 1.17f, CROP_ZOOM_BIGGER = 1.8f;
     private CameraCaptureSession.StateCallback cameraStateCallBack() {
         return new CameraCaptureSession.StateCallback() {
             @Override
@@ -174,7 +188,7 @@ public class VideoMain {
 
         final int VIDEO_FRAME_RATE = 60;
         final int VIDEO_ENCODING_RATE = 45*1000*1000;
-        final long VIDEO_ONE_WORK_FILE_SIZE = 8000*1000;
+        final long VIDEO_ONE_WORK_FILE_SIZE = 9000*1000;
 
         utils.logBoth(logID," setup Media");
         mediaRecorder = new MediaRecorder();

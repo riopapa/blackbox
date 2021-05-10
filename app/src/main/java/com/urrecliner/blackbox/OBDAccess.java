@@ -180,7 +180,7 @@ class OBDAccess {
     private boolean noPreview = false;
     private void loopAskOBDSpeed() {
 //        utils.logBoth(logID, "start get OBD Speed");
-        MainActivity.focusChange(speedInt);
+//        MainActivity.focusChange(speedInt);
         String model = Build.MODEL;
         switch (model) {
             case "SM-G950N":
@@ -212,7 +212,7 @@ class OBDAccess {
                     if (speedOld.equals("old")) {
                         lNewsLine.setVisibility(View.VISIBLE);
                     }
-                    MainActivity.focusChange(speedInt);
+//                    MainActivity.focusChange(speedInt);
                     speedOld = speedString;
                 });
             }

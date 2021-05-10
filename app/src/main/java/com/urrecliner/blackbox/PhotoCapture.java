@@ -10,10 +10,10 @@ import android.hardware.camera2.TotalCaptureResult;
 import static com.urrecliner.blackbox.Vars.cropBigger;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
+import static com.urrecliner.blackbox.Vars.mCapturePhotoBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.photoSurface;
-import static com.urrecliner.blackbox.Vars.utils;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
@@ -23,13 +23,13 @@ public class PhotoCapture {
     static void zoomShotCamera() {
         mCaptureState = STATE_WAIT_LOCK;
         try {
-            mCaptureSession.capture(mCaptureRequestBuilder.build(), zoomCameraCaptureCallback, mBackgroundImage);
+            mCaptureSession.capture(mCaptureRequestBuilder.build(), zoomCameraPhotoCallback, mBackgroundImage);
         } catch (CameraAccessException e) {
             StartStopExit.reRunApplication("CameraAccessException",e);
         }
     }
 
-    private static CameraCaptureSession.CaptureCallback zoomCameraCaptureCallback = new
+    private static CameraCaptureSession.CaptureCallback zoomCameraPhotoCallback = new
             CameraCaptureSession.CaptureCallback() {
                 private void process(CaptureResult captureResult) {
                     switch (mCaptureState) {
@@ -52,20 +52,16 @@ public class PhotoCapture {
             };
 
     private static void startStillCaptureRequest() {
+
         try {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             mCaptureRequestBuilder.addTarget(photoSurface);
             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
+//            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서
             mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropBigger);
-//            }
-//            else if (swCount == 2)
-//                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea2);
-//            else {
-//                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea);
-//                swCount = 0;
-//            }
         } catch (CameraAccessException e) {
-            utils.logE("cameraUtils", "CameraAccessException", e);
+            e.printStackTrace();
         }
+
     }
 }

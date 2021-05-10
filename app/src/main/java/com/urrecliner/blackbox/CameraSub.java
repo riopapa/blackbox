@@ -66,7 +66,6 @@ public class CameraSub {
         } catch (Exception e) {
             utils.logE("CameraSub", "Exception ", e);
         }
-
     }
 
     private void setCameraSize(StreamConfigurationMap map) {
@@ -156,6 +155,7 @@ public class CameraSub {
                 }
                 mediaRecorder.start();
             }
+
         }
 
         @Override

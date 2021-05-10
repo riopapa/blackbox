@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
-import android.hardware.camera2.CaptureRequest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -23,7 +22,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -45,7 +43,6 @@ import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
@@ -108,8 +105,9 @@ public class MainActivity extends Activity {
         }
         askPermission();
         setContentView(R.layout.main_activity);
+        readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 7);
-        utils.deleteOldFiles(mPackageEventJpgPath, 5);
+//        utils.deleteOldFiles(mPackageEventJpgPath, 5);
         utils.deleteOldLogs();
 //        utils.deleteOldFiles(mPackageWorkingPath, -3);
         cameraSub = new CameraSub();
@@ -141,7 +139,6 @@ public class MainActivity extends Activity {
         vBtnEvent.setOnClickListener(v -> startEventSaving());
 
         setViewVars();
-        setBlackBoxFolders();
         mIsRecording = false;
         snapBytes = new byte[MAX_IMAGES_SIZE][];
         utils.logOnly("snapBytes","size = "+snapBytes.length);
@@ -219,30 +216,30 @@ public class MainActivity extends Activity {
     static float save_focus = -1f;    // 0: infinite 10: nearest
     static void focusChange(int speed) {
 //        utils.logBoth("nearSwitch","switched to NEAR");
-        float focus;
-        if (speed < 5)
-            focus = 9f;
-        else if (speed < 10)
-            focus = 8f;
-//        else if (speed < 20)
+//        float focus;
+//        if (speed < 5)
+//            focus = 9f;
+//        else if (speed < 10)
 //            focus = 8f;
-//        else if (speed < 30)
-//            focus = 6f;
-//        else if (speed < 40)
-//            focus = 5f;
-        else
-            focus = 1f;
-        if (focus != save_focus) {
-            if (focus == 1f) {
-//                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f);
-                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
-                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-            } else {
-                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
-                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
-            }
-            save_focus = focus;
-        }
+////        else if (speed < 20)
+////            focus = 8f;
+////        else if (speed < 30)
+////            focus = 6f;
+////        else if (speed < 40)
+////            focus = 5f;
+//        else
+//            focus = 1f;
+//        if (focus != save_focus) {
+//            if (focus == 1f) {
+////                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f);
+//                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
+//                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+//            } else {
+//                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
+//                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
+//            }
+//            save_focus = focus;
+//        }
     }
 
 
@@ -364,7 +361,7 @@ public class MainActivity extends Activity {
         vTextSpeed.setText("__");
     }
 
-    private void setBlackBoxFolders() {
+    private void readyBlackBoxFolders() {
         utils.readyPackageFolder(mPackagePath);
         utils.readyPackageFolder(mPackageLogPath);
         utils.readyPackageFolder(mPackageWorkingPath);
