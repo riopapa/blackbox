@@ -42,7 +42,7 @@ class StartStopExit {
             reRunApplication("Start Error", e);
         }
         try {
-            snapBiggerCamera();
+//            snapBiggerCamera();
             startNormal();
         } catch (Exception e) {
             reRunApplication("Start Camera, Normal Error", e);

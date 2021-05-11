@@ -135,6 +135,8 @@ public class VideoMain {
             utils.logBoth(logID, "photoSurface is null");
             return true;
         }
+        cropArea = calcPhotoZoom (CROP_ZOOM);
+        cropBigger = calcPhotoZoom (CROP_ZOOM_BIGGER);
         return false;
     }
 
@@ -153,8 +155,6 @@ public class VideoMain {
             @Override
             public void onConfigured(CameraCaptureSession session) {
                 mCaptureSession = session;
-                cropArea = calcPhotoZoom (CROP_ZOOM);
-                cropBigger = calcPhotoZoom (CROP_ZOOM_BIGGER);
 //                new Zoom(mCameraCharacteristics, mCaptureRequestBuilder, zoomFactor);
                 mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea);
                 try {

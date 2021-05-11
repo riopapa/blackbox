@@ -13,7 +13,7 @@ class SnapShotSave {
 
     int startBias;
     int maxSize;
-
+    String prefix;
     void startSave(File path2Write, final int snapPos, final int phase) {
         byte[][] jpgBytes;
         int jpgIdx = 0;
@@ -37,12 +37,15 @@ class SnapShotSave {
             if (jpgIdx > maxSize)
                 break;
         }
+        prefix = path2Write.toString();
+        prefix = prefix.substring(prefix.lastIndexOf(" "));
+        prefix = "C" + prefix.substring(1,3) + prefix.substring(4,6) + "_";
         Thread th = new Thread(() -> {
             startBias = phase * 100;
             for (int i = 0; i < maxSize; i++) {
                 byte [] imageBytes = jpgBytes[i];
                 if (imageBytes != null && imageBytes.length > 1) {
-                    File imageFile = new File(path2Write, "CameraShot_" + ("" + (startBias + i)) + ".jpg");
+                    File imageFile = new File(path2Write, prefix + ("" + (startBias + i)) + ".jpg");
                     bytes2File(imageBytes, imageFile);
                     jpgBytes[i] = null;
                     SystemClock.sleep(40);  // not to hold all the time

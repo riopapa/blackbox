@@ -190,14 +190,14 @@ public class CameraSub {
             bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
             image.close();
+            if (mIsRecording) {
+                snapBytes[snapMapIdx] = bytes;
+                snapMapIdx++;
+                if (snapMapIdx >= MAX_IMAGES_SIZE)
+                    snapMapIdx = 0;
+            }
         } catch (Exception e) {
-            utils.logE("img " + snapMapIdx, "image buffer short " + snapMapIdx, e);
-        }
-        if (mIsRecording) {
-            snapBytes[snapMapIdx] = bytes;
-            snapMapIdx++;
-            if (snapMapIdx >= MAX_IMAGES_SIZE)
-                snapMapIdx = 0;
+            utils.logOnly("img " + snapMapIdx, "image buffer short " + snapMapIdx);
         }
     };
 
