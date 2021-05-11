@@ -149,13 +149,12 @@ public class VideoMain {
         }
     }
 
-    final float CROP_ZOOM = 1.17f, CROP_ZOOM_BIGGER = 1.8f;
+    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 2.1f;
     private CameraCaptureSession.StateCallback cameraStateCallBack() {
         return new CameraCaptureSession.StateCallback() {
             @Override
             public void onConfigured(CameraCaptureSession session) {
                 mCaptureSession = session;
-//                new Zoom(mCameraCharacteristics, mCaptureRequestBuilder, zoomFactor);
                 mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea);
                 try {
                     mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);

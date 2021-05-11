@@ -7,6 +7,9 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
+import java.util.Arrays;
+
+import static com.urrecliner.blackbox.Vars.cropArea;
 import static com.urrecliner.blackbox.Vars.cropBigger;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -14,6 +17,8 @@ import static com.urrecliner.blackbox.Vars.mCapturePhotoBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.photoSurface;
+import static com.urrecliner.blackbox.Vars.recordSurface;
+import static com.urrecliner.blackbox.Vars.utils;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
@@ -57,11 +62,11 @@ public class PhotoCapture {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             mCaptureRequestBuilder.addTarget(photoSurface);
             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
-//            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서
+//            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
             mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropBigger);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
-
     }
+
 }

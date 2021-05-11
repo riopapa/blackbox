@@ -42,7 +42,7 @@ class StartStopExit {
             reRunApplication("Start Error", e);
         }
         try {
-//            snapBiggerCamera();
+            snapBiggerCamera();
             startNormal();
         } catch (Exception e) {
             reRunApplication("Start Camera, Normal Error", e);
@@ -61,7 +61,7 @@ class StartStopExit {
         public void handleMessage(Message msg) { photoCapture.zoomShotCamera(); }
     };
     private final Timer timerSnapCamera = new Timer();
-    final long BIGGER_SNAPSHOT_INTERVAL = 300;
+    final long BIGGER_SNAPSHOT_INTERVAL = 160;
     private void snapBiggerCamera() {
         snapMapIdx = 0;
         final TimerTask cameraTask = new TimerTask() {

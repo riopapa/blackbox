@@ -23,7 +23,7 @@ class SnapShotSave {
         else if (phase == 3)
             maxSize = MAX_IMAGES_SIZE - 60;
         else if (phase == 4)
-            maxSize = MAX_IMAGES_SIZE - 50;
+            maxSize = MAX_IMAGES_SIZE - 70;
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         for (int i = snapPos; i < MAX_IMAGES_SIZE; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
