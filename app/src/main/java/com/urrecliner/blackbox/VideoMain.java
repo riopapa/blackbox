@@ -59,7 +59,7 @@ public class VideoMain {
         if (preparePrevSurface()) return;
         if (prepareVideoSurface()) return;
         if (preparePhotoSurface()) return;
-        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
+        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_ON);
 //        readyCapturePhoto();
 
@@ -149,7 +149,7 @@ public class VideoMain {
         }
     }
 
-    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 2.1f;
+    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 2.4f;
     private CameraCaptureSession.StateCallback cameraStateCallBack() {
         return new CameraCaptureSession.StateCallback() {
             @Override
