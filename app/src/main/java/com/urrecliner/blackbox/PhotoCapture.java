@@ -6,6 +6,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
+import android.util.Log;
 
 import static com.urrecliner.blackbox.Vars.cropBigger;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
@@ -13,6 +14,7 @@ import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.photoSurface;
+import static com.urrecliner.blackbox.Vars.utils;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
@@ -23,8 +25,9 @@ public class PhotoCapture {
         mCaptureState = STATE_WAIT_LOCK;
         try {
             mCaptureSession.capture(mCaptureRequestBuilder.build(), zoomCameraPhotoCallback, mBackgroundImage);
-        } catch (CameraAccessException e) {
-            StartStopExit.reRunApplication("CameraAccessException",e);
+        } catch (Exception e) {
+            utils.logBoth("photo","zoom passed");
+            utils.beepOnce(5,0.5f);
         }
     }
 

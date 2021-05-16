@@ -146,9 +146,7 @@ public class MainActivity extends Activity {
         gpsTracker.askLocation();
         CountEvent = utils.getRecordEventCount();
         vExitApp = findViewById(R.id.btnExit);
-        vExitApp.setOnClickListener(v -> {
-            startStopExit.exitBlackBoxApp();
-        });
+        vExitApp.setOnClickListener(v -> startStopExit.exitBlackBoxApp());
         ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
         btnBeBack.setOnClickListener(v -> {
             btnBeBack.setImageAlpha(50);
@@ -444,7 +442,7 @@ private final static int ALL_PERMISSIONS_RESULT = 101;
     }
 
     private ArrayList findUnAskedPermissions() {
-        ArrayList <String> result = new ArrayList<String>();
+        ArrayList <String> result = new ArrayList<>();
         for (String perm : permissions) if (hasPermission(perm)) result.add(perm);
         return result;
     }

@@ -84,7 +84,7 @@ class Utils {
         mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  ": " + log);
         e.printStackTrace();
-        beepOnce(1, .7f);
+//        beepOnce(1, .7f);
     }
 
     String getStackTrace(Exception e) {

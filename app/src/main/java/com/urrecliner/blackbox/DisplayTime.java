@@ -6,7 +6,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.displayBattery;
-import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextTime;
 
 class DisplayTime implements Runnable {

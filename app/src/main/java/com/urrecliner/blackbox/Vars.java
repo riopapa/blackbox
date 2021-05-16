@@ -13,7 +13,6 @@ import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Handler;
-import android.text.Layout;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
@@ -110,7 +109,6 @@ public class Vars {
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;
     static CaptureRequest.Builder mCaptureRequestBuilder;
-    static CaptureRequest.Builder mCapturePhotoBuilder;
     static CameraCaptureSession mCaptureSession;
     static Surface recordSurface = null;
     static Surface photoSurface = null;

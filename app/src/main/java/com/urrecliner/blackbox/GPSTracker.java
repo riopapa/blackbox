@@ -11,12 +11,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import androidx.core.app.ActivityCompat;
-
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static com.urrecliner.blackbox.Vars.isCompassShown;
@@ -107,19 +103,16 @@ class GPSTracker extends Service implements LocationListener {
 
         gpsUpdateTime = System.currentTimeMillis();
         if (!isCompassShown) {
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < 5; i++) {
-                        ImageView v = newsView[i];
-                        v.setVisibility(View.VISIBLE);
-                    }
+            mActivity.runOnUiThread(() -> {
+                for (int i = 0; i < 5; i++) {
+                    ImageView v = newsView[i];
+                    v.setVisibility(View.VISIBLE);
                 }
             });
             isCompassShown = true;
             utils.logBoth("GPSTracker","Run ..");
         }
-        if (speedInt < 10) // if speed is < xx then no update, OBD should be connected
+        if (speedInt < 5) // if speed is < xx then no update, OBD should be connected
             return;
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
         if (Float.isNaN(GPSDegree))
@@ -186,21 +179,18 @@ class GPSTracker extends Service implements LocationListener {
 
     void drawCompass (int dirIdx) { // 0: N, 8: S
 
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < 5; i++) {
-                        ImageView v = newsView[i];
+            mActivity.runOnUiThread(() -> {
+                for (int i = 0; i < 5; i++) {
+                    ImageView v = newsView[i];
 //                        utils.logBoth("NEWS "+speedInt,dirIdx+" "+(i+dirIdx));
-                        switch (i) {
-                            case 0:
-                            case 4:
-                                v.setImageResource(yellows[i + dirIdx]);
-                                break;
-                            default:
-                                v.setImageResource(greens[i + dirIdx]);
-                                break;
-                        }
+                    switch (i) {
+                        case 0:
+                        case 4:
+                            v.setImageResource(yellows[i + dirIdx]);
+                            break;
+                        default:
+                            v.setImageResource(greens[i + dirIdx]);
+                            break;
                     }
                 }
             });

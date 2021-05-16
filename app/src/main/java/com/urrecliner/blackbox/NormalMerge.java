@@ -2,7 +2,7 @@ package com.urrecliner.blackbox;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.widget.TextView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.coremedia.iso.boxes.Container;
@@ -29,9 +29,7 @@ import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.gatherDiskSpace;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
-import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.nextNormalTime;
 import static com.urrecliner.blackbox.Vars.sdfTime;
@@ -78,6 +76,7 @@ class NormalMerge {
                 } catch (ParseException e) {
                     utils.logE(logID, endTimeS+" parse Error", e);
                 }
+                assert date != null;
                 nextNormalTime = date.getTime() - 2000;
                 outputFile = new File(mPackageNormalDatePath, DATE_PREFIX+beginTimeS + " x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
@@ -92,10 +91,9 @@ class NormalMerge {
             for (File file : files2Merge) {
                 String shortFileName = file.getName();
                 Collator myCollator = Collator.getInstance();
-
-                if (myCollator.compare(shortFileName, beginTimeS) < 0)
-                    file.delete();  // remove old work file
-                else if (myCollator.compare(shortFileName, endTimeS) < 0) {
+                if (myCollator.compare(shortFileName, beginTimeS) < 0) {
+                    file.delete();  // remove old working file
+                } else if (myCollator.compare(shortFileName, endTimeS) < 0) {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
@@ -113,7 +111,6 @@ class NormalMerge {
                     }
                 }
             }
-
             if (!videoTracks.isEmpty()) {
                 Movie outputMovie = new Movie();
                 try {
@@ -134,7 +131,6 @@ class NormalMerge {
         @Override
         protected void onProgressUpdate(String... values) {
             String str = values[0];
-            utils.logBoth("Event", str);
             if (str.startsWith("<")) {
                 utils.customToast(str, Toast.LENGTH_SHORT, Color.RED);
     //                utils.logE("1", str);

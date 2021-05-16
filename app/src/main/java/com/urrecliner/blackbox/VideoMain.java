@@ -5,8 +5,11 @@ import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
+import android.os.Build;
+import android.util.Log;
 import android.view.Surface;
 
 import java.io.File;
@@ -20,7 +23,6 @@ import static com.urrecliner.blackbox.Vars.cropBigger;
 import static com.urrecliner.blackbox.Vars.cropArea;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mCapturePhotoBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mImageReader;
@@ -56,88 +58,25 @@ public class VideoMain {
             utils.logE(logID, "preView AA ///", e);
         }
         mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-        if (preparePrevSurface()) return;
-        if (prepareVideoSurface()) return;
-        if (preparePhotoSurface()) return;
+        readySurfaces();
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_ON);
-//        readyCapturePhoto();
+        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
+//        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON); NO!
 
         buildCameraSession();
         isPrepared = true;
     }
 
-    private void readyCapturePhoto()  {
-        try {
-            mCapturePhotoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-            mCapturePhotoBuilder.addTarget(photoSurface);
-            mCapturePhotoBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
-//            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서
-            mCapturePhotoBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropBigger);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    private boolean preparePrevSurface() {
-//        try {
-            previewSurface = new Surface(surface_Preview);
-//        } catch (Exception e) {
-//            utils.logE(logID, "Preview Error BB ///", e);
-//        }
-//        try {
-            mCaptureRequestBuilder.addTarget(previewSurface);
-            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
-//        } catch (Exception e) {
-//            utils.logE(logID, "Prepare mCaptureRequestBuilder Error CC ///", e);
-//        }
-//
-//        if (previewSurface == null) {
-//            utils.logBoth(logID, "previewSurface is null");
-//            return true;
-//        }
-        return false;
-    }
-
-    private boolean prepareVideoSurface() {
-//        try {
-            recordSurface = mediaRecorder.getSurface();
-            mCaptureRequestBuilder.addTarget(recordSurface);
-//            mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
-            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-//            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON);
-//        } catch (Exception e) {
-//            utils.logE(logID, "Prepare Error recordSurface ///", e);
-//        }
-//        if (recordSurface == null) {
-//            utils.logBoth(logID, "recordSurface is null ------");
-//            return true;
-//        }
-        return false;
-    }
-
-    private boolean preparePhotoSurface() {
-//        try {
-            photoSurface = mImageReader.getSurface();
-//        } catch (Exception e) {
-//            utils.logE(logID, "Preview Error BB ///", e);
-//        }
-//        try {
-//            mCaptureRequestVideoBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_VIDEO_SNAPSHOT);
-            mCaptureRequestBuilder.addTarget(photoSurface);
-//            mCaptureRequestVideoBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-//            mCaptureRequestVideoBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f); // 0.0 infinite ~ 10f nearest
-//        } catch (Exception e) {
-//            utils.logE(logID, "Prepare mCaptureRequestBuilder photo CC ///", e);
-//        }
-
-        if (previewSurface == null) {
-            utils.logBoth(logID, "photoSurface is null");
-            return true;
-        }
+    private void readySurfaces() {
+        previewSurface = new Surface(surface_Preview);
+        mCaptureRequestBuilder.addTarget(previewSurface);
+        recordSurface = mediaRecorder.getSurface();
+        mCaptureRequestBuilder.addTarget(recordSurface);
+        photoSurface = mImageReader.getSurface();
+        mCaptureRequestBuilder.addTarget(photoSurface);
         cropArea = calcPhotoZoom (CROP_ZOOM);
         cropBigger = calcPhotoZoom (CROP_ZOOM_BIGGER);
-        return false;
     }
 
     void buildCameraSession() {
@@ -185,11 +124,11 @@ public class VideoMain {
 
     private void setupMediaRecorder() {
 
-        final int VIDEO_FRAME_RATE = 60;
+        final int VIDEO_FRAME_RATE = 30; // (Build.MODEL.equals("SM-G950N")) ? 30:30;
         final int VIDEO_ENCODING_RATE = 45*1000*1000;
-        final long VIDEO_ONE_WORK_FILE_SIZE = 9000*1000;
+        final long VIDEO_ONE_WORK_FILE_SIZE = 10*1024*1024; // 10Mb
 
-        utils.logBoth(logID," setup Media");
+//        utils.logBoth(logID," setup Media");
         mediaRecorder = new MediaRecorder();
 
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);    // 1. setAudioSource

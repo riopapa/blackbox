@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Timer;
@@ -123,11 +124,6 @@ class StartStopExit {
         mActivity.finishAffinity();
         new Timer().schedule(new TimerTask() {
             public void run() {
-//                if (CountEvent> 0) {
-//                    Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxjpg");
-//                    assert sendIntent != null;
-//                    mActivity.startActivity(sendIntent);
-//                }
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }

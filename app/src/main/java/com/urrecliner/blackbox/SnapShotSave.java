@@ -17,13 +17,13 @@ class SnapShotSave {
     void startSave(File path2Write, final int snapPos, final int phase) {
         byte[][] jpgBytes;
         int jpgIdx = 0;
-        maxSize = MAX_IMAGES_SIZE - 50;
+        maxSize = MAX_IMAGES_SIZE - 40;
         if (phase == 2)
-            maxSize = MAX_IMAGES_SIZE - 50;
-        else if (phase == 3)
             maxSize = MAX_IMAGES_SIZE - 60;
-        else if (phase == 4)
+        else if (phase == 3)
             maxSize = MAX_IMAGES_SIZE - 70;
+        else if (phase == 4)
+            maxSize = MAX_IMAGES_SIZE - 80;
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         for (int i = snapPos; i < MAX_IMAGES_SIZE; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
