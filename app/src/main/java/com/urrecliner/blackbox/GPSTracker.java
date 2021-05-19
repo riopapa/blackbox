@@ -15,14 +15,14 @@ import android.view.View;
 import android.widget.ImageView;
 import java.util.ArrayList;
 
-import static com.urrecliner.blackbox.Vars.isCompassShown;
-import static com.urrecliner.blackbox.Vars.gpsUpdateTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.speedInt;
 import static com.urrecliner.blackbox.Vars.utils;
 
 class GPSTracker extends Service implements LocationListener {
 
+    static boolean isCompassShown = false;
+    long gpsUpdateTime = 0;
     private final Context mContext;
     boolean isGPSEnabled = false;
     Location location;

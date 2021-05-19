@@ -9,7 +9,6 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
 import android.os.Build;
-import android.util.Log;
 import android.view.Surface;
 
 import java.io.File;
@@ -20,7 +19,6 @@ import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.cropBigger;
-import static com.urrecliner.blackbox.Vars.cropArea;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
@@ -44,7 +42,7 @@ public class VideoMain {
     private boolean isPrepared = false;
     private SurfaceTexture surface_Preview = null;
     private Surface previewSurface = null;
-
+    Rect cropArea;
     void prepareRecord() throws CameraAccessException {
 
         if (isPrepared)
@@ -88,7 +86,7 @@ public class VideoMain {
         }
     }
 
-    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 2.4f;
+    final float CROP_ZOOM = 1.1f, CROP_ZOOM_BIGGER = 1.9f;
     private CameraCaptureSession.StateCallback cameraStateCallBack() {
         return new CameraCaptureSession.StateCallback() {
             @Override
@@ -114,19 +112,17 @@ public class VideoMain {
         int centerY = mImageSize.getHeight() / 2;
         int deltaX  = (int)((0.5f * mImageSize.getWidth()) / zoom);
         int deltaY  = (int)((0.5f * mImageSize.getHeight()) / zoom);
-        Rect cropArea = new Rect();
-        cropArea.set(centerX - deltaX,
-                centerY - deltaY,
-                centerX + deltaX,
-                centerY + deltaY);
-        return cropArea;
+        Rect rect = new Rect();
+        rect.set(centerX - deltaX, centerY - deltaY,
+                centerX + deltaX, centerY + deltaY);
+        return rect;
     }
 
     private void setupMediaRecorder() {
 
-        final int VIDEO_FRAME_RATE = 30; // (Build.MODEL.equals("SM-G950N")) ? 30:30;
-        final int VIDEO_ENCODING_RATE = 45*1000*1000;
-        final long VIDEO_ONE_WORK_FILE_SIZE = 10*1024*1024; // 10Mb
+        final int VIDEO_FRAME_RATE = (Build.MODEL.equals("SM-G950N")) ? 60:30;
+        final int VIDEO_ENCODING_RATE = (Build.MODEL.equals("SM-G950N")) ? 45*1000*1000:25*1000*1000;
+        final long VIDEO_ONE_WORK_FILE_SIZE = (Build.MODEL.equals("SM-G950N")) ? 10*1024*1024:14*1024*1024; // 10Mb
 
 //        utils.logBoth(logID," setup Media");
         mediaRecorder = new MediaRecorder();
@@ -135,8 +131,8 @@ public class VideoMain {
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);    // 2. setVideoSource
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);   // 3. setOutputFormat
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);  // 4. setAudioEncoder
-        mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
         mediaRecorder.setVideoEncodingBitRate(VIDEO_ENCODING_RATE);
+        mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
         mediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mediaRecorder.setOutputFile(getNextFileName(0).toString());

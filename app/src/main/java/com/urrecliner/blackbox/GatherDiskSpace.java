@@ -21,7 +21,7 @@ class GatherDiskSpace implements Runnable {
         if (files.length > 0) { // if any previous folder
             Arrays.sort(files);
             if (files.length > 1) { // more than 2 date directory
-                utils.deleteRecursive(files[0]);
+                utils.deleteFolder(files[0]);
                 utils.logBoth("Disk", "Old folder deleted, space="+mPackagePath.getFreeSpace() / 1000L);
             } else {  // if this is only folder then remove some files within this directory
                 File[] subFiles = utils.getDirectoryList(files[0]);

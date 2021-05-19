@@ -155,15 +155,6 @@ class Utils {
         return dateFormat.format(new Date(milliSec));
     }
 
-    void deleteRecursive(File fileOrDirectory) {
-        if (fileOrDirectory.isDirectory()) {
-//            logOnly("Delete Old Folder ", fileOrDirectory.toString());
-            for (File child : fileOrDirectory.listFiles())
-                deleteRecursive(child);
-        }
-        fileOrDirectory.delete();
-    }
-
     void deleteOldFiles(File target, int days) {
 
         String oldDate = DATE_PREFIX+sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
@@ -173,10 +164,27 @@ class Utils {
         Collator myCollator = Collator.getInstance();
         for (File file : oldFiles) {
             String shortFileName = file.getName();
-            if (!shortFileName.substring(0,1).equals(".") && myCollator.compare(shortFileName, oldDate) < 0) {
-                deleteRecursive(file);
+            if (shortFileName.charAt(0) != '.' && myCollator.compare(shortFileName, oldDate) < 0) {
+                deleteFolder(file);
             }
         }
+    }
+
+    void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+//            logOnly("Delete Old Folder ", fileOrDirectory.toString());
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursive(child);
+        }
+        fileOrDirectory.delete();
+    }
+
+    void deleteFolder(File file) {
+        String deleteCmd = "rm -r " + file.toString();
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            runtime.exec(deleteCmd);
+        } catch (IOException e) { }
     }
 
     void deleteOldLogs() {
@@ -216,9 +224,9 @@ class Utils {
         });
     }
 
-    void displayCount(String text, int short_Long, int backColor) {
+    void displayCount(String text, int backColor) {
 
-        Toast toast = Toast.makeText(mContext, text, short_Long);
+        Toast toast = Toast.makeText(mContext, text, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
         View toastView = toast.getView();
 

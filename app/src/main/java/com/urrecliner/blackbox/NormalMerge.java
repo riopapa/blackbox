@@ -2,7 +2,6 @@ package com.urrecliner.blackbox;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.coremedia.iso.boxes.Container;
@@ -31,13 +30,13 @@ import static com.urrecliner.blackbox.Vars.gatherDiskSpace;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.nextNormalTime;
 import static com.urrecliner.blackbox.Vars.sdfTime;
 import static com.urrecliner.blackbox.Vars.utils;
 
 class NormalMerge {
 
     private static final String logID = "NormMerge";
+    static long nextNormalTime = 0;
 
     void merge() {
         gpsTracker.askLocation();

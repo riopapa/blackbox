@@ -100,17 +100,13 @@ public class Vars {
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
 
-    static long gpsUpdateTime = 0;
-    static long nextNormalTime = 0;
     static boolean viewFinder = true;
-    static boolean isCompassShown = false;
 
-    static CameraManager mCameraManager;
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;
     static CaptureRequest.Builder mCaptureRequestBuilder;
     static CameraCaptureSession mCaptureSession;
     static Surface recordSurface = null;
     static Surface photoSurface = null;
-    static Rect cropArea, cropBigger;
+    static Rect cropBigger;
 }

@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
 import android.os.SystemClock;
-import android.widget.Toast;
 
 import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT_SECONDS;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -40,7 +39,7 @@ class BeBackSoon extends AsyncTask<String, String, String> {
     }
     protected void onProgressUpdate(String... s) {
         String msg = mContext.getString(R.string.i_will_back) +"\n"+downCount;
-        utils.displayCount(msg, Toast.LENGTH_SHORT, Color.DKGRAY);
+        utils.displayCount(msg, Color.DKGRAY);
     }
 
     @Override

@@ -19,7 +19,6 @@ import java.nio.ByteBuffer;
 
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
-import static com.urrecliner.blackbox.Vars.mCameraManager;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -37,7 +36,7 @@ import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.videoMain;
 
 public class CameraSub {
-
+    CameraManager mCameraManager;
     String mCameraId = null;
     void setupCamera() {
         mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
@@ -197,7 +196,7 @@ public class CameraSub {
                     snapMapIdx = 0;
             }
         } catch (Exception e) {
-            utils.logOnly("img " + snapMapIdx, "image buffer short " + snapMapIdx);
+            utils.logBoth("img " + snapMapIdx, "image buffer short " + snapMapIdx);
         }
     };
 

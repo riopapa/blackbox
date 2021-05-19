@@ -160,8 +160,7 @@ class EventMerge {
                 vTextActiveCount.setText(text);
             });
 
-            String logID = "SnapShot";
-            utils.logBoth(logID, thisEventPath.getName());
+            utils.logBoth("Event", thisEventPath.getName());
         }
     }
 }
