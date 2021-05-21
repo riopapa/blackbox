@@ -52,7 +52,7 @@ class SnapShotSave {
                 }
             }
             if (phase == 4)
-                utils.logBoth("snapshot", "finished");
+                utils.logBoth("snapshot", path2Write.getName());
         });
         th.start();
     }

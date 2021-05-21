@@ -3,6 +3,7 @@ package com.urrecliner.blackbox;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -10,12 +11,14 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import androidx.annotation.NonNull;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
@@ -57,6 +60,7 @@ import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.startStopExit;
+import static com.urrecliner.blackbox.Vars.suffix;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -99,12 +103,22 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Toast.makeText(getApplicationContext(),"Rotate Phone to Landscape, pls ",Toast.LENGTH_LONG).show();
-            return;
-        }
-        askPermission();
         setContentView(R.layout.main_activity);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_PERMISSIONS);
+            Permission.ask(this, this, info);
+        } catch (Exception e) {
+            Log.e("Permission", "No Permission "+e.toString());
+        }
+        if (Build.MODEL.equals("SM-G950N"))
+            suffix = "8";
+        else if (Build.MODEL.equals("SM-G965N"))
+            suffix = "9";
+
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 7);
 //        utils.deleteOldFiles(mPackageEventJpgPath, 5);
@@ -286,7 +300,7 @@ public class MainActivity extends Activity {
 //        cameraZoomIn.schedule(cameraTask, 100, 100);
 
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
-        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME));
+        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+suffix);
         utils.readyPackageFolder(thisEventJpgPath);
 
         new Timer().schedule(new TimerTask() {
@@ -322,7 +336,7 @@ public class MainActivity extends Activity {
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
-                ev.merge(startTime, thisEventJpgPath);
+                ev.merge(startTime);
             }
         }, INTERVAL_EVENT * 12 / 10);
 
@@ -419,68 +433,4 @@ public class MainActivity extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-// ↓ ↓ ↓ P E R M I S S I O N   RELATED /////// ↓ ↓ ↓ ↓  BEST CASE
-private final static int ALL_PERMISSIONS_RESULT = 101;
-    ArrayList permissionsToRequest;
-    ArrayList<String> permissionsRejected = new ArrayList<>();
-    String [] permissions;
-
-    private void askPermission() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_PERMISSIONS);
-            permissions = info.requestedPermissions;//This array contain
-        } catch (Exception e) {
-            utils.logE("Permission", "Not done", e);
-        }
-
-        permissionsToRequest = findUnAskedPermissions();
-        if (permissionsToRequest.size() != 0) {
-            requestPermissions((String[]) permissionsToRequest.toArray(new String[0]),
-//            requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]),
-                    ALL_PERMISSIONS_RESULT);
-        }
-    }
-
-    private ArrayList findUnAskedPermissions() {
-        ArrayList <String> result = new ArrayList<>();
-        for (String perm : permissions) if (hasPermission(perm)) result.add(perm);
-        return result;
-    }
-    private boolean hasPermission(@NonNull String permission) {
-        return (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == ALL_PERMISSIONS_RESULT) {
-            for (Object perms : permissionsToRequest) {
-                if (hasPermission((String) perms)) {
-                    permissionsRejected.add((String) perms);
-                }
-            }
-            if (permissionsRejected.size() > 0) {
-                if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
-                    String msg = "These permissions are mandatory for the application. Please allow access.";
-                    showDialog(msg);
-                }
-            }
-            else
-                Toast.makeText(mContext, "Permissions not granted.", Toast.LENGTH_LONG).show();
-        }
-    }
-    private void showDialog(String msg) {
-        showMessageOKCancel(msg,
-                (dialog, which) -> requestPermissions(permissionsRejected.toArray(
-                        new String[0]), ALL_PERMISSIONS_RESULT));
-    }
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(mActivity)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
-    }
-
-// ↑ ↑ ↑ ↑ P E R M I S S I O N    RELATED /////// ↑ ↑ ↑
 }

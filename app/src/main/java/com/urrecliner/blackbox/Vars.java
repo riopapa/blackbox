@@ -85,7 +85,7 @@ public class Vars {
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int DELAY_AUTO_RECORDING = 5000;
+    final static int DELAY_AUTO_RECORDING = 3000;
     final static int DELAY_WAIT_EXIT_SECONDS = 3;
     static Handler mBackgroundImage;
     static Size mPreviewSize, mVideoSize, mImageSize;
@@ -109,4 +109,5 @@ public class Vars {
     static Surface recordSurface = null;
     static Surface photoSurface = null;
     static Rect cropBigger;
+    static String suffix;
 }
