@@ -169,16 +169,6 @@ class Utils {
             }
         }
     }
-
-    void deleteRecursive(File fileOrDirectory) {
-        if (fileOrDirectory.isDirectory()) {
-//            logOnly("Delete Old Folder ", fileOrDirectory.toString());
-            for (File child : fileOrDirectory.listFiles())
-                deleteRecursive(child);
-        }
-        fileOrDirectory.delete();
-    }
-
     void deleteFolder(File file) {
         String deleteCmd = "rm -r " + file.toString();
         Runtime runtime = Runtime.getRuntime();
@@ -186,6 +176,15 @@ class Utils {
             runtime.exec(deleteCmd);
         } catch (IOException e) { }
     }
+
+//    void deleteRecursive(File fileOrDirectory) {
+//        if (fileOrDirectory.isDirectory()) {
+////            logOnly("Delete Old Folder ", fileOrDirectory.toString());
+//            for (File child : fileOrDirectory.listFiles())
+//                deleteRecursive(child);
+//        }
+//        fileOrDirectory.delete();
+//    }
 
     void deleteOldLogs() {
         final int days = 10;

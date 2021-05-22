@@ -11,7 +11,6 @@ import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Message;
 
 import android.util.Log;
@@ -22,6 +21,9 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.urrecliner.blackbox.utility.DiskSpace;
+import com.urrecliner.blackbox.utility.Permission;
 
 import java.io.File;
 import java.util.Timer;
@@ -35,12 +37,10 @@ import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
-import static com.urrecliner.blackbox.Vars.gatherDiskSpace;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
@@ -121,7 +121,9 @@ public class MainActivity extends Activity {
 //        utils.deleteOldFiles(mPackageWorkingPath, -3);
         cameraSub = new CameraSub();
         prepareMain();
-        gatherDiskSpace.run();
+        String msg = new DiskSpace().squeeze(mPackageNormalPath);
+        if (msg.length() > 0)
+            utils.logBoth("DISK", msg);
     }
 
     private void prepareMain() {
@@ -169,7 +171,7 @@ public class MainActivity extends Activity {
         if (!mPackageNormalDatePath.exists())
             mPackageNormalDatePath.mkdir();
         utils.beepsInitiate();
-        startBackgroundThread();
+//        new StartBackground().run();
 
         framePreview.setOnClickListener(v -> {
             viewFinder = !viewFinder;
@@ -376,13 +378,6 @@ public class MainActivity extends Activity {
         utils.readyPackageFolder(mPackageEventJpgPath);
         utils.readyPackageFolder(mPackageNormalPath);
         utils.readyPackageFolder(mPackageNormalDatePath);
-    }
-
-    private void startBackgroundThread() {
-        HandlerThread mBackgroundHandlerThread;
-        mBackgroundHandlerThread = new HandlerThread("BlackBox");
-        mBackgroundHandlerThread.start();
-        mBackgroundImage = new Handler(mBackgroundHandlerThread.getLooper());
     }
 
     static long keyOldTime = 0, keyNowTime = 0;

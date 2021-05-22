@@ -10,6 +10,7 @@ import com.googlecode.mp4parser.authoring.Track;
 import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
+import com.urrecliner.blackbox.utility.DiskSpace;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,9 +27,10 @@ import java.util.List;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
-import static com.urrecliner.blackbox.Vars.gatherDiskSpace;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
+import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.sdfTime;
 import static com.urrecliner.blackbox.Vars.utils;
@@ -77,7 +79,8 @@ class NormalMerge {
                 }
                 assert date != null;
                 nextNormalTime = date.getTime() - 2000;
-                outputFile = new File(mPackageNormalDatePath, DATE_PREFIX+beginTimeS + " x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
+                outputFile = new File(mPackageNormalDatePath, DATE_PREFIX+beginTimeS + SUFFIX
+                        +" x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
             }
             return beginTimeS;
@@ -146,7 +149,9 @@ class NormalMerge {
 
         @Override
         protected void onPostExecute(String doI ) {
-            gatherDiskSpace.run();
+            String msg = new DiskSpace().squeeze(mPackageNormalPath);
+            if (msg.length() > 0)
+                utils.logBoth("DISK", msg);
         }
     }
 }

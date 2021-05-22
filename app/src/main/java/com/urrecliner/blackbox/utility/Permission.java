@@ -1,6 +1,5 @@
-package com.urrecliner.blackbox;
+package com.urrecliner.blackbox.utility;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,20 +12,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import static com.urrecliner.blackbox.Vars.utils;
-
-class Permission extends AppCompatActivity {
+public class Permission extends AppCompatActivity {
 
     private static final int MULTIPLE_PERMISSION = 10235;
 
-    static void ask(Activity activity, Context context, PackageInfo info) {
+    public static void ask(Activity activity, Context context, PackageInfo info) {
         String [] permissions = info.requestedPermissions;
         if (!hasPermissions(context, permissions)) {
             ActivityCompat.requestPermissions(activity, permissions, MULTIPLE_PERMISSION);
         }
     }
 
-    public static boolean hasPermissions(Context context, String... permissions) {
+    static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
             for (String permission : permissions) {
                 if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {

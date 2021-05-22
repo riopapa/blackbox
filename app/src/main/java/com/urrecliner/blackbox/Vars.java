@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
@@ -35,7 +34,6 @@ public class Vars {
     static VideoMain videoMain = new VideoMain();
     static PhotoCapture photoCapture = new PhotoCapture();
     static StartStopExit startStopExit = new StartStopExit();
-    static GatherDiskSpace gatherDiskSpace = new GatherDiskSpace();
 
     static OBDAccess obdAccess = new OBDAccess();
 //    static DirectionSensor directionSensor = new DirectionSensor();
@@ -95,7 +93,7 @@ public class Vars {
     static int speedInt = 0;
 
     final static long INTERVAL_EVENT = 14 * 1000;
-    final static int MAX_IMAGES_SIZE = 130;
+    final static int MAX_IMAGES_SIZE = 160;
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;

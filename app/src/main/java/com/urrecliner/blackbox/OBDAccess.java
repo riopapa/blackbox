@@ -23,6 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
@@ -179,11 +180,8 @@ class OBDAccess {
     private Timer obdTimer = null;
     private boolean noPreview = false;
     private void loopAskOBDSpeed() {
-//        utils.logBoth(logID, "start get OBD Speed");
-//        MainActivity.focusChange(speedInt);
-        String model = Build.MODEL;
-        switch (model) {
-            case "SM-G950N":
+        switch (SUFFIX) {
+            case "8":
                 try {
                     bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
                     bSocket.connect();
@@ -191,7 +189,7 @@ class OBDAccess {
                     utils.logBoth("loopAskOBDSpeed connect Exception", e.toString());
                 }
                 break;
-            case "SM-G965N":
+            case "9":
                 break;
         }
         speedCommand = new SpeedCommand();

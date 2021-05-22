@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.utils;
 
 public class NewAppWidget extends AppWidgetProvider {

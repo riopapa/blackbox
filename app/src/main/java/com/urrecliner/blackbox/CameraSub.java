@@ -154,7 +154,6 @@ public class CameraSub {
                 }
                 mediaRecorder.start();
             }
-
         }
 
         @Override
