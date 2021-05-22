@@ -8,7 +8,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
-import android.os.Build;
 import android.view.Surface;
 
 import java.io.File;
@@ -32,7 +31,7 @@ import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.photoSurface;
 import static com.urrecliner.blackbox.Vars.recordSurface;
-import static com.urrecliner.blackbox.Vars.suffix;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
@@ -124,11 +123,11 @@ public class VideoMain {
         final int VIDEO_FRAME_RATE;
         final int VIDEO_ENCODING_RATE;
         final long VIDEO_ONE_WORK_FILE_SIZE; // xMb
-        if (suffix.equals("8")) {
+        if (SUFFIX.equals("8")) {
             VIDEO_FRAME_RATE = 60;
             VIDEO_ENCODING_RATE = 45*1000*1000;
             VIDEO_ONE_WORK_FILE_SIZE = 10*1024*1024;
-        } else if (suffix.equals("9")) {
+        } else if (SUFFIX.equals("9")) {
             VIDEO_FRAME_RATE = 30;
             VIDEO_ENCODING_RATE = 35*1000*1000;
             VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;

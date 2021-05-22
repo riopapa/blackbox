@@ -31,7 +31,7 @@ import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.suffix;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.vTextCountEvent;
@@ -74,7 +74,7 @@ class EventMerge {
             } else {
                 Arrays.sort(files2Merge);
                 endTimeS = files2Merge[files2Merge.length - 2].getName();
-                outputFile = new File(mPackageEventPath, DATE_PREFIX+beginTimeS + suffix
+                outputFile = new File(mPackageEventPath, DATE_PREFIX+beginTimeS + SUFFIX
                         + " x" + latitude + "," + longitude + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
                 MediaPlayer mp = new MediaPlayer();

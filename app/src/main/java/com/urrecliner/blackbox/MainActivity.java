@@ -1,12 +1,9 @@
 package com.urrecliner.blackbox;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -16,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import androidx.annotation.NonNull;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -28,7 +24,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -60,7 +55,7 @@ import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.startStopExit;
-import static com.urrecliner.blackbox.Vars.suffix;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -115,9 +110,9 @@ public class MainActivity extends Activity {
             Log.e("Permission", "No Permission "+e.toString());
         }
         if (Build.MODEL.equals("SM-G950N"))
-            suffix = "8";
+            SUFFIX = "8";
         else if (Build.MODEL.equals("SM-G965N"))
-            suffix = "9";
+            SUFFIX = "9";
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 7);
@@ -300,7 +295,7 @@ public class MainActivity extends Activity {
 //        cameraZoomIn.schedule(cameraTask, 100, 100);
 
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
-        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+suffix);
+        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
         utils.readyPackageFolder(thisEventJpgPath);
 
         new Timer().schedule(new TimerTask() {

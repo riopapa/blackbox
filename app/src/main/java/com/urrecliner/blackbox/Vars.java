@@ -109,5 +109,5 @@ public class Vars {
     static Surface recordSurface = null;
     static Surface photoSurface = null;
     static Rect cropBigger;
-    static String suffix;
+    static String SUFFIX;
 }
