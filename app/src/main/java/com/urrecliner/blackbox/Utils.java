@@ -93,8 +93,9 @@ class Utils {
         return errors.toString();
     }
 
-    static private final String []omits = { "performResume", "performCreate", "dispatch", "callActivityOnResume", "access$",
-            "handleReceiver", "handleMessage", "dispatchKeyEvent", "moveToState", "mainLoop"};
+    static private final String []omits = { "performResume", "performCreate", "dispatch",
+            "callActivityOnResume", "access$", "handleReceiver", "handleMessage",
+            "dispatchKeyEvent", "moveToState", "mainLoop"};
     private String traceName (String s) {
         for (String o : omits) {
             if (s.contains(o)) return "";
@@ -192,14 +193,14 @@ class Utils {
 
         String oldDate = LOG_PREFIX + sdfDate.format(System.currentTimeMillis() - days*24*60*60*1000L);
         File[] files = mPackageLogPath.listFiles();
-        if (files != null) {
-            Collator myCollator = Collator.getInstance();
-            for (File file : files) {
-                String shortFileName = file.getName();
-                if (myCollator.compare(shortFileName, oldDate) < 0) {
-                    if (!file.delete())
-                        Log.e("file", "Delete Error " + file);
-                }
+        if (files == null)
+            return;
+        Collator myCollator = Collator.getInstance();
+        for (File file : files) {
+            String shortFileName = file.getName();
+            if (myCollator.compare(shortFileName, oldDate) < 0) {
+                if (!file.delete())
+                    Log.e("file", "Delete Error " + file);
             }
         }
     }

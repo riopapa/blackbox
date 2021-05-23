@@ -86,7 +86,7 @@ public class VideoMain {
         }
     }
 
-    final float CROP_ZOOM = 1.1f, CROP_ZOOM_BIGGER = 1.9f;
+    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 1.9f;
     private CameraCaptureSession.StateCallback cameraStateCallBack() {
         return new CameraCaptureSession.StateCallback() {
             @Override
@@ -109,7 +109,7 @@ public class VideoMain {
 
     private Rect calcPhotoZoom(float zoom) {
         int centerX = mImageSize.getWidth() / 2;
-        int centerY = mImageSize.getHeight() / 2;
+        int centerY = mImageSize.getHeight() / 2 + (int)(0.15f *(mImageSize.getHeight()) * zoom / 1.2f );
         int deltaX  = (int)((0.5f * mImageSize.getWidth()) / zoom);
         int deltaY  = (int)((0.5f * mImageSize.getHeight()) / zoom);
         Rect rect = new Rect();
@@ -129,7 +129,7 @@ public class VideoMain {
             VIDEO_ONE_WORK_FILE_SIZE = 10*1024*1024;
         } else if (SUFFIX.equals("9")) {
             VIDEO_FRAME_RATE = 30;
-            VIDEO_ENCODING_RATE = 35*1000*1000;
+            VIDEO_ENCODING_RATE = 45*1000*1000;
             VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
         } else {
             VIDEO_FRAME_RATE = 30;

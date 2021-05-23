@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.utils;
 
@@ -39,9 +40,9 @@ class SnapShotSave {
         }
         prefixTime = path2Write.toString();
         prefixTime = prefixTime.substring(prefixTime.lastIndexOf(" "));
-        prefixTime = "C" + prefixTime.substring(1,3) + prefixTime.substring(4,6) + "_";
+        prefixTime = "C" + prefixTime.substring(1,3) + prefixTime.substring(4,6) + SUFFIX + "_";
         Thread th = new Thread(() -> {
-            startBias = phase * 100;
+            startBias = phase * MAX_IMAGES_SIZE;
             for (int i = 0; i < maxSize; i++) {
                 byte [] imageBytes = jpgBytes[i];
                 if (imageBytes != null && imageBytes.length > 1) {

@@ -195,7 +195,7 @@ public class CameraSub {
                     snapMapIdx = 0;
             }
         } catch (Exception e) {
-            utils.logBoth("img " + snapMapIdx, "image buffer short " + snapMapIdx);
+            utils.logBoth("img ", "buffer short " + snapMapIdx);
         }
     };
 

@@ -65,7 +65,7 @@ class NormalMerge {
             File []files2Merge;
             files2Merge = utils.getDirectoryList(mPackageWorkingPath);
             if (files2Merge.length < 5) {
-                publishProgress("<<file[] too short", "" +files2Merge.length);
+                publishProgress("norma", "files short, len=" +files2Merge.length);
             }
             else {
                 Arrays.sort(files2Merge);
@@ -99,7 +99,7 @@ class NormalMerge {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
-                        utils.logE(logID, "<mergeOne~> ", e);
+                        utils.logBoth("norm", "<mergeOne~> ");
                     }
                 }
             }
