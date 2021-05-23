@@ -94,12 +94,12 @@ class StartStopExit {
     void stopVideo() {
         try {
             mIsRecording = false;
+            timerSnapCamera.cancel();
             vBtnRecord.setImageResource(R.mipmap.off_recording);
             mediaRecorder.stop();
             mediaRecorder.reset();
-            timerSnapCamera.cancel();
         } catch (Exception e) {
-            utils.logE(logID, "Stop", e);
+            utils.logE(logID, "Stop 1", e);
         }
         try {
 //            videoUtils.startPreview();
@@ -113,13 +113,13 @@ class StartStopExit {
 
     void exitBlackBoxApp() {
         mExitApplication = true;
-        String s = "\nExit\nBlackBox";
-        utils.customToast(s, Toast.LENGTH_SHORT, Color.BLACK);
+//        String s = "\nExit\nBlackBox";
+//        utils.customToast(s, Toast.LENGTH_SHORT, Color.BLACK);
         if (mIsRecording)
             stopVideo();
         displayTime.stop();
+        utils.logOnly(logID,"Exit App");
         utils.beepOnce(8,0.3f); // Exit BlackBox
-        utils.logOnly(logID,s);
         mActivity.finish();
         mActivity.finishAffinity();
         new Timer().schedule(new TimerTask() {

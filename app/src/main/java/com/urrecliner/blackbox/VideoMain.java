@@ -8,6 +8,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
+import android.util.Log;
 import android.view.Surface;
 
 import java.io.File;
@@ -86,7 +87,6 @@ public class VideoMain {
         }
     }
 
-    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 1.9f;
     private CameraCaptureSession.StateCallback cameraStateCallBack() {
         return new CameraCaptureSession.StateCallback() {
             @Override
@@ -107,14 +107,16 @@ public class VideoMain {
         };
     }
 
+    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 1.9f;
     private Rect calcPhotoZoom(float zoom) {
         int centerX = mImageSize.getWidth() / 2;
-        int centerY = mImageSize.getHeight() / 2 + (int)(0.15f *(mImageSize.getHeight()) * zoom / 1.2f );
+        int centerY = mImageSize.getHeight() / 2 + (int)((mImageSize.getHeight()) * zoom / 15f);
         int deltaX  = (int)((0.5f * mImageSize.getWidth()) / zoom);
         int deltaY  = (int)((0.5f * mImageSize.getHeight()) / zoom);
         Rect rect = new Rect();
         rect.set(centerX - deltaX, centerY - deltaY,
                 centerX + deltaX, centerY + deltaY);
+        Log.w("Y "+mImageSize.getHeight(),(centerY-deltaY)+" x "+(centerY+deltaY));
         return rect;
     }
 
