@@ -115,8 +115,8 @@ public class MainActivity extends Activity {
             SUFFIX = "9";
 
         readyBlackBoxFolders();
-        utils.deleteOldFiles(mPackageNormalPath, 7);
-//        utils.deleteOldFiles(mPackageEventJpgPath, 5);
+        utils.deleteOldFiles(mPackageNormalPath, (SUFFIX.startsWith("9")) ? 2:6);
+        utils.deleteOldFiles(mPackageEventJpgPath, 4);
         utils.deleteOldLogs();
 //        utils.deleteOldFiles(mPackageWorkingPath, -3);
         cameraSub = new CameraSub();
