@@ -38,6 +38,12 @@ import static com.urrecliner.blackbox.Vars.videoMain;
 public class CameraSub {
     CameraManager mCameraManager;
     String mCameraId = null;
+    void readyCamera() {
+        setupCamera();
+        connectCamera();
+    }
+
+
     void setupCamera() {
         mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
         try {
@@ -147,11 +153,11 @@ public class CameraSub {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
             if(mIsRecording) {
-                try {
+//                try {
                     videoMain.prepareRecord();
-                } catch (CameraAccessException e) {
-                    e.printStackTrace();
-                }
+//                } catch (CameraAccessException e) {
+//                    e.printStackTrace();
+//                }
                 mediaRecorder.start();
             }
         }

@@ -1,10 +1,8 @@
 package com.urrecliner.blackbox;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Timer;
@@ -32,18 +30,18 @@ class StartStopExit {
         mIsRecording = true;
         vBtnRecord.setImageResource(R.mipmap.on_recording);
 //        utils.logBoth(logID, "Step 1 prepareRecord");
-        try {
+//        try {
             videoMain.prepareRecord();
-        } catch (Exception e) {
-            reRunApplication("Prepare Error", e);
-        }
-        try {
+//        } catch (Exception e) {
+//            reRunApplication("Prepare Error", e);
+//        }
+//        try {
             mediaRecorder.start();
-        } catch (Exception e) {
-            reRunApplication("Start Error", e);
-        }
+//        } catch (Exception e) {
+//            reRunApplication("Start Error", e);
+//        }
         try {
-            snapBiggerCamera();
+            startSnapBigShot();
             startNormal();
         } catch (Exception e) {
             reRunApplication("Start Camera, Normal Error", e);
@@ -63,7 +61,7 @@ class StartStopExit {
     };
     private final Timer timerSnapCamera = new Timer();
     final long BIGGER_SNAPSHOT_INTERVAL = 160;
-    private void snapBiggerCamera() {
+    private void startSnapBigShot() {
         snapMapIdx = 0;
         final TimerTask cameraTask = new TimerTask() {
             @Override

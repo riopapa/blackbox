@@ -44,7 +44,8 @@ public class VideoMain {
     private SurfaceTexture surface_Preview = null;
     private Surface previewSurface = null;
     Rect cropArea;
-    void prepareRecord() throws CameraAccessException {
+
+    void prepareRecord() {
 
         if (isPrepared)
             return;
@@ -56,7 +57,11 @@ public class VideoMain {
         } catch (Exception e) {
             utils.logE(logID, "preView AA ///", e);
         }
-        mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+        try {
+            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
         readySurfaces();
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_ON);

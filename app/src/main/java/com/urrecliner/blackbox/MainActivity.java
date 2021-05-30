@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
@@ -12,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
@@ -20,22 +18,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.Toast;
-
 import com.urrecliner.blackbox.utility.DiskSpace;
 import com.urrecliner.blackbox.utility.Permission;
-
-import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
@@ -53,7 +43,6 @@ import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.obdAccess;
 import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
-import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.startStopExit;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.utils;
@@ -77,12 +66,12 @@ public class MainActivity extends Activity {
 
     private static final String logID = "Main";
     CameraSub cameraSub;
-    boolean surfaceReady = false;
+//    boolean surfaceReady = false;
 
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            readyCamera();
+//            cameraSub.readyCamera();
         }
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
@@ -100,6 +89,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        mContext = this;
+        mActivity = this;
 
 //        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
@@ -109,8 +100,14 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             Log.e("Permission", "No Permission "+e.toString());
         }
-        if (Build.MODEL.equals("SM-G950N"))
+
+        if (Build.MODEL.equals("SM-G950N")) {
             SUFFIX = "8";
+//            String external = utils.getExternalStoragePath(this, true);
+//            utils.logOnly("ext",external);
+//            mPackageEventPath = new File(external,"eventX");
+//            mPackageEventJpgPath = new File(mPackageEventPath, "eventJPG");
+        }
         else if (Build.MODEL.equals("SM-G965N"))
             SUFFIX = "9";
 
@@ -127,8 +124,7 @@ public class MainActivity extends Activity {
     }
 
     private void prepareMain() {
-        mActivity = this;
-        mContext = this;
+
         gpsTracker = new GPSTracker(mContext);
         gpsTracker.init();
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
@@ -168,17 +164,14 @@ public class MainActivity extends Activity {
             new BeBackSoon().execute("x");
         });
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
-        if (!mPackageNormalDatePath.exists())
-            mPackageNormalDatePath.mkdir();
-        utils.beepsInitiate();
-//        new StartBackground().run();
+        utils.readyPackageFolder(mPackageNormalDatePath);
 
         framePreview.setOnClickListener(v -> {
             viewFinder = !viewFinder;
             vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
         });
         vPreviewView.post(() -> {
-            readyCamera();
+            cameraSub.readyCamera();
             vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
             int width = vPreviewView.getWidth();
             int height = vPreviewView.getHeight();
@@ -195,7 +188,7 @@ public class MainActivity extends Activity {
 //        DisplayTime displayTime = new DisplayTime();
         displayTime.run();
         displayBattery.init();
-        obdAccess.prepare();
+        obdAccess.start();
         showInitialValues();
 //        SystemClock.sleep(delayedStart);
 
@@ -218,131 +211,12 @@ public class MainActivity extends Activity {
         }
     };
     final Handler eventHandler = new Handler() {
-        public void handleMessage(Message msg) { eventRecording();
+        public void handleMessage(Message msg) { new EventRecord().start();;
         }
     };
 
-    static float save_focus = -1f;    // 0: infinite 10: nearest
-    static void focusChange(int speed) {
-//        utils.logBoth("nearSwitch","switched to NEAR");
-//        float focus;
-//        if (speed < 5)
-//            focus = 9f;
-//        else if (speed < 10)
-//            focus = 8f;
-////        else if (speed < 20)
-////            focus = 8f;
-////        else if (speed < 30)
-////            focus = 6f;
-////        else if (speed < 40)
-////            focus = 5f;
-//        else
-//            focus = 1f;
-//        if (focus != save_focus) {
-//            if (focus == 1f) {
-////                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, 0f);
-//                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_AUTO);
-//                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-//            } else {
-//                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF);
-//                mCaptureRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, focus);
-//            }
-//            save_focus = focus;
-//        }
-    }
-
-
-//    static void control_Exposure(int percent) {
-//            int brightness = (int) (minCompensationRange + (maxCompensationRange - minCompensationRange) * (percent / 100f));
-//        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_EXPOSURE_COMPENSATION, brightness);
-//        }
-
-//        private void applySettings() {
-//            captureSession.setRepeatingRequest(previewRequestBuilder.build(), null, null);
-//        }
-
-//    }
-
-    void readyCamera() {
-        if (!surfaceReady) {
-            cameraSub.setupCamera();
-            cameraSub.connectCamera();
-            surfaceReady = true;
-        }
-    }
-
     void startEventSaving() {
         eventHandler.sendEmptyMessage(0);
-    }
-
-    void eventRecording() {
-
-        if (!mIsRecording) return;
-        utils.logBoth(logID,"Event Starting ...");
-
-//        cameraZoomIn = new Timer();
-//        zoomFactor = 1.818f;
-//        TimerTask cameraTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (zoomFactor < 2.8f) {
-//                    utils.logOnly("zoom","change factor "+zoomFactor);
-//                    videoUtils.buildCameraSession(zoomFactor);
-//                    zoomFactor += 0.1f;
-//                }
-//                else
-//                    cameraZoomIn.cancel();
-//            }
-//        };
-//        cameraZoomIn.schedule(cameraTask, 100, 100);
-
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
-        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
-        utils.readyPackageFolder(thisEventJpgPath);
-
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                SnapShotSave snapShotSave1 = new SnapShotSave();
-                snapShotSave1.startSave(thisEventJpgPath, snapMapIdx, 1);
-            }
-        }, 10);
-
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                SnapShotSave snapShotSave2 = new SnapShotSave();
-                snapShotSave2.startSave(thisEventJpgPath, snapMapIdx, 2);
-            }
-        }, INTERVAL_EVENT * 5 / 10);
-
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                SnapShotSave snapShotSave3 = new SnapShotSave();
-                snapShotSave3.startSave(thisEventJpgPath, snapMapIdx,3);
-            }
-        }, INTERVAL_EVENT * 9 / 10);
-
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                SnapShotSave snapShotSave3 = new SnapShotSave();
-                snapShotSave3.startSave(thisEventJpgPath, snapMapIdx,4);
-            }
-        }, INTERVAL_EVENT * 13 / 10);
-
-        gpsTracker.askLocation();
-
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                EventMerge ev = new EventMerge();
-                ev.merge(startTime);
-            }
-        }, INTERVAL_EVENT * 12 / 10);
-
-        activeEventCount++;
-        mActivity.runOnUiThread(() -> {
-            String text = " "+activeEventCount+" ";
-            vTextActiveCount.setText(text);
-            utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_LONG, Color.RED);
-        });
     }
 
     private void showInitialValues() {
@@ -354,11 +228,9 @@ public class MainActivity extends Activity {
     }
 
     private void setViewVars() {
-//        vTextureView = findViewById(R.id.textureView);
         vTextDate = findViewById(R.id.textDate);
         vTextTime = findViewById(R.id.textTime);
         vTextSpeed = findViewById(R.id.textSpeed);
-//        vTodayKms = findViewById(R.id.obdKms);
         vKm = findViewById(R.id.textKm);
         vTextLogInfo = findViewById(R.id.textLogInfo);
         vTextCountEvent = findViewById(R.id.textCountEvent);
@@ -371,13 +243,26 @@ public class MainActivity extends Activity {
     }
 
     private void readyBlackBoxFolders() {
+
         utils.readyPackageFolder(mPackagePath);
-        utils.readyPackageFolder(mPackageLogPath);
-        utils.readyPackageFolder(mPackageWorkingPath);
         utils.readyPackageFolder(mPackageEventPath);
         utils.readyPackageFolder(mPackageEventJpgPath);
+        utils.readyPackageFolder(mPackageLogPath);
+        utils.readyPackageFolder(mPackageWorkingPath);
         utils.readyPackageFolder(mPackageNormalPath);
         utils.readyPackageFolder(mPackageNormalDatePath);
+//        File aExtDcimDir = new File(utils.getExternalStoragePath(mContext),Environment.DIRECTORY_DCIM);
+//
+//        mPackageEventPath = new File(aExtDcimDir,"event");
+//
+//        Uri uri = Uri.fromFile(mPackageEventPath);
+//        openDirectory(uri);
+
+//        final int takeFlags = Intent.getFlags()
+//                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//// Check for the freshest data.
+//        getContentResolver().takePersistableUriPermission(uri, takeFlags);
     }
 
     static long keyOldTime = 0, keyNowTime = 0;

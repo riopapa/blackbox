@@ -1,9 +1,14 @@
 package com.urrecliner.blackbox;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -16,6 +21,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +36,11 @@ import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
+import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
+
+import android.os.storage.StorageManager;
+import java.lang.reflect.Method;
 
 class Utils {
     private final String LOG_PREFIX = "log_";
@@ -38,7 +49,8 @@ class Utils {
 
     public void readyPackageFolder (File dir){
         try {
-            if (!dir.exists()) dir.mkdirs();
+            if (!dir.exists() && !dir.mkdirs())
+                Log.e("make dir", "Error");
         } catch (Exception e) {
             Log.e("creating Folder error", dir + "_" + e.toString());
         }
@@ -320,6 +332,64 @@ class Utils {
     }
     private void beepSound(int soundId, float volume) {
         soundPool.play(soundNbr[soundId], volume, volume, 1, 0, 1f);
+    }
+
+    String getExternalStoragePath(Context context) {
+
+        StorageManager mStorageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+        Class<?> storageVolumeClazz = null;
+        try {
+            storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
+            Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
+            Method getPath = storageVolumeClazz.getMethod("getPath");
+            Method isRemovable = storageVolumeClazz.getMethod("isRemovable");
+            Object result = getVolumeList.invoke(mStorageManager);
+            final int length = Array.getLength(result);
+            for (int i = 0; i < length; i++) {
+                Object storageVolumeElement = Array.get(result, i);
+                String path = (String) getPath.invoke(storageVolumeElement);
+                boolean removable = (Boolean) isRemovable.invoke(storageVolumeElement);
+                if (removable) {
+                    return path;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    final int DIRECTORY_REQUEST = 101;
+    public void openDirectory(Uri uriToLoad) {
+        // Choose a directory using the system's file picker.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+
+        // Provide read access to files and sub-directories in the user-selected
+        // directory.
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        // Optionally, specify a URI for the directory that should be opened in
+        // the system file picker when it loads.
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
+
+        mActivity.startActivityForResult(intent, DIRECTORY_REQUEST);
+    }
+
+//    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent resultData) {
+        if (requestCode == DIRECTORY_REQUEST
+                && resultCode == Activity.RESULT_OK) {
+            // The result data contains a URI for the document or directory that
+            // the user selected.
+            Uri uri = null;
+            if (resultData != null) {
+                uri = resultData.getData();
+                utils.logOnly("uri",uri.toString());
+                // Perform operations on the document using its URI.
+            }
+        }
     }
 
 }

@@ -48,7 +48,7 @@ class OBDAccess {
 //    private ObdCommand distanceSinceCCCommand = null;
 //    private ObdCommand loadCommand = new LoadCommand();
 
-    void prepare() {
+    void start() {
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if(btAdapter == null){
             Toast.makeText(Vars.mContext, "Device doesn't support Bluetooth", Toast.LENGTH_LONG).show();
