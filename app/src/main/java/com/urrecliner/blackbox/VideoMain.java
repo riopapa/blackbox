@@ -115,7 +115,7 @@ public class VideoMain {
     final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 1.6f;
     private Rect calcPhotoZoom(float zoom) {
         int centerX = mImageSize.getWidth() / 2;
-        int centerY = mImageSize.getHeight() / 2 + (int)((mImageSize.getHeight()) * zoom / 13f);
+        int centerY = mImageSize.getHeight() / 2 + (int)((mImageSize.getHeight()) * zoom / 18f);
         int deltaX  = (int)((0.5f * mImageSize.getWidth()) / zoom);
         int deltaY  = (int)((0.5f * mImageSize.getHeight()) / zoom);
         Rect rect = new Rect();
@@ -130,7 +130,11 @@ public class VideoMain {
         final int VIDEO_FRAME_RATE;
         final int VIDEO_ENCODING_RATE;
         final long VIDEO_ONE_WORK_FILE_SIZE; // xMb
-        if (SUFFIX.equals("8")) {
+        if (SUFFIX.equals("0")) {   //LGE LM-G710N
+            VIDEO_FRAME_RATE = 30;
+            VIDEO_ENCODING_RATE = 45 * 1000 * 1000;
+            VIDEO_ONE_WORK_FILE_SIZE = 15 * 1024 * 1024;
+        } else if (SUFFIX.equals("8")) {
             VIDEO_FRAME_RATE = 60;
             VIDEO_ENCODING_RATE = 45*1000*1000;
             VIDEO_ONE_WORK_FILE_SIZE = 10*1024*1024;

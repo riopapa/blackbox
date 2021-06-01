@@ -110,6 +110,10 @@ public class MainActivity extends Activity {
         }
         else if (Build.MODEL.equals("SM-G965N"))
             SUFFIX = "9";
+        else if (Build.MODEL.equals("LM-G710N"))
+            SUFFIX = "0";
+        else
+            utils.logBoth("Model", Build.MODEL);
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, (SUFFIX.startsWith("9")) ? 2:6);

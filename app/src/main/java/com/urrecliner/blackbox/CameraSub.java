@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import java.nio.ByteBuffer;
 
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
@@ -75,14 +76,14 @@ public class CameraSub {
 
     private void setCameraSize(StreamConfigurationMap map) {
 
-        String model = Build.MODEL;
+//        String model = Build.MODEL;
 //        utils.logBoth(logID, "CamSize on "+model);
 //        dumpVariousCameraSizes(map);
         map.getOutputFormats();
 
-        switch (model) {
-            case "SM-G950N":
-            case "SM-G965N":
+        switch (SUFFIX) {
+            case "8":
+            case "9":
             /* galaxy s8
             4032x3024 1.3 , 4032x2268 1.8 , 3024x3024 1.0 , 3984x2988 1.3 , 3264x2448 1.3 , 3264x1836 1.8 , 2976x2976 1.0 ,
             2880x2160 1.3 , 2560x1440 1.8 , 2160x2160 1.0 , 2048x1152 1.8 , 1920x1080 1.8 , 1440x1080 1.3 , 1088x1088 1.0 ,
@@ -104,7 +105,7 @@ public class CameraSub {
                         mVideoSize = size;
                 }
                 break;
-//            case "LM-G710N":
+            case "0":
 //            /* LG G7
 //                4656x3492 1.3 , 4656x2620 1.8 , 4656x2218 2.1 , 4160x3120 1.3 , 4160x2080 2.0 , 4000x3000 1.3 ,
 //                4000x2250 1.8 , 3840x2160 1.8 , 3492x3492 1.0 , 3264x2448 1.3 , 3264x1836 1.8 , 3264x1632 2.0 ,
@@ -112,15 +113,17 @@ public class CameraSub {
 //                1440x1080 1.3 , 1440x960 1.5 , 1440x720 2.0 , 1408x1152 1.2 , 1280x768 1.7 , 1280x960 1.3 ,
 //                1280x720 1.8 , 960x720 1.3 , 960x540 1.8 , 720x720 1.0 , 720x540 1.3 , 720x480 1.5 , 640x480 1.3
 //             */
-//                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-//                    if (size.getWidth() == 720 && size.getHeight() == 480)
-//                        mPreviewSize = size;
-//                    else if (size.getWidth() == 4000 && size.getHeight() == 2250)
-//                        mImageSize = size;
-//                    else if (size.getWidth() == 1440 && size.getHeight() == 960)
-//                        mVideoSize = size;
-//                }
-//                break;
+                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+                    if (size.getWidth() == 720 && size.getHeight() == 480)
+                        mPreviewSize = size;
+                    else if (size.getWidth() == 4656 && size.getHeight() == 3492)
+                        mImageSize = size;
+                    else if (size.getWidth() == 2560 && size.getHeight() == 1440)
+                        mVideoSize = size;
+                }
+                break;
+            default:
+                utils.logBoth("Model", "size undefined");
         }
     }
 
@@ -201,7 +204,7 @@ public class CameraSub {
                     snapMapIdx = 0;
             }
         } catch (Exception e) {
-            utils.logBoth("img ", "buffer short " + snapMapIdx);
+            utils.logBoth("img", "buffer short " + snapMapIdx);
         }
     };
 

@@ -127,5 +127,4 @@ class StartStopExit {
             }
         }, 2000);
     }
-
 }
