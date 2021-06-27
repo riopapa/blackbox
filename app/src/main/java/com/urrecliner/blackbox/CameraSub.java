@@ -11,13 +11,13 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
-import android.os.Build;
 import android.util.Size;
 
 import androidx.core.content.ContextCompat;
 import java.nio.ByteBuffer;
 
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -43,7 +43,6 @@ public class CameraSub {
         setupCamera();
         connectCamera();
     }
-
 
     void setupCamera() {
         mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
@@ -82,13 +81,24 @@ public class CameraSub {
         map.getOutputFormats();
 
         switch (SUFFIX) {
-            case "8":
+            case "0":
+//            /* LG G7
+//                4656x3492 1.3 , 4656x2620 1.8 , 4656x2218 2.1 , 4160x3120 1.3 , 4160x2080 2.0 , 4000x3000 1.3 ,
+//                4000x2250 1.8 , 3840x2160 1.8 , 3492x3492 1.0 , 3264x2448 1.3 , 3264x1836 1.8 , 3264x1632 2.0 ,
+//                3264x1554 2.1 , 2560x1920 1.3 , 2560x1440 1.8 , 2560x1080 2.4 , 2048x1536 1.3 , 1920x1080 1.8 ,
+//                1440x1080 1.3 , 1440x960 1.5 , 1440x720 2.0 , 1408x1152 1.2 , 1280x768 1.7 , 1280x960 1.3 ,
+//                1280x720 1.8 , 960x720 1.3 , 960x540 1.8 , 720x720 1.0 , 720x540 1.3 , 720x480 1.5 , 640x480 1.3
+//             */
+                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+                    if (size.getWidth() == 720 && size.getHeight() == 480)
+                        mPreviewSize = size;
+                    else if (size.getWidth() == 4656 && size.getHeight() == 2620)
+                        mImageSize = size;
+                    else if (size.getWidth() == 3264 && size.getHeight() == 1836)
+                        mVideoSize = size;
+                }
+                break;
             case "9":
-            /* galaxy s8
-            4032x3024 1.3 , 4032x2268 1.8 , 3024x3024 1.0 , 3984x2988 1.3 , 3264x2448 1.3 , 3264x1836 1.8 , 2976x2976 1.0 ,
-            2880x2160 1.3 , 2560x1440 1.8 , 2160x2160 1.0 , 2048x1152 1.8 , 1920x1080 1.8 , 1440x1080 1.3 , 1088x1088 1.0 ,
-            1280x720 1.8 , 1056x704 1.5 , 1024x768 1.3 , 960x720 1.3 , 800x450 1.8 , 720x720 1.0 , 720x480 1.5 , 640x480 1.3 ,
-             */
             /* galaxy s9+
             4032x3024 1.3 , 4032x2268 1.8 , 4032x1960 2.1 , 3024x3024 1.0 , 3984x2988 1.3 , 3840x2160 1.8 ,
             3264x2448 1.3 , 3264x1836 1.8 , 2976x2976 1.0 , 2880x2160 1.3 , 2560x1440 1.8 , 2160x2160 1.0 ,
@@ -102,23 +112,6 @@ public class CameraSub {
                     else if (size.getWidth() == 4032 && size.getHeight() == 2268)
                         mImageSize = size;
                     else if (size.getWidth() == 3264 && size.getHeight() == 1836)
-                        mVideoSize = size;
-                }
-                break;
-            case "0":
-//            /* LG G7
-//                4656x3492 1.3 , 4656x2620 1.8 , 4656x2218 2.1 , 4160x3120 1.3 , 4160x2080 2.0 , 4000x3000 1.3 ,
-//                4000x2250 1.8 , 3840x2160 1.8 , 3492x3492 1.0 , 3264x2448 1.3 , 3264x1836 1.8 , 3264x1632 2.0 ,
-//                3264x1554 2.1 , 2560x1920 1.3 , 2560x1440 1.8 , 2560x1080 2.4 , 2048x1536 1.3 , 1920x1080 1.8 ,
-//                1440x1080 1.3 , 1440x960 1.5 , 1440x720 2.0 , 1408x1152 1.2 , 1280x768 1.7 , 1280x960 1.3 ,
-//                1280x720 1.8 , 960x720 1.3 , 960x540 1.8 , 720x720 1.0 , 720x540 1.3 , 720x480 1.5 , 640x480 1.3
-//             */
-                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 720 && size.getHeight() == 480)
-                        mPreviewSize = size;
-                    else if (size.getWidth() == 4656 && size.getHeight() == 3492)
-                        mImageSize = size;
-                    else if (size.getWidth() == 2560 && size.getHeight() == 1440)
                         mVideoSize = size;
                 }
                 break;
@@ -178,7 +171,6 @@ public class CameraSub {
         }
     };
 
-    final static long SNAP_SHOT_INTERVAL = 124;
     Image image;
     ByteBuffer buffer;
     byte[] bytes;
@@ -207,5 +199,4 @@ public class CameraSub {
             utils.logBoth("img", "buffer short " + snapMapIdx);
         }
     };
-
 }

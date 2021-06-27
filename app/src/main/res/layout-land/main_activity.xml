@@ -9,8 +9,8 @@
     <!--Record start button and count Fragment-->
     <FrameLayout
         android:id="@+id/frameRecord"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginEnd="8dp"
@@ -38,12 +38,12 @@
     <!--  Battery  -->
     <FrameLayout
         android:id="@+id/frameBattery"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@id/textDate"
         android:layout_toRightOf="@id/frameRecord"
-        android:layout_marginLeft="24dp"
+        android:layout_marginLeft="12dp"
         android:layout_marginTop="16dp" >
 
         <ImageView
@@ -63,7 +63,7 @@
             android:text="@string/percent"
             android:textStyle="bold"
             android:textColor="@color/colorText"
-            android:textSize="28sp" />
+            android:textSize="24sp" />
     </FrameLayout>
 
     <!--Date and Time-->

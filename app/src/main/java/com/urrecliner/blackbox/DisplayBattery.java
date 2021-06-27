@@ -74,11 +74,10 @@ class DisplayBattery extends BroadcastReceiver {
         }
     }
 
-    final int CIRCLE_RADIUS = 200, CIRCLE_WIDTH = 16;
+    final int CIRCLE_RADIUS = 120, CIRCLE_WIDTH = 6;
     void drawBattery(int batteryPCT, boolean isCharging) {
         Bitmap bitmap = Bitmap.createBitmap(CIRCLE_RADIUS, CIRCLE_RADIUS, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-
         Paint paint = new Paint();
         final RectF rect = new RectF();
         rect.set(CIRCLE_WIDTH, CIRCLE_WIDTH, CIRCLE_RADIUS - CIRCLE_WIDTH, CIRCLE_RADIUS - CIRCLE_WIDTH);
@@ -87,7 +86,7 @@ class DisplayBattery extends BroadcastReceiver {
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
-        canvas.drawArc(rect, 90-(180*batteryPCT/100), batteryPCT*360/100 , false, paint);
+        canvas.drawArc(rect, 90f- (batteryPCT*180f/100f), batteryPCT*360f/100f , false, paint);
         vImgBattery.setImageBitmap(bitmap);
     }
 

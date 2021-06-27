@@ -68,14 +68,14 @@ public class Vars {
 
     private static final String PATH_PACKAGE = "BlackBox";
     private static final String PATH_EVENT = "event";
-    private static final String PATH_EVENT_JPG = "eventJpg";
+    private static final String PATH_EVENT_JPG = "EventJpg";
     private static final String PATH_NORMAL = "normal";
     private static final String PATH_WORK = "work";
     private static final String PATH_LOG = "log";
 
     static File mPackagePath = new File(Environment.getExternalStorageDirectory(), PATH_PACKAGE);
     static File mPackageEventPath = new File(mPackagePath, PATH_EVENT);
-    static File mPackageEventJpgPath = new File(mPackageEventPath, PATH_EVENT_JPG);
+    static File mPackageEventJpgPath = new File(mPackagePath, PATH_EVENT_JPG);
     static File mPackageNormalPath = new File(mPackagePath, PATH_NORMAL);
     static File mPackageNormalDatePath = new File(mPackageNormalPath, DATE_PREFIX+utils.getMilliSec2String(System.currentTimeMillis(), FORMAT_DATE));
     static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
@@ -92,11 +92,16 @@ public class Vars {
     static MediaRecorder mediaRecorder;
     static int speedInt = 0;
 
-    final static long INTERVAL_EVENT = 14 * 1000;
-    final static int MAX_IMAGES_SIZE = 160;
+    final static long INTERVAL_EVENT = 15 * 1000;
     final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
+
+    static int MAX_IMAGES_SIZE;
+    static long SNAP_SHOT_INTERVAL;
+    static int VIDEO_FRAME_RATE;
+    static int VIDEO_ENCODING_RATE;
+    static long VIDEO_ONE_WORK_FILE_SIZE;
 
     static boolean viewFinder = true;
 

@@ -26,6 +26,10 @@ import java.util.TimerTask;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
+import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
+import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
+import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
@@ -101,22 +105,32 @@ public class MainActivity extends Activity {
             Log.e("Permission", "No Permission "+e.toString());
         }
 
-        if (Build.MODEL.equals("SM-G950N")) {
-            SUFFIX = "8";
-//            String external = utils.getExternalStoragePath(this, true);
-//            utils.logOnly("ext",external);
-//            mPackageEventPath = new File(external,"eventX");
-//            mPackageEventJpgPath = new File(mPackageEventPath, "eventJPG");
-        }
+        if (Build.MODEL.equals("LM-G710N"))
+            SUFFIX = "0";
         else if (Build.MODEL.equals("SM-G965N"))
             SUFFIX = "9";
-        else if (Build.MODEL.equals("LM-G710N"))
-            SUFFIX = "0";
         else
             utils.logBoth("Model", Build.MODEL);
 
+        switch (SUFFIX) {
+            case "0":
+                MAX_IMAGES_SIZE = 120;
+                SNAP_SHOT_INTERVAL = 160;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 40*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
+                break;
+            case "9":
+                MAX_IMAGES_SIZE = 140;
+                SNAP_SHOT_INTERVAL = 150;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 45*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
+                break;
+        }
+
         readyBlackBoxFolders();
-        utils.deleteOldFiles(mPackageNormalPath, (SUFFIX.startsWith("9")) ? 2:6);
+        utils.deleteOldFiles(mPackageNormalPath, 6);
         utils.deleteOldFiles(mPackageEventJpgPath, 4);
         utils.deleteOldLogs();
 //        utils.deleteOldFiles(mPackageWorkingPath, -3);

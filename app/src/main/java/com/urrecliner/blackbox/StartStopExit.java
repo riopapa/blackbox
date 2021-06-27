@@ -110,18 +110,16 @@ class StartStopExit {
     }
 
     void exitBlackBoxApp() {
+        utils.beepOnce(8,0.3f); // Exit BlackBox
         mExitApplication = true;
-//        String s = "\nExit\nBlackBox";
-//        utils.customToast(s, Toast.LENGTH_SHORT, Color.BLACK);
         if (mIsRecording)
             stopVideo();
         displayTime.stop();
         utils.logOnly(logID,"Exit App");
-        utils.beepOnce(8,0.3f); // Exit BlackBox
-        mActivity.finish();
-        mActivity.finishAffinity();
         new Timer().schedule(new TimerTask() {
             public void run() {
+                mActivity.finish();
+                mActivity.finishAffinity();
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }

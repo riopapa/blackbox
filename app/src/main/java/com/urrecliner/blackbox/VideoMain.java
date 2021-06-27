@@ -8,7 +8,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
-import android.util.Log;
 import android.view.Surface;
 
 import java.io.File;
@@ -18,6 +17,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
+import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
+import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
+import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.urrecliner.blackbox.Vars.cropBigger;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -32,7 +34,6 @@ import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.photoSurface;
 import static com.urrecliner.blackbox.Vars.recordSurface;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
@@ -121,34 +122,11 @@ public class VideoMain {
         Rect rect = new Rect();
         rect.set(centerX - deltaX, centerY - deltaY,
                 centerX + deltaX, centerY + deltaY);
-        Log.w("Y "+mImageSize.getHeight(),(centerY-deltaY)+" x "+(centerY+deltaY));
         return rect;
     }
 
     private void setupMediaRecorder() {
 
-        final int VIDEO_FRAME_RATE;
-        final int VIDEO_ENCODING_RATE;
-        final long VIDEO_ONE_WORK_FILE_SIZE; // xMb
-        if (SUFFIX.equals("0")) {   //LGE LM-G710N
-            VIDEO_FRAME_RATE = 30;
-            VIDEO_ENCODING_RATE = 45 * 1000 * 1000;
-            VIDEO_ONE_WORK_FILE_SIZE = 15 * 1024 * 1024;
-        } else if (SUFFIX.equals("8")) {
-            VIDEO_FRAME_RATE = 60;
-            VIDEO_ENCODING_RATE = 45*1000*1000;
-            VIDEO_ONE_WORK_FILE_SIZE = 10*1024*1024;
-        } else if (SUFFIX.equals("9")) {
-            VIDEO_FRAME_RATE = 30;
-            VIDEO_ENCODING_RATE = 45*1000*1000;
-            VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
-        } else {
-            VIDEO_FRAME_RATE = 30;
-            VIDEO_ENCODING_RATE = 35*1000*1000;
-            VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
-        }
-
-//        utils.logBoth(logID," setup Media");
         mediaRecorder = new MediaRecorder();
 
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);    // 1. setAudioSource

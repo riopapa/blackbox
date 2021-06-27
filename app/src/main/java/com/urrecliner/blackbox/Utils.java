@@ -187,7 +187,7 @@ class Utils {
         Runtime runtime = Runtime.getRuntime();
         try {
             runtime.exec(deleteCmd);
-        } catch (IOException e) { }
+        } catch (IOException ignored) { }
     }
 
 //    void deleteRecursive(File fileOrDirectory) {
