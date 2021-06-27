@@ -93,11 +93,11 @@
     <!--Log Info in multi lines-->
     <TextView
         android:id="@+id/textLogInfo"
-        android:layout_width="440dp"
+        android:layout_width="480dp"
         android:layout_height="120dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:text="@string/logInfo"
-        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@id/frameBattery"
         android:textColor="@color/colorText"
         android:textSize="@dimen/log_size" />
 
@@ -220,7 +220,7 @@
         android:layout_marginTop="-12dp"
         android:orientation="horizontal"
         android:layout_alignStart="@id/textLogInfo"
-        android:layout_marginStart="0dp">
+        android:layout_marginStart="16dp">
         <ImageView
             android:id="@+id/news_0"
             android:layout_width="55dp"
