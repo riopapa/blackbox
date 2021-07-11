@@ -65,6 +65,12 @@ class Utils {
         return (files == null)? 0: files.length;
     }
 
+    public void showOnly(String tag, String text) {
+        text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
+        final String fText = last4Lines(text);
+        mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
+    }
+
     public void logBoth(String tag, String text) {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();

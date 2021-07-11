@@ -109,12 +109,14 @@ public class MainActivity extends Activity {
             SUFFIX = "0";
         else if (Build.MODEL.equals("SM-G965N"))
             SUFFIX = "9";
+        else if (Build.MODEL.equals("SM-A325N"))
+            SUFFIX = "A";
         else
             utils.logBoth("Model", Build.MODEL);
 
         switch (SUFFIX) {
-            case "0":
-                MAX_IMAGES_SIZE = 120;
+            case "0":   // "LM-G710N"
+                MAX_IMAGES_SIZE = 140;      // < phase interval 200
                 SNAP_SHOT_INTERVAL = 160;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 40*1000*1000;
@@ -123,6 +125,13 @@ public class MainActivity extends Activity {
             case "9":
                 MAX_IMAGES_SIZE = 140;
                 SNAP_SHOT_INTERVAL = 150;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 45*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
+                break;
+            case "A":
+                MAX_IMAGES_SIZE = 140;
+                SNAP_SHOT_INTERVAL = 152;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 45*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;

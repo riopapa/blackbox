@@ -115,20 +115,18 @@ public class VideoMain {
 
     final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 1.6f;
     private Rect calcPhotoZoom(float zoom) {
+        int bottomY = mImageSize.getHeight();
         int centerX = mImageSize.getWidth() / 2;
-        int centerY = mImageSize.getHeight() / 2 + (int)((mImageSize.getHeight()) * zoom / 18f);
         int deltaX  = (int)((0.5f * mImageSize.getWidth()) / zoom);
-        int deltaY  = (int)((0.5f * mImageSize.getHeight()) / zoom);
         Rect rect = new Rect();
-        rect.set(centerX - deltaX, centerY - deltaY,
-                centerX + deltaX, centerY + deltaY);
+        rect.set(centerX - deltaX, bottomY - (int)(bottomY / zoom),
+                centerX + deltaX, bottomY);
         return rect;
     }
 
     private void setupMediaRecorder() {
 
         mediaRecorder = new MediaRecorder();
-
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);    // 1. setAudioSource
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);    // 2. setVideoSource
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);   // 3. setOutputFormat

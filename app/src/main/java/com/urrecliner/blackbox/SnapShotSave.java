@@ -24,7 +24,7 @@ class SnapShotSave {
         else if (phase == 3)
             maxSize = MAX_IMAGES_SIZE - 70;
         else if (phase == 4)
-            maxSize = MAX_IMAGES_SIZE - 80;
+            maxSize = MAX_IMAGES_SIZE - 50;
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         for (int i = snapPos; i < MAX_IMAGES_SIZE; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
@@ -42,7 +42,7 @@ class SnapShotSave {
         prefixTime = prefixTime.substring(prefixTime.lastIndexOf(" "));
         prefixTime = "C" + prefixTime.substring(1,3) + prefixTime.substring(4,6) + "_";
         Thread th = new Thread(() -> {
-            startBias = phase * MAX_IMAGES_SIZE;
+            startBias = phase * 200;
             for (int i = 0; i < maxSize; i++) {
                 byte [] imageBytes = jpgBytes[i];
                 if (imageBytes != null && imageBytes.length > 1) {

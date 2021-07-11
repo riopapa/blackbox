@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox;
+    package com.urrecliner.blackbox;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -11,6 +11,7 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.Build;
 import android.util.Size;
 
 import androidx.core.content.ContextCompat;
@@ -54,8 +55,7 @@ public class CameraSub {
                 if(mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
                         CameraCharacteristics.LENS_FACING_BACK) {
                     mCameraId = cameraId;
-                }
-                else
+                } else
                     continue;
                 StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 setCameraSize(map);
@@ -71,7 +71,16 @@ public class CameraSub {
         } catch (Exception e) {
             utils.logE("CameraSub", "Exception ", e);
         }
+
+//        CameraPreview.params.setZoom(Zoom);
+//        CameraPreview.mCamera.setParameters(CameraPreview.params);
+
     }
+
+
+// "LM-G710N" "0";
+// "SM-G965N" "9";
+// "SM-A325N" "A";
 
     private void setCameraSize(StreamConfigurationMap map) {
 
@@ -115,20 +124,36 @@ public class CameraSub {
                         mVideoSize = size;
                 }
                 break;
+            case "A":
+            /* galaxy A32
+                2560x1440 1.8 , 1920x1080 1.8 , 1440x1080 1.3 , 1280x960 1.3 , 1280x720 1.8 ,
+                1088x1088 1.0 , 960x720 1.3 , 720x480 1.5 , 640x480 1.3 , 512x384 1.3 , 512x288 1.8 ,
+                 384x384 1.0 , 352x288 1.2 , 320x240 1.3 , 256x144 1.8 , 176x144 1.2 ,
+             */
+//                dumpVariousCameraSizes(map);
+                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+                    if (size.getWidth() == 640 && size.getHeight() == 480)
+                        mPreviewSize = size;
+                    else if (size.getWidth() == 2560 && size.getHeight() == 1440)
+                        mImageSize = size;
+                    else if (size.getWidth() == 1920 && size.getHeight() == 1080)
+                        mVideoSize = size;
+                }
+                break;
             default:
                 utils.logBoth("Model", "size undefined");
         }
     }
 
-//    private void dumpVariousCameraSizes(StreamConfigurationMap map) {
-//
-//        String sb = "// DUMP CAMERA POSSIBLE SIZES // ";
-//        for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-//            sb += size.getWidth()+"x"+ size.getHeight()+
-//                    String.format(" %,3.1f , ", (float)size.getWidth() / (float)size.getHeight());
-//        }
-//        utils.logOnly("Camera Size",sb);
-//    }
+    private void dumpVariousCameraSizes(StreamConfigurationMap map) {
+
+        String sb = "// DUMP CAMERA POSSIBLE SIZES // ";
+        for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+            sb += size.getWidth()+"x"+ size.getHeight()+
+                    String.format(" %,3.1f , ", (float)size.getWidth() / (float)size.getHeight());
+        }
+        utils.logOnly("Camera Size",sb);
+    }
 
     void connectCamera() {
         CameraManager cameraManager = (CameraManager) mActivity.getSystemService(Context.CAMERA_SERVICE);
@@ -196,7 +221,7 @@ public class CameraSub {
                     snapMapIdx = 0;
             }
         } catch (Exception e) {
-            utils.logBoth("img", "buffer short " + snapMapIdx);
+            utils.showOnly("img", "buffer short " + snapMapIdx);
         }
     };
 }

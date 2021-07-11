@@ -21,7 +21,7 @@ class DisplayTime implements Runnable {
                 displayBattery.showBattery();
             }
         };
-        displayHHMM.schedule(tt, 100, 58000);
+        displayHHMM.schedule(tt, 100, 18000);
     }
 
     void stop() {

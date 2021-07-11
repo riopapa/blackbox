@@ -73,7 +73,7 @@ public class EventRecord {
                 SnapShotSave snapShotSave3 = new SnapShotSave();
                 snapShotSave3.startSave(thisEventJpgPath, snapMapIdx,4);
             }
-        }, INTERVAL_EVENT * 13 / 10);
+        }, INTERVAL_EVENT * 14 / 10);
 
         gpsTracker.askLocation();
 
