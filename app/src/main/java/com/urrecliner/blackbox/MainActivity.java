@@ -1,6 +1,8 @@
 package com.urrecliner.blackbox;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -11,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
@@ -105,12 +109,19 @@ public class MainActivity extends Activity {
             Log.e("Permission", "No Permission "+e.toString());
         }
 
-        if (Build.MODEL.equals("LM-G710N"))
-            SUFFIX = "0";
-        else if (Build.MODEL.equals("SM-G965N"))
-            SUFFIX = "9";
+        if (Build.MODEL.equals("SM-G965N")) {
+            @SuppressLint("HardwareIds") String aID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+            //  S9+ = 66fb7229f2286ccd
+            //  S9 blackbox = f4367a4dc1e43732
+            if (aID.endsWith("cd"))
+                SUFFIX = "9";
+            else
+                SUFFIX = "S";
+        }
         else if (Build.MODEL.equals("SM-A325N"))
             SUFFIX = "A";
+        else if (Build.MODEL.equals("LM-G710N"))
+            SUFFIX = "0";
         else
             utils.logBoth("Model", Build.MODEL);
 
@@ -123,6 +134,7 @@ public class MainActivity extends Activity {
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
             case "9":
+            case "S":
                 MAX_IMAGES_SIZE = 140;
                 SNAP_SHOT_INTERVAL = 150;
                 VIDEO_FRAME_RATE = 30;
@@ -142,7 +154,6 @@ public class MainActivity extends Activity {
         utils.deleteOldFiles(mPackageNormalPath, 6);
         utils.deleteOldFiles(mPackageEventJpgPath, 4);
         utils.deleteOldLogs();
-//        utils.deleteOldFiles(mPackageWorkingPath, -3);
         cameraSub = new CameraSub();
         prepareMain();
         String msg = new DiskSpace().squeeze(mPackageNormalPath);

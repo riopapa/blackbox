@@ -180,18 +180,19 @@ class OBDAccess {
     private Timer obdTimer = null;
     private boolean noPreview = false;
     private void loopAskOBDSpeed() {
-        switch (SUFFIX) {
-            case "8":
-                try {
-                    bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
-                    bSocket.connect();
-                } catch (Exception e) {
-                    utils.logBoth("loopAskOBDSpeed connect Exception", e.toString());
-                }
-                break;
-            case "9":
-                break;
-        }
+//        switch (SUFFIX) {
+//            case "8":
+//                try {
+//                    bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
+//                    bSocket.connect();
+//                } catch (Exception e) {
+//                    utils.logBoth("loopAskOBDSpeed connect Exception", e.toString());
+//                }
+//                break;
+//            case "9":
+//            case "S":
+//                break;
+//        }
         speedCommand = new SpeedCommand();
         obdTimer = new Timer();
         final TimerTask obdTask = new TimerTask() {

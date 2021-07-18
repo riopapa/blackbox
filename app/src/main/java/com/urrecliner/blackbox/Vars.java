@@ -113,4 +113,5 @@ public class Vars {
     static Surface photoSurface = null;
     static Rect cropBigger;
     static String SUFFIX;
+
 }

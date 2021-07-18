@@ -19,7 +19,7 @@ import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.speedInt;
 import static com.urrecliner.blackbox.Vars.utils;
 
-class GPSTracker extends Service implements LocationListener {
+public class GPSTracker extends Service implements LocationListener {
 
     static boolean isCompassShown = false;
     long gpsUpdateTime = 0;
