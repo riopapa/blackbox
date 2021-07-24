@@ -89,5 +89,4 @@ class DisplayBattery extends BroadcastReceiver {
         canvas.drawArc(rect, 90f- (batteryPCT*180f/100f), batteryPCT*360f/100f , false, paint);
         vImgBattery.setImageBitmap(bitmap);
     }
-
 }

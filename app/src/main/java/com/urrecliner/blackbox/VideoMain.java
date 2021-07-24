@@ -113,7 +113,7 @@ public class VideoMain {
         };
     }
 
-    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 1.6f;
+    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 1.8f;
     private Rect calcPhotoZoom(float zoom) {
         int bottomY = mImageSize.getHeight();
         int centerX = mImageSize.getWidth() / 2;

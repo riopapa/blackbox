@@ -171,7 +171,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/textEvent"
             android:background="#00000000"
-            android:src="@mipmap/event_shot" />
+            android:src="@mipmap/event_shot1" />
 
         <TextView
             android:id="@+id/activeEvent"

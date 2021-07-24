@@ -233,7 +233,7 @@ class Utils {
             toastMessage.setTextSize(24);
             int backColor = foreColor ^ 0xececec;
             toastMessage.setTextColor(foreColor);
-            toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.blackbox_app, 0, 0, 0);
+            toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.event_shot1, 0, 0, 0);
             toastMessage.setCompoundDrawablePadding(16);
             toastMessage.setPadding(4,4,24,4);
             toastView.setBackgroundColor(backColor);

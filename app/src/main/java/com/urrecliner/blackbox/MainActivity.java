@@ -134,12 +134,18 @@ public class MainActivity extends Activity {
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
             case "9":
-            case "S":
-                MAX_IMAGES_SIZE = 140;
-                SNAP_SHOT_INTERVAL = 150;
+                MAX_IMAGES_SIZE = 145;
+                SNAP_SHOT_INTERVAL = 140;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 45*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 30*1024*1024;
+                break;
+            case "S":
+                MAX_IMAGES_SIZE = 155;
+                SNAP_SHOT_INTERVAL = 130;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 50*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
                 break;
             case "A":
                 MAX_IMAGES_SIZE = 140;
@@ -186,12 +192,14 @@ public class MainActivity extends Activity {
         setViewVars();
         mIsRecording = false;
         snapBytes = new byte[MAX_IMAGES_SIZE][];
-        utils.logOnly("snapBytes","size = "+snapBytes.length);
         utils.beepsInitiate();
         gpsTracker.askLocation();
         CountEvent = utils.getRecordEventCount();
         vExitApp = findViewById(R.id.btnExit);
-        vExitApp.setOnClickListener(v -> startStopExit.exitBlackBoxApp());
+        vExitApp.setOnClickListener(v -> {
+                startStopExit.exitBlackBoxApp();
+                vExitApp.setClickable(false);
+        });
         ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
         btnBeBack.setOnClickListener(v -> {
             btnBeBack.setImageAlpha(50);
@@ -208,6 +216,7 @@ public class MainActivity extends Activity {
             viewFinder = !viewFinder;
             vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
         });
+
         vPreviewView.post(() -> {
             cameraSub.readyCamera();
             vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
