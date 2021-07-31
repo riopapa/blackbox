@@ -1,9 +1,11 @@
 package com.urrecliner.blackbox;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,30 +20,34 @@ import com.github.pires.obd.commands.protocol.SpacesOffCommand;
 import com.github.pires.obd.enums.ObdProtocols;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-import static com.urrecliner.blackbox.Vars.SUFFIX;
+import static com.urrecliner.blackbox.Vars.kiloMeter;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
+import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.speedInt;
+import static com.urrecliner.blackbox.Vars.toDay;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vTextKilo;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.viewFinder;
 
 class OBDAccess {
 
-    final static int ASK_SPEED_INTERVAL = 400;
+    final static int ASK_SPEED_INTERVAL = 600;
     String logID = "OBD";
     private BluetoothSocket bSocket;
     private BluetoothDevice bluetoothDevice;
     private String chosenDeviceName = null;
     UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    String speedString = "speed", speedOld = "old";
 
     //    private ObdCommand engineRpmCommand = new EngineRpmCommand();
     private ObdCommand speedCommand = null;
@@ -69,7 +75,8 @@ class OBDAccess {
                     new Timer().schedule(new TimerTask() {  // autoStart
                         public void run() {
                             if (connectOBD() && bSocket.isConnected()) {
-                                askOBDDistance();
+                                resetTodayKm(Integer.parseInt(askOBDDistance()));
+                                showDistance();
                                 loopAskOBDSpeed();
                             }
                         }
@@ -86,30 +93,6 @@ class OBDAccess {
         if (!step1_BuildSocket(bluetoothDevice, uuid)) return false;
         if (!step2_ResetOBD()) return false;
         return step3_Initialize();
-//        obdCommand(3);
-//        try {
-//            distanceSinceCCCommand = new DistanceSinceCCCommand();
-//            distanceSinceCCCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-//            utils.logBoth("OBDDist",distanceSinceCCCommand.getFormattedResult());
-//            utils.logBoth("OBDKms", distanceSinceCCCommand.getCalculatedResult()+" <><><><>");
-//            beginKms = Integer.parseInt(distanceSinceCCCommand.getCalculatedResult());
-//            todayStr = new SimpleDateFormat(FORMAT_DATE, Locale.US).format(System.currentTimeMillis());
-//            if (!todayStr.equals(sharedPref.getString("todayStr",""))) {
-//                editor = sharedPref.edit();
-//                editor.putString("todayStr", todayStr).apply();
-//                editor.putInt("beginKms", beginKms).apply();    // today's starting Kms
-//            }
-//            else
-//                beginKms = sharedPref.getInt("beginKms",beginKms);
-//            utils.logBoth(logID, todayStr +" Starting with "+beginKms+" Kms");
-//        } catch (IllegalArgumentException e) {
-//            utils.logE(logID, "IllegalArgumentException  ", e);
-//        } catch (IOException e) {
-//            utils.logBoth(logID, "/// IOException  distanceSinceCCCommand ///");
-//        } catch (Exception e){
-//            utils.logE(logID, "General Exception  ", e);
-//        }
-//        return false;
     }
 
     private boolean step1_BuildSocket(BluetoothDevice bluetoothDevice, UUID uuid) {
@@ -177,8 +160,26 @@ class OBDAccess {
         return false;
     }
 
-    private Timer obdTimer = null;
+    private void resetTodayKm(int kilo) {
+        sharedPref = mContext.getSharedPreferences("box", MODE_PRIVATE);
+        kiloMeter = sharedPref.getInt("kilo", 0);
+        toDay = sharedPref.getString("today","210730");
+        String tuDay = new SimpleDateFormat("yyMMdd", Locale.KOREA).format(System.currentTimeMillis());
+        if (toDay.equals(tuDay))
+            return;
+        toDay = tuDay;
+        kiloMeter = kilo;
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("today", toDay);
+        editor.putInt("kilo",kiloMeter);
+        editor.apply();
+    }
+
+    private Timer speedTimer = null;
     private boolean noPreview = false;
+    private int distCount = 0;
+    private String speedString = "speed", speedOld = "old", distOld = "old";
+
     private void loopAskOBDSpeed() {
 //        switch (SUFFIX) {
 //            case "8":
@@ -194,30 +195,45 @@ class OBDAccess {
 //                break;
 //        }
         speedCommand = new SpeedCommand();
-        obdTimer = new Timer();
+        speedTimer = new Timer();
         final TimerTask obdTask = new TimerTask() {
             @Override
             public void run() {
-            speedString = askSpeed();
-            if (!speedString.equals(speedOld)) {
-                mActivity.runOnUiThread(() -> {
-                    vTextSpeed.setText(speedString);
-                    speedInt = Integer.parseInt(speedString);
-                    boolean offPrevView =  speedInt > 40; // hide video if over 40 Kms
-                    if (viewFinder && offPrevView != noPreview) {
-                        noPreview = offPrevView;
-                        vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);
+                speedString = askSpeed();
+                if (!speedString.equals(speedOld)) {
+                    mActivity.runOnUiThread(() -> {
+                        vTextSpeed.setText(speedString);
+                        speedInt = Integer.parseInt(speedString);
+                        boolean offPrevView =  speedInt > 40; // hide video if over 40 Kms
+                        if (viewFinder && offPrevView != noPreview) {
+                            noPreview = offPrevView;
+                            vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);
+                        }
+                        if (speedOld.equals("old")) {
+                            lNewsLine.setVisibility(View.VISIBLE);
+                        }
+                        speedOld = speedString;
+                    });
+                    if (distCount++ > 50) {
+                        distCount = 0;
+                        showDistance();
                     }
-                    if (speedOld.equals("old")) {
-                        lNewsLine.setVisibility(View.VISIBLE);
-                    }
-//                    MainActivity.focusChange(speedInt);
-                    speedOld = speedString;
-                });
-            }
+                }
             }
         };
-        obdTimer.schedule(obdTask, 200, ASK_SPEED_INTERVAL);
+        speedTimer.schedule(obdTask, 200, ASK_SPEED_INTERVAL);
+    }
+
+    private void showDistance() {
+        String ss = askOBDDistance();
+        if (ss.equals(distOld))
+            return;
+        distOld = ss;
+        int kilo = Integer.parseInt(ss) - kiloMeter;
+        mActivity.runOnUiThread(() -> {
+            String s = ""+kilo;
+            vTextKilo.setText(s);
+        });
     }
 
     private String askSpeed() {
@@ -234,19 +250,20 @@ class OBDAccess {
         return "speed Err";
     }
 
-    private void askOBDDistance() {
+    private String askOBDDistance() {
         try {
             DistanceSinceCCCommand distanceSinceCCCommand = new DistanceSinceCCCommand();
             distanceSinceCCCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
-            utils.logBoth("OBD Distance Good",distanceSinceCCCommand.getFormattedResult());
+            return distanceSinceCCCommand.getCalculatedResult();
         } catch (Exception e){
 //            utils.logE("distance", "General Exception", e);
         }
+        return "0";
     }
 
     void stop() {
-        if (obdTimer != null)
-            obdTimer.cancel();
-        obdTimer = null;
+        if (speedTimer != null)
+            speedTimer.cancel();
+        speedTimer = null;
     }
 }

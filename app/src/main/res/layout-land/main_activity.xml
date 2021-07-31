@@ -9,13 +9,13 @@
     <!--Record start button and count Fragment-->
     <FrameLayout
         android:id="@+id/frameRecord"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp" >
+        android:layout_marginTop="24dp" >
 
         <ImageButton
             android:id="@+id/btnRecord"
@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             style="@android:style/Widget.Material.Light.Button.Borderless"
             android:contentDescription="@string/play_stop"
-            android:src="@mipmap/off_recording" />
+            android:src="@mipmap/recording_off" />
 
         <TextView
             android:id="@+id/textCountRecords"
@@ -38,13 +38,12 @@
     <!--  Battery  -->
     <FrameLayout
         android:id="@+id/frameBattery"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@id/textDate"
         android:layout_toRightOf="@id/frameRecord"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="16dp" >
+        android:layout_marginTop="24dp" >
 
         <ImageView
             android:id="@+id/imgBattery"
@@ -78,12 +77,13 @@
         android:text="@string/mm_dd"
         android:textColor="@color/colorText"
         android:textSize="28sp" />
+
     <TextView
         android:id="@+id/textTime"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_below="@+id/textDate"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
         android:gravity="center"
         android:text="@string/_00_00"
@@ -96,8 +96,8 @@
         android:layout_width="480dp"
         android:layout_height="120dp"
         android:layout_marginStart="24dp"
-        android:text="@string/logInfo"
         android:layout_toRightOf="@id/frameBattery"
+        android:text="@string/logInfo"
         android:textColor="@color/colorText"
         android:textSize="@dimen/log_size" />
 
@@ -111,8 +111,8 @@
         android:layout_gravity="end"
         android:layout_marginStart="16dp"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="12dp"
         android:gravity="end"
         android:text="@string/underscore"
         android:textColor="@color/speedColor"
@@ -125,9 +125,28 @@
         android:layout_alignBaseline="@id/textSpeed"
         android:layout_marginBottom="80dp"
         android:layout_toEndOf="@id/textSpeed"
-        android:text="@string/km"
+        android:text="Km"
+        android:textColor="@color/colorText"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/todayKm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/textSpeed"
+        android:layout_toEndOf="@id/textSpeed"
+        android:text="_"
         android:textColor="@color/colorText"
         android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/todayKm"
+        android:layout_toEndOf="@id/todayKm"
+        android:text=" Km"
+        android:textColor="@color/colorText"
+        android:textSize="20sp" />
 
     <!--Exit , Napping -->
     <ImageButton
@@ -171,7 +190,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/textEvent"
             android:background="#00000000"
-            android:src="@mipmap/event_shot1" />
+            android:src="@mipmap/event_shot" />
 
         <TextView
             android:id="@+id/activeEvent"

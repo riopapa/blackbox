@@ -28,7 +28,7 @@ class StartStopExit {
     void startVideo() {
         utils.logBoth(logID, "Start Recording ---");
         mIsRecording = true;
-        vBtnRecord.setImageResource(R.mipmap.on_recording);
+        vBtnRecord.setImageResource(R.mipmap.recording_on);
 //        utils.logBoth(logID, "Step 1 prepareRecord");
 //        try {
             videoMain.prepareRecord();
@@ -93,7 +93,7 @@ class StartStopExit {
         try {
             mIsRecording = false;
             timerSnapCamera.cancel();
-            vBtnRecord.setImageResource(R.mipmap.off_recording);
+            vBtnRecord.setImageResource(R.mipmap.recording_off);
             mediaRecorder.stop();
             mediaRecorder.reset();
         } catch (Exception e) {

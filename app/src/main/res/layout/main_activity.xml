@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             style="@android:style/Widget.Material.Light.Button.Borderless"
             android:contentDescription="@string/play_stop"
-            android:src="@mipmap/off_recording" />
+            android:src="@mipmap/recording_off" />
 
         <TextView
             android:id="@+id/textCountRecords"
@@ -129,6 +129,25 @@
         android:textColor="@color/colorText"
         android:textSize="28sp" />
 
+    <TextView
+        android:id="@+id/todayKm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/textSpeed"
+        android:layout_toEndOf="@id/textKm"
+        android:text="0"
+        android:textColor="@color/colorText"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/todayKm"
+        android:layout_toEndOf="@id/todayKm"
+        android:text=" Km"
+        android:textColor="@color/colorText"
+        android:textSize="24sp" />
+
     <!--Exit , Napping -->
     <ImageButton
         android:id="@+id/btnExit"
@@ -171,7 +190,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/textEvent"
             android:background="#00000000"
-            android:src="@mipmap/event_shot1" />
+            android:src="@mipmap/event_shot" />
 
         <TextView
             android:id="@+id/activeEvent"

@@ -45,6 +45,7 @@ public class Vars {
     static TextView vTextTime = null;
     static TextView vTextCountEvent = null;
     static TextView vTextSpeed = null;
+    static TextView vTextKilo = null;
     static TextView vKm = null;
     static TextView vTextLogInfo = null;
     static TextView vTextActiveCount = null;
@@ -59,6 +60,8 @@ public class Vars {
     static ImageButton vBtnRecord;
 
     static SharedPreferences sharedPref;
+    static int kiloMeter = 0;
+    static String toDay;
 
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";

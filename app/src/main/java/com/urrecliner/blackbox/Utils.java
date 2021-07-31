@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -233,7 +232,7 @@ class Utils {
             toastMessage.setTextSize(24);
             int backColor = foreColor ^ 0xececec;
             toastMessage.setTextColor(foreColor);
-            toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.event_shot1, 0, 0, 0);
+            toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.event_shot, 0, 0, 0);
             toastMessage.setCompoundDrawablePadding(16);
             toastMessage.setPadding(4,4,24,4);
             toastView.setBackgroundColor(backColor);

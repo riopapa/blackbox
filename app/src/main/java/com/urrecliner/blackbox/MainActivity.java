@@ -3,6 +3,7 @@ package com.urrecliner.blackbox;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -24,6 +25,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import com.urrecliner.blackbox.utility.DiskSpace;
 import com.urrecliner.blackbox.utility.Permission;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,6 +41,7 @@ import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
+import static com.urrecliner.blackbox.Vars.kiloMeter;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
@@ -53,6 +58,7 @@ import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.startStopExit;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
+import static com.urrecliner.blackbox.Vars.toDay;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -63,6 +69,7 @@ import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
 import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 import static com.urrecliner.blackbox.Vars.vTextDate;
+import static com.urrecliner.blackbox.Vars.vTextKilo;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
@@ -110,7 +117,8 @@ public class MainActivity extends Activity {
         }
 
         if (Build.MODEL.equals("SM-G965N")) {
-            @SuppressLint("HardwareIds") String aID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+            @SuppressLint("HardwareIds")
+            String aID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
             //  S9+ = 66fb7229f2286ccd
             //  S9 blackbox = f4367a4dc1e43732
             if (aID.endsWith("cd"))
@@ -121,12 +129,12 @@ public class MainActivity extends Activity {
         else if (Build.MODEL.equals("SM-A325N"))
             SUFFIX = "A";
         else if (Build.MODEL.equals("LM-G710N"))
-            SUFFIX = "0";
+            SUFFIX = "L";
         else
             utils.logBoth("Model", Build.MODEL);
 
         switch (SUFFIX) {
-            case "0":   // "LM-G710N"
+            case "L":   // "LM-G710N"
                 MAX_IMAGES_SIZE = 140;      // < phase interval 200
                 SNAP_SHOT_INTERVAL = 160;
                 VIDEO_FRAME_RATE = 30;
@@ -279,6 +287,7 @@ public class MainActivity extends Activity {
         vTextTime = findViewById(R.id.textTime);
         vTextSpeed = findViewById(R.id.textSpeed);
         vKm = findViewById(R.id.textKm);
+        vTextKilo = findViewById(R.id.todayKm);
         vTextLogInfo = findViewById(R.id.textLogInfo);
         vTextCountEvent = findViewById(R.id.textCountEvent);
         vTextActiveCount = findViewById(R.id.activeEvent);
