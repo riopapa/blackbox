@@ -2,8 +2,6 @@ package com.urrecliner.blackbox;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
@@ -26,8 +23,6 @@ import android.widget.ImageButton;
 import com.urrecliner.blackbox.utility.DiskSpace;
 import com.urrecliner.blackbox.utility.Permission;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,6 +33,8 @@ import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
+import static com.urrecliner.blackbox.Vars.chronoLogs;
+import static com.urrecliner.blackbox.Vars.chronoNowDate;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
@@ -58,7 +55,6 @@ import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.startStopExit;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.toDay;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -106,6 +102,7 @@ public class MainActivity extends Activity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         mContext = this;
         mActivity = this;
+        sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
 
 //        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
@@ -179,7 +176,10 @@ public class MainActivity extends Activity {
 
         gpsTracker = new GPSTracker(mContext);
         gpsTracker.init();
-        sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
+        chronoNowDate = "21/mm/dd";
+        kiloMeter = -1;
+        chronoLogs = utils.getTodayTable();
+
         vPreviewView = findViewById(R.id.previewView);
         FrameLayout framePreview = findViewById(R.id.framePreview);
         utils.logOnly(logID, "Main Started ..");

@@ -3,6 +3,7 @@ package com.urrecliner.blackbox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
@@ -22,23 +23,34 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
+import static com.urrecliner.blackbox.Vars.ChronoLog;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
+import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 import android.os.storage.StorageManager;
+
+import androidx.preference.PreferenceManager;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Method;
 
 class Utils {
@@ -395,6 +407,21 @@ class Utils {
                 // Perform operations on the document using its URI.
             }
         }
+    }
+
+    ArrayList<ChronoLog> getTodayTable() {
+
+        ArrayList<ChronoLog> list;
+        Gson gson = new Gson();
+        String json = sharedPref.getString("chrono", "");
+        if (json.isEmpty()) {
+            list = new ArrayList<>();
+        } else {
+            Type type = new TypeToken<List<ChronoLog>>() {
+            }.getType();
+            list = gson.fromJson(json, type);
+        }
+        return list;
     }
 
 }

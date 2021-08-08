@@ -20,7 +20,7 @@ import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
-import static com.urrecliner.blackbox.Vars.cropBigger;
+import static com.urrecliner.blackbox.Vars.zoomBiggerL;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
@@ -37,6 +37,7 @@ import static com.urrecliner.blackbox.Vars.recordSurface;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
+import static com.urrecliner.blackbox.Vars.zoomBiggerR;
 
 public class VideoMain {
 
@@ -44,7 +45,7 @@ public class VideoMain {
     private boolean isPrepared = false;
     private SurfaceTexture surface_Preview = null;
     private Surface previewSurface = null;
-    Rect cropArea;
+    Rect zoomNormal;
 
     void prepareRecord() {
 
@@ -80,8 +81,9 @@ public class VideoMain {
         mCaptureRequestBuilder.addTarget(recordSurface);
         photoSurface = mImageReader.getSurface();
         mCaptureRequestBuilder.addTarget(photoSurface);
-        cropArea = calcPhotoZoom (CROP_ZOOM);
-        cropBigger = calcPhotoZoom (CROP_ZOOM_BIGGER);
+        zoomNormal = calcPhotoZoom (ZOOM_NORMAL,0);
+        zoomBiggerL = calcPhotoZoom (ZOOM_BIGGER, 1);
+        zoomBiggerR = calcPhotoZoom (ZOOM_BIGGER, 2);
     }
 
     void buildCameraSession() {
@@ -98,7 +100,7 @@ public class VideoMain {
             @Override
             public void onConfigured(CameraCaptureSession session) {
                 mCaptureSession = session;
-                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, cropArea);
+                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoomNormal);
                 try {
                     mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);
                 } catch (CameraAccessException e) {
@@ -113,14 +115,23 @@ public class VideoMain {
         };
     }
 
-    final float CROP_ZOOM = 1.2f, CROP_ZOOM_BIGGER = 1.8f;
-    private Rect calcPhotoZoom(float zoom) {
+    final float ZOOM_NORMAL = 1.2f, ZOOM_BIGGER = 1.8f;
+    private Rect calcPhotoZoom(float zoom, int type) {
         int bottomY = mImageSize.getHeight();
+        int xWidth = (int) (mImageSize.getWidth() / zoom);
         int centerX = mImageSize.getWidth() / 2;
-        int deltaX  = (int)((0.5f * mImageSize.getWidth()) / zoom);
+        int xHalfWith  = xWidth / 2;
+        int xShift  = (centerX - xHalfWith) / 2;
         Rect rect = new Rect();
-        rect.set(centerX - deltaX, bottomY - (int)(bottomY / zoom),
-                centerX + deltaX, bottomY);
+        if (type == 0)
+            rect.set(centerX - xHalfWith, bottomY - (int)(bottomY / zoom),
+                centerX + xHalfWith, bottomY);
+        else if (type == 1) // bigger zoom Left
+            rect.set(centerX-xHalfWith-xShift, bottomY - (int)(bottomY / zoom),
+                    centerX+xHalfWith-xShift, bottomY);
+        else                 // bigger zoom Right
+            rect.set(centerX-xHalfWith+xShift, bottomY - (int)(bottomY / zoom),
+                    centerX+xHalfWith+xShift, bottomY);
         return rect;
     }
 

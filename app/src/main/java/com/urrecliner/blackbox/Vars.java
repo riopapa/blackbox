@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class Vars {
@@ -61,7 +62,7 @@ public class Vars {
 
     static SharedPreferences sharedPref;
     static int kiloMeter = 0;
-    static String toDay;
+    static String chronoNowDate = null;
 
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
@@ -114,7 +115,13 @@ public class Vars {
     static CameraCaptureSession mCaptureSession;
     static Surface recordSurface = null;
     static Surface photoSurface = null;
-    static Rect cropBigger;
+    static Rect zoomBiggerL, zoomBiggerR;
     static String SUFFIX;
 
+    static ArrayList<ChronoLog> chronoLogs = null;
+
+    public static class ChronoLog {
+        String chroDate;
+        int chroKilo;
+    }
 }

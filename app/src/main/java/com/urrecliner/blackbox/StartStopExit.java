@@ -1,7 +1,9 @@
 package com.urrecliner.blackbox;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
@@ -9,6 +11,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
+import static com.urrecliner.blackbox.Vars.chronoLogs;
+import static com.urrecliner.blackbox.Vars.kiloMeter;
 import static com.urrecliner.blackbox.Vars.photoCapture;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -17,10 +21,15 @@ import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.obdAccess;
+import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
+import static com.urrecliner.blackbox.Vars.chronoNowDate;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
 import static com.urrecliner.blackbox.Vars.videoMain;
+import static com.urrecliner.blackbox.Vars.ChronoLog;
+
+import com.google.gson.Gson;
 
 class StartStopExit {
 
@@ -29,17 +38,8 @@ class StartStopExit {
         utils.logBoth(logID, "Start Recording ---");
         mIsRecording = true;
         vBtnRecord.setImageResource(R.mipmap.recording_on);
-//        utils.logBoth(logID, "Step 1 prepareRecord");
-//        try {
-            videoMain.prepareRecord();
-//        } catch (Exception e) {
-//            reRunApplication("Prepare Error", e);
-//        }
-//        try {
-            mediaRecorder.start();
-//        } catch (Exception e) {
-//            reRunApplication("Start Error", e);
-//        }
+        videoMain.prepareRecord();
+        mediaRecorder.start();
         try {
             startSnapBigShot();
             startNormal();
@@ -56,11 +56,12 @@ class StartStopExit {
         mContext.startActivity(sendIntent);
 
     }
-    private final static Handler cameraTimer = new Handler() {
+    private final static Handler cameraTimer = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) { photoCapture.zoomShotCamera(); }
     };
+    
     private final Timer timerSnapCamera = new Timer();
-    final long BIGGER_SNAPSHOT_INTERVAL = 160;
+    final long ZOOM_BIGGER_INTERVAL = 120;
     private void startSnapBigShot() {
         snapMapIdx = 0;
         final TimerTask cameraTask = new TimerTask() {
@@ -72,7 +73,7 @@ class StartStopExit {
                     timerSnapCamera.cancel();
             }
         };
-        timerSnapCamera.schedule(cameraTask, 1000, BIGGER_SNAPSHOT_INTERVAL);
+        timerSnapCamera.schedule(cameraTask, 3000, ZOOM_BIGGER_INTERVAL);
     }
 
     private Timer normalTimer;
@@ -112,9 +113,10 @@ class StartStopExit {
     void exitBlackBoxApp() {
         utils.beepOnce(8,0.7f); // Exit BlackBox
         mExitApplication = true;
-        if (mIsRecording)
-            stopVideo();
+        if (mIsRecording) stopVideo();
         displayTime.stop();
+        if (chronoNowDate != null)
+           updateKiloChronology();
         utils.logOnly(logID,"Exit App");
         new Timer().schedule(new TimerTask() {
             public void run() {
@@ -124,5 +126,37 @@ class StartStopExit {
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         }, 2000);
+    }
+
+    private void updateKiloChronology() {
+        if (chronoLogs.size() == 0) {
+            addTodayKilo();
+        } else {
+            if (chronoLogs.size() > 5)
+                chronoLogs.remove(0);
+            ChronoLog chronoOld = chronoLogs.get(chronoLogs.size() - 1);
+            if (chronoOld.chroDate.equals(chronoNowDate)) {
+                chronoOld.chroKilo = kiloMeter;
+                chronoLogs.set(chronoLogs.size() - 1, chronoOld);
+            } else {
+                addTodayKilo();
+            }
+        }
+        if (chronoLogs.size() > 0) {
+            SharedPreferences.Editor prefsEditor = sharedPref.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(chronoLogs);
+            prefsEditor.putString("chrono", json);
+            prefsEditor.apply();
+        }
+    }
+
+    private void addTodayKilo() {
+        if (kiloMeter != -1) {
+            ChronoLog chronoLog = new ChronoLog();
+            chronoLog.chroDate = chronoNowDate;
+            chronoLog.chroKilo = kiloMeter;
+            chronoLogs.add(chronoLog);
+        }
     }
 }

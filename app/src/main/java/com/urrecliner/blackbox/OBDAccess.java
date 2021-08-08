@@ -1,7 +1,5 @@
 package com.urrecliner.blackbox;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -27,13 +25,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import static com.urrecliner.blackbox.Vars.ChronoLog;
+import static com.urrecliner.blackbox.Vars.chronoLogs;
 import static com.urrecliner.blackbox.Vars.kiloMeter;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.speedInt;
-import static com.urrecliner.blackbox.Vars.toDay;
+import static com.urrecliner.blackbox.Vars.chronoNowDate;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextKilo;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
@@ -161,18 +161,29 @@ class OBDAccess {
     }
 
     private void resetTodayKm(int kilo) {
-        sharedPref = mContext.getSharedPreferences("box", MODE_PRIVATE);
-        kiloMeter = sharedPref.getInt("kilo", 0);
-        toDay = sharedPref.getString("today","210730");
-        String tuDay = new SimpleDateFormat("yyMMdd", Locale.KOREA).format(System.currentTimeMillis());
-        if (toDay.equals(tuDay))
+        kiloMeter = sharedPref.getInt("kilo", -1);
+        chronoNowDate = sharedPref.getString("today","new");
+        String tuDay = new SimpleDateFormat("yy/MM/dd", Locale.KOREA).format(System.currentTimeMillis());
+        if (chronoNowDate.equals(tuDay))
             return;
-        toDay = tuDay;
+        chronoNowDate = tuDay;
         kiloMeter = kilo;
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("today", toDay);
+        editor.putString("today", chronoNowDate);
         editor.putInt("kilo",kiloMeter);
         editor.apply();
+        StringBuilder sb = new StringBuilder();
+        int oldKilo = 0;
+        for (int i = 0; i < chronoLogs.size(); i++) {
+            ChronoLog chronoLog = chronoLogs.get(i);
+            utils.logBoth("kilo "+i,"date"+chronoLog.chroDate+" > "+chronoLog.chroKilo);
+            if (i == 0)
+                oldKilo = chronoLog.chroKilo;
+            else {
+                sb.append(chronoLog.chroDate).append(" = ").append(chronoLog.chroKilo - oldKilo).append("\n");
+            }
+        }
+        utils.logBoth("Kilo", sb.toString());
     }
 
     private Timer speedTimer = null;
@@ -182,7 +193,7 @@ class OBDAccess {
 
     private void loopAskOBDSpeed() {
 //        switch (SUFFIX) {
-//            case "8":
+//            case "8": // Galaxy 8 sometimes disconnected so reconnect
 //                try {
 //                    bSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
 //                    bSocket.connect();
@@ -258,7 +269,7 @@ class OBDAccess {
         } catch (Exception e){
 //            utils.logE("distance", "General Exception", e);
         }
-        return "0";
+        return "-1";
     }
 
     void stop() {

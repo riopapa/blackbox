@@ -33,10 +33,19 @@ class DisplayBattery extends BroadcastReceiver {
     }
 
     void init() {
-        conFilter = new IntentFilter(Intent.ACTION_POWER_CONNECTED);
-        mContext.registerReceiver(this, conFilter);
-        disFilter = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
-        mContext.registerReceiver(this, disFilter);
+        try {
+            mContext.unregisterReceiver(this);
+        } catch (Exception e) {
+            // ignore registering
+        }
+        try {
+//            conFilter = new IntentFilter(Intent.ACTION_POWER_CONNECTED);
+//            mContext.registerReceiver(this, conFilter);
+//            disFilter = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
+//            mContext.registerReceiver(this, disFilter);
+        } catch (Exception e) {
+            // ignore registering
+        }
     }
 
     void showBattery() {

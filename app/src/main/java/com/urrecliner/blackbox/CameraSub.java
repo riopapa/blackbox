@@ -65,7 +65,7 @@ public class CameraSub {
             utils.logE("CameraSub", "CameraAccessException", e);
         }
         try {
-            mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 10); // MAX_IMAGES_SIZE);
+            mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 5); // MAX_IMAGES_SIZE);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
             mPreviewReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(), ImageFormat.RGB_565, 1);
         } catch (Exception e) {

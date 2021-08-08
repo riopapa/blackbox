@@ -56,10 +56,6 @@ class EventMerge {
 
         private String outputFile;
 
-//        @Override
-//        protected void onPreExecute() {
-//        }
-
         @Override
         protected String doInBackground(String... inputParams) {
             long startTime = Long.parseLong(inputParams[0]);
