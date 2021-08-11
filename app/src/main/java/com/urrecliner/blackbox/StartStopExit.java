@@ -11,6 +11,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
+import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.chronoLogs;
 import static com.urrecliner.blackbox.Vars.kiloMeter;
 import static com.urrecliner.blackbox.Vars.photoCapture;
@@ -41,7 +42,7 @@ class StartStopExit {
         videoMain.prepareRecord();
         mediaRecorder.start();
         try {
-            startSnapBigShot();
+            startSnapBigShot(SNAP_SHOT_INTERVAL * 12 / 17);
             startNormal();
         } catch (Exception e) {
             reRunApplication("Start Camera, Normal Error", e);
@@ -54,15 +55,13 @@ class StartStopExit {
         Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
         assert sendIntent != null;
         mContext.startActivity(sendIntent);
-
     }
     private final static Handler cameraTimer = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) { photoCapture.zoomShotCamera(); }
     };
     
     private final Timer timerSnapCamera = new Timer();
-    final long ZOOM_BIGGER_INTERVAL = 120;
-    private void startSnapBigShot() {
+    private void startSnapBigShot(long interval) {
         snapMapIdx = 0;
         final TimerTask cameraTask = new TimerTask() {
             @Override
@@ -73,7 +72,7 @@ class StartStopExit {
                     timerSnapCamera.cancel();
             }
         };
-        timerSnapCamera.schedule(cameraTask, 3000, ZOOM_BIGGER_INTERVAL);
+        timerSnapCamera.schedule(cameraTask, 3000, interval);
     }
 
     private Timer normalTimer;

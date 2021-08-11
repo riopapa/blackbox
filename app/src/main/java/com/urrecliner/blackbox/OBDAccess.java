@@ -78,6 +78,7 @@ class OBDAccess {
                                 resetTodayKm(Integer.parseInt(askOBDDistance()));
                                 showDistance();
                                 loopAskOBDSpeed();
+                                showKiloLog();
                             }
                         }
                     }, 100);
@@ -161,22 +162,28 @@ class OBDAccess {
     }
 
     private void resetTodayKm(int kilo) {
-        kiloMeter = sharedPref.getInt("kilo", -1);
         chronoNowDate = sharedPref.getString("today","new");
-        String tuDay = new SimpleDateFormat("yy/MM/dd", Locale.KOREA).format(System.currentTimeMillis());
-        if (chronoNowDate.equals(tuDay))
+        kiloMeter = sharedPref.getInt("kilo", -1);
+        String tuDay = new SimpleDateFormat("yy/MM/dd(EEE)", Locale.KOREA).format(System.currentTimeMillis());
+        if (!chronoNowDate.equals(tuDay)) {
+            chronoNowDate = tuDay;
+            kiloMeter = kilo;
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("today", chronoNowDate);
+            editor.putInt("kilo",kiloMeter);
+            editor.apply();
+        }
+    }
+
+    private void showKiloLog() {
+        if (chronoLogs.size() == 0)
             return;
-        chronoNowDate = tuDay;
-        kiloMeter = kilo;
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("today", chronoNowDate);
-        editor.putInt("kilo",kiloMeter);
-        editor.apply();
         StringBuilder sb = new StringBuilder();
+        sb.append("\n");
         int oldKilo = 0;
         for (int i = 0; i < chronoLogs.size(); i++) {
             ChronoLog chronoLog = chronoLogs.get(i);
-            utils.logBoth("kilo "+i,"date"+chronoLog.chroDate+" > "+chronoLog.chroKilo);
+//            utils.logBoth("kilo "+i,"date"+chronoLog.chroDate+" > "+chronoLog.chroKilo);
             if (i == 0)
                 oldKilo = chronoLog.chroKilo;
             else {
