@@ -53,7 +53,7 @@ class BeBackSoon extends AsyncTask<String, String, String> {
         mHandler.postDelayed(() -> {
             Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxwait");
             assert sendIntent != null;
-//          sendIntent.putExtra("delay", DELAY_I_WILL_BACK);
+            sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mActivity.startActivity(sendIntent);
             System.exit(0);
             Process.killProcess(Process.myPid());

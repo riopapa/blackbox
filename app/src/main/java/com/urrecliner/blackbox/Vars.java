@@ -61,8 +61,9 @@ public class Vars {
     static ImageButton vBtnRecord;
 
     static SharedPreferences sharedPref;
-    static int kiloMeter = 0;
+    static int chronoKiloMeter = 0;
     static String chronoNowDate = null;
+    static int todayKiloMeter = 0;
 
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
@@ -123,5 +124,6 @@ public class Vars {
     public static class ChronoLog {
         String chroDate;
         int chroKilo;
+        int todayKilo;
     }
 }

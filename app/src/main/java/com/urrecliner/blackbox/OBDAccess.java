@@ -27,13 +27,14 @@ import java.util.UUID;
 
 import static com.urrecliner.blackbox.Vars.ChronoLog;
 import static com.urrecliner.blackbox.Vars.chronoLogs;
-import static com.urrecliner.blackbox.Vars.kiloMeter;
+import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.speedInt;
 import static com.urrecliner.blackbox.Vars.chronoNowDate;
+import static com.urrecliner.blackbox.Vars.todayKiloMeter;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextKilo;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
@@ -162,16 +163,17 @@ class OBDAccess {
     }
 
     private void resetTodayKm(int kilo) {
-        chronoNowDate = sharedPref.getString("today","new");
-        kiloMeter = sharedPref.getInt("kilo", -1);
-        String tuDay = new SimpleDateFormat("yy/MM/dd(EEE)", Locale.KOREA).format(System.currentTimeMillis());
+        String tuDay = new SimpleDateFormat("yy/MM/dd(EEE)", Locale.getDefault()).format(System.currentTimeMillis());
         if (!chronoNowDate.equals(tuDay)) {
             chronoNowDate = tuDay;
-            kiloMeter = kilo;
+            chronoKiloMeter = kilo;
+            todayKiloMeter = 0;
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("today", chronoNowDate);
-            editor.putInt("kilo",kiloMeter);
+            editor.putInt("kilo", chronoKiloMeter);
             editor.apply();
+        } else {
+            todayKiloMeter = kilo - chronoKiloMeter;
         }
     }
 
@@ -179,18 +181,11 @@ class OBDAccess {
         if (chronoLogs.size() == 0)
             return;
         StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-        int oldKilo = 0;
         for (int i = 0; i < chronoLogs.size(); i++) {
             ChronoLog chronoLog = chronoLogs.get(i);
-//            utils.logBoth("kilo "+i,"date"+chronoLog.chroDate+" > "+chronoLog.chroKilo);
-            if (i == 0)
-                oldKilo = chronoLog.chroKilo;
-            else {
-                sb.append(chronoLog.chroDate).append(" = ").append(chronoLog.chroKilo - oldKilo).append("\n");
-            }
+            sb.append("\n").append(chronoLog.chroDate).append(" = ").append(chronoLog.chroKilo).append(" / ").append(chronoLog.todayKilo).append("Km");
         }
-        utils.logBoth("Kilo", sb.toString());
+        utils.logBoth("Kilo Log", sb.toString());
     }
 
     private Timer speedTimer = null;
@@ -247,9 +242,9 @@ class OBDAccess {
         if (ss.equals(distOld))
             return;
         distOld = ss;
-        int kilo = Integer.parseInt(ss) - kiloMeter;
+        todayKiloMeter = Integer.parseInt(ss) - chronoKiloMeter;
         mActivity.runOnUiThread(() -> {
-            String s = ""+kilo;
+            String s = ""+todayKiloMeter;
             vTextKilo.setText(s);
         });
     }

@@ -11,6 +11,7 @@ import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
@@ -38,7 +39,7 @@ import static com.urrecliner.blackbox.Vars.chronoNowDate;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.displayTime;
-import static com.urrecliner.blackbox.Vars.kiloMeter;
+import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
@@ -55,6 +56,7 @@ import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.startStopExit;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
+import static com.urrecliner.blackbox.Vars.todayKiloMeter;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -102,7 +104,6 @@ public class MainActivity extends Activity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         mContext = this;
         mActivity = this;
-        sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
 
 //        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
@@ -161,6 +162,7 @@ public class MainActivity extends Activity {
                 break;
         }
 
+        sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
         utils.deleteOldFiles(mPackageEventJpgPath, 4);
@@ -176,8 +178,9 @@ public class MainActivity extends Activity {
 
         gpsTracker = new GPSTracker(mContext);
         gpsTracker.init();
-        chronoNowDate = "21/mm/dd";
-        kiloMeter = -1;
+        chronoNowDate = sharedPref.getString("today","new");
+        chronoKiloMeter = sharedPref.getInt("kilo", -1);
+        todayKiloMeter = 0;
         chronoLogs = utils.getTodayTable();
 
         vPreviewView = findViewById(R.id.previewView);
@@ -257,7 +260,7 @@ public class MainActivity extends Activity {
         lNewsLine = findViewById(R.id.newsLine);
     }
 
-    final static Handler startHandler = new Handler() {
+    final static Handler startHandler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) { startStopExit.startVideo();
         }
     };

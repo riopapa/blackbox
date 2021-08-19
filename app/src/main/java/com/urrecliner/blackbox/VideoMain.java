@@ -122,15 +122,17 @@ public class VideoMain {
         int ySize = mImageSize.getHeight();
         int xZoomed = (int) (xSize / zoom);
         int yZoomed = (int) (ySize / zoom);
-        int xShift = (xSize - xZoomed) / 3;
-        int yShift = (ySize - yZoomed) / 4;
+        int xShift = (xSize - xZoomed) / 5;
+        int yShift = (ySize - yZoomed) / 3;
         int xLeft = (xSize-xZoomed) / 2;
         int yTop = ySize-yZoomed-yShift;
         Rect rect = new Rect();
-        if (type == 1) // bigger zoom Left
+        if (type == 0) // normal
+            xLeft += xShift / 2;
+        else if (type == 1) // bigger zoom Left
             xLeft -= xShift;
         else if (type == 2) // bigger zoom Right
-            xLeft += xShift;
+            xLeft += xShift + xShift;
         Log.w("size","xSize="+xSize+", ySize="+ySize+", xZ"+xZoomed+", yZ="+yZoomed+", xS="+xShift+", yS="+yShift+", xL="+xLeft+", yT="+yTop);
         rect.set(xLeft, yTop, xLeft+xZoomed, yTop+yZoomed);
         return rect;

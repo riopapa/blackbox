@@ -13,7 +13,7 @@ import java.util.TimerTask;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.chronoLogs;
-import static com.urrecliner.blackbox.Vars.kiloMeter;
+import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
 import static com.urrecliner.blackbox.Vars.photoCapture;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -25,6 +25,7 @@ import static com.urrecliner.blackbox.Vars.obdAccess;
 import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.chronoNowDate;
+import static com.urrecliner.blackbox.Vars.todayKiloMeter;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
 import static com.urrecliner.blackbox.Vars.videoMain;
@@ -114,8 +115,7 @@ class StartStopExit {
         mExitApplication = true;
         if (mIsRecording) stopVideo();
         displayTime.stop();
-        if (chronoNowDate != null)
-           updateKiloChronology();
+        updateKiloChronology();
         utils.logOnly(logID,"Exit App");
         new Timer().schedule(new TimerTask() {
             public void run() {
@@ -128,15 +128,18 @@ class StartStopExit {
     }
 
     private void updateKiloChronology() {
+        if (chronoNowDate == null)
+            return;
         if (chronoLogs.size() == 0) {
             addTodayKilo();
         } else {
             if (chronoLogs.size() > 5)
                 chronoLogs.remove(0);
-            ChronoLog chronoOld = chronoLogs.get(chronoLogs.size() - 1);
-            if (chronoOld.chroDate.equals(chronoNowDate)) {
-                chronoOld.chroKilo = kiloMeter;
-                chronoLogs.set(chronoLogs.size() - 1, chronoOld);
+            ChronoLog chronoLatest = chronoLogs.get(chronoLogs.size() - 1);
+            if (chronoLatest.chroDate.equals(chronoNowDate)) {
+                chronoLatest.chroKilo = chronoKiloMeter;
+                chronoLatest.todayKilo = todayKiloMeter;
+                chronoLogs.set(chronoLogs.size() - 1, chronoLatest);
             } else {
                 addTodayKilo();
             }
@@ -151,10 +154,11 @@ class StartStopExit {
     }
 
     private void addTodayKilo() {
-        if (kiloMeter != -1) {
+        if (todayKiloMeter != -1) {
             ChronoLog chronoLog = new ChronoLog();
             chronoLog.chroDate = chronoNowDate;
-            chronoLog.chroKilo = kiloMeter;
+            chronoLog.chroKilo = chronoKiloMeter;
+            chronoLog.todayKilo = todayKiloMeter;
             chronoLogs.add(chronoLog);
         }
     }
