@@ -62,7 +62,6 @@ public class PhotoCapture {
             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 //            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
             mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, shotLeft ?zoomBiggerL:zoomBiggerR);
-//            mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoomBiggerR);
             shotLeft = !shotLeft;
         } catch (CameraAccessException e) {
             e.printStackTrace();

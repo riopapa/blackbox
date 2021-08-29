@@ -43,7 +43,7 @@ class StartStopExit {
         videoMain.prepareRecord();
         mediaRecorder.start();
         try {
-            startSnapBigShot(SNAP_SHOT_INTERVAL * 12 / 17);
+            startSnapBigShot(SNAP_SHOT_INTERVAL * 21 / 17);
             startNormal();
         } catch (Exception e) {
             reRunApplication("Start Camera, Normal Error", e);
@@ -133,7 +133,7 @@ class StartStopExit {
         if (chronoLogs.size() == 0) {
             addTodayKilo();
         } else {
-            if (chronoLogs.size() > 5)
+            if (chronoLogs.size() > 10)
                 chronoLogs.remove(0);
             ChronoLog chronoLatest = chronoLogs.get(chronoLogs.size() - 1);
             if (chronoLatest.chroDate.equals(chronoNowDate)) {

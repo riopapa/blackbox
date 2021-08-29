@@ -79,7 +79,7 @@ class OBDAccess {
                                 resetTodayKm(Integer.parseInt(askOBDDistance()));
                                 showDistance();
                                 loopAskOBDSpeed();
-                                showKiloLog();
+                                new ShowKmLogs().show(chronoLogs);
                             }
                         }
                     }, 100);
@@ -177,16 +177,6 @@ class OBDAccess {
         }
     }
 
-    private void showKiloLog() {
-        if (chronoLogs.size() == 0)
-            return;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < chronoLogs.size(); i++) {
-            ChronoLog chronoLog = chronoLogs.get(i);
-            sb.append("\n").append(chronoLog.chroDate).append(" = ").append(chronoLog.chroKilo).append(" / ").append(chronoLog.todayKilo).append("Km");
-        }
-        utils.logBoth("Kilo Log", sb.toString());
-    }
 
     private Timer speedTimer = null;
     private boolean noPreview = false;

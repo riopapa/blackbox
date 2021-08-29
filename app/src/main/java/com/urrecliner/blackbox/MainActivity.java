@@ -254,7 +254,7 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 startHandler.sendEmptyMessage(0);
-//                vBtnEvent.setImageResource(R.mipmap.event_ready);
+                new ShowKmLogs().show(chronoLogs);
             }
         }, DELAY_AUTO_RECORDING);
         lNewsLine = findViewById(R.id.newsLine);
