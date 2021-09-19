@@ -193,7 +193,7 @@ class OBDAccess {
 //                    utils.logBoth("loopAskOBDSpeed connect Exception", e.toString());
 //                }
 //                break;
-//            case "9":
+//            case "P":
 //            case "S":
 //                break;
 //        }

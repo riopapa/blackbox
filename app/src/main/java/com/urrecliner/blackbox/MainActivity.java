@@ -120,7 +120,7 @@ public class MainActivity extends Activity {
             //  S9+ = 66fb7229f2286ccd
             //  S9 blackbox = f4367a4dc1e43732
             if (aID.endsWith("cd"))
-                SUFFIX = "9";
+                SUFFIX = "P";
             else
                 SUFFIX = "S";
         }
@@ -132,20 +132,6 @@ public class MainActivity extends Activity {
             utils.logBoth("Model", Build.MODEL);
 
         switch (SUFFIX) {
-            case "L":   // "LM-G710N"
-                MAX_IMAGES_SIZE = 140;      // < phase interval 200
-                SNAP_SHOT_INTERVAL = 160;
-                VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 40*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
-                break;
-            case "9":
-                MAX_IMAGES_SIZE = 145;
-                SNAP_SHOT_INTERVAL = 140;
-                VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 45*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 30*1024*1024;
-                break;
             case "S":
                 MAX_IMAGES_SIZE = 155;
                 SNAP_SHOT_INTERVAL = 130;
@@ -153,12 +139,26 @@ public class MainActivity extends Activity {
                 VIDEO_ENCODING_RATE = 50*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
                 break;
+            case "P":
+                MAX_IMAGES_SIZE = 145;
+                SNAP_SHOT_INTERVAL = 140;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 45*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 30*1024*1024;
+                break;
             case "A":
                 MAX_IMAGES_SIZE = 140;
                 SNAP_SHOT_INTERVAL = 152;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 45*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
+                break;
+            case "L":   // "LM-G710N"
+                MAX_IMAGES_SIZE = 140;      // < phase interval 200
+                SNAP_SHOT_INTERVAL = 160;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 40*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
         }
 
@@ -258,17 +258,18 @@ public class MainActivity extends Activity {
             }
         }, DELAY_AUTO_RECORDING);
         lNewsLine = findViewById(R.id.newsLine);
+        displayBattery.showBattery("displayed");
     }
 
     final static Handler startHandler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) { startStopExit.startVideo();
         }
     };
-    final static Handler stopHandler = new Handler() {
+    final static Handler stopHandler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) { startStopExit.stopVideo();
         }
     };
-    final Handler eventHandler = new Handler() {
+    final Handler eventHandler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) { new EventRecord().start();;
         }
     };

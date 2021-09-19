@@ -18,7 +18,6 @@ class DisplayTime implements Runnable {
             public void run() {
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 vTextTime.setText(sdf.format(System.currentTimeMillis()));
-                displayBattery.showBattery();
             }
         };
         displayHHMM.schedule(tt, 100, 18000);

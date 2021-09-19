@@ -14,6 +14,7 @@ import android.view.View;
 
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
+import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
@@ -29,7 +30,7 @@ class DisplayBattery extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action.equals(Intent.ACTION_POWER_CONNECTED) || action.equals(Intent.ACTION_POWER_DISCONNECTED))
-            showBattery();
+            showBattery(action);
     }
 
     void init() {
@@ -48,7 +49,7 @@ class DisplayBattery extends BroadcastReceiver {
         }
     }
 
-    void showBattery() {
+    void showBattery(String action) {
 
         chgFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         statusReceiver = mContext.registerReceiver(null, chgFilter);
@@ -70,6 +71,8 @@ class DisplayBattery extends BroadcastReceiver {
                 drawBattery(nowPercent, isCharging);
             });
         }
+        utils.logBoth("battery", action);
+
     }
 
     final int CIRCLE_RADIUS = 70, CIRCLE_WIDTH = 4;

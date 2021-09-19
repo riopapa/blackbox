@@ -36,7 +36,7 @@
         android:contentDescription="@string/appwidget_text"
         android:rotation="90"
         android:text="@string/appwidget_text"
-        android:textColor="#0641F3"
+        android:textColor="#E1C264"
         android:textSize="40sp"
         android:textStyle="bold|italic" />
 
