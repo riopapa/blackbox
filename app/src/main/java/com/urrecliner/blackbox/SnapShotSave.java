@@ -18,13 +18,13 @@ class SnapShotSave {
     void startSave(File path2Write, final int snapPos, final int phase) {
         byte[][] jpgBytes;
         int jpgIdx = 0;
-        maxSize = MAX_IMAGES_SIZE - 40;
+        maxSize = MAX_IMAGES_SIZE - 30;
         if (phase == 2)
-            maxSize = MAX_IMAGES_SIZE - 60;
-        else if (phase == 3)
-            maxSize = MAX_IMAGES_SIZE - 70;
+            maxSize = MAX_IMAGES_SIZE - 20;
+////        else if (phase == 3)
+////            maxSize = MAX_IMAGES_SIZE - 30;
         else if (phase == 4)
-            maxSize = MAX_IMAGES_SIZE - 50;
+            maxSize = MAX_IMAGES_SIZE - 60;
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         for (int i = snapPos; i < MAX_IMAGES_SIZE; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
@@ -38,21 +38,21 @@ class SnapShotSave {
             if (jpgIdx > maxSize)
                 break;
         }
+
+        startBias = phase * 200;
         prefixTime = path2Write.toString();
-        prefixTime = prefixTime.substring(prefixTime.lastIndexOf(" "));
-        prefixTime = "C" + prefixTime.substring(1,3) + prefixTime.substring(4,6) + "_";
+        prefixTime = "D"+prefixTime.substring(prefixTime.lastIndexOf("/")+2)+" "+SUFFIX;
         Thread th = new Thread(() -> {
-            startBias = phase * 200;
             for (int i = 0; i < maxSize; i++) {
                 byte [] imageBytes = jpgBytes[i];
+                jpgBytes[i] = null;
                 if (imageBytes != null && imageBytes.length > 1) {
-                    File imageFile = new File(path2Write, prefixTime + ("" + (startBias + i)) + SUFFIX + ".jpg");
+                    File imageFile = new File(path2Write, prefixTime + ("" + (startBias + i)) + ".jpg");
                     bytes2File(imageBytes, imageFile);
-                    jpgBytes[i] = null;
                     SystemClock.sleep(40);  // not to hold all the time
                 }
             }
-            if (phase == 4)
+            if (phase == 4) // last phase
                 utils.logBoth("snapshot", path2Write.getName());
         });
         th.start();

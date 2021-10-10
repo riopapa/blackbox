@@ -47,42 +47,42 @@ public class EventRecord {
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
         utils.readyPackageFolder(thisEventJpgPath);
 
+        gpsTracker.askLocation();
+
         new Timer().schedule(new TimerTask() {
             public void run() {
-                SnapShotSave snapShotSave1 = new SnapShotSave();
-                snapShotSave1.startSave(thisEventJpgPath, snapMapIdx, 1);
+                SnapShotSave snapShotSave = new SnapShotSave();
+                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 1);
             }
         }, 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                SnapShotSave snapShotSave2 = new SnapShotSave();
-                snapShotSave2.startSave(thisEventJpgPath, snapMapIdx, 2);
+                SnapShotSave snapShotSave = new SnapShotSave();
+                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
             }
-        }, INTERVAL_EVENT * 5 / 10);
+        }, INTERVAL_EVENT * 6 / 10);
+
+//        new Timer().schedule(new TimerTask() {
+//            public void run() {
+//                SnapShotSave snapShotSave = new SnapShotSave();
+//                snapShotSave.startSave(thisEventJpgPath, snapMapIdx,3);
+//            }
+//        }, INTERVAL_EVENT * 8 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                SnapShotSave snapShotSave3 = new SnapShotSave();
-                snapShotSave3.startSave(thisEventJpgPath, snapMapIdx,3);
+                SnapShotSave snapShotSave = new SnapShotSave();
+                snapShotSave.startSave(thisEventJpgPath, snapMapIdx,4);
             }
-        }, INTERVAL_EVENT * 9 / 10);
-
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                SnapShotSave snapShotSave3 = new SnapShotSave();
-                snapShotSave3.startSave(thisEventJpgPath, snapMapIdx,4);
-            }
-        }, INTERVAL_EVENT * 14 / 10);
-
-        gpsTracker.askLocation();
+        }, INTERVAL_EVENT * 12 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime);
             }
-        }, INTERVAL_EVENT * 12 / 10);
+        }, INTERVAL_EVENT * 10 / 10);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

@@ -134,14 +134,14 @@ public class MainActivity extends Activity {
         switch (SUFFIX) {
             case "S":
                 MAX_IMAGES_SIZE = 155;
-                SNAP_SHOT_INTERVAL = 130;
+                SNAP_SHOT_INTERVAL = 125;
                 VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 50*1000*1000;
+                VIDEO_ENCODING_RATE = 45*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
                 break;
             case "P":
                 MAX_IMAGES_SIZE = 145;
-                SNAP_SHOT_INTERVAL = 140;
+                SNAP_SHOT_INTERVAL = 125;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 45*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 30*1024*1024;
@@ -153,13 +153,13 @@ public class MainActivity extends Activity {
                 VIDEO_ENCODING_RATE = 45*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
                 break;
-            case "L":   // "LM-G710N"
-                MAX_IMAGES_SIZE = 140;      // < phase interval 200
-                SNAP_SHOT_INTERVAL = 160;
-                VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 40*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
-                break;
+//            case "L":   // "LM-G710N"
+//                MAX_IMAGES_SIZE = 140;      // < phase interval 200
+//                SNAP_SHOT_INTERVAL = 160;
+//                VIDEO_FRAME_RATE = 30;
+//                VIDEO_ENCODING_RATE = 40*1000*1000;
+//                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
+//                break;
         }
 
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
