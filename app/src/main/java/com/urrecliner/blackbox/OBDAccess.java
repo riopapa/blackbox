@@ -79,7 +79,7 @@ class OBDAccess {
                                 resetTodayKm(Integer.parseInt(askOBDDistance()));
                                 showDistance();
                                 loopAskOBDSpeed();
-                                new ShowKmLogs().show(chronoLogs);
+//                                new ShowKmLogs().show(chronoLogs);
                             }
                         }
                     }, 100);

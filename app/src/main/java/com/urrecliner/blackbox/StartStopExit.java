@@ -43,7 +43,7 @@ class StartStopExit {
         videoMain.prepareRecord();
         mediaRecorder.start();
         try {
-            startSnapBigShot(SNAP_SHOT_INTERVAL * 21 / 17);
+            startSnapBigShot();
             startNormal();
         } catch (Exception e) {
             reRunApplication("Start Camera, Normal Error", e);
@@ -62,7 +62,7 @@ class StartStopExit {
     };
     
     private final Timer timerSnapCamera = new Timer();
-    private void startSnapBigShot(long interval) {
+    private void startSnapBigShot() {
         snapMapIdx = 0;
         final TimerTask cameraTask = new TimerTask() {
             @Override
@@ -73,7 +73,7 @@ class StartStopExit {
                     timerSnapCamera.cancel();
             }
         };
-        timerSnapCamera.schedule(cameraTask, 3000, interval);
+        timerSnapCamera.schedule(cameraTask, 3000, SNAP_SHOT_INTERVAL);
     }
 
     private Timer normalTimer;

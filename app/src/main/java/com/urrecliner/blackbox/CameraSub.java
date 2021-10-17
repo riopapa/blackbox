@@ -12,6 +12,7 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Build;
+import android.util.Log;
 import android.util.Size;
 
 import androidx.core.content.ContextCompat;
@@ -20,6 +21,7 @@ import java.nio.ByteBuffer;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
+import static com.urrecliner.blackbox.Vars.mBackgroundCamera;
 import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
@@ -162,7 +164,7 @@ public class CameraSub {
             if(ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.CAMERA) ==
                     PackageManager.PERMISSION_GRANTED) {
                 assert cameraManager != null;
-                cameraManager.openCamera(mCameraId, mCameraDeviceStateCallback, mBackgroundImage);
+                cameraManager.openCamera(mCameraId, mCameraDeviceStateCallback, mBackgroundCamera);
             }
         } catch (CameraAccessException e) {
             utils.logE("CameraSub", "connectCamera Exception ", e);

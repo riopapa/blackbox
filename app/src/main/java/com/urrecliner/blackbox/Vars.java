@@ -90,7 +90,7 @@ public class Vars {
     static int activeEventCount = 0;
     final static int DELAY_AUTO_RECORDING = 3000;
     final static int DELAY_WAIT_EXIT_SECONDS = 3;
-    static Handler mBackgroundImage;
+    static Handler mBackgroundImage, mBackgroundCamera;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
     static boolean mIsRecording;

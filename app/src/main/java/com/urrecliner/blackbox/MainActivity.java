@@ -239,16 +239,16 @@ public class MainActivity extends Activity {
             float centerY = viewRect.centerY();
             matrix.postRotate(-90, centerX, centerY);
             vPreviewView.setTransform(matrix);
-            vPreviewView.setScaleX(1.9f);
+            vPreviewView.setScaleX(2.1f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-//        DisplayTime displayTime = new DisplayTime();
         displayTime.run();
         displayBattery.init();
         obdAccess.start();
         showInitialValues();
-//        SystemClock.sleep(delayedStart);
+        lNewsLine = findViewById(R.id.newsLine);
+        displayBattery.showBattery("displayed");
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -257,8 +257,6 @@ public class MainActivity extends Activity {
                 new ShowKmLogs().show(chronoLogs);
             }
         }, DELAY_AUTO_RECORDING);
-        lNewsLine = findViewById(R.id.newsLine);
-        displayBattery.showBattery("displayed");
     }
 
     final static Handler startHandler = new Handler(Looper.getMainLooper()) {

@@ -293,8 +293,8 @@
     <!--Preview  -->
     <FrameLayout
         android:id="@+id/framePreview"
-        android:layout_width="240dp"
-        android:layout_height="130dp"
+        android:layout_width="264dp"
+        android:layout_height="128dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="4dp"
