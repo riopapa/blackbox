@@ -134,14 +134,14 @@ public class MainActivity extends Activity {
         switch (SUFFIX) {
             case "S":
                 MAX_IMAGES_SIZE = 155;
-                SNAP_SHOT_INTERVAL = 125;
+                SNAP_SHOT_INTERVAL = 121;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 45*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
                 break;
             case "P":
                 MAX_IMAGES_SIZE = 145;
-                SNAP_SHOT_INTERVAL = 125;
+                SNAP_SHOT_INTERVAL = 153;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 45*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 30*1024*1024;

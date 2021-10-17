@@ -40,14 +40,14 @@ class SnapShotSave {
         }
 
         startBias = phase * 200;
-        prefixTime = path2Write.toString();
-        prefixTime = "D"+prefixTime.substring(prefixTime.lastIndexOf("/")+2)+" "+SUFFIX;
+        prefixTime = path2Write.getName();
+        prefixTime = "D"+prefixTime.substring(1,prefixTime.length()-3);
         Thread th = new Thread(() -> {
             for (int i = 0; i < maxSize; i++) {
                 byte [] imageBytes = jpgBytes[i];
                 jpgBytes[i] = null;
                 if (imageBytes != null && imageBytes.length > 1) {
-                    File imageFile = new File(path2Write, prefixTime + ("" + (startBias + i)) + ".jpg");
+                    File imageFile = new File(path2Write, prefixTime + ("" + (startBias + i))+SUFFIX + ".jpg");
                     bytes2File(imageBytes, imageFile);
                     SystemClock.sleep(40);  // not to hold all the time
                 }
