@@ -34,32 +34,29 @@ public class PhotoCapture {
     }
 
     private static final CameraCaptureSession.CaptureCallback zoomCameraPhotoCallback = new
-            CameraCaptureSession.CaptureCallback() {
-                private void process(CaptureResult captureResult) {
-                    if (mCaptureState == STATE_WAIT_LOCK) {
-                            mCaptureState = STATE_PREVIEW;
-                            try {
-                                mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-                                mCaptureRequestBuilder.addTarget(photoSurface);
-                                mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
-                                mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+        CameraCaptureSession.CaptureCallback() {
+            private void process(CaptureResult captureResult) {
+                if (mCaptureState == STATE_WAIT_LOCK) {
+                        mCaptureState = STATE_PREVIEW;
+                        try {
+                            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+                            mCaptureRequestBuilder.addTarget(photoSurface);
+                            mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
+                            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 //            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
-                                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, shotLeft ?zoomBiggerL:zoomBiggerR);
-                                shotLeft = !shotLeft;
-                            } catch (CameraAccessException e) {
-                                e.printStackTrace();
-                            }
-                    }
+                            mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, shotLeft ?zoomBiggerL:zoomBiggerR);
+                            shotLeft = !shotLeft;
+                        } catch (CameraAccessException e) {
+                            e.printStackTrace();
+                        }
                 }
+            }
 
-                @Override
-                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request,
-                                               TotalCaptureResult result)                 {
-                    super.onCaptureCompleted(session, request, result);
-                    process(result);
-                }
-            };
-
-    private static void startStillCaptureRequest() {
-    }
+            @Override
+            public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request,
+                                           TotalCaptureResult result)                 {
+                super.onCaptureCompleted(session, request, result);
+                process(result);
+            }
+        };
 }
