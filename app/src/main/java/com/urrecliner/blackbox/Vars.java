@@ -37,6 +37,7 @@ public class Vars {
     static StartStopExit startStopExit = new StartStopExit();
 
     static OBDAccess obdAccess = new OBDAccess();
+    static boolean OBDConnected = false;
 //    static DirectionSensor directionSensor = new DirectionSensor();
     static DisplayBattery displayBattery = new DisplayBattery();
     static GPSTracker gpsTracker;
@@ -104,6 +105,7 @@ public class Vars {
 
     static int MAX_IMAGES_SIZE;
     static long SNAP_SHOT_INTERVAL;
+    static long CAMERA_SHOT_INTERVAL;   // < SNAP_SHOT_INTERVAL
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;

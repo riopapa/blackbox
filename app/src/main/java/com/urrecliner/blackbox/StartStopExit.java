@@ -10,7 +10,9 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.CAMERA_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
+import static com.urrecliner.blackbox.Vars.OBDConnected;
 import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.chronoLogs;
 import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
@@ -73,7 +75,7 @@ class StartStopExit {
                     timerSnapCamera.cancel();
             }
         };
-        timerSnapCamera.schedule(cameraTask, 3000, SNAP_SHOT_INTERVAL);
+        timerSnapCamera.schedule(cameraTask, 3000, CAMERA_SHOT_INTERVAL);
     }
 
     private Timer normalTimer;
@@ -115,7 +117,8 @@ class StartStopExit {
         mExitApplication = true;
         if (mIsRecording) stopVideo();
         displayTime.stop();
-        updateKiloChronology();
+        if (OBDConnected)
+            updateKiloChronology();
         utils.logOnly(logID,"Exit App");
         new Timer().schedule(new TimerTask() {
             public void run() {
@@ -144,13 +147,11 @@ class StartStopExit {
                 addTodayKilo();
             }
         }
-        if (chronoLogs.size() > 0) {
-            SharedPreferences.Editor prefsEditor = sharedPref.edit();
-            Gson gson = new Gson();
-            String json = gson.toJson(chronoLogs);
-            prefsEditor.putString("chrono", json);
-            prefsEditor.apply();
-        }
+        SharedPreferences.Editor prefsEditor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(chronoLogs);
+        prefsEditor.putString("chrono", json);
+        prefsEditor.apply();
     }
 
     private void addTodayKilo() {

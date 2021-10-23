@@ -177,11 +177,7 @@ public class CameraSub {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
             if(mIsRecording) {
-//                try {
-                    videoMain.prepareRecord();
-//                } catch (CameraAccessException e) {
-//                    e.printStackTrace();
-//                }
+                videoMain.prepareRecord();
                 mediaRecorder.start();
             }
         }
@@ -205,12 +201,9 @@ public class CameraSub {
     long shotTime = 0;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         long  nowTime = System.currentTimeMillis();
-        if ((nowTime- shotTime) < SNAP_SHOT_INTERVAL)
+        if (nowTime < shotTime)
             return;
-        if (shotTime == 0)
-            shotTime = nowTime;
-        else
-            shotTime += SNAP_SHOT_INTERVAL;
+        shotTime = nowTime + SNAP_SHOT_INTERVAL;
         try {
             image = reader.acquireLatestImage();
             buffer = image.getPlanes()[0].getBuffer();

@@ -27,6 +27,7 @@ import com.urrecliner.blackbox.utility.Permission;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.CAMERA_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
@@ -134,13 +135,15 @@ public class MainActivity extends Activity {
         switch (SUFFIX) {
             case "S":
                 MAX_IMAGES_SIZE = 155;
-                SNAP_SHOT_INTERVAL = 121;
+                CAMERA_SHOT_INTERVAL = 160;
+                SNAP_SHOT_INTERVAL = 141;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 45*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
                 break;
             case "P":
                 MAX_IMAGES_SIZE = 145;
+                CAMERA_SHOT_INTERVAL = 180;
                 SNAP_SHOT_INTERVAL = 153;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 45*1000*1000;
@@ -148,18 +151,12 @@ public class MainActivity extends Activity {
                 break;
             case "A":
                 MAX_IMAGES_SIZE = 140;
-                SNAP_SHOT_INTERVAL = 152;
+                CAMERA_SHOT_INTERVAL = 190;
+                SNAP_SHOT_INTERVAL = 172;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 45*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
                 break;
-//            case "L":   // "LM-G710N"
-//                MAX_IMAGES_SIZE = 140;      // < phase interval 200
-//                SNAP_SHOT_INTERVAL = 160;
-//                VIDEO_FRAME_RATE = 30;
-//                VIDEO_ENCODING_RATE = 40*1000*1000;
-//                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
-//                break;
         }
 
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);

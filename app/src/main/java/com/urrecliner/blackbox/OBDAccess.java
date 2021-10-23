@@ -26,6 +26,7 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 import static com.urrecliner.blackbox.Vars.ChronoLog;
+import static com.urrecliner.blackbox.Vars.OBDConnected;
 import static com.urrecliner.blackbox.Vars.chronoLogs;
 import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
 import static com.urrecliner.blackbox.Vars.lNewsLine;
@@ -76,6 +77,7 @@ class OBDAccess {
                     new Timer().schedule(new TimerTask() {  // autoStart
                         public void run() {
                             if (connectOBD() && bSocket.isConnected()) {
+                                OBDConnected = true;
                                 resetTodayKm(Integer.parseInt(askOBDDistance()));
                                 showDistance();
                                 loopAskOBDSpeed();
