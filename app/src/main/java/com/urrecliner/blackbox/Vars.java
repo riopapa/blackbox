@@ -119,8 +119,9 @@ public class Vars {
     static CameraCaptureSession mCaptureSession;
     static Surface recordSurface = null;
     static Surface photoSurface = null;
-    static Rect zoomBiggerL, zoomBiggerR;
+    static Rect zoomBiggerL, zoomBiggerR, zoomHugeL, zoomHugeR;
     static String SUFFIX;
+    static boolean zoomHuge = false;
 
     static ArrayList<ChronoLog> chronoLogs = null;
 

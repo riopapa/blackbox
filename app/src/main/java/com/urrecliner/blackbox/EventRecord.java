@@ -19,6 +19,7 @@ import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
+import static com.urrecliner.blackbox.Vars.zoomHuge;
 
 public class EventRecord {
 
@@ -26,22 +27,6 @@ public class EventRecord {
 
         if (!mIsRecording) return;
         utils.logBoth("event","Event Starting ...");
-
-//        cameraZoomIn = new Timer();
-//        zoomFactor = 1.818f;
-//        TimerTask cameraTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (zoomFactor < 2.8f) {
-//                    utils.logOnly("zoom","change factor "+zoomFactor);
-//                    videoUtils.buildCameraSession(zoomFactor);
-//                    zoomFactor += 0.1f;
-//                }
-//                else
-//                    cameraZoomIn.cancel();
-//            }
-//        };
-//        cameraZoomIn.schedule(cameraTask, 100, 100);
 
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
@@ -53,6 +38,7 @@ public class EventRecord {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 1);
+                zoomHuge = true;
             }
         }, 10);
 
@@ -60,6 +46,7 @@ public class EventRecord {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
+                zoomHuge = false;
             }
         }, INTERVAL_EVENT * 8 / 10);
 

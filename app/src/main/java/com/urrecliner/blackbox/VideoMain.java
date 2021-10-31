@@ -8,7 +8,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
-import android.util.Log;
 import android.view.Surface;
 
 import java.io.File;
@@ -39,6 +38,8 @@ import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.zoomBiggerR;
+import static com.urrecliner.blackbox.Vars.zoomHugeL;
+import static com.urrecliner.blackbox.Vars.zoomHugeR;
 
 public class VideoMain {
 
@@ -82,9 +83,11 @@ public class VideoMain {
         mCaptureRequestBuilder.addTarget(recordSurface);
         photoSurface = mImageReader.getSurface();
         mCaptureRequestBuilder.addTarget(photoSurface);
-        zoomNormal = calcPhotoZoom (ZOOM_NORMAL,0);
-        zoomBiggerL = calcPhotoZoom (ZOOM_BIGGER, 1);
-        zoomBiggerR = calcPhotoZoom (ZOOM_BIGGER, 2);
+        zoomNormal = calcPhotoZoom (ZOOM_NORMAL,"N");
+        zoomBiggerL = calcPhotoZoom (ZOOM_BIGGER, "L");
+        zoomBiggerR = calcPhotoZoom (ZOOM_BIGGER, "R");
+        zoomHugeL = calcPhotoZoom (ZOOM_HUGE, "L");
+        zoomHugeR = calcPhotoZoom (ZOOM_HUGE, "R");
     }
 
     void buildCameraSession() {
@@ -115,23 +118,27 @@ public class VideoMain {
         };
     }
 
-    final float ZOOM_NORMAL = 1.0f, ZOOM_BIGGER = 1.6f;
-    private Rect calcPhotoZoom(float zoom, int type) {
+    final float ZOOM_NORMAL = 1.1f, ZOOM_BIGGER = 1.6f, ZOOM_HUGE = 2.0f;
+    private Rect calcPhotoZoom(float zoomFactor, String type) {
 
         int xSize = mImageSize.getWidth();
         int ySize = mImageSize.getHeight();
-        int xZoomed = (int) (xSize / zoom);
-        int yZoomed = (int) (ySize / zoom);
-//        int yShift = (ySize - yZoomed) / 3;
+        int xZoomed = (int) (xSize / zoomFactor);
+        int yZoomed = (int) (ySize / zoomFactor);
         int xLeft = 0;
         int yTop = ySize-yZoomed;
         Rect rect = new Rect();
-        if (type == 0) // normal
-            xLeft = xSize-xZoomed + (xSize-xZoomed) / 7;
-        else if (type == 1) // bigger zoom Left
-            xLeft = 0;
-        else if (type == 2) // bigger zoom Right
-            xLeft = xSize - xZoomed;
+        switch (type) {
+            case "N":
+                xLeft = (xSize - xZoomed) / 2;
+                break;
+            case "L":
+                xLeft = 0;
+                break;
+            case "R":
+                xLeft = xSize - xZoomed;
+                break;
+        }
 //        Log.w("size","xSize="+xSize+", ySize="+ySize+", xZ"+xZoomed+", yZ="+yZoomed+", xS="+xShift+", yS="+yShift+", xL="+xLeft+", yT="+yTop);
         rect.set(xLeft, yTop, xLeft+xZoomed, yTop+yZoomed);
         return rect;

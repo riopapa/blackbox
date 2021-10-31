@@ -16,6 +16,9 @@ import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.photoSurface;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.zoomBiggerR;
+import static com.urrecliner.blackbox.Vars.zoomHuge;
+import static com.urrecliner.blackbox.Vars.zoomHugeL;
+import static com.urrecliner.blackbox.Vars.zoomHugeR;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
@@ -44,7 +47,12 @@ public class PhotoCapture {
                             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
                             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 //            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
-                            mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, shotLeft ?zoomBiggerL:zoomBiggerR);
+                            if (zoomHuge)
+                                mCaptureRequestBuilder.set(
+                                        CaptureRequest.SCALER_CROP_REGION, shotLeft ?zoomHugeL:zoomHugeR);
+                            else
+                                mCaptureRequestBuilder.set(
+                                        CaptureRequest.SCALER_CROP_REGION, shotLeft ?zoomBiggerL:zoomBiggerR);
                             shotLeft = !shotLeft;
                         } catch (CameraAccessException e) {
                             e.printStackTrace();
