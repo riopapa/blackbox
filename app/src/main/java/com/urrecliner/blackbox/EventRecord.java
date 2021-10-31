@@ -61,28 +61,21 @@ public class EventRecord {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
             }
-        }, INTERVAL_EVENT * 6 / 10);
-
-//        new Timer().schedule(new TimerTask() {
-//            public void run() {
-//                SnapShotSave snapShotSave = new SnapShotSave();
-//                snapShotSave.startSave(thisEventJpgPath, snapMapIdx,3);
-//            }
-//        }, INTERVAL_EVENT * 8 / 10);
+        }, INTERVAL_EVENT * 8 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx,4);
             }
-        }, INTERVAL_EVENT * 12 / 10);
+        }, INTERVAL_EVENT * 17 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime);
             }
-        }, INTERVAL_EVENT * 10 / 10);
+        }, INTERVAL_EVENT * 11 / 10);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

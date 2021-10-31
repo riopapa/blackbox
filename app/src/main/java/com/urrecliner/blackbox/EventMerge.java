@@ -3,6 +3,7 @@ package com.urrecliner.blackbox;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.coremedia.iso.boxes.Container;
@@ -72,6 +73,7 @@ class EventMerge {
                 endTimeS = files2Merge[files2Merge.length - 2].getName();
                 outputFile = new File(mPackageEventPath, DATE_PREFIX+beginTimeS + SUFFIX
                         + " x" + latitude + "," + longitude + ".mp4").toString();
+                Log.e("event media","cnt="+files2Merge.length);
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);
                 MediaPlayer mp = new MediaPlayer();
                 try {
@@ -114,6 +116,7 @@ class EventMerge {
             }
 
             if (!videoTracks.isEmpty()) {
+                Log.e("video track","cnt="+videoTracks.size());
                 Movie outputMovie = new Movie();
                 try {
                     outputMovie.addTrack(new AppendTrack(videoTracks.toArray(new Track[0])));

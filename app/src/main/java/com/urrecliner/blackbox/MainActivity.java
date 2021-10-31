@@ -1,5 +1,48 @@
 package com.urrecliner.blackbox;
 
+import static com.urrecliner.blackbox.Vars.CountEvent;
+import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
+import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
+import static com.urrecliner.blackbox.Vars.chronoLogs;
+import static com.urrecliner.blackbox.Vars.chronoNowDate;
+import static com.urrecliner.blackbox.Vars.displayBattery;
+import static com.urrecliner.blackbox.Vars.displayTime;
+import static com.urrecliner.blackbox.Vars.gpsTracker;
+import static com.urrecliner.blackbox.Vars.lNewsLine;
+import static com.urrecliner.blackbox.Vars.mActivity;
+import static com.urrecliner.blackbox.Vars.mContext;
+import static com.urrecliner.blackbox.Vars.mIsRecording;
+import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
+import static com.urrecliner.blackbox.Vars.mPackageEventPath;
+import static com.urrecliner.blackbox.Vars.mPackageLogPath;
+import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
+import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
+import static com.urrecliner.blackbox.Vars.mPackagePath;
+import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
+import static com.urrecliner.blackbox.Vars.obdAccess;
+import static com.urrecliner.blackbox.Vars.sharedPref;
+import static com.urrecliner.blackbox.Vars.snapBytes;
+import static com.urrecliner.blackbox.Vars.startStopExit;
+import static com.urrecliner.blackbox.Vars.todayKiloMeter;
+import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vBtnEvent;
+import static com.urrecliner.blackbox.Vars.vBtnRecord;
+import static com.urrecliner.blackbox.Vars.vExitApp;
+import static com.urrecliner.blackbox.Vars.vImgBattery;
+import static com.urrecliner.blackbox.Vars.vKm;
+import static com.urrecliner.blackbox.Vars.vPreviewView;
+import static com.urrecliner.blackbox.Vars.vTextActiveCount;
+import static com.urrecliner.blackbox.Vars.vTextBattery;
+import static com.urrecliner.blackbox.Vars.vTextCountEvent;
+import static com.urrecliner.blackbox.Vars.vTextDate;
+import static com.urrecliner.blackbox.Vars.vTextKilo;
+import static com.urrecliner.blackbox.Vars.vTextLogInfo;
+import static com.urrecliner.blackbox.Vars.vTextRecord;
+import static com.urrecliner.blackbox.Vars.vTextSpeed;
+import static com.urrecliner.blackbox.Vars.vTextTime;
+import static com.urrecliner.blackbox.Vars.viewFinder;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -21,60 +64,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+
 import com.urrecliner.blackbox.utility.DiskSpace;
 import com.urrecliner.blackbox.utility.Permission;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.urrecliner.blackbox.Vars.CAMERA_SHOT_INTERVAL;
-import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
-import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
-import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
-import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
-import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
-import static com.urrecliner.blackbox.Vars.chronoLogs;
-import static com.urrecliner.blackbox.Vars.chronoNowDate;
-import static com.urrecliner.blackbox.Vars.displayBattery;
-import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.displayTime;
-import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
-import static com.urrecliner.blackbox.Vars.lNewsLine;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
-import static com.urrecliner.blackbox.Vars.mPackageEventPath;
-import static com.urrecliner.blackbox.Vars.mPackageLogPath;
-import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
-import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
-import static com.urrecliner.blackbox.Vars.mPackagePath;
-import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.obdAccess;
-import static com.urrecliner.blackbox.Vars.sharedPref;
-import static com.urrecliner.blackbox.Vars.snapBytes;
-import static com.urrecliner.blackbox.Vars.startStopExit;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.todayKiloMeter;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vBtnEvent;
-import static com.urrecliner.blackbox.Vars.vBtnRecord;
-import static com.urrecliner.blackbox.Vars.vExitApp;
-import static com.urrecliner.blackbox.Vars.vImgBattery;
-import static com.urrecliner.blackbox.Vars.vKm;
-import static com.urrecliner.blackbox.Vars.vTextActiveCount;
-import static com.urrecliner.blackbox.Vars.vTextBattery;
-import static com.urrecliner.blackbox.Vars.vTextCountEvent;
-import static com.urrecliner.blackbox.Vars.vTextDate;
-import static com.urrecliner.blackbox.Vars.vTextKilo;
-import static com.urrecliner.blackbox.Vars.vTextLogInfo;
-import static com.urrecliner.blackbox.Vars.vTextRecord;
-import static com.urrecliner.blackbox.Vars.vTextSpeed;
-import static com.urrecliner.blackbox.Vars.vTextTime;
-import static com.urrecliner.blackbox.Vars.vPreviewView;
-import static com.urrecliner.blackbox.Vars.viewFinder;
 
 public class MainActivity extends Activity {
 
@@ -120,44 +115,15 @@ public class MainActivity extends Activity {
             String aID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
             //  S9+ = 66fb7229f2286ccd
             //  S9 blackbox = f4367a4dc1e43732
-            if (aID.endsWith("cd"))
-                SUFFIX = "P";
+            if (aID.endsWith("6ccd"))
+                Vars.set("P");
             else
-                SUFFIX = "S";
+                Vars.set("S");
         }
         else if (Build.MODEL.equals("SM-A325N"))
-            SUFFIX = "A";
-        else if (Build.MODEL.equals("LM-G710N"))
-            SUFFIX = "L";
+            Vars.set("A");
         else
             utils.logBoth("Model", Build.MODEL);
-
-        switch (SUFFIX) {
-            case "S":
-                MAX_IMAGES_SIZE = 155;
-                CAMERA_SHOT_INTERVAL = 160;
-                SNAP_SHOT_INTERVAL = 141;
-                VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 45*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
-                break;
-            case "P":
-                MAX_IMAGES_SIZE = 145;
-                CAMERA_SHOT_INTERVAL = 180;
-                SNAP_SHOT_INTERVAL = 153;
-                VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 45*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 30*1024*1024;
-                break;
-            case "A":
-                MAX_IMAGES_SIZE = 140;
-                CAMERA_SHOT_INTERVAL = 190;
-                SNAP_SHOT_INTERVAL = 172;
-                VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 45*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
-                break;
-        }
 
         sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         readyBlackBoxFolders();
@@ -200,6 +166,7 @@ public class MainActivity extends Activity {
         setViewVars();
         mIsRecording = false;
         snapBytes = new byte[MAX_IMAGES_SIZE][];
+//        snapBuffs = new ByteBuffer[MAX_IMAGES_SIZE];
         utils.beepsInitiate();
         gpsTracker.askLocation();
         CountEvent = utils.getRecordEventCount();
@@ -265,7 +232,7 @@ public class MainActivity extends Activity {
         }
     };
     final Handler eventHandler = new Handler(Looper.getMainLooper()) {
-        public void handleMessage(Message msg) { new EventRecord().start();;
+        public void handleMessage(Message msg) { new EventRecord().start();
         }
     };
 
@@ -306,18 +273,6 @@ public class MainActivity extends Activity {
         utils.readyPackageFolder(mPackageWorkingPath);
         utils.readyPackageFolder(mPackageNormalPath);
         utils.readyPackageFolder(mPackageNormalDatePath);
-//        File aExtDcimDir = new File(utils.getExternalStoragePath(mContext),Environment.DIRECTORY_DCIM);
-//
-//        mPackageEventPath = new File(aExtDcimDir,"event");
-//
-//        Uri uri = Uri.fromFile(mPackageEventPath);
-//        openDirectory(uri);
-
-//        final int takeFlags = Intent.getFlags()
-//                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//// Check for the freshest data.
-//        getContentResolver().takePersistableUriPermission(uri, takeFlags);
     }
 
     static long keyOldTime = 0, keyNowTime = 0;
@@ -326,13 +281,10 @@ public class MainActivity extends Activity {
     public boolean onKeyDown(final int keyCode, KeyEvent event) {
 
         keyNowTime = System.currentTimeMillis();
-//        long diff = keyNowTime - keyOldTime;
-//        utils.log("KeyDown",keyCode+" keyUp diff = "+diff+willBack);
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
                 if (willBack) {
-//                    launchJpg2PhotoApp();
                     startStopExit.exitBlackBoxApp();
                 }
                 if ((keyOldTime + 20000) < keyNowTime)  // if gap is big, reset to current

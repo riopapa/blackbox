@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="colorText">#FFFFFF</color>
     <color name="speedColor">#FFFF00</color>
-
-    <color name="wheelBack">#2B052B</color>
-    <color name="wheelBar">#A513A5</color>
-    <color name="wheelHighLight">#FFFFFF</color>
-    <color name="wheelNormalLight">#AEAE03</color>
-    <color name="wheelOutline">#2EEF0E</color>
 
 </resources>

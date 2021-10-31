@@ -10,10 +10,9 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.CAMERA_SHOT_INTERVAL;
+import static com.urrecliner.blackbox.Vars.INTERVAL_BIG_SHOT;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.OBDConnected;
-import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
 import static com.urrecliner.blackbox.Vars.chronoLogs;
 import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
 import static com.urrecliner.blackbox.Vars.photoCapture;
@@ -59,7 +58,7 @@ class StartStopExit {
         assert sendIntent != null;
         mContext.startActivity(sendIntent);
     }
-    private final static Handler cameraTimer = new Handler(Looper.getMainLooper()) {
+    private final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) { photoCapture.zoomShotCamera(); }
     };
     
@@ -70,12 +69,12 @@ class StartStopExit {
             @Override
             public void run() {
                 if (mIsRecording)
-                    cameraTimer.sendEmptyMessage(0);
+                    zoomChangeTimer.sendEmptyMessage(0);
                 else
                     timerSnapCamera.cancel();
             }
         };
-        timerSnapCamera.schedule(cameraTask, 3000, CAMERA_SHOT_INTERVAL);
+        timerSnapCamera.schedule(cameraTask, 3000, INTERVAL_BIG_SHOT);
     }
 
     private Timer normalTimer;

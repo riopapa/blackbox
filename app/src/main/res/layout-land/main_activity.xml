@@ -279,7 +279,6 @@
         />
 
     <ImageView
-        android:id="@+id/news_mark2"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@id/newsLine"

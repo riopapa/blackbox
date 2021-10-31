@@ -98,17 +98,18 @@ public class Vars {
     static MediaRecorder mediaRecorder;
     static int speedInt = 0;
 
-    final static long INTERVAL_EVENT = 15 * 1000;
-    final static long INTERVAL_NORMAL = INTERVAL_EVENT * 6;
+    static long INTERVAL_EVENT;
+    static long INTERVAL_NORMAL;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
 
     static int MAX_IMAGES_SIZE;
-    static long SNAP_SHOT_INTERVAL;
-    static long CAMERA_SHOT_INTERVAL;   // < SNAP_SHOT_INTERVAL
+    static long INTERVAL_SNAP_SHOT_SAVE;
+    static long INTERVAL_BIG_SHOT;   // < SNAP_SHOT_INTERVAL
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;
+    static int IMAGE_BUFFER_MAX_IMAGES = 20;
 
     static boolean viewFinder = true;
 
@@ -127,5 +128,38 @@ public class Vars {
         String chroDate;
         int chroKilo;
         int todayKilo;
+    }
+
+    static void set(String PhoneID) {
+        INTERVAL_EVENT = 18 * 1000;
+        INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
+
+        SUFFIX = PhoneID;
+        switch (SUFFIX) {
+            case "S":
+                MAX_IMAGES_SIZE = 145;
+                INTERVAL_SNAP_SHOT_SAVE = 181;
+                INTERVAL_BIG_SHOT = INTERVAL_SNAP_SHOT_SAVE * 16 / 10;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 30*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
+                break;
+            case "P":
+                MAX_IMAGES_SIZE = 144;
+                INTERVAL_SNAP_SHOT_SAVE = 191;
+                INTERVAL_BIG_SHOT = INTERVAL_SNAP_SHOT_SAVE * 16 / 10;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 30*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
+                break;
+            case "A":
+                MAX_IMAGES_SIZE = 135;
+                INTERVAL_SNAP_SHOT_SAVE = 201;
+                INTERVAL_BIG_SHOT = INTERVAL_SNAP_SHOT_SAVE * 16 / 10;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 30*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
+                break;
+        }
     }
 }

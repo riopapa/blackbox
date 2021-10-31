@@ -11,15 +11,14 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
-import android.os.Build;
-import android.util.Log;
 import android.util.Size;
 
 import androidx.core.content.ContextCompat;
 import java.nio.ByteBuffer;
 
+import static com.urrecliner.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.SNAP_SHOT_INTERVAL;
+import static com.urrecliner.blackbox.Vars.INTERVAL_SNAP_SHOT_SAVE;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.mBackgroundCamera;
 import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
@@ -67,7 +66,7 @@ public class CameraSub {
             utils.logE("CameraSub", "CameraAccessException", e);
         }
         try {
-            mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 5); // MAX_IMAGES_SIZE);
+            mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, IMAGE_BUFFER_MAX_IMAGES);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
             mPreviewReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(), ImageFormat.RGB_565, 1);
         } catch (Exception e) {
@@ -194,30 +193,26 @@ public class CameraSub {
             mCameraDevice = null;
         }
     };
-
-    Image image;
-    ByteBuffer buffer;
-    byte[] bytes;
     long shotTime = 0;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         long  nowTime = System.currentTimeMillis();
         if (nowTime < shotTime)
             return;
-        shotTime = nowTime + SNAP_SHOT_INTERVAL;
+        shotTime = nowTime + INTERVAL_SNAP_SHOT_SAVE;
         try {
-            image = reader.acquireLatestImage();
-            buffer = image.getPlanes()[0].getBuffer();
-            bytes = new byte[buffer.capacity()];
+            Image image = reader.acquireLatestImage();
+            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+            byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
             image.close();
-            if (mIsRecording) {
-                snapBytes[snapMapIdx] = bytes;
-                snapMapIdx++;
-                if (snapMapIdx >= MAX_IMAGES_SIZE)
-                    snapMapIdx = 0;
-            }
+            snapBytes[snapMapIdx] = bytes;
         } catch (Exception e) {
             utils.showOnly("img", "buffer short " + snapMapIdx);
+        }
+        if (mIsRecording) {
+            snapMapIdx++;
+            if (snapMapIdx >= MAX_IMAGES_SIZE)
+                snapMapIdx = 0;
         }
     };
 }
