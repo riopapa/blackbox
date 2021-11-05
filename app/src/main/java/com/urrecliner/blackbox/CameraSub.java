@@ -11,10 +11,13 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.util.Log;
 import android.util.Size;
 
 import androidx.core.content.ContextCompat;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import static com.urrecliner.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
@@ -33,6 +36,8 @@ import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
+import static com.urrecliner.blackbox.Vars.photoCaptureLeft;
+import static com.urrecliner.blackbox.Vars.photoSaveLeft;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
@@ -196,19 +201,27 @@ public class CameraSub {
     long shotTime = 0;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         long  nowTime = System.currentTimeMillis();
-        if (nowTime < shotTime)
+        if (nowTime < shotTime) {
             return;
-        shotTime = nowTime + INTERVAL_SNAP_SHOT_SAVE;
+        }
+        if (shotTime == 0)
+            shotTime = nowTime;
+        Image image = reader.acquireLatestImage();
+        if (photoCaptureLeft == photoSaveLeft) {
+            image.close();
+            return;
+        }
+        shotTime += INTERVAL_SNAP_SHOT_SAVE;
         try {
-            Image image = reader.acquireLatestImage();
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
-            image.close();
             snapBytes[snapMapIdx] = bytes;
         } catch (Exception e) {
             utils.showOnly("img", "buffer short " + snapMapIdx);
         }
+        image.close();
+            photoSaveLeft = photoCaptureLeft;
         if (mIsRecording) {
             snapMapIdx++;
             if (snapMapIdx >= MAX_IMAGES_SIZE)

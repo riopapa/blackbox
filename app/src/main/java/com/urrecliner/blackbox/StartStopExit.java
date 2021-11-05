@@ -10,7 +10,7 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.INTERVAL_BIG_SHOT;
+import static com.urrecliner.blackbox.Vars.INTERVAL_LEFT_RIGHT;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.OBDConnected;
 import static com.urrecliner.blackbox.Vars.chronoLogs;
@@ -74,7 +74,7 @@ class StartStopExit {
                     timerSnapCamera.cancel();
             }
         };
-        timerSnapCamera.schedule(cameraTask, 3000, INTERVAL_BIG_SHOT);
+        timerSnapCamera.schedule(cameraTask, 3000, INTERVAL_LEFT_RIGHT);
     }
 
     private Timer normalTimer;
@@ -112,7 +112,7 @@ class StartStopExit {
     }
 
     void exitBlackBoxApp() {
-        utils.beepOnce(8,0.7f); // Exit BlackBox
+        utils.beepOnce(8,0.3f); // Exit BlackBox
         mExitApplication = true;
         if (mIsRecording) stopVideo();
         displayTime.stop();

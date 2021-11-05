@@ -6,8 +6,8 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
-import android.util.Log;
 
+import static com.urrecliner.blackbox.Vars.photoCaptureLeft;
 import static com.urrecliner.blackbox.Vars.zoomBiggerL;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -24,7 +24,6 @@ public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
     private static final int STATE_PREVIEW = 0;
     private static int mCaptureState = STATE_PREVIEW;
-    private static boolean shotLeft = false;
 
     static void zoomShotCamera() {
         mCaptureState = STATE_WAIT_LOCK;
@@ -49,11 +48,11 @@ public class PhotoCapture {
 //            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
                             if (zoomHuge)
                                 mCaptureRequestBuilder.set(
-                                        CaptureRequest.SCALER_CROP_REGION, shotLeft ?zoomHugeL:zoomHugeR);
+                                        CaptureRequest.SCALER_CROP_REGION, photoCaptureLeft ?zoomHugeL:zoomHugeR);
                             else
                                 mCaptureRequestBuilder.set(
-                                        CaptureRequest.SCALER_CROP_REGION, shotLeft ?zoomBiggerL:zoomBiggerR);
-                            shotLeft = !shotLeft;
+                                        CaptureRequest.SCALER_CROP_REGION, photoCaptureLeft ?zoomBiggerL:zoomBiggerR);
+                            photoCaptureLeft = !photoCaptureLeft;
                         } catch (CameraAccessException e) {
                             e.printStackTrace();
                         }

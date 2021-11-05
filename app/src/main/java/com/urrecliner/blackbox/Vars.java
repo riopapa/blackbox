@@ -105,13 +105,15 @@ public class Vars {
 
     static int MAX_IMAGES_SIZE;
     static long INTERVAL_SNAP_SHOT_SAVE;
-    static long INTERVAL_BIG_SHOT;   // < SNAP_SHOT_INTERVAL
+    static long INTERVAL_LEFT_RIGHT;   // < SNAP_SHOT_INTERVAL
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;
     static int IMAGE_BUFFER_MAX_IMAGES = 20;
 
     static boolean viewFinder = true;
+    static boolean photoCaptureLeft = false;
+    static boolean photoSaveLeft = false;
 
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;
@@ -140,15 +142,15 @@ public class Vars {
             case "S":
                 MAX_IMAGES_SIZE = 145;
                 INTERVAL_SNAP_SHOT_SAVE = 181;
-                INTERVAL_BIG_SHOT = INTERVAL_SNAP_SHOT_SAVE * 16 / 10;
+                INTERVAL_LEFT_RIGHT = 100;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
                 break;
             case "P":
                 MAX_IMAGES_SIZE = 144;
-                INTERVAL_SNAP_SHOT_SAVE = 191;
-                INTERVAL_BIG_SHOT = INTERVAL_SNAP_SHOT_SAVE * 16 / 10;
+                INTERVAL_SNAP_SHOT_SAVE = 185;
+                INTERVAL_LEFT_RIGHT = 110;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
@@ -156,7 +158,7 @@ public class Vars {
             case "A":
                 MAX_IMAGES_SIZE = 135;
                 INTERVAL_SNAP_SHOT_SAVE = 201;
-                INTERVAL_BIG_SHOT = INTERVAL_SNAP_SHOT_SAVE * 16 / 10;
+                INTERVAL_LEFT_RIGHT = INTERVAL_SNAP_SHOT_SAVE * 16 / 10;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
