@@ -113,7 +113,8 @@ public class Vars {
 
     static boolean viewFinder = true;
     static boolean photoCaptureLeft = false;
-    static boolean photoSaveLeft = false;
+    static boolean photoCaptureRight = false;
+    static boolean photoSaved = false;
 
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;
@@ -140,17 +141,17 @@ public class Vars {
         SUFFIX = PhoneID;
         switch (SUFFIX) {
             case "S":
-                MAX_IMAGES_SIZE = 145;
-                INTERVAL_SNAP_SHOT_SAVE = 181;
-                INTERVAL_LEFT_RIGHT = 100;
+                MAX_IMAGES_SIZE = 140;
+//                INTERVAL_SNAP_SHOT_SAVE = 171;
+                INTERVAL_LEFT_RIGHT = 110;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 28*1024*1024;
                 break;
             case "P":
                 MAX_IMAGES_SIZE = 144;
-                INTERVAL_SNAP_SHOT_SAVE = 185;
-                INTERVAL_LEFT_RIGHT = 110;
+                INTERVAL_SNAP_SHOT_SAVE = 191;
+                INTERVAL_LEFT_RIGHT = 70;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
@@ -158,7 +159,7 @@ public class Vars {
             case "A":
                 MAX_IMAGES_SIZE = 135;
                 INTERVAL_SNAP_SHOT_SAVE = 201;
-                INTERVAL_LEFT_RIGHT = INTERVAL_SNAP_SHOT_SAVE * 16 / 10;
+                INTERVAL_LEFT_RIGHT = 90;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;

@@ -150,14 +150,6 @@ class EventMerge {
 
         @Override
         protected void onPostExecute(String doI) {
-            utils.beepOnce(3, 1f);
-            mActivity.runOnUiThread(() -> {
-                String countStr = "" + ++CountEvent;
-                vTextCountEvent.setText(countStr);
-                activeEventCount--;
-                String text = (activeEventCount == 0) ? "" : " "+activeEventCount+" ";
-                vTextActiveCount.setText(text);
-            });
         }
     }
 }

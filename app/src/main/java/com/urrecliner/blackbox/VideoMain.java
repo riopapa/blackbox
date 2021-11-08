@@ -83,11 +83,11 @@ public class VideoMain {
         mCaptureRequestBuilder.addTarget(recordSurface);
         photoSurface = mImageReader.getSurface();
         mCaptureRequestBuilder.addTarget(photoSurface);
-        zoomNormal = calcPhotoZoom (ZOOM_NORMAL,"N");
-        zoomBiggerL = calcPhotoZoom (ZOOM_BIGGER, "L");
-        zoomBiggerR = calcPhotoZoom (ZOOM_BIGGER, "R");
-        zoomHugeL = calcPhotoZoom (ZOOM_HUGE, "L");
-        zoomHugeR = calcPhotoZoom (ZOOM_HUGE, "R");
+        zoomNormal = calcPhotoZoom (ZOOM_FACTOR_NORMAL,"N");
+        zoomBiggerL = calcPhotoZoom (ZOOM_FACTOR_BIGGER, "L");
+        zoomBiggerR = calcPhotoZoom (ZOOM_FACTOR_BIGGER, "R");
+        zoomHugeL = calcPhotoZoom (ZOOM_FACTOR_HUGE, "L");
+        zoomHugeR = calcPhotoZoom (ZOOM_FACTOR_HUGE, "R");
     }
 
     void buildCameraSession() {
@@ -118,7 +118,7 @@ public class VideoMain {
         };
     }
 
-    final float ZOOM_NORMAL = 1.1f, ZOOM_BIGGER = 1.6f, ZOOM_HUGE = 2.0f;
+    final float ZOOM_FACTOR_NORMAL = 1.1f, ZOOM_FACTOR_BIGGER = 1.5f, ZOOM_FACTOR_HUGE = 1.9f;
     private Rect calcPhotoZoom(float zoomFactor, String type) {
 
         int xSize = mImageSize.getWidth();

@@ -126,7 +126,7 @@ class StartStopExit {
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
-        }, 2000);
+        }, 5000);
     }
 
     private void updateKiloChronology() {
@@ -138,7 +138,7 @@ class StartStopExit {
             if (chronoLogs.size() > 10)
                 chronoLogs.remove(0);
             ChronoLog chronoLatest = chronoLogs.get(chronoLogs.size() - 1);
-            if (chronoLatest.chroDate.equals(chronoNowDate)) {
+            if (chronoLatest.chroDate.equals(chronoNowDate) && chronoLatest.todayKilo < todayKiloMeter) {
                 chronoLatest.chroKilo = chronoKiloMeter;
                 chronoLatest.todayKilo = todayKiloMeter;
                 chronoLogs.set(chronoLogs.size() - 1, chronoLatest);

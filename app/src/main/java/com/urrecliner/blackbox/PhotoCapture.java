@@ -8,6 +8,7 @@ import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
 import static com.urrecliner.blackbox.Vars.photoCaptureLeft;
+import static com.urrecliner.blackbox.Vars.photoSaved;
 import static com.urrecliner.blackbox.Vars.zoomBiggerL;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -63,6 +64,7 @@ public class PhotoCapture {
             public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request,
                                            TotalCaptureResult result)                 {
                 super.onCaptureCompleted(session, request, result);
+                photoSaved = false;
                 process(result);
             }
         };

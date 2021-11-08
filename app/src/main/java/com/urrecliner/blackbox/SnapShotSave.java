@@ -5,10 +5,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
+import static com.urrecliner.blackbox.Vars.activeEventCount;
+import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vTextActiveCount;
+import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 
 class SnapShotSave {
 
@@ -18,9 +23,9 @@ class SnapShotSave {
     void startSave(File path2Write, final int snapPos, final int phase) {
         byte[][] jpgBytes;
         int jpgIdx = 0;
-        maxSize = MAX_IMAGES_SIZE - 20;
+        maxSize = MAX_IMAGES_SIZE - 30;
         if (phase == 2)
-            maxSize = MAX_IMAGES_SIZE - 10;
+            maxSize = MAX_IMAGES_SIZE - 30;
 ////        else if (phase == 3)
 ////            maxSize = MAX_IMAGES_SIZE - 30;
         else if (phase == 4)
@@ -44,16 +49,25 @@ class SnapShotSave {
         prefixTime = "D"+prefixTime.substring(1,prefixTime.length()-4)+" ";
         Thread th = new Thread(() -> {
             for (int i = 0; i < maxSize; i++) {
-                byte [] imageBytes = jpgBytes[i];
+                byte[] imageBytes = jpgBytes[i];
                 jpgBytes[i] = null;
                 if (imageBytes != null && imageBytes.length > 1) {
-                    File imageFile = new File(path2Write, prefixTime + (startBias + i)+SUFFIX + ".jpg");
+                    File imageFile = new File(path2Write, prefixTime + (startBias + i) + SUFFIX + ".jpg");
                     bytes2File(imageBytes, imageFile);
-                    SystemClock.sleep(40);  // not to hold all the time
+                    SystemClock.sleep(30);  // not to hold all the time
                 }
             }
-            if (phase == 4) // last phase
+            if (phase == 4) { // last phase
+                utils.beepOnce(3, 1f);
+                mActivity.runOnUiThread(() -> {
+                    String countStr = "" + ++CountEvent;
+                    vTextCountEvent.setText(countStr);
+                    activeEventCount--;
+                    String text = (activeEventCount == 0) ? "" : " "+activeEventCount+" ";
+                    vTextActiveCount.setText(text);
+                });
                 utils.logBoth("snapshot", path2Write.getName());
+            }
         });
         th.start();
     }
