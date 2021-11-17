@@ -54,9 +54,22 @@ class StartStopExit {
     static void reRunApplication(String msg, Exception e) {
         Toast.makeText(mContext,"Exception "+msg,Toast.LENGTH_LONG).show();
         utils.logE("return","/// application reloaded ///",e);
-        Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
-        assert sendIntent != null;
-        mContext.startActivity(sendIntent);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
+                assert sendIntent != null;
+                sendIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                sendIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(sendIntent);
+            }
+        }, 5000);
+        mActivity.finish();
+        mActivity.finishAffinity();
+        System.exit(0);
+        android.os.Process.killProcess(android.os.Process.myPid());
+
     }
     private final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) { photoCapture.zoomShotCamera(); }
@@ -126,7 +139,7 @@ class StartStopExit {
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
-        }, 5000);
+        }, 4000);
     }
 
     private void updateKiloChronology() {

@@ -129,21 +129,21 @@ public class SettingsActivity extends AppCompatActivity  {
             INTERVAL_SNAP_SHOT_SAVE = Long.parseLong(sharedPref.getString(NAME_INTERVAL_SNAP_SHOT_SAVE, "200"));
             INTERVAL_LEFT_RIGHT = Long.parseLong(sharedPref.getString(NAME_INTERVAL_LEFT_RIGHT, "160"));
         }
-        String s = "Pref Values\nUSE_CUSTOM_VALUES="+USE_CUSTOM_VALUES+"\nMAX_IMAGES_SIZE="+MAX_IMAGES_SIZE+"\nINTERVAL_SNAP_SHOT_SAVE="+INTERVAL_SNAP_SHOT_SAVE+"\nINTERVAL_LEFT_RIGHT="+INTERVAL_LEFT_RIGHT;
-        Toast.makeText(mContext, s, Toast.LENGTH_LONG).show();
-        utils.logOnly("PREFERENCE",s);
+//        String s = "Pref Values\nUSE_CUSTOM_VALUES="+USE_CUSTOM_VALUES+"\nMAX_IMAGES_SIZE="+MAX_IMAGES_SIZE+"\nINTERVAL_SNAP_SHOT_SAVE="+INTERVAL_SNAP_SHOT_SAVE+"\nINTERVAL_LEFT_RIGHT="+INTERVAL_LEFT_RIGHT;
+//        Toast.makeText(mContext, s, Toast.LENGTH_LONG).show();
+//        utils.logOnly("PREFERENCE",s);
     }
 
     @Override
     protected void onDestroy() {
-//        getPreference();
+        getPreference();
         super.onDestroy();
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                new BeBackSoon().execute("n");
-            }
-        }, 100);
+//        new Timer().schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                new BeBackSoon().execute("n");
+//            }
+//        }, 100);
 
     }
 

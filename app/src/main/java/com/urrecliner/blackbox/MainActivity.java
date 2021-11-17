@@ -2,6 +2,8 @@ package com.urrecliner.blackbox;
 
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
+import static com.urrecliner.blackbox.Vars.INTERVAL_LEFT_RIGHT;
+import static com.urrecliner.blackbox.Vars.INTERVAL_SNAP_SHOT_SAVE;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.USE_CUSTOM_VALUES;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
@@ -78,6 +80,7 @@ import java.util.TimerTask;
 public class MainActivity extends Activity {
 
     private static final String logID = "Main";
+    private static final int SETTING_ACTIVITY = 101;
     CameraSub cameraSub;
 //    boolean surfaceReady = false;
 
@@ -130,6 +133,8 @@ public class MainActivity extends Activity {
             utils.logBoth("Model", Build.MODEL);
         Vars.set();
         SettingsActivity.getPreference();
+        String s = "Pref Values\nUSE_CUSTOM_VALUES="+USE_CUSTOM_VALUES+"\nMAX_IMAGES_SIZE="+MAX_IMAGES_SIZE+"\nINTERVAL_SNAP_SHOT_SAVE="+INTERVAL_SNAP_SHOT_SAVE+"\nINTERVAL_LEFT_RIGHT="+INTERVAL_LEFT_RIGHT;
+        utils.logOnly("PREFERENCE",s);
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
@@ -201,8 +206,8 @@ public class MainActivity extends Activity {
         ImageButton btnSetting = findViewById(R.id.btnSetting);
         btnSetting.setOnClickListener(v -> {
             startStopExit.stopVideo();
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivity(intent);
+            Intent setInt = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivityForResult(setInt,SETTING_ACTIVITY) ;
         });
 
         vPreviewView.post(() -> {
@@ -248,6 +253,34 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) { new EventRecord().start();
         }
     };
+
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == SETTING_ACTIVITY) {
+//            if (resultCode == RESULT_OK) {
+                // A contact was picked.  Here we will just display it
+                // to the user.
+                Log.w("result", "RESTART --------- ///  "+RESULT_OK);
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Intent thisInt = new Intent(MainActivity.this, MainActivity.class);
+                    thisInt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    thisInt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    thisInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(thisInt);
+                }
+            }, 8000);
+
+//                Intent mStartActivity = new Intent(context, StartActivity.class);
+//                int mPendingIntentId = 123456;
+//                PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+//                AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+//                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+//                System.exit(0);
+            }
+//        }
+    }
 
     void startEventSaving() {
         eventHandler.sendEmptyMessage(0);

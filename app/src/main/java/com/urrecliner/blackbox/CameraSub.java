@@ -225,7 +225,8 @@ import static com.urrecliner.blackbox.Vars.zoomHugeR;
                 return;
             }
         }
-        shotTime += INTERVAL_SNAP_SHOT_SAVE;
+//        shotTime += INTERVAL_SNAP_SHOT_SAVE;
+        shotTime = nowTime + INTERVAL_SNAP_SHOT_SAVE;
         try {
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.capacity()];
@@ -242,6 +243,5 @@ import static com.urrecliner.blackbox.Vars.zoomHugeR;
                 snapMapIdx = 0;
         }
         photoSaved = true;
-
     };
 }
