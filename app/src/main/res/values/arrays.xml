@@ -1,0 +1,13 @@
+<resources>
+    <!-- Reply Preference -->
+
+    <string-array name="radius_values">
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+
+</resources>

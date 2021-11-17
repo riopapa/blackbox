@@ -14,7 +14,7 @@ import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.utils;
 
-class BeBackSoon extends AsyncTask<String, String, String> {
+public class BeBackSoon extends AsyncTask<String, String, String> {
 
     private String xcode;
     private int downCount;
@@ -27,7 +27,7 @@ class BeBackSoon extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... s) {
         xcode = s[0];   // currently 'x' only
-        downCount = DELAY_WAIT_EXIT_SECONDS;
+        downCount = (xcode.equals("x"))? DELAY_WAIT_EXIT_SECONDS : 1;
         while (downCount > 0) {
             if (!mExitApplication) {
                 publishProgress("" + downCount);
@@ -44,8 +44,6 @@ class BeBackSoon extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String m) {
-        if (!"x".equals(xcode))
-            return;
         if (mExitApplication)
             return;
 //                    utils.beepOnce(7,0.7f); // I will be back

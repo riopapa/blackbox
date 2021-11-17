@@ -8,6 +8,7 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
@@ -25,6 +26,7 @@ import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
+import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mImageSize;
@@ -39,8 +41,13 @@ import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.videoMain;
+import static com.urrecliner.blackbox.Vars.zoomBiggerL;
+import static com.urrecliner.blackbox.Vars.zoomBiggerR;
+import static com.urrecliner.blackbox.Vars.zoomHuge;
+import static com.urrecliner.blackbox.Vars.zoomHugeL;
+import static com.urrecliner.blackbox.Vars.zoomHugeR;
 
-public class CameraSub {
+    public class CameraSub {
     CameraManager mCameraManager;
     String mCameraId = null;
 
@@ -178,6 +185,7 @@ public class CameraSub {
         public void onOpened(CameraDevice camera) {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
+            photoCaptureLeft = !leftRight;
             if(mIsRecording) {
                 videoMain.prepareRecord();
                 mediaRecorder.start();
@@ -196,26 +204,28 @@ public class CameraSub {
             mCameraDevice = null;
         }
     };
-//    long shotTime = 0;
+
+    long shotTime = 0;
     boolean leftRight = false;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
-//        long  nowTime = System.currentTimeMillis();
-//        if (nowTime < shotTime) {
-//            return;
-//        }
-//        if (shotTime == 0)
-//            shotTime = nowTime;
-        Image image = reader.acquireLatestImage();
-        if (photoSaved) {
-            image.close();
+        long  nowTime = System.currentTimeMillis();
+        if (nowTime < shotTime || !mIsRecording) {
             return;
         }
-        if (photoCaptureLeft == leftRight) {
-            image.close();
-            return;
-        }
+        if (shotTime == 0)
+            shotTime = nowTime;
 
-//        shotTime += INTERVAL_SNAP_SHOT_SAVE;
+        Image image = reader.acquireLatestImage();
+        if (photoCaptureLeft == leftRight) {
+            try {
+                image.close();
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+        shotTime += INTERVAL_SNAP_SHOT_SAVE;
         try {
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.capacity()];
@@ -225,12 +235,13 @@ public class CameraSub {
             utils.showOnly("img", "buffer short " + snapMapIdx);
         }
         image.close();
-        photoSaved = true;
         leftRight = !leftRight;
         if (mIsRecording) {
             snapMapIdx++;
             if (snapMapIdx >= MAX_IMAGES_SIZE)
                 snapMapIdx = 0;
         }
+        photoSaved = true;
+
     };
 }

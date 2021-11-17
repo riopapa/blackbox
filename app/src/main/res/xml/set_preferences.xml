@@ -1,0 +1,64 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:and="http://schemas.android.com/tools">
+
+<!--    static int PREF_MAX_IMAGES_SIZE;-->
+<!--    static long PREF_INTERVAL_SNAP_SHOT_SAVE;-->
+SNAP_SHOT_INTERVAL-->
+<!--    static int PREF_VIDEO_FRAME_RATE;-->
+<!--    static int PREF_VIDEO_ENCODING_RATE;-->
+<!--    static long PREF_VIDEO_ONE_WORK_FILE_SIZE;-->
+<!--    static int PREF_IMAGE_BUFFER_MAX_IMAGES;-->
+
+    <SwitchPreferenceCompat
+        app:key="use_custom_value"
+        and:defaultValue="true"
+        app:icon="@drawable/setting"
+        app:summary="사용자가 설정한 값으로 작동하게 하기"
+        app:title="파라미터 수정" />
+
+    <PreferenceCategory app:title="사진 찍는 간격 조정하기">
+
+        <ListPreference
+            android:key="max_images_size"
+            app:title="이미지 기억 갯수"
+            android:dependency="use_custom_value"
+            android:defaultValue="140" />
+
+        <ListPreference
+            android:key="interval_snap_shot_save"
+            app:title="사진 찍는 간격 ( mili sec)"
+            android:dependency="use_custom_value"
+            android:defaultValue="210" />
+
+        <ListPreference
+            android:key="interval_left_right"
+            app:title="좌우 사진 변경 간격 ( mili sec)"
+            android:dependency="use_custom_value"
+            android:defaultValue="190" />
+
+<!--        <EditTextPreference-->
+<!--            app:key="alpha"-->
+<!--            app:defaultValue="150"-->
+<!--            app:title="@string/signature_alpha"-->
+<!--            app:summary="Signature alpha value (255 is full)"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+
+    </PreferenceCategory>
+
+<!--    <PreferenceCategory app:title="@string/sync_header">-->
+
+<!--        <SwitchPreferenceCompat-->
+<!--            app:key="sync"-->
+<!--            app:title="@string/sync_title" />-->
+
+<!--        <SwitchPreferenceCompat-->
+<!--            app:dependency="sync"-->
+<!--            app:key="attachment"-->
+<!--            app:summaryOff="@string/attachment_summary_off"-->
+<!--            app:summaryOn="@string/attachment_summary_on"-->
+<!--            app:title="@string/attachment_title" />-->
+
+<!--    </PreferenceCategory>-->
+
+</PreferenceScreen>

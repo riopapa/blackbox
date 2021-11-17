@@ -3,6 +3,8 @@ package com.urrecliner.blackbox;
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.USE_CUSTOM_VALUES;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
 import static com.urrecliner.blackbox.Vars.chronoLogs;
 import static com.urrecliner.blackbox.Vars.chronoNowDate;
@@ -45,6 +47,7 @@ import static com.urrecliner.blackbox.Vars.viewFinder;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -67,6 +70,7 @@ import android.widget.ImageButton;
 
 import com.urrecliner.blackbox.utility.DiskSpace;
 import com.urrecliner.blackbox.utility.Permission;
+import com.urrecliner.blackbox.utility.SettingsActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -116,16 +120,17 @@ public class MainActivity extends Activity {
             //  S9+ = 66fb7229f2286ccd
             //  S9 blackbox = f4367a4dc1e43732
             if (aID.endsWith("6ccd"))
-                Vars.set("P");
+                SUFFIX = "P";
             else
-                Vars.set("S");
+                SUFFIX = "S";
         }
         else if (Build.MODEL.equals("SM-A325N"))
-            Vars.set("A");
+            SUFFIX = "A";
         else
             utils.logBoth("Model", Build.MODEL);
+        Vars.set();
+        SettingsActivity.getPreference();
 
-        sharedPref = getApplicationContext().getSharedPreferences("blackBox", MODE_PRIVATE);
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
         utils.deleteOldFiles(mPackageEventJpgPath, 4);
@@ -150,6 +155,7 @@ public class MainActivity extends Activity {
         FrameLayout framePreview = findViewById(R.id.framePreview);
         utils.logOnly(logID, "Main Started ..");
         startStopExit = new StartStopExit();
+
         vBtnRecord = findViewById(R.id.btnRecord);
         vBtnRecord.setOnClickListener(v -> {
             utils.logBoth(logID," start button clicked");
@@ -190,6 +196,13 @@ public class MainActivity extends Activity {
         framePreview.setOnClickListener(v -> {
             viewFinder = !viewFinder;
             vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
+        });
+
+        ImageButton btnSetting = findViewById(R.id.btnSetting);
+        btnSetting.setOnClickListener(v -> {
+            startStopExit.stopVideo();
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         });
 
         vPreviewView.post(() -> {
@@ -254,7 +267,7 @@ public class MainActivity extends Activity {
         vTextSpeed = findViewById(R.id.textSpeed);
         vKm = findViewById(R.id.textKm);
         vTextKilo = findViewById(R.id.todayKm);
-        vTextLogInfo = findViewById(R.id.textLogInfo);
+        vTextLogInfo = findViewById(R.id.logInfo);
         vTextCountEvent = findViewById(R.id.textCountEvent);
         vTextActiveCount = findViewById(R.id.activeEvent);
         vTextRecord = findViewById(R.id.textCountRecords);

@@ -28,10 +28,10 @@ import java.util.Locale;
 public class Vars {
 
     static Activity mActivity = null;
-    static Context mContext = null;
+    public static Context mContext = null;
     static boolean mExitApplication = false;
 
-    static Utils utils = new Utils();
+    public static Utils utils = new Utils();
     static VideoMain videoMain = new VideoMain();
     static PhotoCapture photoCapture = new PhotoCapture();
     static StartStopExit startStopExit = new StartStopExit();
@@ -61,7 +61,7 @@ public class Vars {
     static TextureView vPreviewView;
     static ImageButton vBtnRecord;
 
-    static SharedPreferences sharedPref;
+    public static SharedPreferences sharedPref;
     static int chronoKiloMeter = 0;
     static String chronoNowDate = null;
     static int todayKiloMeter = 0;
@@ -103,13 +103,16 @@ public class Vars {
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
 
-    static int MAX_IMAGES_SIZE;
-    static long INTERVAL_SNAP_SHOT_SAVE;
-    static long INTERVAL_LEFT_RIGHT;   // < SNAP_SHOT_INTERVAL
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;
     static int IMAGE_BUFFER_MAX_IMAGES = 20;
+
+    public static boolean USE_CUSTOM_VALUES;
+    public static int MAX_IMAGES_SIZE;
+    public static long INTERVAL_SNAP_SHOT_SAVE;
+    public static long INTERVAL_LEFT_RIGHT;   // < SNAP_SHOT_INTERVAL
+
 
     static boolean viewFinder = true;
     static boolean photoCaptureLeft = false;
@@ -134,24 +137,24 @@ public class Vars {
         int todayKilo;
     }
 
-    static void set(String PhoneID) {
+
+    static void set() {
         INTERVAL_EVENT = 18 * 1000;
         INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
 
-        SUFFIX = PhoneID;
         switch (SUFFIX) {
             case "S":
-                MAX_IMAGES_SIZE = 140;
-//                INTERVAL_SNAP_SHOT_SAVE = 171;
-                INTERVAL_LEFT_RIGHT = 110;
+                MAX_IMAGES_SIZE = 135;
+                INTERVAL_SNAP_SHOT_SAVE = 201;
+                INTERVAL_LEFT_RIGHT = 145;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 28*1024*1024;
                 break;
             case "P":
                 MAX_IMAGES_SIZE = 144;
-                INTERVAL_SNAP_SHOT_SAVE = 191;
-                INTERVAL_LEFT_RIGHT = 70;
+                INTERVAL_SNAP_SHOT_SAVE = 211;
+                INTERVAL_LEFT_RIGHT = 110;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;

@@ -53,7 +53,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Method;
 
-class Utils {
+public class Utils {
     private final String LOG_PREFIX = "log_";
     private final String logDate = getMilliSec2String(System.currentTimeMillis(),FORMAT_DATE);
     private final String logFile = LOG_PREFIX+logDate+".txt";

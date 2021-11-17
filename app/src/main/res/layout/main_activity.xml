@@ -35,6 +35,18 @@
             android:textSize="24sp" />
     </FrameLayout>
 
+    <ImageButton
+        android:id="@+id/btnSetting"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignTop="@id/newsLine"
+        android:layout_alignRight="@id/logInfo"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/km"
+        android:src="@drawable/setting" />
+
     <!--  Battery  -->
     <FrameLayout
         android:id="@+id/frameBattery"
@@ -92,7 +104,7 @@
 
     <!--Log Info in multi lines-->
     <TextView
-        android:id="@+id/textLogInfo"
+        android:id="@+id/logInfo"
         android:layout_width="440dp"
         android:layout_height="120dp"
         android:layout_marginStart="8dp"
@@ -238,7 +250,7 @@
         android:layout_below="@id/news_mark1"
         android:layout_marginTop="-12dp"
         android:orientation="horizontal"
-        android:layout_alignStart="@id/textLogInfo"
+        android:layout_alignStart="@id/logInfo"
         android:layout_marginStart="0dp">
         <ImageView
             android:id="@+id/news_0"
@@ -271,7 +283,7 @@
         android:id="@+id/news_mark1"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_below="@id/textLogInfo"
+        android:layout_below="@id/logInfo"
         android:layout_marginTop="0dp"
         android:src="@mipmap/mark"
         android:layout_alignStart="@id/newsLine"
