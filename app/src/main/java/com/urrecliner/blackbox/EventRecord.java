@@ -46,7 +46,6 @@ public class EventRecord {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
-                zoomHuge = false;
             }
         }, INTERVAL_EVENT * 8 / 10);
 
@@ -54,6 +53,7 @@ public class EventRecord {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx,4);
+                zoomHuge = false;
             }
         }, INTERVAL_EVENT * 17 / 10);
 
@@ -68,7 +68,7 @@ public class EventRecord {
         mActivity.runOnUiThread(() -> {
             String text = " "+activeEventCount+" ";
             vTextActiveCount.setText(text);
-            utils.customToast("EVENT\nbutton\nPressed", Toast.LENGTH_LONG, Color.RED);
+            utils.customToast("EVENT\nbutton\nPressed "+text, Toast.LENGTH_LONG, Color.RED);
         });
     }
 

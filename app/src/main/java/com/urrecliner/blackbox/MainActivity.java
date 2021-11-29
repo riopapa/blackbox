@@ -133,8 +133,6 @@ public class MainActivity extends Activity {
             utils.logBoth("Model", Build.MODEL);
         Vars.set();
         SettingsActivity.getPreference();
-        String s = "Pref Values\nUSE_CUSTOM_VALUES="+USE_CUSTOM_VALUES+"\nMAX_IMAGES_SIZE="+MAX_IMAGES_SIZE+"\nINTERVAL_SNAP_SHOT_SAVE="+INTERVAL_SNAP_SHOT_SAVE+"\nINTERVAL_LEFT_RIGHT="+INTERVAL_LEFT_RIGHT;
-        utils.logOnly("PREFERENCE",s);
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
@@ -142,6 +140,8 @@ public class MainActivity extends Activity {
         utils.deleteOldLogs();
         cameraSub = new CameraSub();
         prepareMain();
+        String s = "MAX_IMAGES_SIZE="+MAX_IMAGES_SIZE+"\nINTERVAL_SNAP_SHOT_SAVE="+INTERVAL_SNAP_SHOT_SAVE+"\nINTERVAL_LEFT_RIGHT="+INTERVAL_LEFT_RIGHT;
+        utils.logBoth("PREFERENCE",s);
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
         if (msg.length() > 0)
             utils.logBoth("DISK", msg);

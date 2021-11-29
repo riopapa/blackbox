@@ -106,7 +106,7 @@ public class Vars {
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;
-    static int IMAGE_BUFFER_MAX_IMAGES = 20;
+    static int IMAGE_BUFFER_MAX_IMAGES = 2;
 
     public static boolean USE_CUSTOM_VALUES;
     public static int MAX_IMAGES_SIZE;
@@ -116,7 +116,6 @@ public class Vars {
 
     static boolean viewFinder = true;
     static boolean photoCaptureLeft = false;
-    static boolean photoCaptureRight = false;
     static boolean photoSaved = false;
 
     static CameraDevice mCameraDevice = null;
@@ -149,7 +148,7 @@ public class Vars {
                 INTERVAL_LEFT_RIGHT = 145;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 28*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
                 break;
             case "P":
                 MAX_IMAGES_SIZE = 144;
@@ -157,7 +156,7 @@ public class Vars {
                 INTERVAL_LEFT_RIGHT = 110;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
                 break;
             case "A":
                 MAX_IMAGES_SIZE = 135;

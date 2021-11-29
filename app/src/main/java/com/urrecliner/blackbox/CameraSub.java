@@ -1,51 +1,45 @@
     package com.urrecliner.blackbox;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.Image;
-import android.media.ImageReader;
-import android.util.Size;
+    import static com.urrecliner.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
+    import static com.urrecliner.blackbox.Vars.INTERVAL_SNAP_SHOT_SAVE;
+    import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+    import static com.urrecliner.blackbox.Vars.SUFFIX;
+    import static com.urrecliner.blackbox.Vars.mActivity;
+    import static com.urrecliner.blackbox.Vars.mBackgroundCamera;
+    import static com.urrecliner.blackbox.Vars.mBackgroundImage;
+    import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
+    import static com.urrecliner.blackbox.Vars.mCameraDevice;
+    import static com.urrecliner.blackbox.Vars.mContext;
+    import static com.urrecliner.blackbox.Vars.mImageReader;
+    import static com.urrecliner.blackbox.Vars.mImageSize;
+    import static com.urrecliner.blackbox.Vars.mIsRecording;
+    import static com.urrecliner.blackbox.Vars.mPreviewReader;
+    import static com.urrecliner.blackbox.Vars.mPreviewSize;
+    import static com.urrecliner.blackbox.Vars.mVideoSize;
+    import static com.urrecliner.blackbox.Vars.mediaRecorder;
+    import static com.urrecliner.blackbox.Vars.photoCaptureLeft;
+    import static com.urrecliner.blackbox.Vars.photoSaved;
+    import static com.urrecliner.blackbox.Vars.snapBytes;
+    import static com.urrecliner.blackbox.Vars.snapMapIdx;
+    import static com.urrecliner.blackbox.Vars.utils;
+    import static com.urrecliner.blackbox.Vars.videoMain;
 
-import androidx.core.content.ContextCompat;
-import java.nio.ByteBuffer;
+    import android.content.Context;
+    import android.content.pm.PackageManager;
+    import android.graphics.ImageFormat;
+    import android.graphics.SurfaceTexture;
+    import android.hardware.camera2.CameraAccessException;
+    import android.hardware.camera2.CameraCharacteristics;
+    import android.hardware.camera2.CameraDevice;
+    import android.hardware.camera2.CameraManager;
+    import android.hardware.camera2.params.StreamConfigurationMap;
+    import android.media.Image;
+    import android.media.ImageReader;
+    import android.util.Size;
 
-import static com.urrecliner.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
-import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.INTERVAL_SNAP_SHOT_SAVE;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.mBackgroundCamera;
-import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mBackgroundImage;
-import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.mImageReader;
-import static com.urrecliner.blackbox.Vars.mImageSize;
-import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mPreviewReader;
-import static com.urrecliner.blackbox.Vars.mPreviewSize;
-import static com.urrecliner.blackbox.Vars.mVideoSize;
-import static com.urrecliner.blackbox.Vars.mediaRecorder;
-import static com.urrecliner.blackbox.Vars.photoCaptureLeft;
-import static com.urrecliner.blackbox.Vars.photoSaved;
-import static com.urrecliner.blackbox.Vars.snapBytes;
-import static com.urrecliner.blackbox.Vars.snapMapIdx;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.videoMain;
-import static com.urrecliner.blackbox.Vars.zoomBiggerL;
-import static com.urrecliner.blackbox.Vars.zoomBiggerR;
-import static com.urrecliner.blackbox.Vars.zoomHuge;
-import static com.urrecliner.blackbox.Vars.zoomHugeL;
-import static com.urrecliner.blackbox.Vars.zoomHugeR;
+    import androidx.core.content.ContextCompat;
+
+    import java.nio.ByteBuffer;
 
     public class CameraSub {
     CameraManager mCameraManager;
@@ -212,21 +206,17 @@ import static com.urrecliner.blackbox.Vars.zoomHugeR;
         if (nowTime < shotTime || !mIsRecording) {
             return;
         }
-        if (shotTime == 0)
-            shotTime = nowTime;
 
         Image image = reader.acquireLatestImage();
-        if (photoCaptureLeft == leftRight) {
-            try {
-                image.close();
-                return;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return;
-            }
+        if (photoSaved) {
+            image.close();
+            return;
         }
-//        shotTime += INTERVAL_SNAP_SHOT_SAVE;
-        shotTime = nowTime + INTERVAL_SNAP_SHOT_SAVE;
+        if (shotTime == 0)
+            shotTime = nowTime;
+        shotTime += INTERVAL_SNAP_SHOT_SAVE;
+//        shotTime = nowTime + INTERVAL_SNAP_SHOT_SAVE;
+        leftRight = !leftRight;
         try {
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.capacity()];
@@ -236,7 +226,6 @@ import static com.urrecliner.blackbox.Vars.zoomHugeR;
             utils.showOnly("img", "buffer short " + snapMapIdx);
         }
         image.close();
-        leftRight = !leftRight;
         if (mIsRecording) {
             snapMapIdx++;
             if (snapMapIdx >= MAX_IMAGES_SIZE)

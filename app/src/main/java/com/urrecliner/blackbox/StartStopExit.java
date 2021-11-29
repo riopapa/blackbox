@@ -139,7 +139,7 @@ class StartStopExit {
                 System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
-        }, 4000);
+        }, 2000);
     }
 
     private void updateKiloChronology() {

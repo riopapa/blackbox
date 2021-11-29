@@ -307,9 +307,9 @@
         android:layout_height="128dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/texture_border"
-        android:layout_marginEnd="4dp">
+        android:layout_marginEnd="8dp">
 
         <TextureView
             android:id="@+id/previewView"
