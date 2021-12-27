@@ -119,15 +119,15 @@ public class SettingsActivity extends AppCompatActivity  {
         if (MAX_IMAGES_SIZE == 0) {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean(NAME_USE_CUSTOM_VALUES, true);
-            editor.putString(NAME_MAX_IMAGES_SIZE, ""+MAX_IMAGES_SIZE);
-            editor.putString(NAME_INTERVAL_SNAP_SHOT_SAVE, ""+INTERVAL_SNAP_SHOT_SAVE);
-            editor.putString(NAME_INTERVAL_LEFT_RIGHT, ""+INTERVAL_LEFT_RIGHT);
+            editor.putString(NAME_MAX_IMAGES_SIZE, "130");
+            editor.putString(NAME_INTERVAL_SNAP_SHOT_SAVE, "185");
+            editor.putString(NAME_INTERVAL_LEFT_RIGHT, "85");
             editor.apply();
         }
         if (USE_CUSTOM_VALUES) {
             MAX_IMAGES_SIZE = Integer.parseInt(sharedPref.getString("max_images_size", "0"));
-            INTERVAL_SNAP_SHOT_SAVE = Long.parseLong(sharedPref.getString(NAME_INTERVAL_SNAP_SHOT_SAVE, "200"));
-            INTERVAL_LEFT_RIGHT = Long.parseLong(sharedPref.getString(NAME_INTERVAL_LEFT_RIGHT, "160"));
+            INTERVAL_SNAP_SHOT_SAVE = Long.parseLong(sharedPref.getString(NAME_INTERVAL_SNAP_SHOT_SAVE, "185"));
+            INTERVAL_LEFT_RIGHT = Long.parseLong(sharedPref.getString(NAME_INTERVAL_LEFT_RIGHT, "85"));
         }
 //        String s = "Pref Values\nUSE_CUSTOM_VALUES="+USE_CUSTOM_VALUES+"\nMAX_IMAGES_SIZE="+MAX_IMAGES_SIZE+"\nINTERVAL_SNAP_SHOT_SAVE="+INTERVAL_SNAP_SHOT_SAVE+"\nINTERVAL_LEFT_RIGHT="+INTERVAL_LEFT_RIGHT;
 //        Toast.makeText(mContext, s, Toast.LENGTH_LONG).show();

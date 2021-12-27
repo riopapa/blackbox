@@ -126,7 +126,7 @@ public class VideoMain {
         int xZsize = (int) (xSize / zoomFactor);
         int yZsize = (int) (ySize / zoomFactor);
         int xLeft = 0;
-        int yTop = ySize-yZsize;
+        int yTop = ySize-yZsize/3;
         Rect rect = new Rect();
         switch (type) {
             case "N":

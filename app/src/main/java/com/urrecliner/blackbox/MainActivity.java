@@ -333,13 +333,14 @@ public class MainActivity extends Activity {
                 if (willBack) {
                     startStopExit.exitBlackBoxApp();
                 }
-                if ((keyOldTime + 20000) < keyNowTime)  // if gap is big, reset to current
+                if (!mIsRecording)
+                    break;
+                if ((keyOldTime + 10000) < keyNowTime)  // if gap is big, reset to current
                     keyOldTime = keyNowTime;
-                if ((keyOldTime + 800 > keyNowTime) &&
-                        (keyOldTime + 50 < keyNowTime)) {   // if gap is small double clicked so exit app
+                if ((keyOldTime + 1000 > keyNowTime) &&
+                        (keyOldTime + 150 < keyNowTime)) {   // if gap is small double clicked so exit app
                     willBack = true;
-                    if (mIsRecording)
-                        stopHandler.sendEmptyMessage(0);
+                    stopHandler.sendEmptyMessage(0);
                     new BeBackSoon().execute("x");
                 }
                 new Timer().schedule(new TimerTask() {

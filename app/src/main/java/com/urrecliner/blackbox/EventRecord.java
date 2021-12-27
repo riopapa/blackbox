@@ -26,11 +26,11 @@ public class EventRecord {
     void start() {
 
         if (!mIsRecording) return;
-        utils.logBoth("event","Event Starting ...");
 
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
         utils.readyPackageFolder(thisEventJpgPath);
+        utils.logBoth("event","Starting ... "+thisEventJpgPath.getName());
 
         gpsTracker.askLocation();
 
@@ -52,7 +52,7 @@ public class EventRecord {
         new Timer().schedule(new TimerTask() {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, snapMapIdx,4);
+                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 4);
                 zoomHuge = false;
             }
         }, INTERVAL_EVENT * 17 / 10);
