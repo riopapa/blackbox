@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox.camera;
+package com.urrecliner.blackbox.utility;
 
 import static com.urrecliner.blackbox.Vars.utils;
 
@@ -13,7 +13,7 @@ public class CameraSize {
 
     public static Size[] set(StreamConfigurationMap map, String SUFFIX) {
 
-        Size mPreviewSize = null, mImageSize = null, mVideoSize = null;
+        Size mPreviewSize = null, mShotSize = null, mVideoSize = null;
 //        String model = Build.MODEL;
 //        utils.logBoth(logID, "CamSize on "+model);
 //        dumpVariousCameraSizes(map);
@@ -33,8 +33,8 @@ public class CameraSize {
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                     if (size.getWidth() == 640 && size.getHeight() == 480)
                         mPreviewSize = size;
-                    else if (size.getWidth() == 4032 && size.getHeight() == 2268)
-                        mImageSize = size;
+                    else if (size.getWidth() == 4032 && size.getHeight() == 3024)
+                        mShotSize = size;
                     else if (size.getWidth() == 3264 && size.getHeight() == 1836)
                         mVideoSize = size;
                 }
@@ -50,7 +50,7 @@ public class CameraSize {
                     if (size.getWidth() == 640 && size.getHeight() == 480)
                         mPreviewSize = size;
                     else if (size.getWidth() == 2560 && size.getHeight() == 1440)
-                        mImageSize = size;
+                        mShotSize = size;
                     else if (size.getWidth() == 1920 && size.getHeight() == 1080)
                         mVideoSize = size;
                 }
@@ -59,7 +59,7 @@ public class CameraSize {
                 utils.logBoth("Model", "size undefined");
         }
         Size[] sizes = new Size[3];
-        sizes[0] = mPreviewSize; sizes[1] = mImageSize; sizes[2] = mVideoSize;
+        sizes[0] = mPreviewSize; sizes[1] = mShotSize; sizes[2] = mVideoSize;
         return sizes;
     }
 

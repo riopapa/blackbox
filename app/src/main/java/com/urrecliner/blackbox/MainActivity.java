@@ -221,7 +221,7 @@ public class MainActivity extends Activity {
             float centerY = viewRect.centerY();
             matrix.postRotate(-90, centerX, centerY);
             vPreviewView.setTransform(matrix);
-            vPreviewView.setScaleX(2.1f);
+            vPreviewView.setScaleX(1.8f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

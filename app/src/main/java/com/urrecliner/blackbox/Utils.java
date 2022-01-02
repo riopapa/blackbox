@@ -3,7 +3,6 @@ package com.urrecliner.blackbox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
@@ -45,8 +44,6 @@ import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 import android.os.storage.StorageManager;
-
-import androidx.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -199,6 +196,7 @@ public class Utils {
             }
         }
     }
+
     void deleteFolder(File file) {
         String deleteCmd = "rm -r " + file.toString();
         Runtime runtime = Runtime.getRuntime();
@@ -253,7 +251,7 @@ public class Utils {
         });
     }
 
-    void displayCount(String text, int backColor) {
+    void displayCount(String text) {
 
         Toast toast = Toast.makeText(mContext, text, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
@@ -266,14 +264,11 @@ public class Utils {
         tm.setMaxWidth(2000);
         tm.setWidth(2000);
 
-        if (backColor == Color.YELLOW)
-            tm.setTextColor(Color.BLUE);
-        else
-            tm.setTextColor(Color.WHITE);
+        tm.setTextColor(Color.WHITE);
 //        toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_launcher, 0, 0, 0);
         tm.setCompoundDrawablePadding(16);
         tm.setPadding(4,4,4,4);
-        toastView.setBackgroundColor(backColor);
+        toastView.setBackgroundColor(Color.DKGRAY);
         toast.show();
     }
 

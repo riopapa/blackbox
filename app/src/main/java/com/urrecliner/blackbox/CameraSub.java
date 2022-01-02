@@ -27,7 +27,6 @@ import static com.urrecliner.blackbox.Vars.videoMain;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
@@ -39,7 +38,7 @@ import android.util.Size;
 
 import androidx.core.content.ContextCompat;
 
-import com.urrecliner.blackbox.camera.CameraSize;
+import com.urrecliner.blackbox.utility.CameraSize;
 
 import java.nio.ByteBuffer;
 

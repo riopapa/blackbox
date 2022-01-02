@@ -1,7 +1,6 @@
 package com.urrecliner.blackbox;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,7 +38,7 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
     }
     protected void onProgressUpdate(String... s) {
         String msg = mContext.getString(R.string.i_will_back) +"\n"+downCount;
-        utils.displayCount(msg, Color.DKGRAY);
+        utils.displayCount(msg);
     }
 
     @Override

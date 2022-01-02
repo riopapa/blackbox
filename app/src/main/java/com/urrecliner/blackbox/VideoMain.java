@@ -118,28 +118,27 @@ public class VideoMain {
         };
     }
 
-    final float ZOOM_FACTOR_NORMAL = 1.0f, ZOOM_FACTOR_BIGGER = 1.4f, ZOOM_FACTOR_HUGE = 1.8f;
+    final float ZOOM_FACTOR_NORMAL = 1.0f, ZOOM_FACTOR_BIGGER = 1.4f, ZOOM_FACTOR_HUGE = 1.6f;
     private Rect calcPhotoZoom(float zoomFactor, String type) {
 
         int xSize = mImageSize.getWidth();
         int ySize = mImageSize.getHeight();
         int xZsize = (int) (xSize / zoomFactor);
         int yZsize = (int) (ySize / zoomFactor);
-        int xLeft = 0;
-        int yTop = ySize-yZsize/3;
+        int xLeft = (xSize - xZsize) / 2;
+        int yTop;
         Rect rect = new Rect();
         switch (type) {
             case "N":
-                xLeft = (xSize - xZsize) / 2;
                 break;
             case "L":
-                xLeft = (xSize - xZsize) / 6;
+                xLeft = (xSize - xZsize) / 8;
                 break;
             case "R":
-                xLeft = (xSize - xZsize) -  (xSize - xZsize) / 6;
+                xLeft = (xSize- xZsize) - (xSize - xZsize) / 8;
                 break;
         }
-//        Log.w("size","xSize="+xSize+", ySize="+ySize+", xZ"+xZoomed+", yZ="+yZoomed+", xS="+xShift+", yS="+yShift+", xL="+xLeft+", yT="+yTop);
+        yTop = (ySize-yZsize)/2;
         rect.set(xLeft, yTop, xLeft+xZsize, yTop+yZsize);
         return rect;
     }
