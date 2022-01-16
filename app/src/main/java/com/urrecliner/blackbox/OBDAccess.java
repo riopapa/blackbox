@@ -44,7 +44,7 @@ import static com.urrecliner.blackbox.Vars.viewFinder;
 
 class OBDAccess {
 
-    final static int ASK_SPEED_INTERVAL = 600;
+    final static int ASK_SPEED_INTERVAL = 1000;
     String logID = "OBD";
     private BluetoothSocket bSocket;
     private BluetoothDevice bluetoothDevice;
@@ -201,11 +201,11 @@ class OBDAccess {
 //        }
         speedCommand = new SpeedCommand();
         speedTimer = new Timer();
-        final TimerTask obdTask = new TimerTask() {
+        final TimerTask speedTask = new TimerTask() {
             @Override
             public void run() {
                 speedString = askSpeed();
-                if (!speedString.equals(speedOld)) {
+                if (!speedString.equals(speedOld) ) {
                     mActivity.runOnUiThread(() -> {
                         vTextSpeed.setText(speedString);
                         speedInt = Integer.parseInt(speedString);
@@ -226,7 +226,7 @@ class OBDAccess {
                 }
             }
         };
-        speedTimer.schedule(obdTask, 200, ASK_SPEED_INTERVAL);
+        speedTimer.schedule(speedTask, 200, ASK_SPEED_INTERVAL);
     }
 
     private void showDistance() {
@@ -252,7 +252,7 @@ class OBDAccess {
         } catch (Exception e){
             utils.logE("speed", "General Exception", e);
         }
-        return "speed Err";
+        return "0";
     }
 
     private String askOBDDistance() {
@@ -261,9 +261,9 @@ class OBDAccess {
             distanceSinceCCCommand.run(bSocket.getInputStream(), bSocket.getOutputStream());
             return distanceSinceCCCommand.getCalculatedResult();
         } catch (Exception e){
-//            utils.logE("distance", "General Exception", e);
+            utils.logE("distance", "General Exception", e);
         }
-        return "-1";
+        return "0";
     }
 
     void stop() {

@@ -5,10 +5,6 @@
 <!--    static int PREF_MAX_IMAGES_SIZE;-->
 <!--    static long PREF_INTERVAL_SNAP_SHOT_SAVE;-->
 SNAP_SHOT_INTERVAL-->
-<!--    static int PREF_VIDEO_FRAME_RATE;-->
-<!--    static int PREF_VIDEO_ENCODING_RATE;-->
-<!--    static long PREF_VIDEO_ONE_WORK_FILE_SIZE;-->
-<!--    static int PREF_IMAGE_BUFFER_MAX_IMAGES;-->
 
     <SwitchPreferenceCompat
         app:key="use_custom_value"

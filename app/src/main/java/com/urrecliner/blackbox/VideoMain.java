@@ -118,7 +118,7 @@ public class VideoMain {
         };
     }
 
-    final float ZOOM_FACTOR_NORMAL = 1.0f, ZOOM_FACTOR_BIGGER = 1.4f, ZOOM_FACTOR_HUGE = 1.6f;
+    final float ZOOM_FACTOR_NORMAL = 1.1f, ZOOM_FACTOR_BIGGER = 1.4f, ZOOM_FACTOR_HUGE = 1.6f;
     private Rect calcPhotoZoom(float zoomFactor, String type) {
 
         int xSize = mImageSize.getWidth();
@@ -135,7 +135,7 @@ public class VideoMain {
                 xLeft = (xSize - xZsize) / 8;
                 break;
             case "R":
-                xLeft = (xSize- xZsize) - (xSize - xZsize) / 8;
+                xLeft = (xSize- xZsize); // - (xSize - xZsize) / 8;
                 break;
         }
         yTop = (ySize-yZsize)/2;

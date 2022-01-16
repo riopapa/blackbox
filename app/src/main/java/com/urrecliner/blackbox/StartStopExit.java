@@ -42,13 +42,13 @@ class StartStopExit {
         mIsRecording = true;
         vBtnRecord.setImageResource(R.mipmap.recording_on);
         videoMain.prepareRecord();
-        mediaRecorder.start();
-        try {
-            startSnapBigShot();
-            startNormal();
-        } catch (Exception e) {
-            reRunApplication("Start Camera, Normal Error", e);
-        }
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                mediaRecorder.start();
+                startSnapBigShot();
+                startNormal();
+            }
+        }, 5000);
     }
 
     static void reRunApplication(String msg, Exception e) {
