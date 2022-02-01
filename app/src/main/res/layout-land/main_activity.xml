@@ -303,16 +303,17 @@
     <!--Preview  -->
     <FrameLayout
         android:id="@+id/framePreview"
-        android:layout_width="220dp"
-        android:layout_height="120dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/texture_border"
-        android:layout_marginEnd="8dp">
+        android:layout_marginEnd="24dp">
 
         <TextureView
             android:id="@+id/previewView"
+            android:rotation="-90"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp" />

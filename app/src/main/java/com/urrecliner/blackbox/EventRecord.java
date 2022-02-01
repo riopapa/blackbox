@@ -27,7 +27,7 @@ public class EventRecord {
 
         if (!mIsRecording) return;
 
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT;
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 2;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
         utils.readyPackageFolder(thisEventJpgPath);
         utils.logBoth("event","Starting ... "+thisEventJpgPath.getName());
@@ -62,7 +62,7 @@ public class EventRecord {
                 EventMerge ev = new EventMerge();
                 ev.merge(startTime);
             }
-        }, INTERVAL_EVENT * 11 / 10);
+        }, INTERVAL_EVENT * 9 / 10);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

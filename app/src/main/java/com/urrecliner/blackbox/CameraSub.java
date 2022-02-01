@@ -75,7 +75,7 @@ public class CameraSub {
         try {
             mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, IMAGE_BUFFER_MAX_IMAGES);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
-            mPreviewReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(), ImageFormat.RGB_565, 1);
+            mPreviewReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(), ImageFormat.RGB_565, 1);    // x, y swap
         } catch (Exception e) {
             utils.logE("CameraSub", "Exception ", e);
         }

@@ -56,6 +56,9 @@ public class VideoMain {
         try {
             setupMediaRecorder();
             vPreviewView = mActivity.findViewById(R.id.previewView);
+//            FrameLayout fl = mActivity.findViewById(R.id.frameBattery);
+//            vPreviewView.setLayoutParams(new FrameLayout.LayoutParams(fl.getWidth()*14/10, fl.getHeight()*14/10));
+
             surface_Preview = vPreviewView.getSurfaceTexture();
             surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         } catch (Exception e) {
@@ -130,9 +133,7 @@ public class VideoMain {
         Rect rect = new Rect();
         switch (type) {
             case "N":
-                break;
             case "L":
-                xLeft = (xSize - xZsize) / 8;
                 break;
             case "R":
                 xLeft = (xSize- xZsize); // - (xSize - xZsize) / 8;

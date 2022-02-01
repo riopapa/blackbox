@@ -13,7 +13,7 @@ public class CameraSize {
 
     public static Size[] set(StreamConfigurationMap map, String SUFFIX) {
 
-        Size mPreviewSize = null, mShotSize = null, mVideoSize = null;
+        Size sizePreview = null, sizeCamera = null, sizeVideo = null;
 //        String model = Build.MODEL;
 //        utils.logBoth(logID, "CamSize on "+model);
 //        dumpVariousCameraSizes(map);
@@ -31,12 +31,12 @@ public class CameraSize {
             720x480 1.5, 640x480 1.3, 352x288 1.2, 320x240 1.3, 256x144 1.8, 176x144 1.2 ,
              */
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 640 && size.getHeight() == 480)
-                        mPreviewSize = size;
+                    if (size.getWidth() == 720 && size.getHeight() == 480)
+                        sizePreview = size;
                     else if (size.getWidth() == 4032 && size.getHeight() == 3024)
-                        mShotSize = size;
+                        sizeCamera = size;
                     else if (size.getWidth() == 3264 && size.getHeight() == 1836)
-                        mVideoSize = size;
+                        sizeVideo = size;
                 }
                 break;
             case "A":
@@ -48,18 +48,18 @@ public class CameraSize {
 //                dumpVariousCameraSizes(map);
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                     if (size.getWidth() == 640 && size.getHeight() == 480)
-                        mPreviewSize = size;
+                        sizePreview = size;
                     else if (size.getWidth() == 2560 && size.getHeight() == 1440)
-                        mShotSize = size;
+                        sizeCamera = size;
                     else if (size.getWidth() == 1920 && size.getHeight() == 1080)
-                        mVideoSize = size;
+                        sizeVideo = size;
                 }
                 break;
             default:
                 utils.logBoth("Model", "size undefined");
         }
         Size[] sizes = new Size[3];
-        sizes[0] = mPreviewSize; sizes[1] = mShotSize; sizes[2] = mVideoSize;
+        sizes[0] = sizePreview; sizes[1] = sizeCamera; sizes[2] = sizeVideo;
         return sizes;
     }
 

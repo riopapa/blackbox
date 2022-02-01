@@ -120,8 +120,8 @@ public class SettingsActivity extends AppCompatActivity  {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean(NAME_USE_CUSTOM_VALUES, true);
             editor.putString(NAME_MAX_IMAGES_SIZE, "130");
-            editor.putString(NAME_INTERVAL_SNAP_SHOT_SAVE, "185");
-            editor.putString(NAME_INTERVAL_LEFT_RIGHT, "85");
+            editor.putString(NAME_INTERVAL_SNAP_SHOT_SAVE, "180");
+            editor.putString(NAME_INTERVAL_LEFT_RIGHT, "82");
             editor.apply();
         }
         if (USE_CUSTOM_VALUES) {

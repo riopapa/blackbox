@@ -213,15 +213,24 @@ public class MainActivity extends Activity {
         vPreviewView.post(() -> {
             cameraSub.readyCamera();
             vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
-            int width = vPreviewView.getWidth();
-            int height = vPreviewView.getHeight();
-            Matrix matrix = new Matrix();
-            RectF viewRect = new RectF(0, 0, width, height);
-            float centerX = viewRect.centerX();
-            float centerY = viewRect.centerY();
-            matrix.postRotate(-90, centerX, centerY);
-            vPreviewView.setTransform(matrix);
-            vPreviewView.setScaleX(1.8f);
+//            vPreviewView.setLayoutParams(new FrameLayout.LayoutParams(vPreviewView.getWidth(), vPreviewView.getHeight()));
+
+
+//            int width = vPreviewView.getWidth();
+//            int height = vPreviewView.getHeight();
+//            Log.w("preview size",width+" x "+height);
+//            vPreviewView.setRotation(-90);
+//            width = vPreviewView.getWidth();
+//            height = vPreviewView.getHeight();
+//            Log.w("preview size",width+" x "+height);
+
+            //            Matrix matrix = new Matrix();
+//            RectF viewRect = new RectF(0, 0, width, height);
+//            float centerX = viewRect.centerX();
+//            float centerY = viewRect.centerY();
+//            matrix.postRotate(-90, centerY, centerX);
+//            vPreviewView.setTransform(matrix);
+//            vPreviewView.setScaleX(1.4f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
