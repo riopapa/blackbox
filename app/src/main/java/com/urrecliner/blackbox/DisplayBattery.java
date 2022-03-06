@@ -59,7 +59,6 @@ class DisplayBattery extends BroadcastReceiver {
         int nowPercent = statusReceiver.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 //        int batteryScale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 //        int nowPercent = (int) (batteryLevel * 100 / (float) batteryScale);
-//        utils.logBoth("status ="+status," status="+isCharging+" lvl="+nowPercent);
         if (nowPercent < 50)
             vPreviewView.setVisibility(View.INVISIBLE);
         if (nowPercent != prevPercent || isCharging != prevCharging) {
@@ -71,8 +70,6 @@ class DisplayBattery extends BroadcastReceiver {
                 drawBattery(nowPercent, isCharging);
             });
         }
-        utils.logBoth("battery", action);
-
     }
 
     final int CIRCLE_RADIUS = 70, CIRCLE_WIDTH = 4;

@@ -31,7 +31,7 @@ public class CameraSize {
             720x480 1.5, 640x480 1.3, 352x288 1.2, 320x240 1.3, 256x144 1.8, 176x144 1.2 ,
              */
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 720 && size.getHeight() == 480)
+                    if (size.getWidth() == 640 && size.getHeight() == 480)
                         sizePreview = size;
                     else if (size.getWidth() == 4032 && size.getHeight() == 3024)
                         sizeCamera = size;

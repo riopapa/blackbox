@@ -44,7 +44,7 @@ import static com.urrecliner.blackbox.Vars.viewFinder;
 
 class OBDAccess {
 
-    final static int ASK_SPEED_INTERVAL = 1000;
+    final static int ASK_SPEED_INTERVAL = 1500;
     String logID = "OBD";
     private BluetoothSocket bSocket;
     private BluetoothDevice bluetoothDevice;
@@ -131,11 +131,11 @@ class OBDAccess {
             }
             return true;
         } catch (IllegalArgumentException e) {
-            utils.logE("resetOBD", "IllegalArgumentException  ", e);
+//            utils.logE("resetOBD", "IllegalArgumentException  ", e);
         } catch (IOException e) {
-            utils.logBoth("resetOBD", "*** OBD not READY ***");
+//            utils.logBoth("resetOBD", "*** OBD not READY ***");
         } catch (Exception e){
-            utils.logE("resetOBD", "General Exception  ", e);
+//            utils.logE("resetOBD", "General Exception  ", e);
         }
         return false;
     }
@@ -209,7 +209,7 @@ class OBDAccess {
                     mActivity.runOnUiThread(() -> {
                         vTextSpeed.setText(speedString);
                         speedInt = Integer.parseInt(speedString);
-                        boolean offPrevView =  speedInt > 40; // hide video if over 40 Kms
+                        boolean offPrevView =  speedInt > 30; // hide video if over 30 Kms
                         if (viewFinder && offPrevView != noPreview) {
                             noPreview = offPrevView;
                             vPreviewView.setVisibility((noPreview) ? View.INVISIBLE : View.VISIBLE);

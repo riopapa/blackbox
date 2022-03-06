@@ -102,11 +102,12 @@ public class Vars {
     static long INTERVAL_NORMAL;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
-
+    static byte[] bytesEventStarted;
+    static byte[] bytesEventActive;
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;
-    static int IMAGE_BUFFER_MAX_IMAGES = 2;
+    static int IMAGE_BUFFER_MAX_IMAGES = 5;
 
     public static boolean USE_CUSTOM_VALUES;
     public static int MAX_IMAGES_SIZE;
@@ -138,32 +139,32 @@ public class Vars {
 
 
     static void set() {
-        INTERVAL_EVENT = 18 * 1000;
+        INTERVAL_EVENT = 16 * 1000;
         INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
 
         switch (SUFFIX) {
             case "S":
-                MAX_IMAGES_SIZE = 135;
-                INTERVAL_SNAP_SHOT_SAVE = 201;
-                INTERVAL_LEFT_RIGHT = 145;
-                VIDEO_FRAME_RATE = 30;
+                MAX_IMAGES_SIZE = 123;
+                INTERVAL_SNAP_SHOT_SAVE = 194;
+                INTERVAL_LEFT_RIGHT = 88;
+                VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
             case "P":
-                MAX_IMAGES_SIZE = 144;
-                INTERVAL_SNAP_SHOT_SAVE = 211;
-                INTERVAL_LEFT_RIGHT = 110;
-                VIDEO_FRAME_RATE = 30;
+                MAX_IMAGES_SIZE = 121;
+                INTERVAL_SNAP_SHOT_SAVE = 192;
+                INTERVAL_LEFT_RIGHT = 92;
+                VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
             case "A":
                 MAX_IMAGES_SIZE = 135;
-                INTERVAL_SNAP_SHOT_SAVE = 201;
-                INTERVAL_LEFT_RIGHT = 90;
-                VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 30*1000*1000;
+                INTERVAL_SNAP_SHOT_SAVE = 211;
+                INTERVAL_LEFT_RIGHT = 110;
+                VIDEO_FRAME_RATE = 24;
+                VIDEO_ENCODING_RATE = 24*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
                 break;
         }

@@ -16,7 +16,6 @@ class ShowKmLogs {
             sb.append(log.chroDate).append(" = ")
                     .append((log.todayKilo>9)?log.todayKilo:"0"+log.todayKilo).append("Km");
         }
-        utils.logBoth("Kilo Log", sb.toString());
+        utils.logShow("Kilo Log", sb.toString());
     }
-
 }

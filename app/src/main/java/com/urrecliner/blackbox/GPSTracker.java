@@ -110,7 +110,7 @@ public class GPSTracker extends Service implements LocationListener {
                 }
             });
             isCompassShown = true;
-            utils.logBoth("GPSTracker","Run ..");
+//            utils.logBoth("GPSTracker","Run ..");
         }
         if (speedInt < 5) // if speed is < xx then no update, OBD should be connected
             return;

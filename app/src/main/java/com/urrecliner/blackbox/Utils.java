@@ -1,27 +1,41 @@
 package com.urrecliner.blackbox;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
+import static com.urrecliner.blackbox.Vars.ChronoLog;
+import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
+import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
+import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
+import static com.urrecliner.blackbox.Vars.bytesEventActive;
+import static com.urrecliner.blackbox.Vars.bytesEventStarted;
+import static com.urrecliner.blackbox.Vars.mActivity;
+import static com.urrecliner.blackbox.Vars.mContext;
+import static com.urrecliner.blackbox.Vars.mPackageEventPath;
+import static com.urrecliner.blackbox.Vars.mPackageLogPath;
+import static com.urrecliner.blackbox.Vars.sdfDate;
+import static com.urrecliner.blackbox.Vars.sharedPref;
+import static com.urrecliner.blackbox.Vars.vTextLogInfo;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
-import android.net.Uri;
 import android.os.Handler;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
@@ -29,26 +43,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
-import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
-import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.ChronoLog;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.mPackageEventPath;
-import static com.urrecliner.blackbox.Vars.mPackageLogPath;
-import static com.urrecliner.blackbox.Vars.sdfDate;
-import static com.urrecliner.blackbox.Vars.sharedPref;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vTextLogInfo;
-
-import android.os.storage.StorageManager;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Method;
 
 public class Utils {
     private final String LOG_PREFIX = "log_";
@@ -60,7 +54,7 @@ public class Utils {
             if (!dir.exists() && !dir.mkdirs())
                 Log.e("make dir", "Error");
         } catch (Exception e) {
-            Log.e("creating Folder error", dir + "_" + e.toString());
+            Log.e("creating Folder error", dir + "_" + e);
         }
     }
 
@@ -87,6 +81,11 @@ public class Utils {
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME)+" "+tag+": " + log);
         text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
         final String fText = last4Lines(text);
+        mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
+    }
+
+    public void logShow(String tag, String text) {
+        final String fText = last4Lines(vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text);
         mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
     }
 
@@ -153,7 +152,7 @@ public class Utils {
                 if (bw != null) bw.close();
                 if (fw != null) fw.close();
             } catch (IOException e) {
-                String s = directory.toString() + filename + " close~" + e.toString();
+                String s = directory.toString() + filename + " close~" + e;
                 Log.e("appendIOExcept2",  s);
             }
         }
@@ -346,63 +345,63 @@ public class Utils {
         soundPool.play(soundNbr[soundId], volume, volume, 1, 0, 1f);
     }
 
-    String getExternalStoragePath(Context context) {
+//    String getExternalStoragePath(Context context) {
+//
+//        StorageManager mStorageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+//        Class<?> storageVolumeClazz = null;
+//        try {
+//            storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
+//            Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
+//            Method getPath = storageVolumeClazz.getMethod("getPath");
+//            Method isRemovable = storageVolumeClazz.getMethod("isRemovable");
+//            Object result = getVolumeList.invoke(mStorageManager);
+//            final int length = Array.getLength(result);
+//            for (int i = 0; i < length; i++) {
+//                Object storageVolumeElement = Array.get(result, i);
+//                String path = (String) getPath.invoke(storageVolumeElement);
+//                boolean removable = (Boolean) isRemovable.invoke(storageVolumeElement);
+//                if (removable) {
+//                    return path;
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+//
 
-        StorageManager mStorageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
-        Class<?> storageVolumeClazz = null;
-        try {
-            storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
-            Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
-            Method getPath = storageVolumeClazz.getMethod("getPath");
-            Method isRemovable = storageVolumeClazz.getMethod("isRemovable");
-            Object result = getVolumeList.invoke(mStorageManager);
-            final int length = Array.getLength(result);
-            for (int i = 0; i < length; i++) {
-                Object storageVolumeElement = Array.get(result, i);
-                String path = (String) getPath.invoke(storageVolumeElement);
-                boolean removable = (Boolean) isRemovable.invoke(storageVolumeElement);
-                if (removable) {
-                    return path;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    final int DIRECTORY_REQUEST = 101;
-    public void openDirectory(Uri uriToLoad) {
-        // Choose a directory using the system's file picker.
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-
-        // Provide read access to files and sub-directories in the user-selected
-        // directory.
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        // Optionally, specify a URI for the directory that should be opened in
-        // the system file picker when it loads.
-        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
-
-        mActivity.startActivityForResult(intent, DIRECTORY_REQUEST);
-    }
+//    final int DIRECTORY_REQUEST = 101;
+//    public void openDirectory(Uri uriToLoad) {
+//        // Choose a directory using the system's file picker.
+//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+//
+//        // Provide read access to files and sub-directories in the user-selected
+//        // directory.
+//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//
+//        // Optionally, specify a URI for the directory that should be opened in
+//        // the system file picker when it loads.
+//        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
+//
+//        mActivity.startActivityForResult(intent, DIRECTORY_REQUEST);
+//    }
 
 //    @Override
-    public void onActivityResult(int requestCode, int resultCode,
-                                 Intent resultData) {
-        if (requestCode == DIRECTORY_REQUEST
-                && resultCode == Activity.RESULT_OK) {
-            // The result data contains a URI for the document or directory that
-            // the user selected.
-            Uri uri = null;
-            if (resultData != null) {
-                uri = resultData.getData();
-                utils.logOnly("uri",uri.toString());
-                // Perform operations on the document using its URI.
-            }
-        }
-    }
+//    public void onActivityResult(int requestCode, int resultCode,
+//                                 Intent resultData) {
+//        if (requestCode == DIRECTORY_REQUEST
+//                && resultCode == Activity.RESULT_OK) {
+//            // The result data contains a URI for the document or directory that
+//            // the user selected.
+//            Uri uri = null;
+//            if (resultData != null) {
+//                uri = resultData.getData();
+//                utils.logOnly("uri",uri.toString());
+//                // Perform operations on the document using its URI.
+//            }
+//        }
+//    }
 
     ArrayList<ChronoLog> getTodayTable() {
 
@@ -417,6 +416,17 @@ public class Utils {
             list = gson.fromJson(json, type);
         }
         return list;
+    }
+
+    void makeEventShot() {
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.event_shot);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        bytesEventStarted = stream.toByteArray();
+        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.i_will_be_back);
+        stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        bytesEventActive = stream.toByteArray();
     }
 
 }

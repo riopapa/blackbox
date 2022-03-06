@@ -23,13 +23,15 @@ class SnapShotSave {
     void startSave(File path2Write, final int snapPos, final int phase) {
         byte[][] jpgBytes;
         int jpgIdx = 0;
+        final int minPos = (phase == 0)? 30: 0;
+
         maxSize = MAX_IMAGES_SIZE - 15;
         if (phase == 2)
             maxSize = MAX_IMAGES_SIZE - 20;
 ////        else if (phase == 3)
 ////            maxSize = MAX_IMAGES_SIZE - 30;
         else if (phase == 4)
-            maxSize = MAX_IMAGES_SIZE - 40;
+            maxSize = MAX_IMAGES_SIZE - 30;
         jpgBytes = new byte[MAX_IMAGES_SIZE][];
         for (int i = snapPos; i < MAX_IMAGES_SIZE; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
@@ -48,7 +50,7 @@ class SnapShotSave {
         prefixTime = path2Write.getName();
         prefixTime = "D"+prefixTime.substring(1,prefixTime.length()-4)+" "+SUFFIX;
         Thread th = new Thread(() -> {
-            for (int i = 0; i < maxSize; i++) {
+            for (int i = minPos; i < maxSize; i++) {
                 byte[] imageBytes = jpgBytes[i];
                 jpgBytes[i] = null;
                 if (imageBytes != null && imageBytes.length > 1) {

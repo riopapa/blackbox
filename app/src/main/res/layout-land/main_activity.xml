@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#220122"
     android:keepScreenOn="true">
 
@@ -41,8 +40,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/frameRecord"
-        android:layout_marginLeft="12dp"
+        android:layout_toEndOf="@id/frameRecord"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="24dp" >
 
         <ImageView
@@ -71,7 +70,7 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/frameRecord"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/mm_dd"
@@ -83,7 +82,7 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textDate"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="0dp"
         android:gravity="center"
         android:text="@string/_00_00"
@@ -96,7 +95,7 @@
         android:layout_width="480dp"
         android:layout_height="120dp"
         android:layout_marginStart="24dp"
-        android:layout_toRightOf="@id/frameBattery"
+        android:layout_toEndOf="@id/frameBattery"
         android:text="@string/logInfo"
         android:textColor="@color/colorText"
         android:textSize="@dimen/log_size" />
@@ -154,9 +153,8 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignTop="@id/newsLine"
-        android:layout_alignRight="@id/logInfo"
+        android:layout_alignEnd="@id/logInfo"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:contentDescription="@string/km"
         android:src="@drawable/setting" />
 
@@ -178,8 +176,8 @@
         android:layout_width="74dp"
         android:layout_height="74dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="48dp"
-        android:layout_toRightOf="@id/btnExit"
+        android:layout_marginStart="48dp"
+        android:layout_toEndOf="@id/btnExit"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/km"
         android:src="@mipmap/i_will_be_back" />
@@ -191,8 +189,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="48dp"
-        android:layout_toRightOf="@id/btnIWillBack"
+        android:layout_marginStart="48dp"
+        android:layout_toEndOf="@id/btnIWillBack"
         android:layout_marginBottom="8dp">
 
         <ImageButton
@@ -223,10 +221,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_alignTop="@id/frameEvent"
-        android:layout_toRightOf="@id/frameEvent"
+        android:layout_toEndOf="@id/frameEvent"
         android:text="@string/textEvent"
         android:textColor="@color/colorText"
         android:textSize="16dp" />
+
     <TextView
         android:id="@+id/textCountEvent"
         android:layout_width="wrap_content"
@@ -237,7 +236,6 @@
         android:text="@string/zero"
         android:textColor="@color/colorText"
         android:textSize="40sp" />
-
 
     <!--  N E W S  -->
 
@@ -304,7 +302,7 @@
     <FrameLayout
         android:id="@+id/framePreview"
         android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_height="120dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="24dp"
@@ -313,7 +311,6 @@
 
         <TextureView
             android:id="@+id/previewView"
-            android:rotation="-90"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp" />

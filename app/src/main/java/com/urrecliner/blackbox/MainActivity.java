@@ -53,9 +53,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,6 +77,7 @@ import com.urrecliner.blackbox.utility.DiskSpace;
 import com.urrecliner.blackbox.utility.Permission;
 import com.urrecliner.blackbox.utility.SettingsActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -145,6 +149,7 @@ public class MainActivity extends Activity {
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
         if (msg.length() > 0)
             utils.logBoth("DISK", msg);
+        utils.makeEventShot();
     }
 
     private void prepareMain() {
@@ -213,24 +218,15 @@ public class MainActivity extends Activity {
         vPreviewView.post(() -> {
             cameraSub.readyCamera();
             vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
-//            vPreviewView.setLayoutParams(new FrameLayout.LayoutParams(vPreviewView.getWidth(), vPreviewView.getHeight()));
-
-
-//            int width = vPreviewView.getWidth();
-//            int height = vPreviewView.getHeight();
-//            Log.w("preview size",width+" x "+height);
-//            vPreviewView.setRotation(-90);
-//            width = vPreviewView.getWidth();
-//            height = vPreviewView.getHeight();
-//            Log.w("preview size",width+" x "+height);
-
-            //            Matrix matrix = new Matrix();
-//            RectF viewRect = new RectF(0, 0, width, height);
-//            float centerX = viewRect.centerX();
-//            float centerY = viewRect.centerY();
-//            matrix.postRotate(-90, centerY, centerX);
-//            vPreviewView.setTransform(matrix);
-//            vPreviewView.setScaleX(1.4f);
+            int width = vPreviewView.getWidth();
+            int height = vPreviewView.getHeight();
+            Matrix matrix = new Matrix();
+            RectF viewRect = new RectF(0, 0, width, height);
+            float centerX = viewRect.centerX();
+            float centerY = viewRect.centerY();
+            matrix.postRotate(-90, centerX, centerY);
+            vPreviewView.setTransform(matrix);
+            vPreviewView.setScaleX(1.5f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -339,6 +335,8 @@ public class MainActivity extends Activity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
+                AudioManager audioManager = (AudioManager) mContext.getSystemService(AUDIO_SERVICE);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 8, AudioManager.FLAG_PLAY_SOUND);
                 if (willBack) {
                     startStopExit.exitBlackBoxApp();
                 }
