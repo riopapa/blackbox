@@ -55,6 +55,7 @@ public class Vars {
     static TextView vTextBattery = null;
     static ImageView vImgBattery = null;
     static ImageView vExitApp = null;
+    static TextView vTemperature = null;
     static LinearLayout lNewsLine = null;
 
     static ImageButton vBtnEvent = null;
@@ -103,6 +104,7 @@ public class Vars {
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
     static byte[] bytesEventStarted;
+    static byte[] bytesRecordOn;
     static byte[] bytesEventActive;
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
@@ -144,10 +146,10 @@ public class Vars {
 
         switch (SUFFIX) {
             case "S":
-                MAX_IMAGES_SIZE = 123;
-                INTERVAL_SNAP_SHOT_SAVE = 194;
-                INTERVAL_LEFT_RIGHT = 88;
-                VIDEO_FRAME_RATE = 24;
+                MAX_IMAGES_SIZE = 119;
+                INTERVAL_SNAP_SHOT_SAVE = 197;
+                INTERVAL_LEFT_RIGHT = 91;
+                VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;

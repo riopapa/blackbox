@@ -5,7 +5,6 @@ import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.INTERVAL_LEFT_RIGHT;
 import static com.urrecliner.blackbox.Vars.INTERVAL_SNAP_SHOT_SAVE;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.USE_CUSTOM_VALUES;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
 import static com.urrecliner.blackbox.Vars.chronoLogs;
@@ -36,6 +35,7 @@ import static com.urrecliner.blackbox.Vars.vExitApp;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vKm;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
+import static com.urrecliner.blackbox.Vars.vTemperature;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
 import static com.urrecliner.blackbox.Vars.vTextCountEvent;
@@ -53,8 +53,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
@@ -76,8 +74,8 @@ import android.widget.ImageButton;
 import com.urrecliner.blackbox.utility.DiskSpace;
 import com.urrecliner.blackbox.utility.Permission;
 import com.urrecliner.blackbox.utility.SettingsActivity;
+import com.urrecliner.blackbox.utility.Celcius;
 
-import java.io.ByteArrayOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -149,7 +147,7 @@ public class MainActivity extends Activity {
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
         if (msg.length() > 0)
             utils.logBoth("DISK", msg);
-        utils.makeEventShot();
+        utils.makeEventShotArray();
     }
 
     private void prepareMain() {
@@ -188,8 +186,8 @@ public class MainActivity extends Activity {
         CountEvent = utils.getRecordEventCount();
         vExitApp = findViewById(R.id.btnExit);
         vExitApp.setOnClickListener(v -> {
-                startStopExit.exitBlackBoxApp();
-                vExitApp.setClickable(false);
+            vExitApp.setClickable(false);
+            startStopExit.exitBlackBoxApp();
         });
         ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
         btnBeBack.setOnClickListener(v -> {
@@ -244,6 +242,8 @@ public class MainActivity extends Activity {
                 new ShowKmLogs().show(chronoLogs);
             }
         }, DELAY_AUTO_RECORDING);
+
+        Celcius.start(mContext);
     }
 
     final static Handler startHandler = new Handler(Looper.getMainLooper()) {
@@ -265,17 +265,21 @@ public class MainActivity extends Activity {
 //            if (resultCode == RESULT_OK) {
                 // A contact was picked.  Here we will just display it
                 // to the user.
-                Log.w("result", "RESTART --------- ///  "+RESULT_OK);
+            utils.logBoth("setting", "RESTART --------- ///  "+RESULT_OK);
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    mActivity.finish();
+                    mActivity.finishAffinity();
                     Intent thisInt = new Intent(MainActivity.this, MainActivity.class);
                     thisInt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     thisInt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     thisInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(thisInt);
+                    System.exit(0);
+                    android.os.Process.killProcess(android.os.Process.myPid());
                 }
-            }, 8000);
+            }, 1000);
 
 //                Intent mStartActivity = new Intent(context, StartActivity.class);
 //                int mPendingIntentId = 123456;
@@ -312,6 +316,7 @@ public class MainActivity extends Activity {
         vTextBattery = findViewById(R.id.textBattery);
         vImgBattery = findViewById(R.id.imgBattery);
         vBtnRecord = findViewById(R.id.btnRecord);
+        vTemperature = findViewById(R.id.temperature);
         vTextSpeed.setText("__");
     }
 
@@ -356,7 +361,7 @@ public class MainActivity extends Activity {
                             if (!willBack && mIsRecording)
                                 startEventSaving();
                         } catch (Exception e) {
-                            utils.logE(logID, "// start Eventing //", e);
+                            utils.logBoth(logID, "// start Eventing Error // "+e.toString());
                         }
                     }
                 }, 800);

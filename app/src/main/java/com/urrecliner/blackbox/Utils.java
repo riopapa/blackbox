@@ -6,6 +6,7 @@ import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.bytesEventActive;
 import static com.urrecliner.blackbox.Vars.bytesEventStarted;
+import static com.urrecliner.blackbox.Vars.bytesRecordOn;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
@@ -418,7 +419,7 @@ public class Utils {
         return list;
     }
 
-    void makeEventShot() {
+    void makeEventShotArray() {
         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.event_shot);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
@@ -427,6 +428,10 @@ public class Utils {
         stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         bytesEventActive = stream.toByteArray();
+        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.recording_on);
+        stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        bytesRecordOn = stream.toByteArray();
     }
 
 }

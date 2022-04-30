@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
@@ -15,6 +16,7 @@ import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.bytesEventActive;
 import static com.urrecliner.blackbox.Vars.bytesEventStarted;
+import static com.urrecliner.blackbox.Vars.bytesRecordOn;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
@@ -31,12 +33,12 @@ public class EventRecord {
 
         if (!mIsRecording) return;
 
+        appendEventShot(bytesRecordOn);
         appendEventShot(bytesEventStarted);
-        appendEventShot(bytesEventStarted);
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 2;
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 3;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
         utils.readyPackageFolder(thisEventJpgPath);
-        utils.logBoth("event","Starting ... "+thisEventJpgPath.getName());
+        utils.logBoth("start_"+(CountEvent+1),thisEventJpgPath.getName());
 
         gpsTracker.askLocation();
 
@@ -50,18 +52,19 @@ public class EventRecord {
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                appendEventShot(bytesEventActive);
+                appendEventShot(bytesRecordOn);
                 appendEventShot(bytesEventActive);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
+                zoomHuge = false;
             }
         }, INTERVAL_EVENT * 8 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
+                appendEventShot(bytesRecordOn);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 4);
-                zoomHuge = false;
             }
         }, INTERVAL_EVENT * 17 / 10);
 

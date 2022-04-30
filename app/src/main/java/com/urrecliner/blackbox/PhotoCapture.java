@@ -21,6 +21,8 @@ import static com.urrecliner.blackbox.Vars.zoomHuge;
 import static com.urrecliner.blackbox.Vars.zoomHugeL;
 import static com.urrecliner.blackbox.Vars.zoomHugeR;
 
+import java.util.Random;
+
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
     private static final int STATE_PREVIEW = 0;
@@ -47,7 +49,7 @@ public class PhotoCapture {
                             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
                             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 //            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
-                            if (zoomHuge)
+                            if (zoomHuge || Math.random() < 0.1f)
                                 mCaptureRequestBuilder.set(
                                         CaptureRequest.SCALER_CROP_REGION, photoCaptureLeft ?zoomHugeL:zoomHugeR);
                             else

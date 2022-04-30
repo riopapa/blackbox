@@ -70,7 +70,8 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/frameRecord"
-        android:layout_marginStart="16dp"
+        android:layout_alignLeft="@id/frameRecord"
+        android:layout_alignRight="@id/frameBattery"
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/mm_dd"
@@ -82,12 +83,13 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textDate"
-        android:layout_marginStart="16dp"
+        android:layout_alignLeft="@id/frameRecord"
+        android:layout_alignRight="@id/frameBattery"
         android:layout_marginTop="0dp"
         android:gravity="center"
         android:text="@string/_00_00"
         android:textColor="@color/colorText"
-        android:textSize="40sp" />
+        android:textSize="36sp" />
 
     <!--Log Info in multi lines-->
     <TextView
@@ -103,7 +105,7 @@
     <!--Speed in Km-->
     <TextView
         android:id="@+id/textSpeed"
-        android:layout_width="180dp"
+        android:layout_width="132dp"
         android:layout_height="80dp"
         android:layout_above="@id/btnExit"
         android:layout_alignParentStart="true"
@@ -113,9 +115,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="12dp"
         android:gravity="end"
-        android:text= "@string/underscore"
+        android:text="@string/underscore"
         android:textColor="@color/speedColor"
-        android:textSize="60sp" />
+        android:textSize="52sp" />
 
     <TextView
         android:id="@+id/textKm"
@@ -316,5 +318,29 @@
             android:layout_margin="4dp" />
 
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="50sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSetting"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@id/celsius"
+        android:gravity="end"
+        android:text="40 "
+        android:textColor="@color/colorText"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/celsius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/btnSetting"
+        android:textColor="@color/colorText"
+        android:text=" °C "
+        android:textSize="16sp" />
 
 </RelativeLayout>

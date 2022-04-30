@@ -320,4 +320,26 @@
 
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_toLeftOf="@id/celsius"
+        android:layout_below="@id/btnSetting"
+        android:textColor="@color/colorText"
+        android:text="40 "
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/celsius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/btnSetting"
+        android:textColor="@color/colorText"
+        android:text=" °C "
+        android:textSize="24sp" />
+
 </RelativeLayout>

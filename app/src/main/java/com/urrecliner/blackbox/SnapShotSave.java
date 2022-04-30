@@ -68,7 +68,7 @@ class SnapShotSave {
                     String text = (activeEventCount == 0) ? "" : " "+activeEventCount+" ";
                     vTextActiveCount.setText(text);
                 });
-                utils.logBoth("snapshot", path2Write.getName());
+                utils.logBoth("finish", path2Write.getName());
             }
         });
         th.start();
