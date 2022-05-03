@@ -64,8 +64,8 @@ class NormalMerge {
             beginTimeS = utils.getMilliSec2String(nextNormalTime, FORMAT_TIME);
             File []files2Merge;
             files2Merge = utils.getDirectoryList(mPackageWorkingPath);
-            if (files2Merge.length < 5) {
-                publishProgress("norma", "files short, len=" +files2Merge.length);
+            if (files2Merge.length < 3) {
+                publishProgress("normal", "files short, len=" +files2Merge.length);
             }
             else {
                 Arrays.sort(files2Merge);
@@ -90,16 +90,16 @@ class NormalMerge {
             List<Movie> listMovies = new ArrayList<>();
             List<Track> videoTracks = new LinkedList<>();
             List<Track> audioTracks = new LinkedList<>();
+            Collator myCollator = Collator.getInstance();
             for (File file : files2Merge) {
                 String shortFileName = file.getName();
-                Collator myCollator = Collator.getInstance();
                 if (myCollator.compare(shortFileName, beginTimeS) < 0) {
                     file.delete();  // remove old working file
                 } else if (myCollator.compare(shortFileName, endTimeS) < 0) {
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
-                        utils.logBoth("norm", "<mergeOne~> ");
+                        utils.logBoth("normal "+files2Merge.length, "<mergeOne Exception~> "+shortFileName);
                     }
                 }
             }
@@ -134,11 +134,11 @@ class NormalMerge {
         protected void onProgressUpdate(String... values) {
             String str = values[0];
             if (str.startsWith("<")) {
-                utils.customToast(str, Toast.LENGTH_SHORT, Color.RED);
+                utils.customToast(str, Toast.LENGTH_LONG, Color.RED);
     //                utils.logE("1", str);
             }
             else {
-                utils.customToast(str, Toast.LENGTH_SHORT, Color.YELLOW);
+                utils.customToast(str, Toast.LENGTH_LONG, Color.YELLOW);
     //                utils.log("2", str);
             }
         }

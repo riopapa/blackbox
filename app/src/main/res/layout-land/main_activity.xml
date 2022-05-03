@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#220122"
+    android:background="@color/baseColor"
     android:keepScreenOn="true">
 
     <!--Record start button and count Fragment-->
@@ -156,7 +156,7 @@
         android:layout_height="48dp"
         android:layout_alignTop="@id/newsLine"
         android:layout_alignEnd="@id/logInfo"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:contentDescription="@string/km"
         android:src="@drawable/setting" />
 
@@ -324,23 +324,23 @@
         android:layout_width="50sp"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnSetting"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="0dp"
         android:layout_toLeftOf="@id/celsius"
         android:gravity="end"
-        android:text="40 "
+        android:text="__ "
         android:textColor="@color/colorText"
-        android:textSize="24sp" />
+        android:textSize="28sp" />
 
     <TextView
         android:id="@+id/celsius"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btnSetting"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/btnSetting"
-        android:textColor="@color/colorText"
         android:text=" °C "
-        android:textSize="16sp" />
+        android:textColor="@color/colorText"
+        android:textSize="24sp" />
 
 </RelativeLayout>

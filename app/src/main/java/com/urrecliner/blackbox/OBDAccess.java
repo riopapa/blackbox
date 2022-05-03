@@ -219,7 +219,7 @@ class OBDAccess {
                         }
                         speedOld = speedString;
                     });
-                    if (distCount++ > 50) {
+                    if (distCount++ > 30) {
                         distCount = 0;
                         showDistance();
                     }

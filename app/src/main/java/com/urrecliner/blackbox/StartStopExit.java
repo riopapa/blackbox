@@ -125,7 +125,7 @@ class StartStopExit {
     }
 
     void exitBlackBoxApp() {
-        utils.beepOnce(8,0.8f); // Exit BlackBox
+        utils.beepOnce(8,1f); // Exit BlackBox
         mExitApplication = true;
         if (mIsRecording) stopVideo();
         displayTime.stop();

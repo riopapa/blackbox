@@ -35,7 +35,7 @@ import static com.urrecliner.blackbox.Vars.vExitApp;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vKm;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
-import static com.urrecliner.blackbox.Vars.vTemperature;
+import static com.urrecliner.blackbox.Vars.tvCelcius;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
 import static com.urrecliner.blackbox.Vars.vTextCountEvent;
@@ -316,7 +316,7 @@ public class MainActivity extends Activity {
         vTextBattery = findViewById(R.id.textBattery);
         vImgBattery = findViewById(R.id.imgBattery);
         vBtnRecord = findViewById(R.id.btnRecord);
-        vTemperature = findViewById(R.id.temperature);
+        tvCelcius = findViewById(R.id.temperature);
         vTextSpeed.setText("__");
     }
 

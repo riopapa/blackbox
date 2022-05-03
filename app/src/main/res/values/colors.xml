@@ -2,5 +2,7 @@
 <resources>
     <color name="colorText">#FFFFFF</color>
     <color name="speedColor">#FFFF00</color>
+    <color name="baseColor">#220122</color>
+    <color name="hotColor">#AA8833</color>
 
 </resources>
