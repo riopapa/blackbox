@@ -6,15 +6,14 @@
 
     <ImageButton
         android:id="@+id/bigIcon"
-        android:src="@mipmap/event_shot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
         android:background="#00000000"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:contentDescription="@string/appwidget_text"
         android:scaleX="2.5"
         android:scaleY="2.5"
-        android:contentDescription="@string/appwidget_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:src="@mipmap/event_shot" />
     <TextView
         android:id="@+id/homeWidget_text1"
         android:layout_width="wrap_content"
@@ -25,19 +24,35 @@
         android:rotation="90"
         android:text="@string/appwidget_text"
         android:textColor="#000000"
-        android:textSize="44sp"
+        android:layout_marginEnd="-8dp"
+        android:layout_marginBottom="-8dp"
+        android:textSize="48sp"
         android:textStyle="bold|italic" />
+
     <TextView
         android:id="@+id/homeWidget_text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
         android:contentDescription="@string/appwidget_text"
         android:rotation="90"
         android:text="@string/appwidget_text"
-        android:textColor="#E1C264"
-        android:textSize="40sp"
+        android:textColor="#000000"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="48sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/homeWidget_text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/appwidget_text"
+        android:rotation="90"
+        android:text="@string/appwidget_text"
+        android:textColor="#E1DBC8"
+        android:textSize="48sp"
         android:textStyle="bold|italic" />
 
 </RelativeLayout>

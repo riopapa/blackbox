@@ -55,10 +55,11 @@ public class NewAppWidget extends AppWidgetProvider {
     @NonNull
     public static RemoteViews updateHomeButton(Context context) {
         int cnt = utils.getRecordEventCount();
-        String widgetText = (cnt > 0) ? "\n"+cnt:"\nNone";
+        String widgetText = (cnt > 0) ? " "+cnt+" ":" None ";
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.homepage_widget);
         views.setTextViewText(R.id.homeWidget_text1, widgetText);
         views.setTextViewText(R.id.homeWidget_text2, widgetText);
+        views.setTextViewText(R.id.homeWidget_text3, widgetText);
         return views;
     }
 
@@ -86,4 +87,3 @@ public class NewAppWidget extends AppWidgetProvider {
 //        }
     }
 }
-

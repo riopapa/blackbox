@@ -16,24 +16,34 @@
 - Display current date/time
 - Display preview screen
 - Display Compass
-- Display current speed in Kilometer
+- Display current speed, today's cumulative distance  in Kilometer (information from OBDII bluetooth device)
 - Start/Stop recording button
+- Save Screen Images while captured while recording video   
 - Emergency Recoding button (with audio)
-- Pause button
+- Phone Temperature in Celcius  
 - Exit button
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./screenshots/mainActivity.png" width=800 height=400>
+<img src="./screenshots/mainActivity.jpg" width=800 height=400>
 
-<H3>Home Widget</H3>
+<H3>Widget Screen</H3>
 
-- Display event record counts (if none shows "ready")
-- Display time in every 30 minutes
+- Display event record counts (if none shows "None")
 - Use to load application quickly
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./screenshots/homeWidget.png" width=300 height=250>
+<img src="./screenshots/widget.jpg" width=200 height=200>
 
+<H3>Related Application</H3>
+
+<H4> Black Photo</H4>
+- Show black box camera images folders
+- Show individual photo shots
+- Remove saved records/photos
+
+<H4> Black Wait </H4>
+- Invoked when "I'll be back" button
+- Just spending some seconds
 
 <H3>Permission Required</H3>
 
@@ -41,12 +51,14 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 ```
 
 <H1>Comments</H1>
@@ -71,9 +83,10 @@ camera.open, release power cable connection status
 
 - 2021.05.05 : androidx applied, capture imageshot
 - 2019.02.09 : README.md fully revised
+- 2022.05.06 : Updated
 
 <H3>Issues not fixed yet</H3>
 
-- Unexpected shut down sometime (untracable), sorry :-p
+- Unexpected shut down sometime (untrackable), sorry :-p
 
 <H3>Thanks all persons in GitHub for good examples.</H3>
