@@ -142,7 +142,11 @@ public class VideoMain {
                 xLeft = (xSize- xZoomed);
                 break;
         }
-        yTop = (ySize-yZoomed)/4;
+        if (zoomFactor == ZOOM_FACTOR_HUGE)
+            yTop = (ySize-yZoomed)*3/4;
+        else
+            yTop = (ySize-yZoomed)/3;
+
         rect.set(xLeft, yTop, xLeft+xZoomed, yTop+yZoomed);
         return rect;
     }

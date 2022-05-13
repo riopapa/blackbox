@@ -34,13 +34,9 @@ class DisplayTime implements Runnable {
                 String txt = " "+celcius+" ";
                 tvCelcius.setText(txt);
                 mActivity.runOnUiThread(() -> {
-                    if (celcius<40) {
-                        tvCelcius.setTextColor(Color.WHITE);
-                        tvCelcius.setBackgroundColor(ContextCompat.getColor(mContext, R.color.baseColor));
-                    } else {
-                        tvCelcius.setTextColor(Color.RED);
-                        tvCelcius.setBackgroundColor(ContextCompat.getColor(mContext, R.color.hotColor));
-                    }
+                    tvCelcius.setTextColor((celcius<43)? Color.WHITE : Color.RED);
+                    tvCelcius.setBackgroundColor(ContextCompat.getColor(mContext,
+                            (celcius<40)? R.color.baseColor : R.color.hotColor));
                 });
             }
         };

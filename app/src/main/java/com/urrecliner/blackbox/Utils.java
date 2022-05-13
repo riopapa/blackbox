@@ -4,7 +4,6 @@ import static com.urrecliner.blackbox.Vars.ChronoLog;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.bytesEventActive;
 import static com.urrecliner.blackbox.Vars.bytesEventStarted;
 import static com.urrecliner.blackbox.Vars.bytesRecordOn;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -346,64 +345,6 @@ public class Utils {
         soundPool.play(soundNbr[soundId], volume, volume, 1, 0, 1f);
     }
 
-//    String getExternalStoragePath(Context context) {
-//
-//        StorageManager mStorageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
-//        Class<?> storageVolumeClazz = null;
-//        try {
-//            storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
-//            Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
-//            Method getPath = storageVolumeClazz.getMethod("getPath");
-//            Method isRemovable = storageVolumeClazz.getMethod("isRemovable");
-//            Object result = getVolumeList.invoke(mStorageManager);
-//            final int length = Array.getLength(result);
-//            for (int i = 0; i < length; i++) {
-//                Object storageVolumeElement = Array.get(result, i);
-//                String path = (String) getPath.invoke(storageVolumeElement);
-//                boolean removable = (Boolean) isRemovable.invoke(storageVolumeElement);
-//                if (removable) {
-//                    return path;
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-//
-
-//    final int DIRECTORY_REQUEST = 101;
-//    public void openDirectory(Uri uriToLoad) {
-//        // Choose a directory using the system's file picker.
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-//
-//        // Provide read access to files and sub-directories in the user-selected
-//        // directory.
-//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//
-//        // Optionally, specify a URI for the directory that should be opened in
-//        // the system file picker when it loads.
-//        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriToLoad);
-//
-//        mActivity.startActivityForResult(intent, DIRECTORY_REQUEST);
-//    }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode,
-//                                 Intent resultData) {
-//        if (requestCode == DIRECTORY_REQUEST
-//                && resultCode == Activity.RESULT_OK) {
-//            // The result data contains a URI for the document or directory that
-//            // the user selected.
-//            Uri uri = null;
-//            if (resultData != null) {
-//                uri = resultData.getData();
-//                utils.logOnly("uri",uri.toString());
-//                // Perform operations on the document using its URI.
-//            }
-//        }
-//    }
-
     ArrayList<ChronoLog> getTodayTable() {
 
         ArrayList<ChronoLog> list;
@@ -424,10 +365,7 @@ public class Utils {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         bytesEventStarted = stream.toByteArray();
-        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.i_will_be_back);
-        stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-        bytesEventActive = stream.toByteArray();
+
         bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.recording_on);
         stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);

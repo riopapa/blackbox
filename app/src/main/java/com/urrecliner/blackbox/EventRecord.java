@@ -14,7 +14,6 @@ import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
-import static com.urrecliner.blackbox.Vars.bytesEventActive;
 import static com.urrecliner.blackbox.Vars.bytesEventStarted;
 import static com.urrecliner.blackbox.Vars.bytesRecordOn;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
@@ -34,7 +33,7 @@ public class EventRecord {
         if (!mIsRecording) return;
 
         appendEventShot(bytesRecordOn);
-        appendEventShot(bytesEventStarted);
+        appendEventShot(bytesRecordOn);
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 3;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
         utils.readyPackageFolder(thisEventJpgPath);
@@ -52,8 +51,8 @@ public class EventRecord {
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                appendEventShot(bytesRecordOn);
-                appendEventShot(bytesEventActive);
+                appendEventShot(bytesEventStarted);
+                appendEventShot(bytesEventStarted);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
                 zoomHuge = false;

@@ -297,7 +297,7 @@ public class MainActivity extends Activity {
 
     private void showInitialValues() {
         mActivity.runOnUiThread(() -> {
-            String txt = "" + CountEvent;
+            String txt = " " + CountEvent + " ";
             vTextCountEvent.setText(txt);
             vTextActiveCount.setText("");
         });

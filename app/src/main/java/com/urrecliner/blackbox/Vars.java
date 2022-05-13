@@ -105,7 +105,6 @@ public class Vars {
     static int snapMapIdx = 0;
     static byte[] bytesEventStarted;
     static byte[] bytesRecordOn;
-    static byte[] bytesEventActive;
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;
