@@ -6,7 +6,7 @@
     <string name="logInfo">logInfo</string>
     <string name="underscore">_ _0</string>
     <string name="km">Km</string>
-    <string name="appwidget_text">0</string>
+    <string name="appwidget_text">.0.</string>
     <string name="zero">0</string>
     <string name="percent">90</string>
     <string name="todo">TODO</string>

@@ -14,7 +14,7 @@ import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
-import static com.urrecliner.blackbox.Vars.bytesEventStarted;
+import static com.urrecliner.blackbox.Vars.bytesRecordOff;
 import static com.urrecliner.blackbox.Vars.bytesRecordOn;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -32,47 +32,54 @@ public class EventRecord {
 
         if (!mIsRecording) return;
 
-        appendEventShot(bytesRecordOn);
-        appendEventShot(bytesRecordOn);
+        zoomHuge = true;
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 3;
         final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
         utils.readyPackageFolder(thisEventJpgPath);
-        utils.logBoth("start_"+(CountEvent+1),thisEventJpgPath.getName());
+        utils.logBoth("start"+(CountEvent+1),thisEventJpgPath.getName());
 
         gpsTracker.askLocation();
-
-        zoomHuge = true;
         new Timer().schedule(new TimerTask() {
             public void run() {
+                appendEventShot(bytesRecordOn);
+                appendEventShot(bytesRecordOn);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 1);
             }
-        }, 10);
+        }, 100);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                appendEventShot(bytesEventStarted);
-                appendEventShot(bytesEventStarted);
+                appendEventShot(bytesRecordOff);
+                appendEventShot(bytesRecordOff);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
                 zoomHuge = false;
             }
-        }, INTERVAL_EVENT * 8 / 10);
+        }, INTERVAL_EVENT * 5 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 appendEventShot(bytesRecordOn);
+                appendEventShot(bytesRecordOn);
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 4);
+                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 3);
+                zoomHuge = false;
             }
-        }, INTERVAL_EVENT * 17 / 10);
+        }, INTERVAL_EVENT * 11 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                EventMerge ev = new EventMerge();
-                ev.merge(startTime);
+                SnapShotSave snapShotSave = new SnapShotSave();
+                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 4);
             }
-        }, INTERVAL_EVENT * 9 / 10);
+        }, INTERVAL_EVENT * 16 / 10);
+
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                new EventMerge().merge(startTime);
+            }
+        }, INTERVAL_EVENT * 8 / 10);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
@@ -82,7 +89,7 @@ public class EventRecord {
         });
     }
 
-    private void appendEventShot(byte[] byteImage) {
+    public void appendEventShot(byte[] byteImage) {
         snapBytes[snapMapIdx] = byteImage;
         snapMapIdx++;
         if (snapMapIdx >= MAX_IMAGES_SIZE)

@@ -1,6 +1,11 @@
 package com.urrecliner.blackbox;
 
+import static com.urrecliner.blackbox.Vars.mActivity;
+import static com.urrecliner.blackbox.Vars.speedInt;
+import static com.urrecliner.blackbox.Vars.utils;
+
 import android.Manifest;
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -8,121 +13,139 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.os.IBinder;
-import androidx.core.app.ActivityCompat;
 import android.view.View;
 import android.widget.ImageView;
-import java.util.ArrayList;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.speedInt;
-import static com.urrecliner.blackbox.Vars.utils;
+import androidx.core.app.ActivityCompat;
+
+import java.util.ArrayList;
 
 public class GPSTracker extends Service implements LocationListener {
 
     static boolean isCompassShown = false;
-    long gpsUpdateTime = 0;
-    private final Context mContext;
-    boolean isGPSEnabled = false;
-    Location location;
+    Context gContext;
+    Activity gActivity;
+//    Location prevLoc;
     double latitude = 0, longitude = 0;
+    int nowSpeed = 0;
     ArrayList<Double> latitudes, longitudes;
-    int arraySize = 4;
-    int nowDirection, oldDirection = -99;
+//    int speedOld2, speedOld1, speedNew;
+    final int ARRAY_SIZE = 4;
+    int nowDirection, oldDirection = -99;       // nowDirection = 0 ~ 360/22.5
     ImageView [] newsView;
-    private static final float MIN_DISTANCE_DRIVE = 20;
-    private static final long MIN_TIME_DRIVE_UPDATES = 2000;
+    private static final long MIN_TIME_DRIVE_UPDATES = 1500;
+    private static final float MIN_DISTANCE_DRIVE = 10;
     protected LocationManager locationManager;
+    TextView speedView;
 
-    public GPSTracker(Context context) {
-        this.mContext = context;
-    }
-
-    void init() {
+    void init(Activity activity, Context context) {
+        gContext = context;
+        gActivity = activity;
+        speedView = gActivity.findViewById(R.id.textSpeed);
         newsView = new ImageView[5];
         for (int i = 0; i < 5; i++) {
-            newsView[i] = mActivity.findViewById(newsIds[i]);
+            newsView[i] = gActivity.findViewById(newsIds[i]);
+//            if (i == 0 || i == 4)
+//                newsView[i].setAlpha(.3f);
+//            else if (i == 1 || i == 3)
+//                newsView[i].setAlpha(.6f);
+//            else
+//                newsView[i].setAlpha(1f);
+//            newsView[i].setVisibility(View.VISIBLE);
 //            if (!isCompassShown) {
 //                ImageView iv = newsView[i];
 //                iv.setVisibility(View.INVISIBLE);
 //            }
         }
+        latitude = 37.3926; longitude = 127.1267; nowSpeed = 1;
+        latitudes = new ArrayList<>(); longitudes = new ArrayList<>();
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            latitudes.add(latitude + (double) i * 0.0001f); longitudes.add(longitude + (double) i * 0.0001f); }
+//        gActivity.runOnUiThread(() -> {
+//            for (int i = 0; i < 5; i++) {
+//                ImageView v = newsView[i];
+//                v.setVisibility(View.VISIBLE);
+//            }
+//            isCompassShown = true;
+//        });
     }
 
     void askLocation() {
 
-        latitude = 0; longitude = 0;
-        try {
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
-            assert locationManager != null;
-            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            if (isGPSEnabled) {
-                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        MIN_TIME_DRIVE_UPDATES,
-                        MIN_DISTANCE_DRIVE, this);
-                if (locationManager != null) {
-                    location = locationManager
-                            .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (location != null) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                    }
-                }
-            }
+        locationManager = (LocationManager) gContext.getSystemService(LOCATION_SERVICE);
+        if (locationManager == null) {
+            utils.logBoth("GPS", "Location Manager null");
+            return;
         }
-        catch (Exception e) {
-            utils.logE("GPS", "Exception", e);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            utils.logBoth("GPS", "isProviderEnabled False");
+            return;
         }
-        latitudes = new ArrayList<>(); longitudes = new ArrayList<>();
-        for (int i = 0; i < arraySize; i++) {
-            latitudes.add(latitude + (double) i * 0.00001f); longitudes.add(longitude + (double) i * 0.0001f); }
-
+        if (ActivityCompat.checkSelfPermission(gContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(gContext,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            utils.logBoth("GPS", "checkSelfPermission Error");
+            return;
+        }
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                MIN_TIME_DRIVE_UPDATES,
+                MIN_DISTANCE_DRIVE, this);
+        if (locationManager != null) {
+            LinearLayout newsLine = mActivity.findViewById(R.id.newsLine);
+            newsLine.setVisibility(View.VISIBLE);
+        } else
+            utils.logBoth("GPS","locationManager Null");
     }
 
     double getLatitude() { return latitude; }
     double getLongitude() { return longitude; }
 
     @Override
-    public void onLocationChanged(Location location) {
-//        utils.logBoth("location","location changed "+location.getLatitude()+" x "+location.getLongitude());
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-//        utils.log("gps"," lat "+latitude+" x "+longitude);
+    public void onLocationChanged(Location newLoc) {
+//        utils.logBoth("loc Speed="+newLoc.hasSpeed(),"New Loc "+newLoc.getLatitude()+" x "+newLoc.getLongitude());
+
+        if (!newLoc.hasSpeed())
+            return;
+        nowSpeed = (int) (newLoc.getSpeed() * 3.6f);
+        if (speedInt != nowSpeed) {
+            speedInt = nowSpeed;
+            gActivity.runOnUiThread(() -> speedView.setText("" + speedInt));
+        }
+        if (speedInt < 10) // if speed is < xx then no update, OBD should be connected
+            return;
+        latitude = newLoc.getLatitude();
+        longitude = newLoc.getLongitude();
         latitudes.remove(0); longitudes.remove(0);
         latitudes.add(latitude); longitudes.add(longitude);
         latitudes.set(1, ((latitudes.get(0)+ latitudes.get(2))/2+ latitudes.get(1))/2);
         latitudes.set(2, ((latitudes.get(1)+ latitudes.get(3))/2+ latitudes.get(2))/2);
         longitudes.set(1, ((longitudes.get(0)+ longitudes.get(2))/2+ longitudes.get(1))/2);
         longitudes.set(2, ((longitudes.get(1)+ longitudes.get(3))/2+ longitudes.get(2))/2);
-
-        gpsUpdateTime = System.currentTimeMillis();
-        if (!isCompassShown) {
-            mActivity.runOnUiThread(() -> {
-                for (int i = 0; i < 5; i++) {
-                    ImageView v = newsView[i];
-                    v.setVisibility(View.VISIBLE);
-                }
-            });
-            isCompassShown = true;
-//            utils.logBoth("GPSTracker","Run ..");
-        }
-        if (speedInt < 5) // if speed is < xx then no update, OBD should be connected
-            return;
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
         if (Float.isNaN(GPSDegree))
             return;
         nowDirection = (int) (((360+GPSDegree) % 360) / 22.5);
-        if (nowDirection != oldDirection) {
-            oldDirection = nowDirection;
-//            utils.logBoth("NEWS","GPSDegree="+GPSDegree+" nowDirection="+nowDirection);
-            mActivity.runOnUiThread(() -> drawCompass(oldDirection));
-        }
+        if (nowDirection == oldDirection)
+            return;
+        oldDirection = nowDirection;
+        gActivity.runOnUiThread(() -> {
+            for (int i = 0; i < 5; i++) {
+                ImageView v = newsView[i];
+                if (i == 2)
+                    v.setImageResource(yellowBlur[i + oldDirection]);
+                else
+                    v.setImageResource(yellowBright[i + oldDirection]);   // 흐리게
+            }
+        });
+    }
+
+    public void stopGPS() {
+        locationManager.removeUpdates(this);
     }
 
     @Override
@@ -131,8 +154,9 @@ public class GPSTracker extends Service implements LocationListener {
     @Override
     public void onProviderEnabled(String provider) { }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) { }
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) { }
+//
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -162,13 +186,13 @@ public class GPSTracker extends Service implements LocationListener {
         return (float) true_bearing;
     }
 
-    private final int[] yellows = {R.mipmap.yellow_nw, R.mipmap.yellow_i, R.mipmap.yellow_n,
+    private final int[] yellowBlur = {R.mipmap.yellow_nw, R.mipmap.yellow_i, R.mipmap.yellow_n,
             R.mipmap.yellow_i, R.mipmap.yellow_ne, R.mipmap.yellow_i, R.mipmap.yellow_e,
             R.mipmap.yellow_i, R.mipmap.yellow_se, R.mipmap.yellow_i, R.mipmap.yellow_s,
             R.mipmap.yellow_i, R.mipmap.yellow_sw, R.mipmap.yellow_i, R.mipmap.yellow_w,
             R.mipmap.yellow_i, R.mipmap.yellow_nw, R.mipmap.yellow_i, R.mipmap.yellow_n,
             R.mipmap.yellow_i, R.mipmap.yellow_ne};
-    private final int[] greens = {R.mipmap.green_nw, R.mipmap.green_i, R.mipmap.green_n,
+    private final int[] yellowBright = {R.mipmap.green_nw, R.mipmap.green_i, R.mipmap.green_n,
             R.mipmap.green_i, R.mipmap.green_ne, R.mipmap.green_i, R.mipmap.green_e,
             R.mipmap.green_i, R.mipmap.green_se, R.mipmap.green_i, R.mipmap.green_s,
             R.mipmap.green_i, R.mipmap.green_sw, R.mipmap.green_i, R.mipmap.green_w,
@@ -176,35 +200,4 @@ public class GPSTracker extends Service implements LocationListener {
             R.mipmap.green_i, R.mipmap.green_ne};
 
     private final int[] newsIds = { R.id.news_0, R.id.news_1, R.id.news_2, R.id.news_3, R.id.news_4};
-
-    void drawCompass (int dirIdx) { // 0: N, 8: S
-
-            mActivity.runOnUiThread(() -> {
-                for (int i = 0; i < 5; i++) {
-                    ImageView v = newsView[i];
-//                        utils.logBoth("NEWS "+speedInt,dirIdx+" "+(i+dirIdx));
-                    switch (i) {
-                        case 0:
-                        case 4:
-                            v.setImageResource(yellows[i + dirIdx]);
-                            break;
-                        default:
-                            v.setImageResource(greens[i + dirIdx]);
-                            break;
-                    }
-                }
-            });
-
-//        RotateAnimation ra = new RotateAnimation(
-//                savedDegree, -degree,
-//                Animation.RELATIVE_TO_SELF, 0.5f,
-//                Animation.RELATIVE_TO_SELF, 0.5f);
-//        ra.setDuration(20);
-//
-//        // set the animation after the end of the reservation status
-//        ra.setFillAfter(true);
-//        vWheel.startAnimation(ra);
-//        savedDegree = -degree;
-    }
-
 }

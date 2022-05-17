@@ -129,24 +129,24 @@
         android:textColor="@color/colorText"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/todayKm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/textSpeed"
-        android:layout_toEndOf="@id/textSpeed"
-        android:text="_"
-        android:textColor="@color/colorText"
-        android:textSize="24sp" />
+<!--    <TextView-->
+<!--        android:id="@+id/todayKm"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignTop="@id/textSpeed"-->
+<!--        android:layout_toEndOf="@id/textSpeed"-->
+<!--        android:text="_"-->
+<!--        android:textColor="@color/colorText"-->
+<!--        android:textSize="24sp" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/todayKm"
-        android:layout_toEndOf="@id/todayKm"
-        android:text=" Km"
-        android:textColor="@color/colorText"
-        android:textSize="20sp" />
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignBaseline="@id/todayKm"-->
+<!--        android:layout_toEndOf="@id/todayKm"-->
+<!--        android:text=" Km"-->
+<!--        android:textColor="@color/colorText"-->
+<!--        android:textSize="20sp" />-->
 
     <ImageButton
         android:id="@+id/btnSetting"
@@ -247,7 +247,7 @@
         android:gravity="center"
         android:visibility="invisible"
         android:layout_below="@id/news_mark1"
-        android:layout_marginTop="-12dp"
+        android:layout_marginTop="0dp"
         android:orientation="horizontal"
         android:layout_alignStart="@id/logInfo"
         android:layout_marginStart="16dp">
@@ -255,11 +255,13 @@
             android:id="@+id/news_0"
             android:layout_width="55dp"
             android:layout_height="match_parent"
+            android:alpha=".5"
             android:src="@mipmap/yellow_ne"/>
         <ImageView
             android:id="@+id/news_1"
             android:layout_width="55dp"
             android:layout_height="match_parent"
+            android:alpha=".7"
             android:src="@mipmap/green_i"/>
         <ImageView
             android:id="@+id/news_2"
@@ -270,11 +272,13 @@
             android:id="@+id/news_3"
             android:layout_width="55dp"
             android:layout_height="match_parent"
+            android:alpha=".7"
             android:src="@mipmap/green_i"/>
         <ImageView
             android:id="@+id/news_4"
             android:layout_width="55dp"
             android:layout_height="match_parent"
+            android:alpha=".5"
             android:src="@mipmap/yellow_se"/>
     </LinearLayout>
 
@@ -285,19 +289,18 @@
         android:layout_below="@id/logInfo"
         android:layout_alignStart="@id/newsLine"
         android:layout_alignEnd="@id/newsLine"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="-6dp"
         android:src="@mipmap/mark" />
 
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_below="@id/newsLine"
-        android:rotation="180"
-        android:src="@mipmap/mark"
         android:layout_alignStart="@id/newsLine"
         android:layout_alignEnd="@id/newsLine"
-        android:layout_marginTop="-12dp"
-        />
+        android:layout_marginTop="-6dp"
+        android:rotation="180"
+        android:src="@mipmap/mark" />
 
     <!--Preview  -->
     <FrameLayout

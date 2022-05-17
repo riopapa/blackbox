@@ -1,5 +1,6 @@
 package com.urrecliner.blackbox;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,8 +11,10 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
@@ -22,7 +25,6 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class Vars {
@@ -36,8 +38,8 @@ public class Vars {
     static PhotoCapture photoCapture = new PhotoCapture();
     static StartStopExit startStopExit = new StartStopExit();
 
-    static OBDAccess obdAccess = new OBDAccess();
-    static boolean OBDConnected = false;
+//    static OBDAccess_Unused obdAccessUnused = new OBDAccess_Unused();
+//    static boolean OBDConnected = false;
 //    static DirectionSensor directionSensor = new DirectionSensor();
     static DisplayBattery displayBattery = new DisplayBattery();
     static GPSTracker gpsTracker;
@@ -63,9 +65,9 @@ public class Vars {
     static ImageButton vBtnRecord;
 
     public static SharedPreferences sharedPref;
-    static int chronoKiloMeter = 0;
-    static String chronoNowDate = null;
-    static int todayKiloMeter = 0;
+//    static int chronoKiloMeter = 0;
+//    static String chronoNowDate = null;
+//    static int todayKiloMeter = 0;
 
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
@@ -90,20 +92,20 @@ public class Vars {
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int DELAY_AUTO_RECORDING = 3000;
+    final static int DELAY_AUTO_RECORDING = 2000;
     final static int DELAY_WAIT_EXIT_SECONDS = 3;
     static Handler mBackgroundImage, mBackgroundCamera;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader, mPreviewReader;
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder;
-    static int speedInt = 0;
+    static int speedInt = -1;
 
     static long INTERVAL_EVENT;
     static long INTERVAL_NORMAL;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
-    static byte[] bytesEventStarted;
+    static byte[] bytesRecordOff;
     static byte[] bytesRecordOn;
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
@@ -130,21 +132,26 @@ public class Vars {
     static String SUFFIX;
     static boolean zoomHuge = false;
 
-    static ArrayList<ChronoLog> chronoLogs = null;
-
-    public static class ChronoLog {
-        String chroDate;
-        int chroKilo;
-        int todayKilo;
-    }
-
-
-    static void set() {
+    static void setSuffix(Context context) {
         INTERVAL_EVENT = 16 * 1000;
         INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
+        if (Build.MODEL.equals("SM-G965N")) {
+            @SuppressLint("HardwareIds")
+            String aID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            //  S9+ = 66fb7229f2286ccd
+            //  S9 blackbox = f4367a4dc1e43732
+            if (aID.endsWith("6ccd"))
+                SUFFIX = "P";
+            else
+                SUFFIX = "S";
+        }
+        else if (Build.MODEL.equals("SM-A325N"))
+            SUFFIX = "A";
+        else
+            utils.logBoth("Model", Build.MODEL);
 
         switch (SUFFIX) {
-            case "S":
+            case "S":           // galaxy s9 blackbox
                 MAX_IMAGES_SIZE = 119;
                 INTERVAL_SNAP_SHOT_SAVE = 197;
                 INTERVAL_LEFT_RIGHT = 91;
@@ -152,7 +159,7 @@ public class Vars {
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
-            case "P":
+            case "P":           // galaxy s9 phone
                 MAX_IMAGES_SIZE = 121;
                 INTERVAL_SNAP_SHOT_SAVE = 192;
                 INTERVAL_LEFT_RIGHT = 92;
@@ -160,7 +167,7 @@ public class Vars {
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
-            case "A":
+            case "A":           // galaxy A32
                 MAX_IMAGES_SIZE = 135;
                 INTERVAL_SNAP_SHOT_SAVE = 211;
                 INTERVAL_LEFT_RIGHT = 110;

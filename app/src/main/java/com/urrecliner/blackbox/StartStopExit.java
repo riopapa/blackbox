@@ -1,7 +1,21 @@
 package com.urrecliner.blackbox;
 
+import static com.urrecliner.blackbox.Vars.INTERVAL_LEFT_RIGHT;
+import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
+import static com.urrecliner.blackbox.Vars.displayTime;
+import static com.urrecliner.blackbox.Vars.gpsTracker;
+import static com.urrecliner.blackbox.Vars.mActivity;
+import static com.urrecliner.blackbox.Vars.mContext;
+import static com.urrecliner.blackbox.Vars.mExitApplication;
+import static com.urrecliner.blackbox.Vars.mIsRecording;
+import static com.urrecliner.blackbox.Vars.mediaRecorder;
+import static com.urrecliner.blackbox.Vars.photoCapture;
+import static com.urrecliner.blackbox.Vars.snapMapIdx;
+import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vBtnRecord;
+import static com.urrecliner.blackbox.Vars.videoMain;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -9,30 +23,6 @@ import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.urrecliner.blackbox.Vars.INTERVAL_LEFT_RIGHT;
-import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
-import static com.urrecliner.blackbox.Vars.OBDConnected;
-import static com.urrecliner.blackbox.Vars.chronoLogs;
-import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
-import static com.urrecliner.blackbox.Vars.photoCapture;
-import static com.urrecliner.blackbox.Vars.displayTime;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.mExitApplication;
-import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mediaRecorder;
-import static com.urrecliner.blackbox.Vars.obdAccess;
-import static com.urrecliner.blackbox.Vars.sharedPref;
-import static com.urrecliner.blackbox.Vars.snapMapIdx;
-import static com.urrecliner.blackbox.Vars.chronoNowDate;
-import static com.urrecliner.blackbox.Vars.todayKiloMeter;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vBtnRecord;
-import static com.urrecliner.blackbox.Vars.videoMain;
-import static com.urrecliner.blackbox.Vars.ChronoLog;
-
-import com.google.gson.Gson;
 
 class StartStopExit {
 
@@ -117,7 +107,7 @@ class StartStopExit {
         try {
 //            videoUtils.startPreview();
             normalTimer.cancel();
-            obdAccess.stop();
+//            obdAccessUnused.stop();
 //            directionSensor.stop();
         } catch (Exception e) {
             utils.logE(logID, "Stop 2", e);
@@ -129,8 +119,9 @@ class StartStopExit {
         mExitApplication = true;
         if (mIsRecording) stopVideo();
         displayTime.stop();
-        if (OBDConnected)
-            updateKiloChronology();
+        gpsTracker.stopGPS();
+//        if (OBDConnected)
+//            updateKiloChronology();
         utils.logOnly(logID,"Exit App");
         new Timer().schedule(new TimerTask() {
             public void run() {
@@ -142,37 +133,4 @@ class StartStopExit {
         }, 2000);
     }
 
-    private void updateKiloChronology() {
-        if (chronoNowDate == null)
-            return;
-        if (chronoLogs.size() == 0) {
-            addTodayKilo();
-        } else {
-            if (chronoLogs.size() > 10)
-                chronoLogs.remove(0);
-            ChronoLog chronoLatest = chronoLogs.get(chronoLogs.size() - 1);
-            if (chronoLatest.chroDate.equals(chronoNowDate) && chronoLatest.todayKilo < todayKiloMeter) {
-                chronoLatest.chroKilo = chronoKiloMeter;
-                chronoLatest.todayKilo = todayKiloMeter;
-                chronoLogs.set(chronoLogs.size() - 1, chronoLatest);
-            } else {
-                addTodayKilo();
-            }
-        }
-        SharedPreferences.Editor prefsEditor = sharedPref.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(chronoLogs);
-        prefsEditor.putString("chrono", json);
-        prefsEditor.apply();
-    }
-
-    private void addTodayKilo() {
-        if (todayKiloMeter != -1) {
-            ChronoLog chronoLog = new ChronoLog();
-            chronoLog.chroDate = chronoNowDate;
-            chronoLog.chroKilo = chronoKiloMeter;
-            chronoLog.todayKilo = todayKiloMeter;
-            chronoLogs.add(chronoLog);
-        }
-    }
 }

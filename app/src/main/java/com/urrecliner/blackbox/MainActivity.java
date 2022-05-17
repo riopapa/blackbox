@@ -5,10 +5,6 @@ import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.INTERVAL_LEFT_RIGHT;
 import static com.urrecliner.blackbox.Vars.INTERVAL_SNAP_SHOT_SAVE;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.chronoKiloMeter;
-import static com.urrecliner.blackbox.Vars.chronoLogs;
-import static com.urrecliner.blackbox.Vars.chronoNowDate;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
@@ -23,11 +19,9 @@ import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
 import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.obdAccess;
-import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.startStopExit;
-import static com.urrecliner.blackbox.Vars.todayKiloMeter;
+import static com.urrecliner.blackbox.Vars.tvCelcius;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -35,7 +29,6 @@ import static com.urrecliner.blackbox.Vars.vExitApp;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vKm;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
-import static com.urrecliner.blackbox.Vars.tvCelcius;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
 import static com.urrecliner.blackbox.Vars.vTextCountEvent;
@@ -47,7 +40,6 @@ import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vTextTime;
 import static com.urrecliner.blackbox.Vars.viewFinder;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -57,12 +49,10 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
@@ -71,10 +61,10 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+import com.urrecliner.blackbox.utility.Celcius;
 import com.urrecliner.blackbox.utility.DiskSpace;
 import com.urrecliner.blackbox.utility.Permission;
 import com.urrecliner.blackbox.utility.SettingsActivity;
-import com.urrecliner.blackbox.utility.Celcius;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -116,24 +106,10 @@ public class MainActivity extends Activity {
             PackageInfo info = getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_PERMISSIONS);
             Permission.ask(this, this, info);
         } catch (Exception e) {
-            Log.e("Permission", "No Permission "+e.toString());
+            Log.e("Permission", "No Permission "+e);
         }
 
-        if (Build.MODEL.equals("SM-G965N")) {
-            @SuppressLint("HardwareIds")
-            String aID = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-            //  S9+ = 66fb7229f2286ccd
-            //  S9 blackbox = f4367a4dc1e43732
-            if (aID.endsWith("6ccd"))
-                SUFFIX = "P";
-            else
-                SUFFIX = "S";
-        }
-        else if (Build.MODEL.equals("SM-A325N"))
-            SUFFIX = "A";
-        else
-            utils.logBoth("Model", Build.MODEL);
-        Vars.set();
+        Vars.setSuffix(getApplicationContext());
         SettingsActivity.getPreference();
 
         readyBlackBoxFolders();
@@ -152,12 +128,12 @@ public class MainActivity extends Activity {
 
     private void prepareMain() {
 
-        gpsTracker = new GPSTracker(mContext);
-        gpsTracker.init();
-        chronoNowDate = sharedPref.getString("today","new");
-        chronoKiloMeter = sharedPref.getInt("kilo", -1);
-        todayKiloMeter = 0;
-        chronoLogs = utils.getTodayTable();
+        gpsTracker = new GPSTracker();
+        gpsTracker.init(mActivity, mContext);
+//        chronoNowDate = sharedPref.getString("today","new");
+//        chronoKiloMeter = sharedPref.getInt("kilo", -1);
+//        todayKiloMeter = 0;
+//        chronoLogs = utils.getTodayTable();
 
         vPreviewView = findViewById(R.id.previewView);
         FrameLayout framePreview = findViewById(R.id.framePreview);
@@ -230,7 +206,7 @@ public class MainActivity extends Activity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         displayTime.run();
         displayBattery.init();
-        obdAccess.start();
+//        obdAccessUnused.start();
         showInitialValues();
         lNewsLine = findViewById(R.id.newsLine);
         displayBattery.showBattery("displayed");
@@ -239,7 +215,7 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 startHandler.sendEmptyMessage(0);
-                new ShowKmLogs().show(chronoLogs);
+//                new ShowKmLogs().show(chronoLogs);
             }
         }, DELAY_AUTO_RECORDING);
 
@@ -281,14 +257,7 @@ public class MainActivity extends Activity {
                 }
             }, 1000);
 
-//                Intent mStartActivity = new Intent(context, StartActivity.class);
-//                int mPendingIntentId = 123456;
-//                PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-//                AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-//                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-//                System.exit(0);
-            }
-//        }
+        }
     }
 
     void startEventSaving() {
@@ -361,7 +330,7 @@ public class MainActivity extends Activity {
                             if (!willBack && mIsRecording)
                                 startEventSaving();
                         } catch (Exception e) {
-                            utils.logBoth(logID, "// start Eventing Error // "+e.toString());
+                            utils.logBoth(logID, "// start Eventing Error // "+e);
                         }
                     }
                 }, 800);

@@ -78,7 +78,7 @@ class NormalMerge {
                     utils.logE(logID, endTimeS+" parse Error", e);
                 }
                 assert date != null;
-                nextNormalTime = date.getTime() - 2000;
+                nextNormalTime = date.getTime() - 6000;
                 outputFile = new File(mPackageNormalDatePath, DATE_PREFIX+beginTimeS + SUFFIX
                         +" x"+gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4").toString();
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge);

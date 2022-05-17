@@ -1,17 +1,15 @@
 package com.urrecliner.blackbox;
 
-import static com.urrecliner.blackbox.Vars.ChronoLog;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.bytesEventStarted;
+import static com.urrecliner.blackbox.Vars.bytesRecordOff;
 import static com.urrecliner.blackbox.Vars.bytesRecordOn;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
-import static com.urrecliner.blackbox.Vars.sharedPref;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 import android.graphics.Bitmap;
@@ -26,9 +24,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -36,12 +31,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Type;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class Utils {
@@ -345,26 +337,11 @@ public class Utils {
         soundPool.play(soundNbr[soundId], volume, volume, 1, 0, 1f);
     }
 
-    ArrayList<ChronoLog> getTodayTable() {
-
-        ArrayList<ChronoLog> list;
-        Gson gson = new Gson();
-        String json = sharedPref.getString("chrono", "");
-        if (json.isEmpty()) {
-            list = new ArrayList<>();
-        } else {
-            Type type = new TypeToken<List<ChronoLog>>() {
-            }.getType();
-            list = gson.fromJson(json, type);
-        }
-        return list;
-    }
-
     void makeEventShotArray() {
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.event_shot);
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.green_i);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-        bytesEventStarted = stream.toByteArray();
+        bytesRecordOff = stream.toByteArray();
 
         bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.recording_on);
         stream = new ByteArrayOutputStream();
