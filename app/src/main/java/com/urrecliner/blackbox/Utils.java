@@ -35,11 +35,14 @@ import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Utils {
     private final String LOG_PREFIX = "log_";
     private final String logDate = getMilliSec2String(System.currentTimeMillis(),FORMAT_DATE);
     private final String logFile = LOG_PREFIX+logDate+".txt";
+    private String uText;
 
     public void readyPackageFolder (File dir){
         try {
@@ -60,9 +63,8 @@ public class Utils {
     }
 
     public void showOnly(String tag, String text) {
-        text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
-        final String fText = last4Lines(text);
-        mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
+        uText = lastNLines(vTextLogInfo.getText().toString() + "\n"+ getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text);
+        mActivity.runOnUiThread(() -> vTextLogInfo.setText(uText));
     }
 
     public void logBoth(String tag, String text) {
@@ -71,14 +73,8 @@ public class Utils {
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
         Log.w(tag , log);
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME)+" "+tag+": " + log);
-        text = vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
-        final String fText = last4Lines(text);
-        mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
-    }
-
-    public void logShow(String tag, String text) {
-        final String fText = last4Lines(vTextLogInfo.getText().toString() + "\n" + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text);
-        mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
+        uText = lastNLines(vTextLogInfo.getText().toString() + "\n"+ getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text);
+        mActivity.runOnUiThread(() -> vTextLogInfo.setText(uText));
     }
 
     public void logOnly (String tag, String text) {
@@ -96,9 +92,8 @@ public class Utils {
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
         append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End>");
-        text = last4Lines(vTextLogInfo.getText().toString() + "\n" + text+"\n");
-        final String fText = tag+" : "+text;
-        mActivity.runOnUiThread(() -> vTextLogInfo.setText(fText));
+        uText = tag+" : "+lastNLines(vTextLogInfo.getText().toString() + text);
+        mActivity.runOnUiThread(() -> vTextLogInfo.setText(uText));
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  ": " + log);
         e.printStackTrace();
 //        beepOnce(1, .7f);
@@ -113,6 +108,7 @@ public class Utils {
     static private final String []omits = { "performResume", "performCreate", "dispatch",
             "callActivityOnResume", "access$", "handleReceiver", "handleMessage",
             "dispatchKeyEvent", "moveToState", "mainLoop"};
+
     private String traceName (String s) {
         for (String o : omits) {
             if (s.contains(o)) return "";
@@ -263,16 +259,12 @@ public class Utils {
         toast.show();
     }
 
-    private String last4Lines(String str) {
+    private String lastNLines(String str) {
         String[] lines = str.split("\n");
-        StringBuilder result = new StringBuilder();
-        int begLine = (lines.length > 4) ? lines.length-4 : 0;
-        for (int i = begLine; i < lines.length; ) {
-            result.append(lines[i]);
-            if (++i< lines.length)
-                result.append("\n");
-        }
-        return result.toString();
+        if (lines.length > 5)
+            return IntStream.range(lines.length - 5, lines.length).mapToObj(i -> "\n"+lines[i]).collect(Collectors.joining());
+        else
+            return str;
     }
 
 //    public void singleBeep(Activity activity,int type) {

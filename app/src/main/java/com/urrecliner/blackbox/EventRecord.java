@@ -28,15 +28,17 @@ import static com.urrecliner.blackbox.Vars.zoomHuge;
 
 public class EventRecord {
 
+    File thisEventJpgPath;
     void start() {
 
         if (!mIsRecording) return;
 
         zoomHuge = true;
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 3;
-        final File thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
+        thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
+
         utils.readyPackageFolder(thisEventJpgPath);
-        utils.logBoth("start"+(CountEvent+1),thisEventJpgPath.getName());
+        utils.logBoth("start"+(CountEvent+1+activeEventCount),thisEventJpgPath.getName());
 
         gpsTracker.askLocation();
         new Timer().schedule(new TimerTask() {
