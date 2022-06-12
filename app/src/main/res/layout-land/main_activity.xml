@@ -9,7 +9,7 @@
     <!--Date and Time-->
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/date_time"
-        android:layout_width="150sp"
+        android:layout_width="148sp"
         android:layout_height="90sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
