@@ -1,19 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/baseColor"
-    android:keepScreenOn="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:keepScreenOn="true"
+    android:background="@color/baseColor">
+
+    <!--Date and Time-->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/date_time"
+        android:layout_width="150sp"
+        android:layout_height="90sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/newsLine"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/_00_00"
+            android:textColor="@color/colorText"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/textDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/mm_dd"
+            android:textColor="@color/colorText"
+            android:textSize="24sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <!--  N E W S  -->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/newsLine"
+        android:layout_width="275dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintLeft_toRightOf="@id/date_time"
+        app:layout_constraintRight_toLeftOf="@id/temper_celcius"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/news_mark1"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/mark" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/news_0"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:alpha=".6"
+                android:src="@mipmap/yellow_ne"/>
+            <ImageView
+                android:id="@+id/news_1"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:alpha=".8"
+                android:src="@mipmap/green_i"/>
+            <ImageView
+                android:id="@+id/news_2"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/green_e"/>
+            <ImageView
+                android:id="@+id/news_3"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:alpha=".8"
+                android:src="@mipmap/green_i"/>
+            <ImageView
+                android:id="@+id/news_4"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:alpha=".6"
+                android:src="@mipmap/yellow_se"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_horizontal"
+            android:rotation="180"
+            android:src="@mipmap/mark" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/temper_celcius"
+        android:layout_width="100sp"
+        android:layout_height="50sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/btnSetting"
+        app:layout_constraintLeft_toRightOf="@id/newsLine"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="50sp"
+            android:layout_height="44sp"
+            android:gravity="end"
+            android:text="__ "
+            android:textColor="@color/colorText"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/celsius"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:text=" °C "
+            android:textColor="@color/colorText"
+            android:textSize="16sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <!--Exit , Napping -->
+    <ImageButton
+        android:id="@+id/btnExit"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintTop_toBottomOf="@id/btnSetting"
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/km"
+        android:src="@mipmap/exit_app" />
+
+    <ImageButton
+        android:id="@+id/btnIWillBack"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/logInfo"
+        android:contentDescription="@string/km"
+        android:src="@mipmap/i_will_be_back" />
 
     <!--Record start button and count Fragment-->
     <FrameLayout
         android:id="@+id/frameRecord"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignEnd="@id/textDate"
-        android:layout_below="@id/textDate"
-        android:layout_marginTop="4dp"
-        >
+        app:layout_constraintRight_toLeftOf="@id/btnExit"
+        app:layout_constraintTop_toTopOf="@id/btnExit"
+        android:layout_marginTop="8dp" >
 
         <ImageButton
             android:id="@+id/btnRecord"
@@ -36,10 +177,10 @@
     <!--  Battery  -->
     <FrameLayout
         android:id="@+id/frameBattery"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:layout_toLeftOf="@id/frameRecord"
-        android:layout_below="@id/textDate"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintRight_toLeftOf="@id/frameRecord"
+        app:layout_constraintTop_toTopOf="@id/btnExit"
         android:layout_marginTop="8dp" >
 
         <ImageView
@@ -62,32 +203,105 @@
             android:textSize="18sp" />
     </FrameLayout>
 
-    <!--Date and Time-->
 
-    <TextView
-        android:id="@+id/textTime"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+    <!--Speed in Km-->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/speed_km"
+        android:layout_width="200sp"
+        android:layout_height="80sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frameRecord"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textSpeed"
+            android:layout_width="132sp"
+            android:layout_height="80sp"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:text="@string/underscore"
+            android:textColor="@color/speedColor"
+            android:textSize="52sp" />
+
+        <TextView
+            android:id="@+id/textKm"
+            android:layout_width="60sp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="Km"
+            android:textColor="@color/colorText"
+            android:textSize="30sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <ImageButton
+        android:id="@+id/btnSetting"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="48dp"
-        android:layout_toLeftOf="@id/newsLine"
-        android:gravity="center_horizontal"
-        android:text="@string/_00_00"
-        android:textColor="@color/colorText"
-        android:textSize="32sp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/km"
+        android:src="@drawable/setting" />
 
-    <TextView
-        android:id="@+id/textDate"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textTime"
-        android:layout_marginEnd="48dp"
-        android:layout_toLeftOf="@id/newsLine"
-        android:gravity="center_horizontal"
-        android:text="@string/mm_dd"
-        android:textColor="@color/colorText"
-        android:textSize="20sp" />
+
+    <!--Event button & counts -->
+        <FrameLayout
+            android:id="@+id/frameEvent"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:layout_constraintLeft_toRightOf="@id/speed_km"
+            app:layout_constraintTop_toTopOf="@id/speed_km"
+            >
+            <ImageButton
+                android:id="@+id/btnEvent"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/textEvent"
+                android:background="#00000000"
+                android:src="@mipmap/event_shot" />
+
+            <TextView
+                android:id="@+id/activeEvent"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#FFF"
+                android:background="#000"
+                android:textSize="36sp" />
+
+        </FrameLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/event_count"
+        android:layout_width="70dp"
+        android:layout_height="80dp"
+        app:layout_constraintLeft_toRightOf="@id/frameEvent"
+        app:layout_constraintTop_toTopOf="@id/frameEvent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/textEvent"
+            android:textColor="@color/colorText"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textCountEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/zero"
+            android:textColor="@color/colorText"
+            android:textSize="32sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <!--Log Info in multi lines-->
 
@@ -95,192 +309,20 @@
         android:id="@+id/logInfo"
         android:layout_width="360dp"
         android:layout_height="152dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/framePreview"
+        app:layout_constraintRight_toLeftOf="@id/framePreview"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:text="@string/logInfo"
         android:textColor="@color/colorText"
         android:textSize="@dimen/log_size" />
-
-    <!--Speed in Km-->
-    <TextView
-        android:id="@+id/textSpeed"
-        android:layout_width="132dp"
-        android:layout_height="80dp"
-        android:layout_below="@id/frameBattery"
-        android:layout_gravity="end"
-        android:layout_marginEnd="8dp"
-        android:layout_toLeftOf="@id/textKm"
-        android:gravity="end"
-        android:text="@string/underscore"
-        android:textColor="@color/speedColor"
-        android:textSize="52sp" />
-
-    <TextView
-        android:id="@+id/textKm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/frameBattery"
-        android:layout_toLeftOf="@id/frameEvent"
-        android:text="Km"
-        android:textColor="@color/colorText"
-        android:textSize="20sp" />
-
-    <ImageButton
-        android:id="@+id/btnSetting"
-        style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:layout_toLeftOf="@id/btnIWillBack"
-        android:layout_alignBottom="@id/btnIWillBack"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/km"
-        android:src="@drawable/setting" />
-
-    <!--Exit , Napping -->
-    <ImageButton
-        android:id="@+id/btnExit"
-        style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/temperature"
-        android:layout_marginStart="8dp"
-        android:contentDescription="@string/km"
-        android:src="@mipmap/exit_app" />
-
-    <ImageButton
-        android:id="@+id/btnIWillBack"
-        style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_below="@id/btnExit"
-        android:layout_alignParentEnd="true"
-        android:contentDescription="@string/km"
-        android:src="@mipmap/i_will_be_back" />
-
-    <!--Event button & counts -->
-
-    <FrameLayout
-        android:id="@+id/frameEvent"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_below="@id/frameBattery"
-        android:layout_toLeftOf="@id/textCountEvent"
-        >
-        <ImageButton
-            android:id="@+id/btnEvent"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/textEvent"
-            android:background="#00000000"
-            android:src="@mipmap/event_shot" />
-
-        <TextView
-            android:id="@+id/activeEvent"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="#FFF"
-            android:background="#000"
-            android:textSize="36sp" />
-
-    </FrameLayout>
-
-    <!--  Event Count  -->
-    <TextView
-        android:id="@+id/textEvent"
-        android:layout_width="54sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/frameBattery"
-        android:layout_toLeftOf="@id/framePreview"
-        android:text="@string/textEvent"
-        android:textColor="@color/colorText"
-        android:textSize="16dp" />
-
-    <TextView
-        android:id="@+id/textCountEvent"
-        android:layout_width="54sp"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/framePreview"
-        android:layout_below="@id/textEvent"
-        android:gravity="center_horizontal"
-        android:text="@string/zero"
-        android:textColor="@color/colorText"
-        android:textSize="32sp" />
-
-    <!--  N E W S  -->
-
-    <LinearLayout
-        android:id="@+id/newsLine"
-        android:layout_width="275dp"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:visibility="visible"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="48dp"
-        android:layout_toLeftOf="@id/btnExit"
-        android:orientation="horizontal"
-        android:layout_marginStart="4dp">
-        <ImageView
-            android:id="@+id/news_0"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:alpha=".5"
-            android:src="@mipmap/yellow_ne"/>
-        <ImageView
-            android:id="@+id/news_1"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:alpha=".7"
-            android:src="@mipmap/green_i"/>
-        <ImageView
-            android:id="@+id/news_2"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:src="@mipmap/green_e"/>
-        <ImageView
-            android:id="@+id/news_3"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:alpha=".7"
-            android:src="@mipmap/green_i"/>
-        <ImageView
-            android:id="@+id/news_4"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:alpha=".5"
-            android:src="@mipmap/yellow_se"/>
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/news_mark1"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignStart="@id/newsLine"
-        android:layout_alignEnd="@id/newsLine"
-        android:src="@mipmap/mark" />
-
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_below="@id/newsLine"
-        android:layout_alignStart="@id/newsLine"
-        android:layout_alignEnd="@id/newsLine"
-        android:layout_marginTop="-4dp"
-        android:rotation="180"
-        android:src="@mipmap/mark" />
 
     <!--Preview  -->
     <FrameLayout
         android:id="@+id/framePreview"
         android:layout_width="200dp"
         android:layout_height="154dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="4dp"
+        android:layout_margin="4dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/texture_border"
         >
 
@@ -292,27 +334,4 @@
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/temperature"
-        android:layout_width="50sp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/celsius"
-        android:gravity="end"
-        android:text="__ "
-        android:textColor="@color/colorText"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/celsius"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@id/temperature"
-        android:layout_toLeftOf="@id/btnExit"
-        android:text=" °C "
-        android:textColor="@color/colorText"
-        android:textSize="16sp" />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

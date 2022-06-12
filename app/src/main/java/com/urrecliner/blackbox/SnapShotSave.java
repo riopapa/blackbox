@@ -48,7 +48,7 @@ class SnapShotSave {
 
         startBias = phase * 200;
         prefixTime = path2Write.getName();
-        prefixTime = "D"+prefixTime.substring(1, prefixTime.length()-1);
+        prefixTime = "D"+prefixTime.substring(1, prefixTime.length()-1)+".";
         Thread th = new Thread(() -> {
             for (int i = minPos; i < maxSize; i++) {
                 byte[] imageBytes = jpgBytes[i];

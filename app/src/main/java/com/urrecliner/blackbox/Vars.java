@@ -23,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.LinearLayoutCompat;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -58,7 +60,7 @@ public class Vars {
     static ImageView vImgBattery = null;
     static ImageView vExitApp = null;
     static TextView tvCelcius = null;
-    static LinearLayout lNewsLine = null;
+    static LinearLayoutCompat lNewsLine = null;
 
     static ImageButton vBtnEvent = null;
     static TextureView vPreviewView;

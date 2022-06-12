@@ -121,7 +121,7 @@ public class VideoMain {
         };
     }
 
-    final float ZOOM_FACTOR_NORMAL = 1.05f, ZOOM_FACTOR_BIGGER = 1.4f, ZOOM_FACTOR_HUGE = 1.8f;
+    final float ZOOM_FACTOR_NORMAL = 1.1f, ZOOM_FACTOR_BIGGER = 1.4f, ZOOM_FACTOR_HUGE = 1.8f;
     private Rect calcPhotoZoom(float zoomFactor, String type) {
 
         int xSize = mImageSize.getWidth();
@@ -129,23 +129,21 @@ public class VideoMain {
         int xZoomed = (int) (xSize / zoomFactor);
         int yZoomed = (int) (ySize / zoomFactor);
         int xLeft = 0;
-        int yTop;
+        int yTop = 0;
         Rect rect = new Rect();
         switch (type) {
             case "N":
                 xLeft = (xSize - xZoomed) / 2;
                 break;
             case "L":
-                xLeft = (xSize - xZoomed) / 4;
+                xLeft = (xSize - xZoomed) / 5;
+                yTop = (ySize-yZoomed) / 4;
                 break;
             case "R":
                 xLeft = (xSize- xZoomed);
+                yTop = (ySize-yZoomed) / 4;
                 break;
         }
-        if (zoomFactor == ZOOM_FACTOR_HUGE)
-            yTop = (ySize-yZoomed)*3/4;
-        else
-            yTop = (ySize-yZoomed)/3;
 
         rect.set(xLeft, yTop, xLeft+xZoomed, yTop+yZoomed);
         return rect;

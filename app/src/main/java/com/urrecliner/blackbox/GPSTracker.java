@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class GPSTracker extends Service implements LocationListener {
                 MIN_TIME_DRIVE_UPDATES,
                 MIN_DISTANCE_DRIVE, this);
         if (locationManager != null) {
-            LinearLayout newsLine = mActivity.findViewById(R.id.newsLine);
+            LinearLayoutCompat newsLine = mActivity.findViewById(R.id.newsLine);
             newsLine.setVisibility(View.VISIBLE);
         } else
             utils.logBoth("GPS","locationManager Null");
