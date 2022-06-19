@@ -16,7 +16,6 @@ import android.location.LocationManager;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -35,7 +34,7 @@ public class GPSTracker extends Service implements LocationListener {
     ArrayList<Double> latitudes, longitudes;
 //    int speedOld2, speedOld1, speedNew;
     final int ARRAY_SIZE = 4;
-    int nowDirection, oldDirection = -99;       // nowDirection = 0 ~ 360/22.5
+    int newDirection, currDirection = -99;       // nowDirection = 0 ~ 360/22.5
     ImageView [] newsView;
     private static final long MIN_TIME_DRIVE_UPDATES = 800;
     private static final float MIN_DISTANCE_DRIVE = 10;
@@ -117,7 +116,7 @@ public class GPSTracker extends Service implements LocationListener {
             speedInt = nowSpeed;
             gActivity.runOnUiThread(() -> speedView.setText("" + speedInt));
         }
-        if (speedInt < 10) // if speed is < xx then no update, OBD should be connected
+        if (speedInt < 5) // if speed is < xx then no update, OBD should be connected
             return;
         latitude = newLoc.getLatitude();
         longitude = newLoc.getLongitude();
@@ -130,17 +129,17 @@ public class GPSTracker extends Service implements LocationListener {
         float GPSDegree = calcDirection(latitudes.get(0), longitudes.get(0), latitudes.get(2), longitudes.get(2));
         if (Float.isNaN(GPSDegree))
             return;
-        nowDirection = (int) (((360+GPSDegree) % 360) / 22.5);
-        if (nowDirection == oldDirection)
+        newDirection = (int) (((360+GPSDegree) % 360) / 22.5);
+        if (newDirection == currDirection)
             return;
-        oldDirection = nowDirection;
+        currDirection = newDirection;
         gActivity.runOnUiThread(() -> {
             for (int i = 0; i < 5; i++) {
                 ImageView v = newsView[i];
                 if (i == 2)
-                    v.setImageResource(yellowBlur[i + oldDirection]);
+                    v.setImageResource(yellowBlur[i + currDirection]);
                 else
-                    v.setImageResource(yellowBright[i + oldDirection]);   // 흐리게
+                    v.setImageResource(yellowBright[i + currDirection]);   // 흐리게
             }
         });
     }

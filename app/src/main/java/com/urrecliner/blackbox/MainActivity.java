@@ -21,7 +21,7 @@ import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.startStopExit;
-import static com.urrecliner.blackbox.Vars.tvCelcius;
+import static com.urrecliner.blackbox.Vars.tvDegree;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -48,7 +48,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -73,8 +72,9 @@ public class MainActivity extends Activity {
 
     private static final String logID = "Main";
     private static final int SETTING_ACTIVITY = 101;
+    private boolean recordable = true;
+
     CameraSub cameraSub;
-//    boolean surfaceReady = false;
 
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -99,8 +99,6 @@ public class MainActivity extends Activity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         mContext = this;
         mActivity = this;
-
-//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), PackageManager.GET_PERMISSIONS);
@@ -165,10 +163,9 @@ public class MainActivity extends Activity {
             vExitApp.setClickable(false);
             startStopExit.exitBlackBoxApp();
         });
-        ImageButton btnBeBack = findViewById(R.id.btnIWillBack);
+        ImageButton btnBeBack = findViewById(R.id.btnPauseAMinute);
         btnBeBack.setOnClickListener(v -> {
             btnBeBack.setImageAlpha(50);
-            willBack = true;
             if (mIsRecording)
                 stopHandler.sendEmptyMessage(0);
 //                reStarting();
@@ -255,7 +252,7 @@ public class MainActivity extends Activity {
                     System.exit(0);
                     android.os.Process.killProcess(android.os.Process.myPid());
                 }
-            }, 1000);
+            }, 300);
 
         }
     }
@@ -285,7 +282,7 @@ public class MainActivity extends Activity {
         vTextBattery = findViewById(R.id.textBattery);
         vImgBattery = findViewById(R.id.imgBattery);
         vBtnRecord = findViewById(R.id.btnRecord);
-        tvCelcius = findViewById(R.id.temperature);
+        tvDegree = findViewById(R.id.degree);
         vTextSpeed.setText("__");
     }
 
@@ -300,46 +297,44 @@ public class MainActivity extends Activity {
         utils.readyPackageFolder(mPackageNormalDatePath);
     }
 
-    static long keyOldTime = 0, keyNowTime = 0;
-    static boolean willBack = false;
+//    static long keyOldTime = 0, keyNowTime = 0;
     @Override
     public boolean onKeyDown(final int keyCode, KeyEvent event) {
 
-        keyNowTime = System.currentTimeMillis();
+//        keyNowTime = System.currentTimeMillis();
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
-                AudioManager audioManager = (AudioManager) mContext.getSystemService(AUDIO_SERVICE);
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 8, AudioManager.FLAG_PLAY_SOUND);
-                if (willBack) {
-                    startStopExit.exitBlackBoxApp();
-                }
+//                AudioManager audioManager = (AudioManager) mContext.getSystemService(AUDIO_SERVICE);
+//                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 8, AudioManager.FLAG_PLAY_SOUND);
+//                if (willBack) {
+//                    startStopExit.exitBlackBoxApp();
+//                }
                 if (!mIsRecording)
                     break;
-                if ((keyOldTime + 10000) < keyNowTime)  // if gap is big, reset to current
-                    keyOldTime = keyNowTime;
-                if ((keyOldTime + 1000 > keyNowTime) &&
-                        (keyOldTime + 150 < keyNowTime)) {   // if gap is small double clicked so exit app
-                    willBack = true;
-                    stopHandler.sendEmptyMessage(0);
-                    new BeBackSoon().execute("x");
+//                if ((keyOldTime + 10000) < keyNowTime)  // if gap is big, reset to current
+//                    keyOldTime = keyNowTime;
+//                if ((keyOldTime + 1000 > keyNowTime) &&
+//                        (keyOldTime + 150 < keyNowTime)) {   // if gap is small double clicked so exit app
+//                    willBack = true;
+//                    stopHandler.sendEmptyMessage(0);
+//                    new BeBackSoon().execute("x");
+//                }
+                if (recordable) {
+                    recordable = false;
+                    startEventSaving();
                 }
                 new Timer().schedule(new TimerTask() {
                     public void run() {
-                        try {
-                            if (!willBack && mIsRecording)
-                                startEventSaving();
-                        } catch (Exception e) {
-                            utils.logBoth(logID, "// start Eventing Error // "+e);
-                        }
+                        recordable = true;
                     }
-                }, 800);
+                }, 5000);
                 break;
             default:
                 utils.logBoth("key", keyCode + " Pressed");
                 break;
         }
-        keyOldTime = keyNowTime;
+//        keyOldTime = keyNowTime;
         return super.onKeyDown(keyCode, event);
     }
 

@@ -173,16 +173,17 @@
         android:src="@mipmap/exit_app" />
 
     <ImageButton
-        android:id="@+id/btnIWillBack"
+        android:id="@+id/btnPauseAMinute"
         style="@android:style/Widget.Material.Light.Button.Borderless"
         android:layout_width="74dp"
         android:layout_height="74dp"
         android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
         android:layout_marginLeft="48dp"
         android:layout_toRightOf="@id/btnExit"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/km"
-        android:src="@mipmap/i_will_be_back" />
+        android:src="@mipmap/pause" />
 
     <!--Event button & counts -->
 
@@ -192,7 +193,7 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="48dp"
-        android:layout_toRightOf="@id/btnIWillBack"
+        android:layout_toRightOf="@id/btnPauseAMinute"
         android:layout_marginBottom="8dp">
 
         <ImageButton
@@ -321,18 +322,18 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/temperature"
+        android:id="@+id/degree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_toLeftOf="@id/celsius"
+        android:layout_toLeftOf="@id/degreeInCelcius"
         android:layout_below="@id/btnSetting"
         android:textColor="@color/colorText"
         android:text="40 "
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/celsius"
+        android:id="@+id/degreeInCelcius"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

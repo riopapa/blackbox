@@ -59,7 +59,7 @@ public class Vars {
     static TextView vTextBattery = null;
     static ImageView vImgBattery = null;
     static ImageView vExitApp = null;
-    static TextView tvCelcius = null;
+    static TextView tvDegree = null;
     static LinearLayoutCompat lNewsLine = null;
 
     static ImageButton vBtnEvent = null;

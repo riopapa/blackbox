@@ -121,7 +121,7 @@ public class VideoMain {
         };
     }
 
-    final float ZOOM_FACTOR_NORMAL = 1.1f, ZOOM_FACTOR_BIGGER = 1.4f, ZOOM_FACTOR_HUGE = 1.8f;
+    final float ZOOM_FACTOR_NORMAL = 1.2f, ZOOM_FACTOR_BIGGER = 1.6f, ZOOM_FACTOR_HUGE = 1.9f;
     private Rect calcPhotoZoom(float zoomFactor, String type) {
 
         int xSize = mImageSize.getWidth();

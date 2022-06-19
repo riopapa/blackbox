@@ -1,15 +1,13 @@
 package com.urrecliner.blackbox;
 
-import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.tvCelcius;
-import static com.urrecliner.blackbox.Vars.vTextActiveCount;
-import static com.urrecliner.blackbox.Vars.vTextCountEvent;
+import static com.urrecliner.blackbox.Vars.tvDegree;
+import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextTime;
 
 import android.graphics.Color;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -31,11 +29,13 @@ class DisplayTime implements Runnable {
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 vTextTime.setText(sdf.format(System.currentTimeMillis()));
                 int celcius = Celcius.get();
-                String txt = " "+celcius+" ";
-                tvCelcius.setText(txt);
+                String txt = (celcius>44)? ">> "+celcius+" <<":" "+celcius+" ";
+                if (celcius>43)
+                    utils.beepOnce(5, 1f);
                 mActivity.runOnUiThread(() -> {
-                    tvCelcius.setTextColor((celcius<43)? Color.WHITE : Color.RED);
-                    tvCelcius.setBackgroundColor(ContextCompat.getColor(mContext,
+                    tvDegree.setText(txt);
+                    tvDegree.setTextColor((celcius<43)? Color.WHITE : Color.MAGENTA);
+                    tvDegree.setBackgroundColor(ContextCompat.getColor(mContext,
                             (celcius<40)? R.color.baseColor : R.color.hotColor));
                 });
             }
