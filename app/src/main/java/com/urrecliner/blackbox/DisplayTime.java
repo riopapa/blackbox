@@ -29,12 +29,12 @@ class DisplayTime implements Runnable {
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 vTextTime.setText(sdf.format(System.currentTimeMillis()));
                 int celcius = Celcius.get();
-                String txt = (celcius>44)? ">> "+celcius+" <<":" "+celcius+" ";
-                if (celcius>43)
-                    utils.beepOnce(5, 1f);
+                String txt = (celcius>43)? ">"+celcius+"<":" "+celcius+" ";
+                if (celcius>42)
+                    utils.beepOnce(9, 1f);
                 mActivity.runOnUiThread(() -> {
                     tvDegree.setText(txt);
-                    tvDegree.setTextColor((celcius<43)? Color.WHITE : Color.MAGENTA);
+                    tvDegree.setTextColor((celcius<42)? Color.WHITE : Color.MAGENTA);
                     tvDegree.setBackgroundColor(ContextCompat.getColor(mContext,
                             (celcius<40)? R.color.baseColor : R.color.hotColor));
                 });

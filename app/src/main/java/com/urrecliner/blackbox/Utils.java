@@ -292,8 +292,9 @@ public class Utils {
             R.raw.beep4_recording,                  //  record button pressed
             R.raw.beep5_s_dew_drops,                //  normal merge finished
             R.raw.beep6_stoprecording,              // stop recording
-            R.raw.beep7_i_will_be_back_soon_kr,           // I will back
-            R.raw.beep8_exit_application                  // Exit application
+            R.raw.beep7_i_will_be_back_soon_kr,     // I will back
+            R.raw.beep8_exit_application,           // Exit application
+            R.raw.beep9_so_hot
             };
     private final int[] soundNbr = new int[beepSound.length];
 
