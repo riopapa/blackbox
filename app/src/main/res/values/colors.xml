@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorText">#FFFFFF</color>
     <color name="speedColor">#FFFF00</color>
     <color name="baseColor">#220122</color>
     <color name="hotColor">#AA8833</color>
+    <color name="widgetBack">#80dddd</color>
 
 </resources>

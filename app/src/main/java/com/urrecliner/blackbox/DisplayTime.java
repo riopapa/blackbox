@@ -6,12 +6,16 @@ import static com.urrecliner.blackbox.Vars.tvDegree;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextTime;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.graphics.Color;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
 import com.urrecliner.blackbox.utility.Celcius;
+import com.urrecliner.blackbox.utility.WidgetProvider;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -38,6 +42,13 @@ class DisplayTime implements Runnable {
                     tvDegree.setBackgroundColor(ContextCompat.getColor(mContext,
                             (celcius<40)? R.color.baseColor : R.color.hotColor));
                 });
+
+                Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                int[] appWidgetIds = AppWidgetManager.getInstance(mContext).getAppWidgetIds(new ComponentName(mContext.getPackageName(), WidgetProvider.class.getName()));
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+                intent.putExtra("maxSpeed", sdf.format(System.currentTimeMillis()));
+                mContext.sendBroadcast(intent);
+
             }
         };
         displayHHMM.schedule(tt, 3000, 32000);
