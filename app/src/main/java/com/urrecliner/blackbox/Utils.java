@@ -10,12 +10,15 @@ import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
+import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.util.Log;
@@ -294,7 +297,8 @@ public class Utils {
             R.raw.beep6_stoprecording,              // stop recording
             R.raw.beep7_i_will_be_back_soon_kr,     // I will back
             R.raw.beep8_exit_application,           // Exit application
-            R.raw.beep9_so_hot
+            R.raw.beep9_so_hot,                     // over 43 degree
+            R.raw.beepa_so_hot_hot                  // over 45 degree
             };
     private final int[] soundNbr = new int[beepSound.length];
 
@@ -312,6 +316,12 @@ public class Utils {
         for (int i = 0; i < beepSound.length; i++) {
             soundNbr[i] = soundPool.load(mContext, beepSound[i], 1);
         }
+    }
+
+    void setVolume(int percent) {
+        AudioManager mAudio = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+        int volume = mAudio.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * percent / 100;
+        mAudio.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_PLAY_SOUND);
     }
 
     void beepOnce(int soundId,float volume) {

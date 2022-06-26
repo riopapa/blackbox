@@ -217,6 +217,7 @@ public class MainActivity extends Activity {
         }, DELAY_AUTO_RECORDING);
 
         Celcius.start(mContext);
+        utils.setVolume(70);
     }
 
     final static Handler startHandler = new Handler(Looper.getMainLooper()) {
@@ -224,12 +225,10 @@ public class MainActivity extends Activity {
         }
     };
     final static Handler stopHandler = new Handler(Looper.getMainLooper()) {
-        public void handleMessage(Message msg) { startStopExit.stopVideo();
-        }
+        public void handleMessage(Message msg) { startStopExit.stopVideo();}
     };
     final Handler eventHandler = new Handler(Looper.getMainLooper()) {
-        public void handleMessage(Message msg) { new EventRecord().start();
-        }
+        public void handleMessage(Message msg) { new EventRecord().start();}
     };
 
     protected void onActivityResult(int requestCode, int resultCode,

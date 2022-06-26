@@ -39,7 +39,7 @@ public class EventRecord {
 
         utils.readyPackageFolder(thisEventJpgPath);
         utils.logBoth("start"+(CountEvent+1+activeEventCount),thisEventJpgPath.getName());
-
+        utils.setVolume(70);
         gpsTracker.askLocation();
         new Timer().schedule(new TimerTask() {
             public void run() {
@@ -97,5 +97,4 @@ public class EventRecord {
         if (snapMapIdx >= MAX_IMAGES_SIZE)
             snapMapIdx = 0;
     }
-
 }
