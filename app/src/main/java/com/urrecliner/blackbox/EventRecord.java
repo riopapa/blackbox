@@ -14,6 +14,7 @@ import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
+import static com.urrecliner.blackbox.Vars.bytesPhoto;
 import static com.urrecliner.blackbox.Vars.bytesRecordOff;
 import static com.urrecliner.blackbox.Vars.bytesRecordOn;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
@@ -43,8 +44,8 @@ public class EventRecord {
         gpsTracker.askLocation();
         new Timer().schedule(new TimerTask() {
             public void run() {
-                appendEventShot(bytesRecordOn);
-                appendEventShot(bytesRecordOn);
+                appendEventShot(bytesPhoto);
+                appendEventShot(bytesPhoto);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 1);
             }

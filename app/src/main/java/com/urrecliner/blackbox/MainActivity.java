@@ -52,6 +52,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Process;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
@@ -184,6 +185,17 @@ public class MainActivity extends Activity {
             startStopExit.stopVideo();
             Intent setInt = new Intent(MainActivity.this, SettingsActivity.class);
             startActivityForResult(setInt,SETTING_ACTIVITY) ;
+        });
+
+        ImageButton btnPhoto = findViewById(R.id.btnPhoto);
+        btnPhoto.setOnClickListener(v -> {
+            startStopExit.stopVideo();
+            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackphoto");
+            assert sendIntent != null;
+            sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mActivity.startActivity(sendIntent);
+            System.exit(0);
+            Process.killProcess(Process.myPid());
         });
 
         vPreviewView.post(() -> {

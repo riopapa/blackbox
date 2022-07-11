@@ -107,8 +107,11 @@ public class Vars {
     static long INTERVAL_NORMAL;
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
+
     static byte[] bytesRecordOff;
     static byte[] bytesRecordOn;
+    static byte[] bytesPhoto;
+
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;

@@ -3,6 +3,7 @@ package com.urrecliner.blackbox;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
+import static com.urrecliner.blackbox.Vars.bytesPhoto;
 import static com.urrecliner.blackbox.Vars.bytesRecordOff;
 import static com.urrecliner.blackbox.Vars.bytesRecordOn;
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -350,6 +351,12 @@ public class Utils {
         stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         bytesRecordOn = stream.toByteArray();
+
+        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.black_photo_min);
+        stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        bytesPhoto = stream.toByteArray();
+
     }
 
 }

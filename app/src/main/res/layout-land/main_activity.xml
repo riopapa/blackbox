@@ -143,7 +143,7 @@
         android:layout_height="80dp"
         android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/logInfo"
+        app:layout_constraintRight_toLeftOf="@id/framePreview"
         android:contentDescription="@string/km"
         android:src="@mipmap/pause" />
 
@@ -211,8 +211,9 @@
         android:id="@+id/speed_km"
         android:layout_width="200sp"
         android:layout_height="80sp"
+        android:layout_marginTop="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frameRecord"
+        app:layout_constraintTop_toBottomOf="@id/date_time"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/textSpeed"
@@ -242,10 +243,23 @@
         android:layout_height="54dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/btnPauseAMinute"
+        app:layout_constraintBottom_toTopOf="@id/btnPauseAMinute"
+        app:layout_constraintRight_toLeftOf="@id/framePreview"
         android:contentDescription="@string/km"
+
         android:src="@drawable/setting" />
+
+    <ImageButton
+        android:id="@+id/btnPhoto"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toLeftOf="@id/logInfo"
+        app:layout_constraintTop_toTopOf="@id/logInfo"
+        app:layout_constraintBottom_toBottomOf="@id/logInfo"
+        android:contentDescription="@string/km"
+        android:src="@mipmap/black_photo_min" />
 
 
     <!--Event button & counts -->
@@ -305,14 +319,12 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-    <!--Log Info in multi lines-->
-
     <TextView
         android:id="@+id/logInfo"
-        android:layout_width="360dp"
-        android:layout_height="144dp"
-        app:layout_constraintRight_toLeftOf="@id/framePreview"
+        android:layout_width="320dp"
+        android:layout_height="152dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintRight_toLeftOf="@id/btnPauseAMinute"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="@string/logInfo"
         android:textColor="@color/colorText"
@@ -321,8 +333,8 @@
     <!--Preview  -->
     <FrameLayout
         android:id="@+id/framePreview"
-        android:layout_width="200dp"
-        android:layout_height="154dp"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
         android:layout_margin="4dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
