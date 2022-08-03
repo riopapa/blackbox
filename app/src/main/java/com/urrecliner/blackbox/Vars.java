@@ -108,9 +108,7 @@ public class Vars {
     static byte [][] snapBytes;
     static int snapMapIdx = 0;
 
-    static byte[] bytesRecordOff;
-    static byte[] bytesRecordOn;
-    static byte[] bytesPhoto;
+    static byte[] shot_00, shot_01, shot_02, shot_03;
 
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
@@ -124,7 +122,7 @@ public class Vars {
 
 
     static boolean viewFinder = true;
-    static boolean photoCaptureLeft = false;
+    static boolean captureLorR = false;
     static boolean photoSaved = false;
 
     static CameraDevice mCameraDevice = null;

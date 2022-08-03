@@ -28,7 +28,7 @@ class StartStopExit {
 
     private final String logID = "StartStop";
     void startVideo() {
-        utils.logBoth(logID, "Start Recording ---");
+        utils.logBoth(logID, "Record On");
         mIsRecording = true;
         vBtnRecord.setImageResource(R.mipmap.recording_on);
         videoMain.prepareRecord();

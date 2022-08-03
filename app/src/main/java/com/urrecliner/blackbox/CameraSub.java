@@ -17,7 +17,7 @@ import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
-import static com.urrecliner.blackbox.Vars.photoCaptureLeft;
+import static com.urrecliner.blackbox.Vars.captureLorR;
 import static com.urrecliner.blackbox.Vars.photoSaved;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
@@ -100,7 +100,7 @@ public class CameraSub {
         public void onOpened(CameraDevice camera) {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
-            photoCaptureLeft = !leftRight;
+            captureLorR = !leftRight;
             if (mIsRecording) {
                 videoMain.prepareRecord();
                 mediaRecorder.start();

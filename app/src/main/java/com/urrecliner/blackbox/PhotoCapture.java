@@ -7,7 +7,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
-import static com.urrecliner.blackbox.Vars.photoCaptureLeft;
+import static com.urrecliner.blackbox.Vars.captureLorR;
 import static com.urrecliner.blackbox.Vars.photoSaved;
 import static com.urrecliner.blackbox.Vars.zoomBiggerL;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
@@ -20,8 +20,6 @@ import static com.urrecliner.blackbox.Vars.zoomBiggerR;
 import static com.urrecliner.blackbox.Vars.zoomHuge;
 import static com.urrecliner.blackbox.Vars.zoomHugeL;
 import static com.urrecliner.blackbox.Vars.zoomHugeR;
-
-import java.util.Random;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
@@ -49,13 +47,13 @@ public class PhotoCapture {
                             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
                             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 //            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
-                            if (zoomHuge || Math.random() < 0.1f)
+                            if (zoomHuge || Math.random() < 0.3f)
                                 mCaptureRequestBuilder.set(
-                                        CaptureRequest.SCALER_CROP_REGION, photoCaptureLeft ?zoomHugeL:zoomHugeR);
+                                        CaptureRequest.SCALER_CROP_REGION, captureLorR ?zoomHugeL:zoomHugeR);
                             else
                                 mCaptureRequestBuilder.set(
-                                        CaptureRequest.SCALER_CROP_REGION, photoCaptureLeft ?zoomBiggerL:zoomBiggerR);
-                            photoCaptureLeft = !photoCaptureLeft;
+                                        CaptureRequest.SCALER_CROP_REGION, captureLorR ?zoomBiggerL:zoomBiggerR);
+                            captureLorR = !captureLorR;
                         } catch (CameraAccessException e) {
                             e.printStackTrace();
                         }

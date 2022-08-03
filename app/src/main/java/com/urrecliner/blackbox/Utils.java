@@ -3,15 +3,15 @@ package com.urrecliner.blackbox;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_DATE;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.bytesPhoto;
-import static com.urrecliner.blackbox.Vars.bytesRecordOff;
-import static com.urrecliner.blackbox.Vars.bytesRecordOn;
+import static com.urrecliner.blackbox.Vars.shot_02;
+import static com.urrecliner.blackbox.Vars.shot_00;
+import static com.urrecliner.blackbox.Vars.shot_01;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.sdfDate;
-import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.shot_03;
 import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 
 import android.content.Context;
@@ -342,20 +342,25 @@ public class Utils {
     }
 
     void makeEventShotArray() {
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.green_i);
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_00);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-        bytesRecordOff = stream.toByteArray();
+        shot_00 = stream.toByteArray();
 
-        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.recording_on);
+        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_01);
         stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-        bytesRecordOn = stream.toByteArray();
+        shot_01 = stream.toByteArray();
 
-        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.black_photo_min);
+        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_02);
         stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-        bytesPhoto = stream.toByteArray();
+        shot_02 = stream.toByteArray();
+
+        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_03);
+        stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        shot_03 = stream.toByteArray();
 
     }
 

@@ -136,12 +136,12 @@ public class VideoMain {
                 xLeft = (xSize - xZoomed) / 2;
                 break;
             case "L":
-                xLeft = (xSize - xZoomed) / 5;
-                yTop = (ySize-yZoomed) / 4;
+                xLeft = (xSize - xZoomed) / 6;
+                yTop = (ySize-yZoomed) / 3;
                 break;
             case "R":
                 xLeft = (xSize- xZoomed);
-                yTop = (ySize-yZoomed) / 4;
+                yTop = (ySize-yZoomed) / 3;
                 break;
         }
 
