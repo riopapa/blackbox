@@ -13,10 +13,12 @@ import android.view.Surface;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
@@ -40,6 +42,7 @@ import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.zoomBiggerR;
 import static com.urrecliner.blackbox.Vars.zoomHugeL;
 import static com.urrecliner.blackbox.Vars.zoomHugeR;
+import static com.urrecliner.blackbox.Vars.PhoneE;
 
 public class VideoMain {
 
@@ -81,7 +84,8 @@ public class VideoMain {
 
     private void readySurfaces() {
         previewSurface = new Surface(surface_Preview);
-        mCaptureRequestBuilder.addTarget(previewSurface);
+        if (SUFFIX.equals(PhoneE.B))
+            mCaptureRequestBuilder.addTarget(previewSurface);
         recordSurface = mediaRecorder.getSurface();
         mCaptureRequestBuilder.addTarget(recordSurface);
         photoSurface = mImageReader.getSurface();
@@ -94,10 +98,11 @@ public class VideoMain {
     }
 
     void buildCameraSession() {
+        List ar = Arrays.asList(recordSurface, photoSurface, previewSurface);
+        if (SUFFIX.equals(PhoneE.N))
+            ar = Arrays.asList(recordSurface, photoSurface);
         try {
-//            mCameraDevice.createCaptureSession(Arrays.asList(recordSurface, photoSurface, previewSurface),
-                    mCameraDevice.createCaptureSession(Arrays.asList(recordSurface, photoSurface),
-                    cameraStateCallBack(), null);
+            mCameraDevice.createCaptureSession(ar, cameraStateCallBack(), null);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error BB ", e);
         }

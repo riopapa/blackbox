@@ -25,14 +25,11 @@ import java.util.ArrayList;
 
 public class GPSTracker extends Service implements LocationListener {
 
-    static boolean isCompassShown = false;
     Context gContext;
     Activity gActivity;
-//    Location prevLoc;
     double latitude = 0, longitude = 0;
     int nowSpeed = 0;
     ArrayList<Double> latitudes, longitudes;
-//    int speedOld2, speedOld1, speedNew;
     final int ARRAY_SIZE = 4;
     int newDirection, currDirection = -99;       // nowDirection = 0 ~ 360/22.5
     ImageView [] newsView;
@@ -48,29 +45,11 @@ public class GPSTracker extends Service implements LocationListener {
         newsView = new ImageView[5];
         for (int i = 0; i < 5; i++) {
             newsView[i] = gActivity.findViewById(newsIds[i]);
-//            if (i == 0 || i == 4)
-//                newsView[i].setAlpha(.3f);
-//            else if (i == 1 || i == 3)
-//                newsView[i].setAlpha(.6f);
-//            else
-//                newsView[i].setAlpha(1f);
-//            newsView[i].setVisibility(View.VISIBLE);
-//            if (!isCompassShown) {
-//                ImageView iv = newsView[i];
-//                iv.setVisibility(View.INVISIBLE);
-//            }
         }
         latitude = 37.3926; longitude = 127.1267; nowSpeed = 1;
         latitudes = new ArrayList<>(); longitudes = new ArrayList<>();
         for (int i = 0; i < ARRAY_SIZE; i++) {
             latitudes.add(latitude + (double) i * 0.0001f); longitudes.add(longitude + (double) i * 0.0001f); }
-//        gActivity.runOnUiThread(() -> {
-//            for (int i = 0; i < 5; i++) {
-//                ImageView v = newsView[i];
-//                v.setVisibility(View.VISIBLE);
-//            }
-//            isCompassShown = true;
-//        });
     }
 
     void askLocation() {
@@ -107,10 +86,11 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location newLoc) {
-//        utils.logBoth("loc Speed="+newLoc.hasSpeed(),"New Loc "+newLoc.getLatitude()+" x "+newLoc.getLongitude());
 
         if (!newLoc.hasSpeed())
             return;
+        latitude = newLoc.getLatitude();
+        longitude = newLoc.getLongitude();
         nowSpeed = (int) (newLoc.getSpeed() * 3.6f);
         if (speedInt != nowSpeed) {
             speedInt = nowSpeed;
@@ -118,8 +98,6 @@ public class GPSTracker extends Service implements LocationListener {
         }
         if (speedInt < 5) // if speed is < xx then no update, OBD should be connected
             return;
-        latitude = newLoc.getLatitude();
-        longitude = newLoc.getLongitude();
         latitudes.remove(0); longitudes.remove(0);
         latitudes.add(latitude); longitudes.add(longitude);
         latitudes.set(1, ((latitudes.get(0)+ latitudes.get(2))/2+ latitudes.get(1))/2);
@@ -153,10 +131,6 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onProviderEnabled(String provider) { }
-
-//    @Override
-//    public void onStatusChanged(String provider, int status, Bundle extras) { }
-//
 
     @Override
     public IBinder onBind(Intent arg0) {

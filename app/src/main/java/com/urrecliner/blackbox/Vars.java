@@ -20,7 +20,6 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -120,7 +119,7 @@ public class Vars {
     public static long INTERVAL_SNAP_SHOT_SAVE;
     public static long INTERVAL_LEFT_RIGHT;   // < SNAP_SHOT_INTERVAL
 
-
+    public enum PhoneE {  B, P, N, A}; // S9Black, S9Phone, Note20, A32
     static boolean viewFinder = true;
     static boolean captureLorR = false;
     static boolean photoSaved = false;
@@ -132,7 +131,7 @@ public class Vars {
     static Surface recordSurface = null;
     static Surface photoSurface = null;
     static Rect zoomBiggerL, zoomBiggerR, zoomHugeL, zoomHugeR;
-    static String SUFFIX;
+    static PhoneE SUFFIX;
     static boolean zoomHuge = false;
 
     static void setSuffix(Context context) {
@@ -146,19 +145,19 @@ public class Vars {
             @SuppressLint("HardwareIds")
             String aID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             if (aID.endsWith("6ccd"))
-                SUFFIX = "P";
+                SUFFIX = PhoneE.P;
             else
-                SUFFIX = "S";
+                SUFFIX = PhoneE.B;
         }
         else if (Build.MODEL.equals("SM-N986N"))
-            SUFFIX = "N";
+            SUFFIX = PhoneE.N;
         else if (Build.MODEL.equals("SM-A325N"))
-            SUFFIX = "A";
+            SUFFIX = PhoneE.A;
         else
             utils.logBoth("Model", Build.MODEL);
 
         switch (SUFFIX) {
-            case "S":           // galaxy s9 blackbox
+            case B:           // galaxy s9 blackbox
                 MAX_IMAGES_SIZE = 119;
                 INTERVAL_SNAP_SHOT_SAVE = 197;
                 INTERVAL_LEFT_RIGHT = 91;
@@ -166,7 +165,7 @@ public class Vars {
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
-            case "N":           // galaxy note 20
+            case N:           // galaxy note 20
                 MAX_IMAGES_SIZE = 121;
                 INTERVAL_SNAP_SHOT_SAVE = 172;
                 INTERVAL_LEFT_RIGHT = 112;
@@ -174,7 +173,7 @@ public class Vars {
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
-            case "P":           // galaxy s9 phone
+            case P:           // galaxy s9 phone
                 MAX_IMAGES_SIZE = 121;
                 INTERVAL_SNAP_SHOT_SAVE = 192;
                 INTERVAL_LEFT_RIGHT = 92;
@@ -182,7 +181,7 @@ public class Vars {
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
-            case "A":           // galaxy A32
+            case A:           // galaxy A32
                 MAX_IMAGES_SIZE = 115;
                 INTERVAL_SNAP_SHOT_SAVE = 211;
                 INTERVAL_LEFT_RIGHT = 140;

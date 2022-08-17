@@ -58,11 +58,11 @@ public class CameraSub {
             for (String cameraId : mCameraManager.getCameraIdList()) {
                 mCameraCharacteristics = mCameraManager.getCameraCharacteristics(cameraId);
 
-//                if (mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
-//                        CameraCharacteristics.LENS_FACING_BACK) {
+                if (mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
+                        CameraCharacteristics.LENS_FACING_BACK) {
 //                    utils.logOnly("camera "+cameraId," is back camera ///// ");
-                if (SUFFIX.equals("N") && cameraId.equals("2") || !SUFFIX.equals("N") && cameraId.equals("0")) {
-                    utils.logOnly("Camera= "+cameraId, "camera found ="+cameraId);
+//                if (SUFFIX == Vars.PhoneE.NOTE20 && cameraId.equals("2") || !SUFFIX.equals("N") && cameraId.equals("0")) {
+//                    utils.logOnly("Camera= "+cameraId, "camera found ="+cameraId);
                     mCameraId = cameraId;
                     StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                     Size[] sizes = CameraSize.set(map, SUFFIX);

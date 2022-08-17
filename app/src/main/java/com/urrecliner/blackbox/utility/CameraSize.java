@@ -8,6 +8,8 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Build;
 import android.util.Size;
 
+import com.urrecliner.blackbox.Vars;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +21,7 @@ public class CameraSize {
 // "SM-G965N" "P";
 // "SM-A325N" "A";
 
-    public static Size[] set(StreamConfigurationMap map, String SUFFIX) {
+    public static Size[] set(StreamConfigurationMap map, Vars.PhoneE SUFFIX) {
 
         Size sizePreview = null, sizeCamera = null, sizeVideo = null;
 //        String model = Build.MODEL;
@@ -34,8 +36,8 @@ public class CameraSize {
 
         switch (SUFFIX) {
 
-            case "P":
-            case "S":
+            case B:
+            case P:
             /* galaxy s9+
             4032x3024 1.3, 4032x2268 1.8, 4032x1960 2.1, 3024x3024 1.0, 3984x2988 1.3, 3840x2160 1.8 ,
             3264x2448 1.3, 3264x1836 1.8, 2976x2976 1.0, 2880x2160 1.3, 2560x1440 1.8, 2160x2160 1.0 ,
@@ -53,7 +55,7 @@ public class CameraSize {
                 }
                 break;
 
-            case "N":
+            case N:
             /* galaxy note20
                 4000x3000 1.3 , 4000x2252 1.8 , 4000x1868 2.1 , 2992x2992 1.0 , 1920x824 2.3 ,
                 1920x900 2.1 , 3840x2160 1.8 , 1920x1080 1.8 , 2320x1080 2.1 , 1920x1440 1.3 ,
@@ -71,7 +73,7 @@ public class CameraSize {
                 }
                 break;
 
-            case "A":
+            case A:
             /* galaxy A32
                 2560x1440 1.8, 1920x1080 1.8, 1440x1080 1.3, 1280x960 1.3, 1280x720 1.8 ,
                 1088x1088 1.0, 960x720 1.3, 720x480 1.5, 640x480 1.3, 512x384 1.3, 512x288 1.8 ,

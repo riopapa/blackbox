@@ -41,7 +41,7 @@ class NormalMerge {
     static long nextNormalTime = 0;
 
     void merge() {
-        gpsTracker.askLocation();
+//        gpsTracker.askLocation();
         try {
             new MergeFileTask().execute("");
         } catch (Exception e) {
