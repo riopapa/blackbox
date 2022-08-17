@@ -56,18 +56,20 @@ public class CameraSub {
         try {
             assert mCameraManager != null;
             for (String cameraId : mCameraManager.getCameraIdList()) {
-//                utils.logOnly(logID, "cameraID="+cameraId);
                 mCameraCharacteristics = mCameraManager.getCameraCharacteristics(cameraId);
-                if (mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
-                        CameraCharacteristics.LENS_FACING_BACK) {
+
+//                if (mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
+//                        CameraCharacteristics.LENS_FACING_BACK) {
+//                    utils.logOnly("camera "+cameraId," is back camera ///// ");
+                if (SUFFIX.equals("N") && cameraId.equals("2") || !SUFFIX.equals("N") && cameraId.equals("0")) {
+                    utils.logOnly("Camera= "+cameraId, "camera found ="+cameraId);
                     mCameraId = cameraId;
-                } else
-                    continue;
-                StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                Size[] sizes = CameraSize.set(map, SUFFIX);
-                mPreviewSize = sizes[0];
-                mImageSize = sizes[1];
-                mVideoSize = sizes[2];
+                    StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                    Size[] sizes = CameraSize.set(map, SUFFIX);
+                    mPreviewSize = sizes[0];
+                    mImageSize = sizes[1];
+                    mVideoSize = sizes[2];
+                }
             }
         } catch (CameraAccessException e) {
             utils.logE("CameraSub", "CameraAccessException", e);

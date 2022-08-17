@@ -15,9 +15,6 @@ import static com.urrecliner.blackbox.Vars.utils;
 
 public class BeBackSoon extends AsyncTask<String, String, String> {
 
-    private String xcode;
-    private int downCount;
-
 //    @Override
 //    protected void onPreExecute() {
 //        super.onPreExecute();
@@ -25,8 +22,8 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... s) {
-        xcode = s[0];   // currently 'x' only
-        downCount = (xcode.equals("x"))? DELAY_WAIT_EXIT_SECONDS : 1;
+        String xcode = s[0];   // currently 'x' only
+        int downCount = (xcode.equals("x"))? DELAY_WAIT_EXIT_SECONDS : 1;
         while (downCount > 0) {
             if (!mExitApplication) {
                 publishProgress("" + downCount);
@@ -37,7 +34,7 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
         return "Done";
     }
     protected void onProgressUpdate(String... s) {
-        String msg = mContext.getString(R.string.i_will_back) +"\n"+downCount;
+        String msg = mContext.getString(R.string.i_will_back) +"\n"+s;
         utils.displayCount(msg);
     }
 
@@ -54,6 +51,6 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
             mActivity.startActivity(sendIntent);
             System.exit(0);
             Process.killProcess(Process.myPid());
-        }, 500);
+        }, 1000);
     }
 }

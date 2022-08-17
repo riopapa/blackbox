@@ -138,16 +138,20 @@ public class Vars {
     static void setSuffix(Context context) {
         INTERVAL_EVENT = 16 * 1000;
         INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
+//        utils.logBoth("suffix", aID);
+        //  S9+ = 66fb7229f2286ccd
+        //  S9 blackbox = f4367a4dc1e43732
+        // Note20 = e5743c7c694c0c09
         if (Build.MODEL.equals("SM-G965N")) {
             @SuppressLint("HardwareIds")
             String aID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-            //  S9+ = 66fb7229f2286ccd
-            //  S9 blackbox = f4367a4dc1e43732
             if (aID.endsWith("6ccd"))
                 SUFFIX = "P";
             else
                 SUFFIX = "S";
         }
+        else if (Build.MODEL.equals("SM-N986N"))
+            SUFFIX = "N";
         else if (Build.MODEL.equals("SM-A325N"))
             SUFFIX = "A";
         else
@@ -162,6 +166,14 @@ public class Vars {
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
+            case "N":           // galaxy note 20
+                MAX_IMAGES_SIZE = 121;
+                INTERVAL_SNAP_SHOT_SAVE = 172;
+                INTERVAL_LEFT_RIGHT = 112;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 30*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
+                break;
             case "P":           // galaxy s9 phone
                 MAX_IMAGES_SIZE = 121;
                 INTERVAL_SNAP_SHOT_SAVE = 192;
@@ -171,9 +183,9 @@ public class Vars {
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
             case "A":           // galaxy A32
-                MAX_IMAGES_SIZE = 135;
+                MAX_IMAGES_SIZE = 115;
                 INTERVAL_SNAP_SHOT_SAVE = 211;
-                INTERVAL_LEFT_RIGHT = 110;
+                INTERVAL_LEFT_RIGHT = 140;
                 VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 24*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;

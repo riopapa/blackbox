@@ -32,11 +32,11 @@ class DisplayTime implements Runnable {
                 String txt = (celcius>42)? ">"+celcius+"<":" "+celcius+" ";
                 if (celcius>44)
                     utils.beepOnce(10, 1f);
-                else if (celcius>43)
+                else if (celcius>42)
                     utils.beepOnce(9, 1f);
                 mActivity.runOnUiThread(() -> {
                     tvDegree.setText(txt);
-                    tvDegree.setTextColor((celcius<44)? Color.WHITE : Color.MAGENTA);
+                    tvDegree.setTextColor((celcius<44)? Color.WHITE : Color.YELLOW);
                     tvDegree.setBackgroundColor(ContextCompat.getColor(mContext,
                             (celcius<41)? R.color.baseColor : R.color.hotColor));
                 });

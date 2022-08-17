@@ -95,7 +95,8 @@ public class VideoMain {
 
     void buildCameraSession() {
         try {
-            mCameraDevice.createCaptureSession(Arrays.asList(recordSurface, photoSurface, previewSurface),
+//            mCameraDevice.createCaptureSession(Arrays.asList(recordSurface, photoSurface, previewSurface),
+                    mCameraDevice.createCaptureSession(Arrays.asList(recordSurface, photoSurface),
                     cameraStateCallBack(), null);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error BB ", e);
@@ -159,9 +160,10 @@ public class VideoMain {
         mediaRecorder.setVideoEncodingBitRate(VIDEO_ENCODING_RATE);
         mediaRecorder.setVideoFrameRate(VIDEO_FRAME_RATE);
         mediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
         mediaRecorder.setOutputFile(getNextFileName(0).toString());
         mediaRecorder.setMaxFileSize(VIDEO_ONE_WORK_FILE_SIZE);
+
         try {
             mediaRecorder.prepare();
             mediaRecorder.setNextOutputFile(getNextFileName(2000));
