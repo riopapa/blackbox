@@ -98,11 +98,11 @@ public class VideoMain {
     }
 
     void buildCameraSession() {
-        List ar = Arrays.asList(recordSurface, photoSurface, previewSurface);
+        List list = Arrays.asList(recordSurface, photoSurface, previewSurface);
         if (SUFFIX.equals(PhoneE.N))
-            ar = Arrays.asList(recordSurface, photoSurface);
+            list = Arrays.asList(recordSurface, photoSurface);
         try {
-            mCameraDevice.createCaptureSession(ar, cameraStateCallBack(), null);
+            mCameraDevice.createCaptureSession(list, cameraStateCallBack(), null);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error BB ", e);
         }
