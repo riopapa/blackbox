@@ -348,5 +348,4 @@ public class MainActivity extends Activity {
 //        keyOldTime = keyNowTime;
         return super.onKeyDown(keyCode, event);
     }
-
 }

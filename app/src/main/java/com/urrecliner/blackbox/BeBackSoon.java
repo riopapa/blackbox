@@ -34,7 +34,7 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
         return "Done";
     }
     protected void onProgressUpdate(String... s) {
-        String msg = mContext.getString(R.string.i_will_back) +"\n"+s;
+        String msg = mContext.getString(R.string.i_will_back) +"\n"+s[0];
         utils.displayCount(msg);
     }
 
