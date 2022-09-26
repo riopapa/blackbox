@@ -7,7 +7,6 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
-import static com.urrecliner.blackbox.Vars.captureLorR;
 import static com.urrecliner.blackbox.Vars.photoSaved;
 import static com.urrecliner.blackbox.Vars.zoomBiggerL;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
@@ -36,6 +35,7 @@ public class PhotoCapture {
         }
     }
 
+    static boolean leftRight = false;
     private static final CameraCaptureSession.CaptureCallback zoomCameraPhotoCallback = new
         CameraCaptureSession.CaptureCallback() {
             private void process(CaptureResult captureResult) {
@@ -47,13 +47,13 @@ public class PhotoCapture {
                             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
                             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 //            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
-                            if (zoomHuge || Math.random() < 0.3f)
+                            leftRight = !leftRight;
+                            if (zoomHuge || Math.random() < 0.5f)
                                 mCaptureRequestBuilder.set(
-                                        CaptureRequest.SCALER_CROP_REGION, captureLorR ?zoomHugeL:zoomHugeR);
+                                        CaptureRequest.SCALER_CROP_REGION, leftRight ?zoomHugeL:zoomHugeR);
                             else
                                 mCaptureRequestBuilder.set(
-                                        CaptureRequest.SCALER_CROP_REGION, captureLorR ?zoomBiggerL:zoomBiggerR);
-                            captureLorR = !captureLorR;
+                                        CaptureRequest.SCALER_CROP_REGION, leftRight ?zoomBiggerL:zoomBiggerR);
                         } catch (CameraAccessException e) {
                             e.printStackTrace();
                         }

@@ -102,7 +102,6 @@ public class CameraSub {
         public void onOpened(CameraDevice camera) {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
-            captureLorR = !leftRight;
             if (mIsRecording) {
                 videoMain.prepareRecord();
                 mediaRecorder.start();
@@ -123,7 +122,6 @@ public class CameraSub {
     };
 
     long shotTime = 0;
-    boolean leftRight = false;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
         long nowTime = System.currentTimeMillis();
         if (nowTime < shotTime || !mIsRecording) {
@@ -139,7 +137,6 @@ public class CameraSub {
             shotTime = nowTime;
         shotTime += INTERVAL_SNAP_SHOT_SAVE;
 //        shotTime = nowTime + INTERVAL_SNAP_SHOT_SAVE;
-        leftRight = !leftRight;
         try {
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.capacity()];

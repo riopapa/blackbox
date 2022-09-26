@@ -130,24 +130,24 @@ public class VideoMain {
     final float ZOOM_FACTOR_NORMAL = 1.2f, ZOOM_FACTOR_BIGGER = 1.6f, ZOOM_FACTOR_HUGE = 1.9f;
     private Rect calcPhotoZoom(float zoomFactor, String type) {
 
-        int xSize = mImageSize.getWidth();
-        int ySize = mImageSize.getHeight();
-        int xZoomed = (int) (xSize / zoomFactor);
-        int yZoomed = (int) (ySize / zoomFactor);
+        int xFullDots = mImageSize.getWidth();
+        int yFullDots = mImageSize.getHeight();
+        int xZoomed = (int) (xFullDots / zoomFactor);
+        int yZoomed = (int) (yFullDots / zoomFactor);
         int xLeft = 0;
         int yTop = 0;
         Rect rect = new Rect();
         switch (type) {
             case "N":
-                xLeft = (xSize - xZoomed) / 2;
+                xLeft = (xFullDots - xZoomed) / 2;
                 break;
             case "L":
-                xLeft = (xSize - xZoomed) / 6;
-                yTop = (ySize-yZoomed) / 3;
+                xLeft = (xFullDots - xZoomed) / 6;
+                yTop = (yFullDots-yZoomed) * 2 / 3;
                 break;
             case "R":
-                xLeft = (xSize- xZoomed);
-                yTop = (ySize-yZoomed) / 3;
+                xLeft = (xFullDots- xZoomed);
+                yTop = (yFullDots-yZoomed) * 2 / 3;
                 break;
         }
 
