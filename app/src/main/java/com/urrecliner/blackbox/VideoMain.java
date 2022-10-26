@@ -84,7 +84,7 @@ public class VideoMain {
 
     private void readySurfaces() {
         previewSurface = new Surface(surface_Preview);
-        if (SUFFIX.equals(PhoneE.B))
+        if (SUFFIX.equals(PhoneE.B) ||SUFFIX.equals(PhoneE.P))
             mCaptureRequestBuilder.addTarget(previewSurface);
         recordSurface = mediaRecorder.getSurface();
         mCaptureRequestBuilder.addTarget(recordSurface);

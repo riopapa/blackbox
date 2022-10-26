@@ -93,7 +93,7 @@ public class Vars {
 
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int DELAY_AUTO_RECORDING = 2000;
+    final static int DELAY_AUTO_RECORDING = 5000;
     final static int DELAY_WAIT_EXIT_SECONDS = 3;
     static Handler mBackgroundImage, mBackgroundCamera;
     static Size mPreviewSize, mVideoSize, mImageSize;
@@ -119,7 +119,7 @@ public class Vars {
     public static long INTERVAL_SNAP_SHOT_SAVE;
     public static long INTERVAL_LEFT_RIGHT;   // < SNAP_SHOT_INTERVAL
 
-    public enum PhoneE {  B, P, N, A}; // S9Black, S9Phone, Note20, A32
+    public enum PhoneE {  B, P, N, A} // S9Black, S9Phone, Note20, A32
     static boolean viewFinder = true;
     static boolean captureLorR = false;
     static boolean photoSaved = false;
@@ -135,35 +135,36 @@ public class Vars {
     static boolean zoomHuge = false;
 
     static void setSuffix(Context context) {
-        INTERVAL_EVENT = 16 * 1000;
+        INTERVAL_EVENT = 20 * 1000;
         INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
-//        utils.logBoth("suffix", aID);
-        //  S9+ = 66fb7229f2286ccd
-        //  S9 blackbox = f4367a4dc1e43732
-        // Note20 = e5743c7c694c0c09
-        if (Build.MODEL.equals("SM-G965N")) {
-            @SuppressLint("HardwareIds")
-            String aID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-            if (aID.endsWith("6ccd"))
-                SUFFIX = PhoneE.P;
-            else
-                SUFFIX = PhoneE.B;
+        switch (Build.MODEL) {
+            case "SM-G965N":
+                @SuppressLint("HardwareIds")
+                String aID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                if (aID.endsWith("6ccd"))
+                    SUFFIX = PhoneE.P;
+                else
+                    SUFFIX = PhoneE.B;
+                break;
+            case "SM-N986N":
+                SUFFIX = PhoneE.N;
+                break;
+            case "SM-A325N":
+                SUFFIX = PhoneE.A;
+                break;
+            default:
+                utils.logBoth("Model", Build.MODEL);
+                break;
         }
-        else if (Build.MODEL.equals("SM-N986N"))
-            SUFFIX = PhoneE.N;
-        else if (Build.MODEL.equals("SM-A325N"))
-            SUFFIX = PhoneE.A;
-        else
-            utils.logBoth("Model", Build.MODEL);
 
         switch (SUFFIX) {
-            case B:           // galaxy s9 blackbox
-                MAX_IMAGES_SIZE = 119;
-                INTERVAL_SNAP_SHOT_SAVE = 197;
-                INTERVAL_LEFT_RIGHT = 91;
-                VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
+            case P:           // galaxy s9 phone
+                MAX_IMAGES_SIZE = 121;
+                INTERVAL_SNAP_SHOT_SAVE = 192;
+                INTERVAL_LEFT_RIGHT = 92;
+                VIDEO_FRAME_RATE = 24;
+                VIDEO_ENCODING_RATE = 24*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
                 break;
             case N:           // galaxy note 20
                 MAX_IMAGES_SIZE = 121;
@@ -173,13 +174,13 @@ public class Vars {
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
-            case P:           // galaxy s9 phone
-                MAX_IMAGES_SIZE = 121;
-                INTERVAL_SNAP_SHOT_SAVE = 192;
-                INTERVAL_LEFT_RIGHT = 92;
+            case B:           // galaxy s9 blackbox
+                MAX_IMAGES_SIZE = 119;
+                INTERVAL_SNAP_SHOT_SAVE = 197;
+                INTERVAL_LEFT_RIGHT = 91;
                 VIDEO_FRAME_RATE = 24;
-                VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
+                VIDEO_ENCODING_RATE = 24*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
                 break;
             case A:           // galaxy A32
                 MAX_IMAGES_SIZE = 115;

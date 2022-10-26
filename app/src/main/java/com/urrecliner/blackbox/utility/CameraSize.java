@@ -50,7 +50,7 @@ public class CameraSize {
                         sizePreview = size;
                     else if (size.getWidth() == 4032 && size.getHeight() == 3024)
                         sizeCamera = size;
-                    else if (size.getWidth() == 3264 && size.getHeight() == 1836)
+                    else if (size.getWidth() == 3264 && size.getHeight() == 2448)
                         sizeVideo = size;
                 }
                 break;

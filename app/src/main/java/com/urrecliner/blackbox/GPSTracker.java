@@ -33,8 +33,8 @@ public class GPSTracker extends Service implements LocationListener {
     final int ARRAY_SIZE = 4;
     int newDirection, currDirection = -99;       // nowDirection = 0 ~ 360/22.5
     ImageView [] newsView;
-    private static final long MIN_TIME_DRIVE_UPDATES = 800;
-    private static final float MIN_DISTANCE_DRIVE = 10;
+    private static final long MIN_TIME_DRIVE_UPDATES = 900;
+    private static final float MIN_DISTANCE_DRIVE = 12;
     protected LocationManager locationManager;
     TextView speedView;
 
