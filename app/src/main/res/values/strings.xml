@@ -11,6 +11,7 @@
     <string name="percent">90</string>
     <string name="todo">TODO</string>
     <string name="i_will_back">잠시 꺼둠</string>
+    <string name="under_bar">__</string>
 
     <!-- Preference Titles -->
 

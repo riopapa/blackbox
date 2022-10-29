@@ -1,9 +1,17 @@
 package com.urrecliner.blackbox;
 
+import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
+import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
+import static com.urrecliner.blackbox.Vars.gpsTracker;
+import static com.urrecliner.blackbox.Vars.mExitApplication;
+import static com.urrecliner.blackbox.Vars.mPackageEventPath;
+import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
+import static com.urrecliner.blackbox.Vars.utils;
+
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.coremedia.iso.boxes.Container;
@@ -22,20 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
-import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.activeEventCount;
-import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mExitApplication;
-import static com.urrecliner.blackbox.Vars.mPackageEventPath;
-import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vTextActiveCount;
-import static com.urrecliner.blackbox.Vars.vTextCountEvent;
 
 class EventMerge {
 

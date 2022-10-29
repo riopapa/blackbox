@@ -17,7 +17,6 @@ import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
-import static com.urrecliner.blackbox.Vars.captureLorR;
 import static com.urrecliner.blackbox.Vars.photoSaved;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapMapIdx;
@@ -102,10 +101,10 @@ public class CameraSub {
         public void onOpened(CameraDevice camera) {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
-            if (mIsRecording) {
-                videoMain.prepareRecord();
-                mediaRecorder.start();
-            }
+//            if (mIsRecording) {
+//                videoMain.prepareRecord();
+//                mediaRecorder.start();
+//            }
         }
 
         @Override
@@ -129,7 +128,7 @@ public class CameraSub {
         }
 
         Image image = reader.acquireLatestImage();
-        if (photoSaved) {
+        if (photoSaved && image != null) {
             image.close();
             return;
         }

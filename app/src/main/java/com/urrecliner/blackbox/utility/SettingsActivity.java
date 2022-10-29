@@ -6,9 +6,9 @@ import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.USE_CUSTOM_VALUES;
 import static com.urrecliner.blackbox.Vars.sharedPref;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
@@ -16,7 +16,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.urrecliner.blackbox.R;
-import com.urrecliner.blackbox.Vars;
 
 import java.util.Locale;
 
@@ -27,6 +26,7 @@ public class SettingsActivity extends AppCompatActivity  {
     static final String NAME_INTERVAL_LEFT_RIGHT = "interval_left_right";
     static Preference prefMaxImageSize, prefIntervalSnapShotSave, prefIntervalLeftRight;
     static ListPreference listPreferenceCategory;
+    static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,8 @@ public class SettingsActivity extends AppCompatActivity  {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.set_preferences, rootKey);
-
-            getPreference();
+            context = getContext();
+            getPreference(context);
 
             listPreferenceCategory = (ListPreference) findPreference(NAME_MAX_IMAGES_SIZE);
             if (listPreferenceCategory != null) {
@@ -105,9 +105,9 @@ public class SettingsActivity extends AppCompatActivity  {
         }
     }
 
-    public static void getPreference() {
+    public static void getPreference(Context context) {
         final String NAME_USE_CUSTOM_VALUES = "use_custom_values";
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(Vars.mContext);
+        sharedPref = context.getSharedPreferences("blackbox", MODE_PRIVATE);
         USE_CUSTOM_VALUES = sharedPref.getBoolean(NAME_USE_CUSTOM_VALUES, false);
         MAX_IMAGES_SIZE = Integer.parseInt(sharedPref.getString(NAME_MAX_IMAGES_SIZE, "116"));
         if (MAX_IMAGES_SIZE == 0) {
@@ -127,7 +127,7 @@ public class SettingsActivity extends AppCompatActivity  {
 
     @Override
     protected void onDestroy() {
-        getPreference();
+        getPreference(context);
         super.onDestroy();
     }
 

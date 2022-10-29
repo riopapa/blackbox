@@ -14,7 +14,6 @@ import android.view.View;
 
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
@@ -22,7 +21,7 @@ import static com.urrecliner.blackbox.Vars.vPreviewView;
 class DisplayBattery extends BroadcastReceiver {
 
     private int prevPercent = 0;
-    IntentFilter chgFilter = null, conFilter = null, disFilter = null;
+    IntentFilter chgFilter = null;
     Intent statusReceiver = null;
     boolean prevCharging = false;
 
@@ -36,14 +35,6 @@ class DisplayBattery extends BroadcastReceiver {
     void init() {
         try {
             mContext.unregisterReceiver(this);
-        } catch (Exception e) {
-            // ignore registering
-        }
-        try {
-//            conFilter = new IntentFilter(Intent.ACTION_POWER_CONNECTED);
-//            mContext.registerReceiver(this, conFilter);
-//            disFilter = new IntentFilter(Intent.ACTION_POWER_DISCONNECTED);
-//            mContext.registerReceiver(this, disFilter);
         } catch (Exception e) {
             // ignore registering
         }

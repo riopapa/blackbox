@@ -33,15 +33,6 @@ public class DiskSpace implements Runnable {
         return "";
     }
 
-//     implementation group: 'org.apache.commons', name: 'commons-io', version: '1.3.2' // folder delete
-//    void deleteFolder (File file) {
-//        try {
-//            FileUtils.deleteDirectory(file);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     void deleteFolder(File file) {
         String deleteCmd = "rm -r " + file.toString();
         Runtime runtime = Runtime.getRuntime();

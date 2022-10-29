@@ -35,7 +35,7 @@ public class GPSTracker extends Service implements LocationListener {
     ImageView [] newsView;
     private static final long MIN_TIME_DRIVE_UPDATES = 900;
     private static final float MIN_DISTANCE_DRIVE = 12;
-    protected LocationManager locationManager;
+    LocationManager locationManager;
     TextView speedView;
 
     void init(Activity activity, Context context) {

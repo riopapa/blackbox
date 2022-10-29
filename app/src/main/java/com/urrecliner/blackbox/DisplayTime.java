@@ -5,14 +5,10 @@ import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.tvDegree;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextTime;
-
-import android.graphics.Color;
-import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
-
 import com.urrecliner.blackbox.utility.Celcius;
 
+import android.graphics.Color;
+import androidx.core.content.ContextCompat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Timer;

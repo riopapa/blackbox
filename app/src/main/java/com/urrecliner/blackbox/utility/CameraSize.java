@@ -2,16 +2,13 @@ package com.urrecliner.blackbox.utility;
 
 import static com.urrecliner.blackbox.Vars.utils;
 
-import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.os.Build;
 import android.util.Size;
 
 import com.urrecliner.blackbox.Vars;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;

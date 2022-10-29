@@ -15,11 +15,6 @@ import static com.urrecliner.blackbox.Vars.utils;
 
 public class BeBackSoon extends AsyncTask<String, String, String> {
 
-//    @Override
-//    protected void onPreExecute() {
-//        super.onPreExecute();
-//    }
-
     @Override
     protected String doInBackground(String... s) {
         String xcode = s[0];   // currently 'x' only

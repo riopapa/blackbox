@@ -38,7 +38,7 @@ class StartStopExit {
                 startSnapBigShot();
                 startNormal();
             }
-        }, 5000);
+        }, 3000);
     }
 
     static void reRunApplication(String msg, Exception e) {
@@ -101,14 +101,12 @@ class StartStopExit {
             vBtnRecord.setImageResource(R.mipmap.recording_off);
             mediaRecorder.stop();
             mediaRecorder.reset();
+            mediaRecorder = null;
         } catch (Exception e) {
             utils.logE(logID, "Stop 1", e);
         }
         try {
-//            videoUtils.startPreview();
             normalTimer.cancel();
-//            obdAccessUnused.stop();
-//            directionSensor.stop();
         } catch (Exception e) {
             utils.logE(logID, "Stop 2", e);
         }
@@ -120,8 +118,6 @@ class StartStopExit {
         if (mIsRecording) stopVideo();
         displayTime.stop();
         gpsTracker.stopGPS();
-//        if (OBDConnected)
-//            updateKiloChronology();
         utils.logOnly(logID,"Exit App");
         new Timer().schedule(new TimerTask() {
             public void run() {

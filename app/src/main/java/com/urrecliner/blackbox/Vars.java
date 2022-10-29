@@ -12,7 +12,6 @@ import android.hardware.camera2.CaptureRequest;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Size;
@@ -66,9 +65,6 @@ public class Vars {
     static ImageButton vBtnRecord;
 
     public static SharedPreferences sharedPref;
-//    static int chronoKiloMeter = 0;
-//    static String chronoNowDate = null;
-//    static int todayKiloMeter = 0;
 
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
@@ -76,21 +72,8 @@ public class Vars {
     static SimpleDateFormat sdfTime = new SimpleDateFormat(FORMAT_TIME, Locale.getDefault());
     static final String DATE_PREFIX = "V";
 
-    private static final String PATH_PACKAGE = "BlackBox";
-    private static final String PATH_EVENT = "event";
-    private static final String PATH_EVENT_JPG = "EventJpg";
-    private static final String PATH_NORMAL = "normal";
-    private static final String PATH_WORK = "work";
-    private static final String PATH_LOG = "log";
-
-    static File mPackagePath = new File(Environment.getExternalStorageDirectory(), PATH_PACKAGE);
-    static File mPackageEventPath = new File(mPackagePath, PATH_EVENT);
-    static File mPackageEventJpgPath = new File(mPackagePath, PATH_EVENT_JPG);
-    static File mPackageNormalPath = new File(mPackagePath, PATH_NORMAL);
-    static File mPackageNormalDatePath = new File(mPackageNormalPath, DATE_PREFIX+utils.getMilliSec2String(System.currentTimeMillis(), FORMAT_DATE));
-    static File mPackageWorkingPath = new File(mPackagePath, PATH_WORK);
-    static File mPackageLogPath = new File(mPackagePath, PATH_LOG);
-
+    static File mPackageWorkingPath, mPackageEventPath, mPackageEventJpgPath,
+            mPackageNormalPath, mPackageNormalDatePath, mPackageLogPath;
     static int CountEvent;
     static int activeEventCount = 0;
     final static int DELAY_AUTO_RECORDING = 5000;

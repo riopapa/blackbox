@@ -1,6 +1,7 @@
 package com.urrecliner.blackbox;
 
 import static com.urrecliner.blackbox.Vars.CountEvent;
+import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
 import static com.urrecliner.blackbox.Vars.INTERVAL_LEFT_RIGHT;
 import static com.urrecliner.blackbox.Vars.INTERVAL_SNAP_SHOT_SAVE;
@@ -17,7 +18,6 @@ import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.mPackageLogPath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
-import static com.urrecliner.blackbox.Vars.mPackagePath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.startStopExit;
@@ -49,6 +49,7 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -66,6 +67,7 @@ import com.urrecliner.blackbox.utility.DiskSpace;
 import com.urrecliner.blackbox.utility.Permission;
 import com.urrecliner.blackbox.utility.SettingsActivity;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -109,11 +111,11 @@ public class MainActivity extends Activity {
         }
 
         Vars.setSuffix(getApplicationContext());
-        SettingsActivity.getPreference();
+        SettingsActivity.getPreference(mContext);
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
-        utils.deleteOldFiles(mPackageEventJpgPath, 4);
+        utils.deleteOldFiles(mPackageWorkingPath, 4);
         utils.deleteOldLogs();
         cameraSub = new CameraSub();
         prepareMain();
@@ -129,10 +131,6 @@ public class MainActivity extends Activity {
 
         gpsTracker = new GPSTracker();
         gpsTracker.init(mActivity, mContext);
-//        chronoNowDate = sharedPref.getString("today","new");
-//        chronoKiloMeter = sharedPref.getInt("kilo", -1);
-//        todayKiloMeter = 0;
-//        chronoLogs = utils.getTodayTable();
 
         vPreviewView = findViewById(R.id.previewView);
         FrameLayout framePreview = findViewById(R.id.framePreview);
@@ -294,10 +292,18 @@ public class MainActivity extends Activity {
         vImgBattery = findViewById(R.id.imgBattery);
         vBtnRecord = findViewById(R.id.btnRecord);
         tvDegree = findViewById(R.id.degree);
-        vTextSpeed.setText("__");
+        vTextSpeed.setText(R.string.under_bar);
     }
 
     private void readyBlackBoxFolders() {
+
+        File mPackagePath = new File(Environment.getExternalStorageDirectory(), "BlackBox");
+        mPackageEventPath = new File(mPackagePath, "event");
+        mPackageEventJpgPath = new File(mPackagePath, "EventJpg");
+        mPackageNormalPath = new File(mPackagePath, "normal");
+        mPackageNormalDatePath = new File(mPackageNormalPath, DATE_PREFIX+utils.getMilliSec2String(System.currentTimeMillis(), "yy-MM-dd"));
+        mPackageWorkingPath = new File(mPackagePath, "work");
+        mPackageLogPath = new File(mPackagePath, "log");
 
         utils.readyPackageFolder(mPackagePath);
         utils.readyPackageFolder(mPackageEventPath);
@@ -308,7 +314,7 @@ public class MainActivity extends Activity {
         utils.readyPackageFolder(mPackageNormalDatePath);
     }
 
-//    static long keyOldTime = 0, keyNowTime = 0;
+//    long keyOldTime = 0, keyNowTime = 0;
     @Override
     public boolean onKeyDown(final int keyCode, KeyEvent event) {
 
@@ -316,21 +322,8 @@ public class MainActivity extends Activity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
-//                AudioManager audioManager = (AudioManager) mContext.getSystemService(AUDIO_SERVICE);
-//                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 8, AudioManager.FLAG_PLAY_SOUND);
-//                if (willBack) {
-//                    startStopExit.exitBlackBoxApp();
-//                }
                 if (!mIsRecording)
                     break;
-//                if ((keyOldTime + 10000) < keyNowTime)  // if gap is big, reset to current
-//                    keyOldTime = keyNowTime;
-//                if ((keyOldTime + 1000 > keyNowTime) &&
-//                        (keyOldTime + 150 < keyNowTime)) {   // if gap is small double clicked so exit app
-//                    willBack = true;
-//                    stopHandler.sendEmptyMessage(0);
-//                    new BeBackSoon().execute("x");
-//                }
                 if (recordable) {
                     recordable = false;
                     startEventSaving();
