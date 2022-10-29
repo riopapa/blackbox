@@ -128,7 +128,7 @@ public class CameraSub {
         }
 
         Image image = reader.acquireLatestImage();
-        if (photoSaved && image != null) {
+        if (image == null ||photoSaved) {
             image.close();
             return;
         }

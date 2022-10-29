@@ -76,7 +76,7 @@ public class Vars {
             mPackageNormalPath, mPackageNormalDatePath, mPackageLogPath;
     static int CountEvent;
     static int activeEventCount = 0;
-    final static int DELAY_AUTO_RECORDING = 5000;
+    final static int DELAY_AUTO_RECORDING = 3000;
     final static int DELAY_WAIT_EXIT_SECONDS = 3;
     static Handler mBackgroundImage, mBackgroundCamera;
     static Size mPreviewSize, mVideoSize, mImageSize;

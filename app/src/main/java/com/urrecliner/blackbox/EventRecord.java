@@ -14,6 +14,7 @@ import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
 import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
+import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
 import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.shot_02;
 import static com.urrecliner.blackbox.Vars.shot_00;
@@ -38,7 +39,7 @@ public class EventRecord {
 
         zoomHuge = true;
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 3;
-        thisEventJpgPath = new File(mPackageEventPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
+        thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);
         utils.logBoth("start"+(CountEvent+1+activeEventCount),thisEventJpgPath.getName());
