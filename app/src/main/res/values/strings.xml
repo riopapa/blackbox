@@ -16,6 +16,9 @@
     <!-- Preference Titles -->
 
     <!-- Messages Preferences -->
+    <string name="minus">"⊖"</string>  // ⊖          // \u27A4 비행기
+    <string name="plus">"⊕"</string>    // ⊕ \u2A01
+    <string name="number">12</string>
 
     <!-- Sync Preferences -->
 

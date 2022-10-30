@@ -3,18 +3,4 @@
     <!-- Base application theme. -->
     <style name="MaterialTheme" parent="android:Theme.Material.Light.NoActionBar.Fullscreen" />
 
-    <style name="MyPreference" parent="Theme.AppCompat">
-        <item name="title">설정</item>
-        <item name="titleTextColor">#0B7697</item>  // title bar text color
-        <item name="colorPrimary">#77A5D3</item>    // title bar background color
-        <item name="android:colorBackground">#093765</item> // setting screen background
-
-        <item name="colorAccent">#FFFF00</item> // category, switch button color
-
-        <item name="android:textColor">#DFCB32</item>   // key title color
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
-        // summary color variable not known
-    </style>
-
 </resources>

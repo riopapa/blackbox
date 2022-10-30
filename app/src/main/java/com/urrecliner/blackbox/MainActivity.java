@@ -3,9 +3,9 @@ package com.urrecliner.blackbox;
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
-import static com.urrecliner.blackbox.Vars.INTERVAL_LEFT_RIGHT;
-import static com.urrecliner.blackbox.Vars.INTERVAL_SNAP_SHOT_SAVE;
-import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.share_left_right;
+import static com.urrecliner.blackbox.Vars.share_snap_interval;
+import static com.urrecliner.blackbox.Vars.share_image_size;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
@@ -20,6 +20,7 @@ import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
 import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
 import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapBytes;
+import static com.urrecliner.blackbox.Vars.snapNowPos;
 import static com.urrecliner.blackbox.Vars.startStopExit;
 import static com.urrecliner.blackbox.Vars.tvDegree;
 import static com.urrecliner.blackbox.Vars.utils;
@@ -41,6 +42,9 @@ import static com.urrecliner.blackbox.Vars.vTextTime;
 import static com.urrecliner.blackbox.Vars.viewFinder;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
@@ -111,7 +115,7 @@ public class MainActivity extends Activity {
         }
 
         Vars.setSuffix(getApplicationContext());
-        SettingsActivity.getPreference(mContext);
+        SettingsActivity.getPreference();
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
@@ -119,7 +123,7 @@ public class MainActivity extends Activity {
         utils.deleteOldLogs();
         cameraSub = new CameraSub();
         prepareMain();
-        String s = "MAX_IMAGES_SIZE="+MAX_IMAGES_SIZE+"\nINTERVAL_SNAP_SHOT_SAVE="+INTERVAL_SNAP_SHOT_SAVE+"\nINTERVAL_LEFT_RIGHT="+INTERVAL_LEFT_RIGHT;
+        String s = "MAX_IMAGES_SIZE="+ share_image_size +"\nINTERVAL_SNAP_SHOT_SAVE="+ share_snap_interval +"\nINTERVAL_LEFT_RIGHT="+ share_left_right;
         utils.logBoth("PREFERENCE",s);
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
         if (msg.length() > 0)
@@ -152,7 +156,8 @@ public class MainActivity extends Activity {
 
         setViewVars();
         mIsRecording = false;
-        snapBytes = new byte[MAX_IMAGES_SIZE][];
+        snapBytes = new byte[share_image_size][];
+        snapNowPos = 0;
 //        snapBuffs = new ByteBuffer[MAX_IMAGES_SIZE];
         utils.beepsInitiate();
         gpsTracker.askLocation();
@@ -160,7 +165,7 @@ public class MainActivity extends Activity {
         vExitApp = findViewById(R.id.btnExit);
         vExitApp.setOnClickListener(v -> {
             vExitApp.setClickable(false);
-            startStopExit.exitBlackBoxApp();
+            startStopExit.exitBlackBoxApp(false);
         });
         ImageButton btnBeBack = findViewById(R.id.btnPauseAMinute);
         btnBeBack.setOnClickListener(v -> {
@@ -180,7 +185,7 @@ public class MainActivity extends Activity {
 
         ImageButton btnSetting = findViewById(R.id.btnSetting);
         btnSetting.setOnClickListener(v -> {
-            startStopExit.stopVideo();
+//            startStopExit.stopVideo();
             Intent setInt = new Intent(MainActivity.this, SettingsActivity.class);
             startActivityForResult(setInt,SETTING_ACTIVITY) ;
         });
@@ -244,25 +249,7 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
         if (requestCode == SETTING_ACTIVITY) {
-//            if (resultCode == RESULT_OK) {
-                // A contact was picked.  Here we will just display it
-                // to the user.
-            utils.logBoth("setting", "RESTART --------- ///  "+RESULT_OK);
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    mActivity.finish();
-                    mActivity.finishAffinity();
-                    Intent thisInt = new Intent(MainActivity.this, MainActivity.class);
-                    thisInt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    thisInt.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    thisInt.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(thisInt);
-                    System.exit(0);
-                    android.os.Process.killProcess(android.os.Process.myPid());
-                }
-            }, 300);
-
+            startStopExit.exitBlackBoxApp(true);
         }
     }
 

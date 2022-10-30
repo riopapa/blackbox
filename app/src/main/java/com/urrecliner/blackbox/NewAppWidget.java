@@ -67,16 +67,16 @@ public class NewAppWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        ComponentName thisAppWidget = new ComponentName(context.getPackageName(), NewAppWidget.class.getName());
-        int[] appWidgets = appWidgetManager.getAppWidgetIds(thisAppWidget);
-            Bundle extras = intent.getExtras();
-            String myPara = extras.getString(MY_PARA, "none");
-            if (myPara != null && myPara.equals(BIG_ICON)) {
-                Intent mainIntent = new Intent(context, MainActivity.class);
-                mainIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(mainIntent);
-            }
-            this.onUpdate(context, AppWidgetManager.getInstance(context), appWidgets);
+//        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+//        ComponentName thisAppWidget = new ComponentName(context.getPackageName(), NewAppWidget.class.getName());
+//        int[] appWidgets = appWidgetManager.getAppWidgetIds(thisAppWidget);
+//            Bundle extras = intent.getExtras();
+//            String myPara = extras.getString(MY_PARA, "none");
+//            if (myPara != null && myPara.equals(BIG_ICON)) {
+//                Intent mainIntent = new Intent(context, MainActivity.class);
+//                mainIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(mainIntent);
+//            }
+//            this.onUpdate(context, AppWidgetManager.getInstance(context), appWidgets);
     }
 }

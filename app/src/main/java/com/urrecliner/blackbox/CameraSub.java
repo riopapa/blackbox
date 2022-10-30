@@ -1,8 +1,8 @@
 package com.urrecliner.blackbox;
 
 import static com.urrecliner.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
-import static com.urrecliner.blackbox.Vars.INTERVAL_SNAP_SHOT_SAVE;
-import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.share_snap_interval;
+import static com.urrecliner.blackbox.Vars.share_image_size;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundCamera;
@@ -16,12 +16,10 @@ import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
-import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.photoSaved;
 import static com.urrecliner.blackbox.Vars.snapBytes;
-import static com.urrecliner.blackbox.Vars.snapMapIdx;
+import static com.urrecliner.blackbox.Vars.snapNowPos;
 import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.videoMain;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -128,27 +126,29 @@ public class CameraSub {
         }
 
         Image image = reader.acquireLatestImage();
-        if (image == null ||photoSaved) {
+        if (image == null)
+            return;
+        if (photoSaved) {
             image.close();
             return;
         }
         if (shotTime == 0)
             shotTime = nowTime;
-        shotTime += INTERVAL_SNAP_SHOT_SAVE;
+        shotTime += share_snap_interval;
 //        shotTime = nowTime + INTERVAL_SNAP_SHOT_SAVE;
         try {
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
-            snapBytes[snapMapIdx] = bytes;
+            snapBytes[snapNowPos] = bytes;
         } catch (Exception e) {
-            utils.showOnly("img", "buffer short " + snapMapIdx);
+            utils.showOnly("img", "buffer short " + snapNowPos);
         }
         image.close();
         if (mIsRecording) {
-            snapMapIdx++;
-            if (snapMapIdx >= MAX_IMAGES_SIZE)
-                snapMapIdx = 0;
+            snapNowPos++;
+            if (snapNowPos >= share_image_size)
+                snapNowPos = 0;
         }
         photoSaved = true;
     };

@@ -6,8 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
+import static com.urrecliner.blackbox.Vars.share_image_size;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.snapBytes;
@@ -25,15 +24,15 @@ class SnapShotSave {
         int jpgIdx = 0;
         final int minPos = (phase == 0)? 30: 0;
 
-        maxSize = MAX_IMAGES_SIZE - 15;
+        maxSize = share_image_size - 15;
         if (phase == 2)
-            maxSize = MAX_IMAGES_SIZE - 20;
+            maxSize = share_image_size - 20;
         else if (phase == 3)
-            maxSize = MAX_IMAGES_SIZE - 30;
+            maxSize = share_image_size - 30;
         else if (phase == 4)
-            maxSize = MAX_IMAGES_SIZE - 20;
-        jpgBytes = new byte[MAX_IMAGES_SIZE][];
-        for (int i = snapPos; i < MAX_IMAGES_SIZE; i++) {
+            maxSize = share_image_size - 20;
+        jpgBytes = new byte[share_image_size][];
+        for (int i = snapPos; i < share_image_size; i++) {
             jpgBytes[jpgIdx++] = snapBytes[i];
             snapBytes[i] = null;
             if (jpgIdx > maxSize)

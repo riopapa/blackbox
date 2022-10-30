@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/baseColor"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/t_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="설 정"
+        android:textSize="36sp"
+        android:textColor="@color/colorText"
+        />
+    <!-- Image Size -->
+    <LinearLayout
+        android:id="@+id/l_image_size"
+        android:gravity="center"
+        android:layout_margin="16sp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/t_image_size"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="이미지 크기"
+            android:textColor="@color/colorText"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:id="@+id/image_size_down"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/minus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/image_size"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/number"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/image_size_up"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/plus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+    </LinearLayout>
+    <!-- Shot Interval -->
+    <LinearLayout
+        android:id="@+id/l_shot_interval"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_margin="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/t_snap_interval"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="스냅샷 간격"
+            android:textColor="@color/colorText"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:id="@+id/snap_interval_down"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/minus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/snap_interval"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/number"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/snap_interval_up"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/plus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+    </LinearLayout>
+    <!-- Left Right Interval -->
+    <LinearLayout
+        android:id="@+id/l_left_right"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_margin="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/t_left_right"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="좌 우 전환 간격"
+            android:textColor="@color/colorText"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:id="@+id/left_right_down"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/minus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/left_right"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/number"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/left_right_up"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/plus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+</LinearLayout>

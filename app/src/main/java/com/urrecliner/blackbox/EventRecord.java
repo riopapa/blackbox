@@ -11,11 +11,10 @@ import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
 import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
-import static com.urrecliner.blackbox.Vars.MAX_IMAGES_SIZE;
+import static com.urrecliner.blackbox.Vars.share_image_size;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
-import static com.urrecliner.blackbox.Vars.mPackageEventPath;
 import static com.urrecliner.blackbox.Vars.shot_02;
 import static com.urrecliner.blackbox.Vars.shot_00;
 import static com.urrecliner.blackbox.Vars.shot_01;
@@ -23,7 +22,7 @@ import static com.urrecliner.blackbox.Vars.gpsTracker;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.snapBytes;
-import static com.urrecliner.blackbox.Vars.snapMapIdx;
+import static com.urrecliner.blackbox.Vars.snapNowPos;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.zoomHuge;
@@ -48,7 +47,7 @@ public class EventRecord {
         new Timer().schedule(new TimerTask() {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 1);
+                snapShotSave.startSave(thisEventJpgPath, snapNowPos, 1);
             }
         }, 100);
 
@@ -57,7 +56,7 @@ public class EventRecord {
                 appendEventShot(shot_01);
                 appendEventShot(shot_01);
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 2);
+                snapShotSave.startSave(thisEventJpgPath, snapNowPos, 2);
                 zoomHuge = false;
             }
         }, INTERVAL_EVENT * 6 / 10);
@@ -67,7 +66,7 @@ public class EventRecord {
                 appendEventShot(shot_02);
                 appendEventShot(shot_02);
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 3);
+                snapShotSave.startSave(thisEventJpgPath, snapNowPos, 3);
                 zoomHuge = false;
             }
         }, INTERVAL_EVENT * 12 / 10);
@@ -75,7 +74,7 @@ public class EventRecord {
         new Timer().schedule(new TimerTask() {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, snapMapIdx, 4);
+                snapShotSave.startSave(thisEventJpgPath, snapNowPos, 4);
             }
         }, INTERVAL_EVENT * 17 / 10);
 
@@ -94,9 +93,9 @@ public class EventRecord {
     }
 
     public void appendEventShot(byte[] byteImage) {
-        snapBytes[snapMapIdx] = byteImage;
-        snapMapIdx++;
-        if (snapMapIdx >= MAX_IMAGES_SIZE)
-            snapMapIdx = 0;
+        snapBytes[snapNowPos] = byteImage;
+        snapNowPos++;
+        if (snapNowPos >= share_image_size)
+            snapNowPos = 0;
     }
 }

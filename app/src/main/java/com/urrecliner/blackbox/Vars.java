@@ -1,6 +1,5 @@
 package com.urrecliner.blackbox;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,7 +12,6 @@ import android.media.ImageReader;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Handler;
-import android.provider.Settings;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
@@ -65,6 +63,10 @@ public class Vars {
     static ImageButton vBtnRecord;
 
     public static SharedPreferences sharedPref;
+    public static SharedPreferences.Editor editor;
+    public static int share_image_size;
+    public static long share_snap_interval;
+    public static long share_left_right;   // < SNAP_SHOT_INTERVAL
 
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
@@ -87,8 +89,8 @@ public class Vars {
 
     static long INTERVAL_EVENT;
     static long INTERVAL_NORMAL;
-    static byte [][] snapBytes;
-    static int snapMapIdx = 0;
+    public static byte [][] snapBytes;
+    public static int snapNowPos = 0;
 
     static byte[] shot_00, shot_01, shot_02, shot_03;
 
@@ -96,11 +98,6 @@ public class Vars {
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;
     static int IMAGE_BUFFER_MAX_IMAGES = 5;
-
-    public static boolean USE_CUSTOM_VALUES;
-    public static int MAX_IMAGES_SIZE;
-    public static long INTERVAL_SNAP_SHOT_SAVE;
-    public static long INTERVAL_LEFT_RIGHT;   // < SNAP_SHOT_INTERVAL
 
     public enum PhoneE {  B, P, N, A} // S9Black, S9Phone, Note20, A32
     static boolean viewFinder = true;
@@ -122,12 +119,12 @@ public class Vars {
         INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
         switch (Build.MODEL) {
             case "SM-G965N":
-                @SuppressLint("HardwareIds")
-                String aID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-                if (aID.endsWith("6ccd"))
+//                @SuppressLint("HardwareIds")
+//                String aID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+//                if (aID.endsWith("6ccd"))
                     SUFFIX = PhoneE.P;
-                else
-                    SUFFIX = PhoneE.B;
+//                else
+//                    SUFFIX = PhoneE.B;
                 break;
             case "SM-N986N":
                 SUFFIX = PhoneE.N;
@@ -142,33 +139,33 @@ public class Vars {
 
         switch (SUFFIX) {
             case P:           // galaxy s9 phone
-                MAX_IMAGES_SIZE = 121;
-                INTERVAL_SNAP_SHOT_SAVE = 192;
-                INTERVAL_LEFT_RIGHT = 92;
+                share_image_size = 121;
+                share_snap_interval = 192;
+                share_left_right = 92;
                 VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 24*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
                 break;
             case N:           // galaxy note 20
-                MAX_IMAGES_SIZE = 121;
-                INTERVAL_SNAP_SHOT_SAVE = 172;
-                INTERVAL_LEFT_RIGHT = 112;
+                share_image_size = 121;
+                share_snap_interval = 172;
+                share_left_right = 112;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
             case B:           // galaxy s9 blackbox
-                MAX_IMAGES_SIZE = 119;
-                INTERVAL_SNAP_SHOT_SAVE = 197;
-                INTERVAL_LEFT_RIGHT = 91;
+                share_image_size = 119;
+                share_snap_interval = 197;
+                share_left_right = 91;
                 VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 24*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
                 break;
             case A:           // galaxy A32
-                MAX_IMAGES_SIZE = 115;
-                INTERVAL_SNAP_SHOT_SAVE = 211;
-                INTERVAL_LEFT_RIGHT = 140;
+                share_image_size = 115;
+                share_snap_interval = 211;
+                share_left_right = 140;
                 VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 24*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;

@@ -63,9 +63,11 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".utility.SettingsActivity"
-            android:theme="@style/MyPreference" />
+<!--             />-->
+        <activity android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/Theme.AppCompat"
+            android:name=".utility.SettingsActivity"/>
 
         <receiver android:name=".DisplayBattery">
             <intent-filter>
