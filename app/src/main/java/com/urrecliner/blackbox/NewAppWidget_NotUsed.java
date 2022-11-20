@@ -3,17 +3,15 @@ package com.urrecliner.blackbox;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import android.widget.RemoteViews;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.urrecliner.blackbox.Vars.utils;
 
-public class NewAppWidget extends AppWidgetProvider {
+public class NewAppWidget_NotUsed extends AppWidgetProvider {
 
     private static final String BIG_ICON = "BIG_ICON";
     private static final String MY_PARA = "myPara";

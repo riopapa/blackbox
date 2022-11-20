@@ -8,6 +8,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
+import android.util.Log;
 import android.view.Surface;
 
 import java.io.File;
@@ -56,19 +57,11 @@ public class VideoMain {
 
         if (isPrepared)
             return;
+        setupMediaRecorder();
         try {
-            setupMediaRecorder();
-            vPreviewView = mActivity.findViewById(R.id.previewView);
-
-            surface_Preview = vPreviewView.getSurfaceTexture();
-            surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-        } catch (Exception e) {
-            utils.logE(logID, "preView AA ///", e);
-        }
-        try {
-            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            utils.logE(logID, "prepareRecord sleep", e);
         }
         readySurfaces();
         mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
@@ -81,6 +74,29 @@ public class VideoMain {
     }
 
     private void readySurfaces() {
+        try {
+            vPreviewView = mActivity.findViewById(R.id.previewView);
+        } catch (Exception e) {
+            utils.logE(logID, "vPreviewView AA ///", e);
+        }
+        if (vPreviewView == null)
+            utils.logBoth(logID, "vPreviewView is null ///");
+        try {
+            surface_Preview = vPreviewView.getSurfaceTexture();
+        } catch (Exception e) {
+            utils.logE(logID, "surface_Preview  ///", e);
+        }
+        if (surface_Preview == null)
+            utils.logBoth(logID, "surface_Preview is null ///");
+        surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+        try {
+            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+        if (mCaptureRequestBuilder == null)
+            utils.logBoth(logID, "mCaptureRequestBuilder is null ///");
+
         previewSurface = new Surface(surface_Preview);
         if (SUFFIX.equals(PhoneE.B) ||SUFFIX.equals(PhoneE.P))
             mCaptureRequestBuilder.addTarget(previewSurface);

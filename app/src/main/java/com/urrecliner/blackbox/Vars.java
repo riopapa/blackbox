@@ -142,8 +142,8 @@ public class Vars {
                 share_image_size = 121;
                 share_snap_interval = 192;
                 share_left_right = 92;
-                VIDEO_FRAME_RATE = 24;
-                VIDEO_ENCODING_RATE = 24*1000*1000;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
                 break;
             case N:           // galaxy note 20

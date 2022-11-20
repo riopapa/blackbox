@@ -170,7 +170,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/km"
-        android:src="@mipmap/exit_app" />
+        android:src="@drawable/ic_power_off" />
 
     <ImageButton
         android:id="@+id/btnPauseAMinute"

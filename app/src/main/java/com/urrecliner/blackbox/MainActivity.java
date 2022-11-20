@@ -42,9 +42,6 @@ import static com.urrecliner.blackbox.Vars.vTextTime;
 import static com.urrecliner.blackbox.Vars.viewFinder;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
@@ -165,7 +162,7 @@ public class MainActivity extends Activity {
         vExitApp = findViewById(R.id.btnExit);
         vExitApp.setOnClickListener(v -> {
             vExitApp.setClickable(false);
-            startStopExit.exitBlackBoxApp(false);
+            startStopExit.exitApp(false);
         });
         ImageButton btnBeBack = findViewById(R.id.btnPauseAMinute);
         btnBeBack.setOnClickListener(v -> {
@@ -188,17 +185,6 @@ public class MainActivity extends Activity {
 //            startStopExit.stopVideo();
             Intent setInt = new Intent(MainActivity.this, SettingsActivity.class);
             startActivityForResult(setInt,SETTING_ACTIVITY) ;
-        });
-
-        ImageButton btnPhoto = findViewById(R.id.btnPhoto);
-        btnPhoto.setOnClickListener(v -> {
-            startStopExit.stopVideo();
-            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackphoto");
-            assert sendIntent != null;
-            sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mActivity.startActivity(sendIntent);
-            System.exit(0);
-            Process.killProcess(Process.myPid());
         });
 
         vPreviewView.post(() -> {
@@ -249,7 +235,7 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
         if (requestCode == SETTING_ACTIVITY) {
-            startStopExit.exitBlackBoxApp(true);
+            startStopExit.exitApp(true);
         }
     }
 

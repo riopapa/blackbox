@@ -39,7 +39,7 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <receiver android:name=".NewAppWidget">
+        <receiver android:name=".NewAppWidget_NotUsed">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="BIG_ICON" />
@@ -56,7 +56,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>

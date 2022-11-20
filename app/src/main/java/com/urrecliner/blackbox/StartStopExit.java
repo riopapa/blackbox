@@ -75,7 +75,7 @@ class StartStopExit {
         }
     };
 
-    private final Timer timerSnapCamera = new Timer();
+    private Timer timerSnapCamera;
 
     public void startSnapBigShot() {
         snapNowPos = 0;
@@ -88,6 +88,7 @@ class StartStopExit {
                     timerSnapCamera.cancel();
             }
         };
+        timerSnapCamera = new Timer();
         timerSnapCamera.schedule(cameraTask, 3000, share_left_right);
     }
 
@@ -107,24 +108,32 @@ class StartStopExit {
     }
 
     void stopVideo() {
+        vBtnRecord.setImageResource(R.mipmap.recording_off);
+        mIsRecording = false;
         try {
-            mIsRecording = false;
             timerSnapCamera.cancel();
-            vBtnRecord.setImageResource(R.mipmap.recording_off);
+            timerSnapCamera.purge();
+            timerSnapCamera = null;
+        } catch (Exception e) {
+            utils.logE(logID, "timerSnapCamera Stop 1", e);
+        }
+        try {
             mediaRecorder.stop();
             mediaRecorder.reset();
             mediaRecorder = null;
         } catch (Exception e) {
-            utils.logE(logID, "Stop 1", e);
+            utils.logE(logID, "mediaRecorder Stop 2", e);
         }
         try {
             normalTimer.cancel();
+            normalTimer.purge();
+            normalTimer = null;
         } catch (Exception e) {
-            utils.logE(logID, "Stop 2", e);
+            utils.logE(logID, "normalTimer Stop 3", e);
         }
     }
 
-    void exitBlackBoxApp(boolean reRun) {
+    void exitApp(boolean reRun) {
         if (!reRun)
             utils.beepOnce(8, 1f); // Exit BlackBox
         mExitApplication = true;

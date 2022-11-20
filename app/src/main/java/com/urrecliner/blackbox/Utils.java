@@ -95,10 +95,9 @@ public class Utils {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
-        append2file(mPackageLogPath, logFile, "<logE Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End>");
+        append2file(mPackageLogPath, logFile, "\n\n<logE ------------------- Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End ---------- >\n\n");
         uText = tag+" : "+lastNLines(vTextLogInfo.getText().toString() + text);
         mActivity.runOnUiThread(() -> vTextLogInfo.setText(uText));
-        append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  ": " + log);
         e.printStackTrace();
 //        beepOnce(1, .7f);
     }
@@ -356,11 +355,6 @@ public class Utils {
         stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         shot_02 = stream.toByteArray();
-
-        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_03);
-        stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-        shot_03 = stream.toByteArray();
 
     }
 
