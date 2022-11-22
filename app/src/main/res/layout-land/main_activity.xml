@@ -98,8 +98,8 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/temper_celcius"
-        android:layout_width="100sp"
-        android:layout_height="50sp"
+        android:layout_width="wrap_content"
+        android:layout_height="54sp"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -107,19 +107,19 @@
         <TextView
             android:id="@+id/degree"
             android:layout_width="70sp"
-            android:layout_height="44sp"
+            android:layout_height="48sp"
             android:gravity="end"
             android:text="__ "
             android:textColor="@color/colorText"
-            android:textSize="24sp" />
+            android:textSize="32sp" />
 
         <TextView
             android:id="@+id/degreeInCelcius"
-            android:layout_width="30sp"
-            android:layout_height="40sp"
-            android:text=" °C "
+            android:layout_width="wrap_content"
+            android:layout_height="30sp"
+            android:text="°C"
             android:textColor="@color/colorText"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

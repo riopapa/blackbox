@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.BatteryManager;
+import android.util.Log;
 import android.view.View;
 
 import static com.urrecliner.blackbox.Vars.mActivity;
@@ -18,29 +19,40 @@ import static com.urrecliner.blackbox.Vars.vImgBattery;
 import static com.urrecliner.blackbox.Vars.vTextBattery;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
 
-class DisplayBattery extends BroadcastReceiver {
+class DisplayBattery  {
 
-    private int prevPercent = 0;
-    IntentFilter chgFilter = null;
-    Intent statusReceiver = null;
-    boolean prevCharging = false;
+    static private int prevPercent = 0;
+    static IntentFilter chgFilter = null;
+    static Intent statusReceiver = null;
+    static boolean prevCharging = false;
+//
+//    @Override
+//    public void onReceive(Context context, Intent intent) {
+//        String action = intent.getAction();
+//        Log.w("onRecieve", action);
+//        if (action.equals(Intent.ACTION_POWER_CONNECTED) || action.equals(Intent.ACTION_POWER_DISCONNECTED))
+//            showBattery(action);
+//    }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        if (action.equals(Intent.ACTION_POWER_CONNECTED) || action.equals(Intent.ACTION_POWER_DISCONNECTED))
-            showBattery(action);
-    }
-
-    void init() {
+    void start() {
         try {
-            mContext.unregisterReceiver(this);
+            IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+//            ifilter.addAction(Intent.ACTION_POWER_CONNECTED);
+//            ifilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+            mContext.registerReceiver(mBroadcastReceiver, ifilter);
         } catch (Exception e) {
             // ignore registering
         }
     }
 
-    void showBattery(String action) {
+    static BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            show();
+        }
+    };
+
+    static void show() {
 
         chgFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         statusReceiver = mContext.registerReceiver(null, chgFilter);
@@ -63,8 +75,8 @@ class DisplayBattery extends BroadcastReceiver {
         }
     }
 
-    final int CIRCLE_RADIUS = 70, CIRCLE_WIDTH = 4;
-    void drawBattery(int nowPercent, boolean isCharging) {
+    static final int CIRCLE_RADIUS = 70, CIRCLE_WIDTH = 4;
+    static void drawBattery(int nowPercent, boolean isCharging) {
         Bitmap bitmap = Bitmap.createBitmap(CIRCLE_RADIUS, CIRCLE_RADIUS, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();

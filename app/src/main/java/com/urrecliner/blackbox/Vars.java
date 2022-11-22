@@ -39,9 +39,9 @@ public class Vars {
 //    static OBDAccess_Unused obdAccessUnused = new OBDAccess_Unused();
 //    static boolean OBDConnected = false;
 //    static DirectionSensor directionSensor = new DirectionSensor();
-    static DisplayBattery displayBattery = new DisplayBattery();
+    static DisplayBattery displayBattery;
     static GPSTracker gpsTracker;
-    static DisplayTime displayTime = new DisplayTime();
+    static DisplayTime displayTime;
 
     static TextView vTextDate = null;
     static TextView vTextTime = null;

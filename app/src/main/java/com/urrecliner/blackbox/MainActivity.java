@@ -54,7 +54,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Process;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
@@ -202,12 +201,13 @@ public class MainActivity extends Activity {
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        displayBattery = new DisplayBattery();
+        displayBattery.start();
+        displayTime = new DisplayTime();    // displayBattery first
         displayTime.run();
-        displayBattery.init();
-//        obdAccessUnused.start();
         showInitialValues();
         lNewsLine = findViewById(R.id.newsLine);
-        displayBattery.showBattery("displayed");
+        displayBattery.show();
 
         new Timer().schedule(new TimerTask() {
             @Override

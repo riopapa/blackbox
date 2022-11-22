@@ -1,5 +1,6 @@
 package com.urrecliner.blackbox;
 
+import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.tvDegree;
@@ -16,7 +17,6 @@ import java.util.TimerTask;
 
 class DisplayTime implements Runnable {
 
-    DisplayTime() { }
     private final Timer displayHHMM = new Timer();
     public void run() {
         final TimerTask tt = new TimerTask() {
@@ -35,6 +35,7 @@ class DisplayTime implements Runnable {
                     tvDegree.setTextColor((celcius<44)? Color.WHITE : Color.YELLOW);
                     tvDegree.setBackgroundColor(ContextCompat.getColor(mContext,
                             (celcius<41)? R.color.baseColor : R.color.hotColor));
+                    displayBattery.show();
                 });
             }
         };
