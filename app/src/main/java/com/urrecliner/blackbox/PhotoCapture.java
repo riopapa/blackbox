@@ -1,17 +1,15 @@
 package com.urrecliner.blackbox;
 
 import android.graphics.Rect;
-import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
+import static com.urrecliner.blackbox.Vars.mCameraBuilder;
 import static com.urrecliner.blackbox.Vars.photoSaved;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
-import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
+import static com.urrecliner.blackbox.Vars.mVideoRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.photoSurface;
 import static com.urrecliner.blackbox.Vars.utils;
@@ -27,10 +25,22 @@ public class PhotoCapture {
     private static final int STATE_PREVIEW = 0;
     private static int mCaptureState = STATE_PREVIEW;
 
+    static void photoInit() {
+//        mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+        mCameraBuilder.addTarget(photoSurface);
+        mCameraBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
+        mCameraBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+
+    }
+
     static void zoomShotCamera() {
         mCaptureState = STATE_WAIT_LOCK;
         try {
-            mCaptureSession.capture(mCaptureRequestBuilder.build(), zoomCameraPhotoCallback, mBackgroundImage);
+            mCaptureSession.capture(mCameraBuilder.build(), zoomCameraPhotoCallback, mBackgroundImage);
+//            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+//            mCaptureRequestBuilder.addTarget(photoSurface);
+//            mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
+//            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
         } catch (Exception e) {
             utils.logBoth("photo","zoom passed");
             utils.beepOnce(5,1f);
@@ -43,26 +53,17 @@ public class PhotoCapture {
             private void process(CaptureResult captureResult) {
                 if (mCaptureState == STATE_WAIT_LOCK) {
                         mCaptureState = STATE_PREVIEW;
-                        try {
-                            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-                            mCaptureRequestBuilder.addTarget(photoSurface);
-                            mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
-                            mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-//            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
-                            Rect rect;
-                                if (zoomHuge) {
-                                    rect = zoomHugeC;
+                        Rect rect;
+                            if (zoomHuge) {
+                                rect = zoomHugeC;
+                            } else {
+                                if (Math.random() < 0.3f) {
+                                    rect = leftRight ? zoomHugeL : zoomHugeR;
                                 } else {
-                                    if (Math.random() < 0.3f) {
-                                        rect = leftRight ? zoomHugeL : zoomHugeR;
-                                    } else {
-                                        rect = leftRight ? zoomBiggerL : zoomBiggerR;
-                                    }
+                                    rect = leftRight ? zoomBiggerL : zoomBiggerR;
                                 }
-                            mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, rect);
-                        } catch (CameraAccessException e) {
-                            e.printStackTrace();
-                        }
+                            }
+                        mVideoRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, rect);
                 }
             }
 
@@ -71,7 +72,6 @@ public class PhotoCapture {
                                            TotalCaptureResult result) {
                 super.onCaptureCompleted(session, request, result);
                 photoSaved = false;
-                leftRight = !leftRight;
                 process(result);
             }
         };

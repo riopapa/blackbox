@@ -1,5 +1,6 @@
 package com.urrecliner.blackbox;
 
+import static com.urrecliner.blackbox.PhotoCapture.leftRight;
 import static com.urrecliner.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
 import static com.urrecliner.blackbox.Vars.share_snap_interval;
 import static com.urrecliner.blackbox.Vars.share_image_size;
@@ -152,5 +153,6 @@ public class CameraSub {
                 snapNowPos = 0;
         }
         photoSaved = true;
+        leftRight = !leftRight;
     };
 }

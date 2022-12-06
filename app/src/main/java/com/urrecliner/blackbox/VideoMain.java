@@ -8,7 +8,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
-import android.util.Log;
 import android.view.Surface;
 
 import java.io.File;
@@ -23,10 +22,11 @@ import static com.urrecliner.blackbox.Vars.SUFFIX;
 import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
+import static com.urrecliner.blackbox.Vars.mCameraBuilder;
 import static com.urrecliner.blackbox.Vars.zoomBiggerL;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
+import static com.urrecliner.blackbox.Vars.mVideoRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mImageSize;
@@ -65,9 +65,9 @@ public class VideoMain {
             utils.logE(logID, "prepareRecord sleep", e);
         }
         readySurfaces();
-        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
-        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_ON);
-        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
+        mVideoRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
+        mVideoRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_ON);
+        mVideoRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
 //        mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON); NO!
 
         buildCameraSession();
@@ -91,20 +91,21 @@ public class VideoMain {
             utils.logBoth(logID, "surface_Preview is null ///");
         surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         try {
-            mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+            mVideoRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+            mCameraBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
-        if (mCaptureRequestBuilder == null)
+        if (mVideoRequestBuilder == null)
             utils.logBoth(logID, "mCaptureRequestBuilder is null ///");
 
         previewSurface = new Surface(surface_Preview);
         if (SUFFIX.equals(PhoneE.B) ||SUFFIX.equals(PhoneE.P))
-            mCaptureRequestBuilder.addTarget(previewSurface);
+            mVideoRequestBuilder.addTarget(previewSurface);
         recordSurface = mediaRecorder.getSurface();
-        mCaptureRequestBuilder.addTarget(recordSurface);
+        mVideoRequestBuilder.addTarget(recordSurface);
         photoSurface = mImageReader.getSurface();
-        mCaptureRequestBuilder.addTarget(photoSurface);
+        mVideoRequestBuilder.addTarget(photoSurface);
         zoomNormal = calcPhotoZoom (ZOOM_FACTOR_NORMAL,"N");
         zoomBiggerL = calcPhotoZoom (ZOOM_FACTOR_BIGGER, "L");
         zoomBiggerR = calcPhotoZoom (ZOOM_FACTOR_BIGGER, "R");
@@ -129,9 +130,9 @@ public class VideoMain {
             @Override
             public void onConfigured(CameraCaptureSession session) {
                 mCaptureSession = session;
-                mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoomNormal);
+                mVideoRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoomNormal);
                 try {
-                    mCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, null);
+                    mCaptureSession.setRepeatingRequest(mVideoRequestBuilder.build(), null, null);
                 } catch (CameraAccessException e) {
                     utils.logBoth(logID, "setRepeatingRequest Error");
                 }

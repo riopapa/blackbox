@@ -48,7 +48,10 @@ class StartStopExit {
 
     private final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
-            photoCapture.zoomShotCamera();
+            if (msg.what == 0)
+                photoCapture.zoomShotCamera();
+            else
+                photoCapture.photoInit();
         }
     };
 
@@ -56,6 +59,8 @@ class StartStopExit {
 
     public void startSnapBigShot() {
         snapNowPos = 0;
+        zoomChangeTimer.sendEmptyMessage(1);
+
         final TimerTask cameraTask = new TimerTask() {
             @Override
             public void run() {

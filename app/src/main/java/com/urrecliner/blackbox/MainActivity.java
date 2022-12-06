@@ -218,7 +218,7 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 startHandler.sendEmptyMessage(0);
-//                new ShowKmLogs().show(chronoLogs);
+                //                new ShowKmLogs().show(chronoLogs);
             }
         }, DELAY_AUTO_RECORDING);
 
