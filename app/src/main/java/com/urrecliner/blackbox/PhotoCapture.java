@@ -1,5 +1,6 @@
 package com.urrecliner.blackbox;
 
+import android.graphics.Rect;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
@@ -8,15 +9,16 @@ import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
 import static com.urrecliner.blackbox.Vars.photoSaved;
-import static com.urrecliner.blackbox.Vars.zoomBiggerL;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureRequestBuilder;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
 import static com.urrecliner.blackbox.Vars.photoSurface;
 import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.zoomBiggerL;
 import static com.urrecliner.blackbox.Vars.zoomBiggerR;
 import static com.urrecliner.blackbox.Vars.zoomHuge;
+import static com.urrecliner.blackbox.Vars.zoomHugeC;
 import static com.urrecliner.blackbox.Vars.zoomHugeL;
 import static com.urrecliner.blackbox.Vars.zoomHugeR;
 
@@ -47,13 +49,17 @@ public class PhotoCapture {
                             mCaptureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
                             mCaptureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 //            mCapturePhotoBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, ); api 30 이상에서만 가능
-                            leftRight = !leftRight;
-                            if (zoomHuge || Math.random() < 0.5f)
-                                mCaptureRequestBuilder.set(
-                                        CaptureRequest.SCALER_CROP_REGION, leftRight ?zoomHugeL:zoomHugeR);
-                            else
-                                mCaptureRequestBuilder.set(
-                                        CaptureRequest.SCALER_CROP_REGION, leftRight ?zoomBiggerL:zoomBiggerR);
+                            Rect rect;
+                                if (zoomHuge) {
+                                    rect = zoomHugeC;
+                                } else {
+                                    if (Math.random() < 0.3f) {
+                                        rect = leftRight ? zoomHugeL : zoomHugeR;
+                                    } else {
+                                        rect = leftRight ? zoomBiggerL : zoomBiggerR;
+                                    }
+                                }
+                            mCaptureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, rect);
                         } catch (CameraAccessException e) {
                             e.printStackTrace();
                         }
@@ -62,9 +68,10 @@ public class PhotoCapture {
 
             @Override
             public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request,
-                                           TotalCaptureResult result)                 {
+                                           TotalCaptureResult result) {
                 super.onCaptureCompleted(session, request, result);
                 photoSaved = false;
+                leftRight = !leftRight;
                 process(result);
             }
         };

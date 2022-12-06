@@ -58,6 +58,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -109,7 +110,10 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             Log.e("Permission", "No Permission "+e);
         }
-
+//        window.setFlags(
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN
+//        );
         Vars.setSuffix(getApplicationContext());
         SettingsActivity.getPreference();
 
@@ -129,6 +133,7 @@ public class MainActivity extends Activity {
 
     private void prepareMain() {
 
+        utils.setFullScreen();
         gpsTracker = new GPSTracker();
         gpsTracker.init(mActivity, mContext);
 

@@ -41,6 +41,7 @@ import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vPreviewView;
 import static com.urrecliner.blackbox.Vars.zoomBiggerR;
+import static com.urrecliner.blackbox.Vars.zoomHugeC;
 import static com.urrecliner.blackbox.Vars.zoomHugeL;
 import static com.urrecliner.blackbox.Vars.zoomHugeR;
 import static com.urrecliner.blackbox.Vars.PhoneE;
@@ -109,6 +110,7 @@ public class VideoMain {
         zoomBiggerR = calcPhotoZoom (ZOOM_FACTOR_BIGGER, "R");
         zoomHugeL = calcPhotoZoom (ZOOM_FACTOR_HUGE, "L");
         zoomHugeR = calcPhotoZoom (ZOOM_FACTOR_HUGE, "R");
+        zoomHugeC = calcPhotoZoom (ZOOM_FACTOR_HUGE, "C");
     }
 
     void buildCameraSession() {
@@ -144,24 +146,28 @@ public class VideoMain {
     final float ZOOM_FACTOR_NORMAL = 1.2f, ZOOM_FACTOR_BIGGER = 1.6f, ZOOM_FACTOR_HUGE = 1.9f;
     private Rect calcPhotoZoom(float zoomFactor, String type) {
 
-        int xFullDots = mImageSize.getWidth();
-        int yFullDots = mImageSize.getHeight();
-        int xZoomed = (int) (xFullDots / zoomFactor);
-        int yZoomed = (int) (yFullDots / zoomFactor);
+        int xOrgSize = mImageSize.getWidth();
+        int yOrgSize = mImageSize.getHeight();
+        int xZoomed = (int) (xOrgSize / zoomFactor);
+        int yZoomed = (int) (yOrgSize / zoomFactor);
         int xLeft = 0;
         int yTop = 0;
         Rect rect = new Rect();
         switch (type) {
             case "N":
-                xLeft = (xFullDots - xZoomed) / 2;
+                xLeft = (xOrgSize - xZoomed) / 2;
                 break;
             case "L":
-                xLeft = (xFullDots - xZoomed) / 6;
-                yTop = (yFullDots-yZoomed) * 2 / 3;
+                xLeft = (xOrgSize - xZoomed) / 6;
+                yTop = (yOrgSize-yZoomed) * 2 / 3;
                 break;
             case "R":
-                xLeft = (xFullDots- xZoomed);
-                yTop = (yFullDots-yZoomed) * 2 / 3;
+                xLeft = (xOrgSize- xZoomed);
+                yTop = (yOrgSize-yZoomed) * 2 / 3;
+                break;
+            case "C":
+                xLeft = (xOrgSize- xZoomed)/2;
+                yTop = (yOrgSize-yZoomed)/2;
                 break;
         }
 

@@ -21,10 +21,13 @@ import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +59,26 @@ public class Utils {
             Log.e("creating Folder error", dir + "_" + e);
         }
     }
+    void setFullScreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {   // >= android 11
+//        getSupportActionBar().hide();       // let Full Screen
+            WindowInsetsController controller = mActivity.getWindow().getInsetsController();
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.statusBars() |
+                        WindowInsets.Type.navigationBars());
+                controller.setSystemBarsBehavior(
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+            }
+        } else {
+            mActivity.getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_IMMERSIVE
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+    }
+
 
     public File[] getDirectoryList(File fullPath) {
         return fullPath.listFiles();

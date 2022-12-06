@@ -1,31 +1,25 @@
 package com.urrecliner.blackbox;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.urrecliner.blackbox.Vars.share_left_right;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.photoCapture;
+import static com.urrecliner.blackbox.Vars.share_left_right;
 import static com.urrecliner.blackbox.Vars.snapNowPos;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
 import static com.urrecliner.blackbox.Vars.videoMain;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,32 +35,15 @@ class StartStopExit {
         videoMain.prepareRecord();
         new Timer().schedule(new TimerTask() {
             public void run() {
-                mediaRecorder.start();
+                try {
+                    mediaRecorder.start();
+                } catch (Exception e) {
+                    reStartApp();
+                }
                 startSnapBigShot();
                 startNormal();
             }
         }, 3000);
-    }
-
-    static void reRunApplication(String msg, Exception e) {
-        Toast.makeText(mContext, "Exception " + msg, Toast.LENGTH_LONG).show();
-        utils.logE("return", "/// application reloaded ///", e);
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
-                assert sendIntent != null;
-                sendIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                sendIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                sendIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(sendIntent);
-            }
-        }, 5000);
-        mActivity.finish();
-        mActivity.finishAffinity();
-        System.exit(0);
-        android.os.Process.killProcess(android.os.Process.myPid());
-
     }
 
     private final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
@@ -89,7 +66,7 @@ class StartStopExit {
             }
         };
         timerSnapCamera = new Timer();
-        timerSnapCamera.schedule(cameraTask, 3000, share_left_right);
+        timerSnapCamera.schedule(cameraTask, 1300, share_left_right);
     }
 
     private Timer normalTimer;
@@ -165,25 +142,4 @@ class StartStopExit {
         Runtime.getRuntime().exit(0);
     }
 
-    public static void triggerRebirth() {
-        PackageManager pm = mContext.getPackageManager();
-        //check if we got the PackageManager
-        if (pm != null) {
-            //create the intent with the default start activity for your application
-            Intent mStartActivity = pm.getLaunchIntentForPackage(mContext.getPackageName());
-            if (mStartActivity != null) {
-                mStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //create a pending intent so the application is restarted after System.exit(0) was called.
-                // We use an AlarmManager to call this intent in 100ms
-                int mPendingIntentId = 223344;
-                PendingIntent mPendingIntent = PendingIntent
-                        .getActivity(mContext, mPendingIntentId, mStartActivity,
-                                PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager mgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 3000, mPendingIntent);
-                //kill the application
-                System.exit(0);
-            }
-        }
-    }
 }
