@@ -23,6 +23,7 @@ import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.urrecliner.blackbox.Vars.mCameraBuilder;
+import static com.urrecliner.blackbox.Vars.vBtnRecord;
 import static com.urrecliner.blackbox.Vars.zoomBiggerL;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
@@ -75,11 +76,11 @@ public class VideoMain {
     }
 
     private void readySurfaces() {
-        try {
+//        try {
             vPreviewView = mActivity.findViewById(R.id.previewView);
-        } catch (Exception e) {
-            utils.logE(logID, "vPreviewView AA ///", e);
-        }
+//        } catch (Exception e) {
+//            utils.logE(logID, "vPreviewView AA ///", e);
+//        }
         if (vPreviewView == null)
             utils.logBoth(logID, "vPreviewView is null ///");
         try {
@@ -100,7 +101,7 @@ public class VideoMain {
             utils.logBoth(logID, "mCaptureRequestBuilder is null ///");
 
         previewSurface = new Surface(surface_Preview);
-        if (SUFFIX.equals(PhoneE.B) ||SUFFIX.equals(PhoneE.P))
+        if (SUFFIX.equals(PhoneE.B) || SUFFIX.equals(PhoneE.P))        // 왜 note 20 은 안 되는지 모름
             mVideoRequestBuilder.addTarget(previewSurface);
         recordSurface = mediaRecorder.getSurface();
         mVideoRequestBuilder.addTarget(recordSurface);
@@ -223,6 +224,8 @@ public class VideoMain {
             }, 10);
             String s = ++nextCount + "";
             vTextRecord.setText(s);
+            vBtnRecord.setImageResource((nextCount%2 == 0) ? R.mipmap.recording_on: R.mipmap.recording_on2);
+
         }
     }
 }

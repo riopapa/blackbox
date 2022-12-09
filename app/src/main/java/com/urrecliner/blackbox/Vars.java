@@ -100,8 +100,7 @@ public class Vars {
     static int IMAGE_BUFFER_MAX_IMAGES = 5;
 
     public enum PhoneE {  B, P, N, A} // S9Black, S9Phone, Note20, A32
-    static boolean viewFinder = true;
-    static boolean captureLorR = false;
+    static boolean viewFinderActive = true;
     static boolean photoSaved = false;
 
     static CameraDevice mCameraDevice = null;

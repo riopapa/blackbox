@@ -15,6 +15,7 @@ import java.lang.reflect.Array;
 
 public class CameraSize {
 
+// "SM-G986N" "N";  // note 20
 // "SM-G965N" "P";
 // "SM-A325N" "A";
 
@@ -45,7 +46,7 @@ public class CameraSize {
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                     if (size.getWidth() == 640 && size.getHeight() == 480)
                         sizePreview = size;
-                    else if (size.getWidth() == 4032 && size.getHeight() == 3024)
+                    else if (size.getWidth() == 3984 && size.getHeight() == 2988)
                         sizeCamera = size;
                     else if (size.getWidth() == 3264 && size.getHeight() == 2448)
                         sizeVideo = size;
@@ -61,7 +62,7 @@ public class CameraSize {
              */
 
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 640 && size.getHeight() == 480)
+                    if (size.getWidth() == 1440 && size.getHeight() == 1080)
                         sizePreview = size;
                     else if (size.getWidth() == 4000 && size.getHeight() == 3000)
                         sizeCamera = size;

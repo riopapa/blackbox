@@ -39,7 +39,7 @@ import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vTextTime;
-import static com.urrecliner.blackbox.Vars.viewFinder;
+import static com.urrecliner.blackbox.Vars.viewFinderActive;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -58,7 +58,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -180,8 +179,8 @@ public class MainActivity extends Activity {
         utils.readyPackageFolder(mPackageNormalDatePath);
 
         framePreview.setOnClickListener(v -> {
-            viewFinder = !viewFinder;
-            vPreviewView.setVisibility((viewFinder)? View.VISIBLE:View.INVISIBLE);
+            viewFinderActive = !viewFinderActive;
+            vPreviewView.setVisibility((viewFinderActive)? View.VISIBLE:View.INVISIBLE);
         });
 
         ImageButton btnSetting = findViewById(R.id.btnSetting);
