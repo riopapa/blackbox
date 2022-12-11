@@ -20,12 +20,15 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
+<!--    android:hardwareAccelerated="false" // these to prevent out out memory
+        android:largeHeap="true"-->
+
     <application
         android:allowBackup="true"
-        android:hardwareAccelerated="true"
         android:icon="@mipmap/event_shot"
         android:installLocation="preferExternal"
         android:label="BlackBox"
+        android:hardwareAccelerated="false"
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true">
 

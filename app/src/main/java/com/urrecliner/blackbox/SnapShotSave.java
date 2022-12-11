@@ -55,7 +55,7 @@ class SnapShotSave {
                 if (imageBytes != null && imageBytes.length > 1) {
                     File imageFile = new File(path2Write, prefixTime + (startBias + i) + ".jpg");
                     bytes2File(imageBytes, imageFile);
-                    SystemClock.sleep(25);  // not to hold all the time
+                    SystemClock.sleep(22);  // not to hold all the time
                 }
             }
             if (phase == 4) { // last phase

@@ -74,11 +74,11 @@ public class GPSTracker extends Service implements LocationListener {
                 LocationManager.GPS_PROVIDER,
                 MIN_TIME_DRIVE_UPDATES,
                 MIN_DISTANCE_DRIVE, this);
-        if (locationManager != null) {
-            LinearLayoutCompat newsLine = mActivity.findViewById(R.id.newsLine);
-            newsLine.setVisibility(View.VISIBLE);
-        } else
-            utils.logBoth("GPS","locationManager Null");
+//        if (locationManager != null) {
+//            LinearLayoutCompat newsLine = mActivity.findViewById(R.id.newsLine);
+//            newsLine.setVisibility(View.VISIBLE);
+//        } else
+//            utils.logBoth("GPS","locationManager Null");
     }
 
     double getLatitude() { return latitude; }

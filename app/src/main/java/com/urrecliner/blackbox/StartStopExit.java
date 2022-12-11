@@ -9,7 +9,7 @@ import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.photoCapture;
-import static com.urrecliner.blackbox.Vars.share_left_right;
+import static com.urrecliner.blackbox.Vars.share_left_right_interval;
 import static com.urrecliner.blackbox.Vars.snapNowPos;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
@@ -43,7 +43,7 @@ class StartStopExit {
                 startSnapBigShot();
                 startNormal();
             }
-        }, 3000);
+        }, 2000);
     }
 
     private final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
@@ -71,7 +71,7 @@ class StartStopExit {
             }
         };
         timerSnapCamera = new Timer();
-        timerSnapCamera.schedule(cameraTask, 1300, share_left_right);
+        timerSnapCamera.schedule(cameraTask, 1300, share_left_right_interval);
     }
 
     private Timer normalTimer;

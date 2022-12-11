@@ -3,13 +3,13 @@ package com.urrecliner.blackbox;
 import static com.urrecliner.blackbox.Vars.CountEvent;
 import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
 import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
-import static com.urrecliner.blackbox.Vars.share_left_right;
+import static com.urrecliner.blackbox.Vars.mPreviewSize;
+import static com.urrecliner.blackbox.Vars.share_left_right_interval;
 import static com.urrecliner.blackbox.Vars.share_snap_interval;
 import static com.urrecliner.blackbox.Vars.share_image_size;
 import static com.urrecliner.blackbox.Vars.displayBattery;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.lNewsLine;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
@@ -22,6 +22,7 @@ import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
 import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.snapNowPos;
 import static com.urrecliner.blackbox.Vars.startStopExit;
+import static com.urrecliner.blackbox.Vars.surface_Preview;
 import static com.urrecliner.blackbox.Vars.tvDegree;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnEvent;
@@ -39,6 +40,7 @@ import static com.urrecliner.blackbox.Vars.vTextLogInfo;
 import static com.urrecliner.blackbox.Vars.vTextRecord;
 import static com.urrecliner.blackbox.Vars.vTextSpeed;
 import static com.urrecliner.blackbox.Vars.vTextTime;
+import static com.urrecliner.blackbox.Vars.videoMain;
 import static com.urrecliner.blackbox.Vars.viewFinderActive;
 
 import android.app.Activity;
@@ -82,7 +84,9 @@ public class MainActivity extends Activity {
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-//            cameraSub.readyCamera();
+            Log.w("Main", "onSurfaceTextureAvailable ready "+width+"x"+height);
+            //            cameraSub.readyCamera();
+            //            surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         }
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
@@ -109,56 +113,52 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             Log.e("Permission", "No Permission "+e);
         }
-//        window.setFlags(
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN
-//        );
+
         Vars.setSuffix(getApplicationContext());
         SettingsActivity.getPreference();
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
-        utils.deleteOldFiles(mPackageWorkingPath, 4);
         utils.deleteOldLogs();
         cameraSub = new CameraSub();
+        gpsTracker = new GPSTracker();
+        gpsTracker.init(mActivity, mContext);
+        utils.makeEventShotArray();
+
+        utils.setFullScreen();
         prepareMain();
-        String s = "MAX_IMAGES_SIZE="+ share_image_size +"\nINTERVAL_SNAP_SHOT_SAVE="+ share_snap_interval +"\nINTERVAL_LEFT_RIGHT="+ share_left_right;
+        String s = "MAX_IMAGES_SIZE="+ share_image_size +"\nINTERVAL_SNAP_SHOT_SAVE="+ share_snap_interval +"\nINTERVAL_LEFT_RIGHT="+ share_left_right_interval;
         utils.logBoth("PREFERENCE",s);
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
         if (msg.length() > 0)
             utils.logBoth("DISK", msg);
-        utils.makeEventShotArray();
     }
 
     private void prepareMain() {
 
-        utils.setFullScreen();
-        gpsTracker = new GPSTracker();
-        gpsTracker.init(mActivity, mContext);
-
         vPreviewView = findViewById(R.id.previewView);
-        FrameLayout framePreview = findViewById(R.id.framePreview);
         utils.logOnly(logID, "Main Started ..");
         startStopExit = new StartStopExit();
 
-        vBtnRecord = findViewById(R.id.btnRecord);
-        vBtnRecord.setOnClickListener(v -> {
-            utils.logBoth(logID," start button clicked");
-            if (mIsRecording)
-                startStopExit.stopVideo();
-            else {
-                startStopExit.startVideo();
-            }
-        });
+//        vBtnRecord = findViewById(R.id.btnRecord);
+//        vBtnRecord.setOnClickListener(v -> {
+//            utils.logBoth(logID," start button clicked");
+//            if (mIsRecording)
+//                startStopExit.stopVideo();
+//            else {
+//                startStopExit.startVideo();
+//            }
+//        });
 
         vBtnEvent = findViewById(R.id.btnEvent);
         vBtnEvent.setOnClickListener(v -> startEventSaving());
 
         setViewVars();
+
         mIsRecording = false;
         snapBytes = new byte[share_image_size][];
         snapNowPos = 0;
-//        snapBuffs = new ByteBuffer[MAX_IMAGES_SIZE];
+
         utils.beepsInitiate();
         gpsTracker.askLocation();
         CountEvent = utils.getRecordEventCount();
@@ -178,6 +178,7 @@ public class MainActivity extends Activity {
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
         utils.readyPackageFolder(mPackageNormalDatePath);
 
+        FrameLayout framePreview = findViewById(R.id.framePreview);
         framePreview.setOnClickListener(v -> {
             viewFinderActive = !viewFinderActive;
             vPreviewView.setVisibility((viewFinderActive)? View.VISIBLE:View.INVISIBLE);
@@ -190,8 +191,8 @@ public class MainActivity extends Activity {
             startActivityForResult(setInt,SETTING_ACTIVITY) ;
         });
 
+        cameraSub.readyCamera();
         vPreviewView.post(() -> {
-            cameraSub.readyCamera();
             vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
             int width = vPreviewView.getWidth();
             int height = vPreviewView.getHeight();
@@ -205,23 +206,21 @@ public class MainActivity extends Activity {
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        displayBattery = new DisplayBattery();
-        displayBattery.start();
-        displayTime = new DisplayTime();    // displayBattery first
-        displayTime.run();
         showInitialValues();
-        lNewsLine = findViewById(R.id.newsLine);
-        displayBattery.show();
 
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 startHandler.sendEmptyMessage(0);
-                //                new ShowKmLogs().show(chronoLogs);
+                displayBattery = new DisplayBattery();
+                displayBattery.start();
+                displayBattery.show();
+                displayTime = new DisplayTime();    // displayBattery first
+                displayTime.run();
+                Celcius.start(mContext);
             }
         }, DELAY_AUTO_RECORDING);
 
-        Celcius.start(mContext);
         utils.setVolume(70);
     }
 
@@ -270,6 +269,7 @@ public class MainActivity extends Activity {
         vBtnRecord = findViewById(R.id.btnRecord);
         tvDegree = findViewById(R.id.degree);
         vTextSpeed.setText(R.string.under_bar);
+        vPreviewView = findViewById(R.id.previewView);
     }
 
     private void readyBlackBoxFolders() {

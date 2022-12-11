@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
@@ -56,17 +57,18 @@ public class Vars {
     static ImageView vImgBattery = null;
     static ImageView vExitApp = null;
     static TextView tvDegree = null;
-    static LinearLayoutCompat lNewsLine = null;
 
     static ImageButton vBtnEvent = null;
     static TextureView vPreviewView;
+    static SurfaceTexture surface_Preview = null;
+
     static ImageButton vBtnRecord;
 
     public static SharedPreferences sharedPref;
-    public static SharedPreferences.Editor editor;
+    public static SharedPreferences.Editor sharedEditor;
     public static int share_image_size;
     public static long share_snap_interval;
-    public static long share_left_right;   // < SNAP_SHOT_INTERVAL
+    public static long share_left_right_interval;   // < SNAP_SHOT_INTERVAL
 
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
@@ -140,7 +142,7 @@ public class Vars {
             case P:           // galaxy s9 phone
                 share_image_size = 121;
                 share_snap_interval = 192;
-                share_left_right = 92;
+                share_left_right_interval = 92;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
@@ -148,7 +150,7 @@ public class Vars {
             case N:           // galaxy note 20
                 share_image_size = 121;
                 share_snap_interval = 172;
-                share_left_right = 112;
+                share_left_right_interval = 112;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
@@ -156,7 +158,7 @@ public class Vars {
             case B:           // galaxy s9 blackbox
                 share_image_size = 119;
                 share_snap_interval = 197;
-                share_left_right = 91;
+                share_left_right_interval = 91;
                 VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 24*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
@@ -164,7 +166,7 @@ public class Vars {
             case A:           // galaxy A32
                 share_image_size = 115;
                 share_snap_interval = 211;
-                share_left_right = 140;
+                share_left_right_interval = 140;
                 VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 24*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;

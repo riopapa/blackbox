@@ -22,8 +22,6 @@ class DisplayTime implements Runnable {
         final TimerTask tt = new TimerTask() {
             @Override
             public void run() {
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                vTextTime.setText(sdf.format(System.currentTimeMillis()));
                 int celcius = Celcius.get();
                 String txt = (celcius>42)? ">"+celcius+"<":" "+celcius+" ";
                 if (celcius>44)
@@ -31,6 +29,8 @@ class DisplayTime implements Runnable {
                 else if (celcius>42)
                     utils.beepOnce(9, 1f);
                 mActivity.runOnUiThread(() -> {
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                    vTextTime.setText(sdf.format(System.currentTimeMillis()));
                     tvDegree.setText(txt);
                     tvDegree.setTextColor((celcius<44)? Color.WHITE : Color.YELLOW);
                     tvDegree.setBackgroundColor(ContextCompat.getColor(mContext,
