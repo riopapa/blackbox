@@ -143,6 +143,7 @@ public class CameraSub {
             byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
             snapBytes[snapNowPos] = bytes;
+            System.gc();
         } catch (Exception e) {
             utils.showOnly("img", "buffer short " + snapNowPos);
         }
@@ -155,4 +156,7 @@ public class CameraSub {
         photoSaved = true;
         leftRight = !leftRight;
     };
+
+
+
 }

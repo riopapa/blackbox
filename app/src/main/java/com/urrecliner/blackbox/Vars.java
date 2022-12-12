@@ -145,7 +145,7 @@ public class Vars {
                 share_left_right_interval = 92;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
             case N:           // galaxy note 20
                 share_image_size = 121;
@@ -153,7 +153,7 @@ public class Vars {
                 share_left_right_interval = 112;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 24*1024*1024;
                 break;
             case B:           // galaxy s9 blackbox
                 share_image_size = 119;
@@ -161,7 +161,7 @@ public class Vars {
                 share_left_right_interval = 91;
                 VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 24*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
             case A:           // galaxy A32
                 share_image_size = 115;
