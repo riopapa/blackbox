@@ -4,6 +4,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
 import static com.urrecliner.blackbox.Vars.displayTime;
 import static com.urrecliner.blackbox.Vars.gpsTracker;
+import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mExitApplication;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
@@ -29,21 +30,23 @@ class StartStopExit {
     private final String logID = "StartStop";
 
     void startVideo() {
-        utils.logBoth(logID, "Record On");
-        mIsRecording = true;
-        vBtnRecord.setImageResource(R.mipmap.recording_on);
-        videoMain.prepareRecord();
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                try {
-                    mediaRecorder.start();
-                } catch (Exception e) {
-                    reStartApp();
+        mActivity.runOnUiThread(() -> {
+            utils.logBoth(logID, "Record On");
+            mIsRecording = true;
+            vBtnRecord.setImageResource(R.mipmap.recording_on);
+            videoMain.prepareRecord();
+            new Timer().schedule(new TimerTask() {
+                public void run() {
+                    try {
+                        mediaRecorder.start();
+                    } catch (Exception e) {
+                        reStartApp();
+                    }
+                    startSnapBigShot();
+                    startNormal();
                 }
-                startSnapBigShot();
-                startNormal();
-            }
-        }, 2000);
+            }, 1000);
+        });
     }
 
     private final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {

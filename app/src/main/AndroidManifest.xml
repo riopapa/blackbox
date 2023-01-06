@@ -28,7 +28,7 @@
         android:icon="@mipmap/event_shot"
         android:installLocation="preferExternal"
         android:label="BlackBox"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true">
 

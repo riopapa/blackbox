@@ -15,7 +15,7 @@ import java.lang.reflect.Array;
 
 public class CameraSize {
 
-// "SM-G986N" "N";  // note 20
+// "SM-G986N" "N";  note 20
 // "SM-G965N" "P";
 // "SM-A325N" "A";
 
@@ -44,7 +44,7 @@ public class CameraSize {
             720x480 1.5, 640x480 1.3, 352x288 1.2, 320x240 1.3, 256x144 1.8, 176x144 1.2 ,
              */
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 640 && size.getHeight() == 480)
+                    if (size.getWidth() == 960 && size.getHeight() == 720)
                         sizePreview = size;
                     else if (size.getWidth() == 3984 && size.getHeight() == 2988)
                         sizeCamera = size;

@@ -84,9 +84,8 @@ public class MainActivity extends Activity {
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            Log.w("Main", "onSurfaceTextureAvailable ready "+width+"x"+height);
-            //            cameraSub.readyCamera();
-            //            surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+//            surface_Preview = surface;
+//            Log.w("onSurfaceTextureAvailable", "accepted");
         }
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
@@ -140,16 +139,6 @@ public class MainActivity extends Activity {
         utils.logOnly(logID, "Main Started ..");
         startStopExit = new StartStopExit();
 
-//        vBtnRecord = findViewById(R.id.btnRecord);
-//        vBtnRecord.setOnClickListener(v -> {
-//            utils.logBoth(logID," start button clicked");
-//            if (mIsRecording)
-//                startStopExit.stopVideo();
-//            else {
-//                startStopExit.startVideo();
-//            }
-//        });
-
         vBtnEvent = findViewById(R.id.btnEvent);
         vBtnEvent.setOnClickListener(v -> startEventSaving());
 
@@ -186,14 +175,14 @@ public class MainActivity extends Activity {
 
         ImageButton btnSetting = findViewById(R.id.btnSetting);
         btnSetting.setOnClickListener(v -> {
-//            startStopExit.stopVideo();
             Intent setInt = new Intent(MainActivity.this, SettingsActivity.class);
             startActivityForResult(setInt,SETTING_ACTIVITY) ;
         });
 
         cameraSub.readyCamera();
-        vPreviewView.post(() -> {
-            vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
+
+        mActivity.runOnUiThread(() -> {
+
             int width = vPreviewView.getWidth();
             int height = vPreviewView.getHeight();
             Matrix matrix = new Matrix();
@@ -270,6 +259,7 @@ public class MainActivity extends Activity {
         tvDegree = findViewById(R.id.degree);
         vTextSpeed.setText(R.string.under_bar);
         vPreviewView = findViewById(R.id.previewView);
+//        vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
     }
 
     private void readyBlackBoxFolders() {
@@ -295,7 +285,6 @@ public class MainActivity extends Activity {
     @Override
     public boolean onKeyDown(final int keyCode, KeyEvent event) {
 
-//        keyNowTime = System.currentTimeMillis();
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
@@ -315,7 +304,6 @@ public class MainActivity extends Activity {
                 utils.logBoth("key", keyCode + " Pressed");
                 break;
         }
-//        keyOldTime = keyNowTime;
         return super.onKeyDown(keyCode, event);
     }
 }

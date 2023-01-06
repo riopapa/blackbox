@@ -121,7 +121,7 @@ public class Utils {
         append2file(mPackageLogPath, logFile, "\n\n<logE ------------------- Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End ---------- >\n\n");
         uText = tag+" : "+lastNLines(vTextLogInfo.getText().toString() + text);
         mActivity.runOnUiThread(() -> vTextLogInfo.setText(uText));
-        e.printStackTrace();
+        Log.e("Error",uText);
 //        beepOnce(1, .7f);
     }
 

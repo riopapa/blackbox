@@ -59,9 +59,6 @@ public class CameraSub {
 
                 if (mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
                         CameraCharacteristics.LENS_FACING_BACK) {
-//                    utils.logOnly("camera "+cameraId," is back camera ///// ");
-//                if (SUFFIX == Vars.PhoneE.NOTE20 && cameraId.equals("2") || !SUFFIX.equals("N") && cameraId.equals("0")) {
-//                    utils.logOnly("Camera= "+cameraId, "camera found ="+cameraId);
                     mCameraId = cameraId;
                     StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                     Size[] sizes = CameraSize.set(map, SUFFIX);
@@ -101,10 +98,6 @@ public class CameraSub {
         public void onOpened(CameraDevice camera) {
             if (mCameraDevice == null)
                 mCameraDevice = camera;
-//            if (mIsRecording) {
-//                videoMain.prepareRecord();
-//                mediaRecorder.start();
-//            }
         }
 
         @Override
@@ -126,7 +119,6 @@ public class CameraSub {
         if (nowTime < shotTime || !mIsRecording) {
             return;
         }
-
         Image image = reader.acquireLatestImage();
         if (image == null)
             return;
@@ -143,20 +135,17 @@ public class CameraSub {
             byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
             snapBytes[snapNowPos] = bytes;
-            System.gc();
+            System.gc();    // force garbage collection
         } catch (Exception e) {
             utils.showOnly("img", "buffer short " + snapNowPos);
         }
         image.close();
-        if (mIsRecording) {
-            snapNowPos++;
-            if (snapNowPos >= share_image_size)
-                snapNowPos = 0;
-        }
+        System.gc();    // force garbage collection
+        snapNowPos++;
+        if (snapNowPos >= share_image_size)
+            snapNowPos = 0;
         photoSaved = true;
         leftRight = !leftRight;
     };
-
-
 
 }

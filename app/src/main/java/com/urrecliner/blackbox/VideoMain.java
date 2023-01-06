@@ -77,14 +77,6 @@ public class VideoMain {
     }
 
     private void readySurfaces() {
-//        try {
-//            surface_Preview = vPreviewView.getSurfaceTexture();
-//        } catch (Exception e) {
-//            utils.logE(logID, "surface_Preview  ///", e);
-//        }
-//        if (surface_Preview == null)
-//            utils.logBoth(logID, "surface_Preview is null ///");
-//        surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         try {
             mVideoRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             mCameraBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
@@ -94,9 +86,17 @@ public class VideoMain {
         if (mVideoRequestBuilder == null)
             utils.logBoth(logID, "mCaptureRequestBuilder is null ///");
 
-//        previewSurface = new Surface(surface_Preview);
-//        if (SUFFIX.equals(PhoneE.B) || SUFFIX.equals(PhoneE.P))        // 왜 note 20 은 안 되는지 모름
-//            mVideoRequestBuilder.addTarget(previewSurface);
+        try {
+            surface_Preview = vPreviewView.getSurfaceTexture();
+        } catch (Exception e) {
+            utils.logE(logID, "surface_Preview  ///", e);
+        }
+        if (surface_Preview == null)
+            utils.logBoth(logID, "surface_Preview is null ERROR ///");
+        surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+        previewSurface = new Surface(surface_Preview);
+        if (SUFFIX.equals(PhoneE.B) || SUFFIX.equals(PhoneE.P))        // 왜 note 20 은 안 되는지 모름
+            mVideoRequestBuilder.addTarget(previewSurface);
         recordSurface = mediaRecorder.getSurface();
         mVideoRequestBuilder.addTarget(recordSurface);
         photoSurface = mImageReader.getSurface();
@@ -111,9 +111,10 @@ public class VideoMain {
     }
 
     void buildCameraSession() {
-//        List list = Arrays.asList(recordSurface, photoSurface, previewSurface);
-//        if (SUFFIX.equals(PhoneE.N))
-          List  list = Arrays.asList(recordSurface, photoSurface);
+        List list;
+        list = Arrays.asList(recordSurface, photoSurface, previewSurface);
+        if (SUFFIX.equals(PhoneE.N))    // note 20 ?
+          list = Arrays.asList(recordSurface, photoSurface);
         try {
             mCameraDevice.createCaptureSession(list, cameraStateCallBack(), null);
         } catch (Exception e) {
