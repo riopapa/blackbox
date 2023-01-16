@@ -60,9 +60,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.urrecliner.blackbox.utility.Celcius;
 import com.urrecliner.blackbox.utility.DiskSpace;
@@ -97,7 +101,7 @@ public class MainActivity extends Activity {
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) { }
     };
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +116,7 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             Log.e("Permission", "No Permission "+e);
         }
+        vPreviewView = findViewById(R.id.previewView);
 
         Vars.setSuffix(getApplicationContext());
         SettingsActivity.getPreference();
@@ -135,7 +140,6 @@ public class MainActivity extends Activity {
 
     private void prepareMain() {
 
-        vPreviewView = findViewById(R.id.previewView);
         utils.logOnly(logID, "Main Started ..");
         startStopExit = new StartStopExit();
 
@@ -182,16 +186,8 @@ public class MainActivity extends Activity {
         cameraSub.readyCamera();
 
         mActivity.runOnUiThread(() -> {
-
-            int width = vPreviewView.getWidth();
-            int height = vPreviewView.getHeight();
-            Matrix matrix = new Matrix();
-            RectF viewRect = new RectF(0, 0, width, height);
-            float centerX = viewRect.centerX();
-            float centerY = viewRect.centerY();
-            matrix.postRotate(-90, centerX, centerY);
-            vPreviewView.setTransform(matrix);
-            vPreviewView.setScaleX(1.5f);
+            vPreviewView.setRotation(-90);
+            vPreviewView.setScaleY(1.7f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

@@ -30,7 +30,6 @@ public class PhotoCapture {
         mCameraBuilder.addTarget(photoSurface);
         mCameraBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
         mCameraBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-
     }
 
     static void zoomShotCamera() {
@@ -54,15 +53,15 @@ public class PhotoCapture {
                 if (mCaptureState == STATE_WAIT_LOCK) {
                         mCaptureState = STATE_PREVIEW;
                         Rect rect;
-                            if (zoomHuge) {
-                                rect = zoomHugeC;
+                        if (zoomHuge) {
+                            rect = zoomHugeC;
+                        } else {
+                            if (Math.random() < 0.5f) {
+                                rect = leftRight ? zoomHugeL : zoomHugeR;
                             } else {
-                                if (Math.random() < 0.3f) {
-                                    rect = leftRight ? zoomHugeL : zoomHugeR;
-                                } else {
-                                    rect = leftRight ? zoomBiggerL : zoomBiggerR;
-                                }
+                                rect = leftRight ? zoomBiggerL : zoomBiggerR;
                             }
+                        }
                         mVideoRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, rect);
                 }
             }

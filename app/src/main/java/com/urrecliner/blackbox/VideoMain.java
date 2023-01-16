@@ -1,17 +1,44 @@
 package com.urrecliner.blackbox;
 
+import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
+import static com.urrecliner.blackbox.Vars.PhoneE;
+import static com.urrecliner.blackbox.Vars.SUFFIX;
+import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
+import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
+import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
+import static com.urrecliner.blackbox.Vars.mCameraBuilder;
+import static com.urrecliner.blackbox.Vars.mCameraDevice;
+import static com.urrecliner.blackbox.Vars.mCaptureSession;
+import static com.urrecliner.blackbox.Vars.mImageReader;
+import static com.urrecliner.blackbox.Vars.mImageSize;
+import static com.urrecliner.blackbox.Vars.mIsRecording;
+import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
+import static com.urrecliner.blackbox.Vars.mPreviewSize;
+import static com.urrecliner.blackbox.Vars.mVideoRequestBuilder;
+import static com.urrecliner.blackbox.Vars.mVideoSize;
+import static com.urrecliner.blackbox.Vars.mediaRecorder;
+import static com.urrecliner.blackbox.Vars.photoSurface;
+import static com.urrecliner.blackbox.Vars.previewSurface;
+import static com.urrecliner.blackbox.Vars.recordSurface;
+import static com.urrecliner.blackbox.Vars.surface_Preview;
+import static com.urrecliner.blackbox.Vars.utils;
+import static com.urrecliner.blackbox.Vars.vBtnRecord;
+import static com.urrecliner.blackbox.Vars.vPreviewView;
+import static com.urrecliner.blackbox.Vars.vTextRecord;
+import static com.urrecliner.blackbox.Vars.zoomBiggerL;
+import static com.urrecliner.blackbox.Vars.zoomBiggerR;
+import static com.urrecliner.blackbox.Vars.zoomHugeC;
+import static com.urrecliner.blackbox.Vars.zoomHugeL;
+import static com.urrecliner.blackbox.Vars.zoomHugeR;
+
 import android.graphics.Rect;
-import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.Surface;
-import android.view.TextureView;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,44 +47,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.VIDEO_ENCODING_RATE;
-import static com.urrecliner.blackbox.Vars.VIDEO_FRAME_RATE;
-import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
-import static com.urrecliner.blackbox.Vars.mCameraBuilder;
-import static com.urrecliner.blackbox.Vars.surface_Preview;
-import static com.urrecliner.blackbox.Vars.vBtnRecord;
-import static com.urrecliner.blackbox.Vars.zoomBiggerL;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mVideoRequestBuilder;
-import static com.urrecliner.blackbox.Vars.mCaptureSession;
-import static com.urrecliner.blackbox.Vars.mImageReader;
-import static com.urrecliner.blackbox.Vars.mImageSize;
-import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.mPreviewSize;
-import static com.urrecliner.blackbox.Vars.mVideoSize;
-import static com.urrecliner.blackbox.Vars.mediaRecorder;
-import static com.urrecliner.blackbox.Vars.photoSurface;
-import static com.urrecliner.blackbox.Vars.recordSurface;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vTextRecord;
-import static com.urrecliner.blackbox.Vars.vPreviewView;
-import static com.urrecliner.blackbox.Vars.zoomBiggerR;
-import static com.urrecliner.blackbox.Vars.zoomHugeC;
-import static com.urrecliner.blackbox.Vars.zoomHugeL;
-import static com.urrecliner.blackbox.Vars.zoomHugeR;
-import static com.urrecliner.blackbox.Vars.PhoneE;
-
-import androidx.annotation.NonNull;
-
 public class VideoMain {
 
     private final String logID = "videoMain";
     private boolean isPrepared = false;
-    private Surface previewSurface = null;
     Rect zoomNormal;
 
     void prepareRecord() {
@@ -66,7 +59,6 @@ public class VideoMain {
             return;
         setupMediaRecorder();
         readySurfaces();
-//        SystemClock.sleep(300);
         mVideoRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO);
         mVideoRequestBuilder.set(CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE, CaptureRequest.CONTROL_VIDEO_STABILIZATION_MODE_ON);
         mVideoRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
@@ -95,8 +87,7 @@ public class VideoMain {
             utils.logBoth(logID, "surface_Preview is null ERROR ///");
         surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         previewSurface = new Surface(surface_Preview);
-        if (SUFFIX.equals(PhoneE.B) || SUFFIX.equals(PhoneE.P))        // 왜 note 20 은 안 되는지 모름
-            mVideoRequestBuilder.addTarget(previewSurface);
+        mVideoRequestBuilder.addTarget(previewSurface);
         recordSurface = mediaRecorder.getSurface();
         mVideoRequestBuilder.addTarget(recordSurface);
         photoSurface = mImageReader.getSurface();
@@ -111,12 +102,12 @@ public class VideoMain {
     }
 
     void buildCameraSession() {
-        List list;
-        list = Arrays.asList(recordSurface, photoSurface, previewSurface);
+        List<Surface> captureList;
+        captureList = Arrays.asList(previewSurface, recordSurface, photoSurface);
         if (SUFFIX.equals(PhoneE.N))    // note 20 ?
-          list = Arrays.asList(recordSurface, photoSurface);
+          captureList = Arrays.asList(recordSurface, photoSurface);
         try {
-            mCameraDevice.createCaptureSession(list, cameraStateCallBack(), null);
+            mCameraDevice.createCaptureSession(captureList, cameraStateCallBack(), null);
         } catch (Exception e) {
             utils.logE(logID, "Prepare Error BB ", e);
         }

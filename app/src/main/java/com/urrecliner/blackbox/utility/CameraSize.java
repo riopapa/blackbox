@@ -62,7 +62,7 @@ public class CameraSize {
              */
 
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 1440 && size.getHeight() == 1080)
+                    if (size.getWidth() == 960 && size.getHeight() == 720)
                         sizePreview = size;
                     else if (size.getWidth() == 4000 && size.getHeight() == 3000)
                         sizeCamera = size;

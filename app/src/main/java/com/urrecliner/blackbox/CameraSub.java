@@ -135,11 +135,12 @@ public class CameraSub {
             byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
             snapBytes[snapNowPos] = bytes;
-            System.gc();    // force garbage collection
+            image.close();
         } catch (Exception e) {
             utils.showOnly("img", "buffer short " + snapNowPos);
+            image.close();
+            return;
         }
-        image.close();
         System.gc();    // force garbage collection
         snapNowPos++;
         if (snapNowPos >= share_image_size)
