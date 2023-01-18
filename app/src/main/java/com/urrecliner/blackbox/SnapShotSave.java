@@ -23,13 +23,13 @@ class SnapShotSave {
     String prefixTime;
     void startSave(File path2Write, final int phase) {
 
-        final int minPos = (phase == 0)? 30: 0;
+        final int minPos = 0;
 
-        maxSize = share_image_size - 15;
+        maxSize = share_image_size - 1;
         if (phase == 2)
-            maxSize = share_image_size - 20;
+            maxSize = share_image_size - 2;
         else if (phase == 3)
-            maxSize = share_image_size - 30;
+            maxSize = share_image_size - 3;
         else if (phase == 4)
             maxSize = share_image_size - 20;
 
@@ -42,13 +42,13 @@ class SnapShotSave {
             for (int i = minPos; i < maxSize; i++) {
                 if (jpgBytes[i] == null)
                     continue;
-                jpgBytes[i] = null;
                 File imageFile = new File(path2Write, prefixTime + (startBias + i) + ".jpg");
                 if (jpgBytes[i].length > 1) {
                     bytes2File(jpgBytes[i], imageFile);
-                    SystemClock.sleep(22);  // not to hold all the time
+                    SystemClock.sleep(20);  // not to hold all the time
                 } else
                     Log.e( phase+" image error "+i, imageFile.getName());
+                jpgBytes[i] = null;
             }
             if (phase == 4) { // last phase
                 utils.beepOnce(3, 1f);
