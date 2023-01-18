@@ -135,7 +135,7 @@ public class Vars {
                 SUFFIX = PhoneE.A;
                 break;
             default:
-                utils.logBoth("Model", Build.MODEL);
+                utils.logBoth("Vars", "Model="+Build.MODEL);
                 break;
         }
 
