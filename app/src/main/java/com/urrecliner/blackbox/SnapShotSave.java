@@ -1,15 +1,17 @@
 package com.urrecliner.blackbox;
 
 import android.os.SystemClock;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static com.urrecliner.blackbox.Vars.CountEvent;
+import static com.urrecliner.blackbox.Vars.imageStack;
 import static com.urrecliner.blackbox.Vars.share_image_size;
 import static com.urrecliner.blackbox.Vars.activeEventCount;
 import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.snapBytes;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vTextActiveCount;
 import static com.urrecliner.blackbox.Vars.vTextCountEvent;
@@ -19,9 +21,8 @@ class SnapShotSave {
     int startBias;
     int maxSize;
     String prefixTime;
-    void startSave(File path2Write, final int snapPos, final int phase) {
-        byte[][] jpgBytes;
-        int jpgIdx = 0;
+    void startSave(File path2Write, final int phase) {
+
         final int minPos = (phase == 0)? 30: 0;
 
         maxSize = share_image_size - 15;
@@ -31,32 +32,23 @@ class SnapShotSave {
             maxSize = share_image_size - 30;
         else if (phase == 4)
             maxSize = share_image_size - 20;
-        jpgBytes = new byte[share_image_size][];
-        for (int i = snapPos; i < share_image_size; i++) {
-            jpgBytes[jpgIdx++] = snapBytes[i];
-            snapBytes[i] = null;
-            if (jpgIdx > maxSize)
-                break;
-        }
-        for (int i = 0; i < snapPos; i++) {
-            jpgBytes[jpgIdx++] = snapBytes[i];
-            snapBytes[i] = null;
-            if (jpgIdx > maxSize)
-                break;
-        }
+
+        byte [][] jpgBytes = imageStack.getClone();
 
         startBias = phase * 200;
         prefixTime = path2Write.getName();
         prefixTime = "D"+prefixTime.substring(1, prefixTime.length()-1)+".";
         Thread th = new Thread(() -> {
             for (int i = minPos; i < maxSize; i++) {
-                byte[] imageBytes = jpgBytes[i];
+                if (jpgBytes[i] == null)
+                    continue;
                 jpgBytes[i] = null;
-                if (imageBytes != null && imageBytes.length > 1) {
-                    File imageFile = new File(path2Write, prefixTime + (startBias + i) + ".jpg");
-                    bytes2File(imageBytes, imageFile);
+                File imageFile = new File(path2Write, prefixTime + (startBias + i) + ".jpg");
+                if (jpgBytes[i].length > 1) {
+                    bytes2File(jpgBytes[i], imageFile);
                     SystemClock.sleep(22);  // not to hold all the time
-                }
+                } else
+                    Log.e( phase+" image error "+i, imageFile.getName());
             }
             if (phase == 4) { // last phase
                 utils.beepOnce(3, 1f);

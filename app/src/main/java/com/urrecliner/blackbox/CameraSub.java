@@ -2,6 +2,7 @@ package com.urrecliner.blackbox;
 
 import static com.urrecliner.blackbox.PhotoCapture.leftRight;
 import static com.urrecliner.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
+import static com.urrecliner.blackbox.Vars.imageStack;
 import static com.urrecliner.blackbox.Vars.share_snap_interval;
 import static com.urrecliner.blackbox.Vars.share_image_size;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
@@ -18,8 +19,6 @@ import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.photoSaved;
-import static com.urrecliner.blackbox.Vars.snapBytes;
-import static com.urrecliner.blackbox.Vars.snapNowPos;
 import static com.urrecliner.blackbox.Vars.utils;
 
 import android.content.Context;
@@ -134,17 +133,17 @@ public class CameraSub {
             ByteBuffer buffer = image.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
-            snapBytes[snapNowPos] = bytes;
+            imageStack.add(bytes);
             image.close();
         } catch (Exception e) {
-            utils.showOnly("img", "buffer short " + snapNowPos);
+//            utils.showOnly("img", "buffer short " + snapNowPos);
             image.close();
             return;
         }
         System.gc();    // force garbage collection
-        snapNowPos++;
-        if (snapNowPos >= share_image_size)
-            snapNowPos = 0;
+//        snapNowPos++;
+//        if (snapNowPos >= share_image_size)
+//            snapNowPos = 0;
         photoSaved = true;
         leftRight = !leftRight;
     };

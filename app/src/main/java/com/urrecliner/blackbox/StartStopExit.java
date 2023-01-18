@@ -11,7 +11,6 @@ import static com.urrecliner.blackbox.Vars.mIsRecording;
 import static com.urrecliner.blackbox.Vars.mediaRecorder;
 import static com.urrecliner.blackbox.Vars.photoCapture;
 import static com.urrecliner.blackbox.Vars.share_left_right_interval;
-import static com.urrecliner.blackbox.Vars.snapNowPos;
 import static com.urrecliner.blackbox.Vars.utils;
 import static com.urrecliner.blackbox.Vars.vBtnRecord;
 import static com.urrecliner.blackbox.Vars.videoMain;
@@ -61,7 +60,7 @@ class StartStopExit {
     private Timer timerSnapCamera;
 
     public void startSnapBigShot() {
-        snapNowPos = 0;
+
         zoomChangeTimer.sendEmptyMessage(1);
 
         final TimerTask cameraTask = new TimerTask() {
@@ -69,7 +68,7 @@ class StartStopExit {
             public void run() {
                 if (mIsRecording)
                     zoomChangeTimer.sendEmptyMessage(0);
-                else
+                else if (timerSnapCamera != null)
                     timerSnapCamera.cancel();
             }
         };

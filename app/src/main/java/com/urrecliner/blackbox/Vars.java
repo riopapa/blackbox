@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
+import com.urrecliner.blackbox.utility.ImageStack;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -91,11 +93,10 @@ public class Vars {
 
     static long INTERVAL_EVENT;
     static long INTERVAL_NORMAL;
-    public static byte [][] snapBytes;
-    public static int snapNowPos = 0;
 
     static byte[] shot_00, shot_01, shot_02, shot_03;
 
+    static ImageStack imageStack;
     static int VIDEO_FRAME_RATE;
     static int VIDEO_ENCODING_RATE;
     static long VIDEO_ONE_WORK_FILE_SIZE;

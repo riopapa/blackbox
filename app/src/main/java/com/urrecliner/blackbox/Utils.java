@@ -366,17 +366,17 @@ public class Utils {
     void makeEventShotArray() {
         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_00);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         shot_00 = stream.toByteArray();
 
         bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_01);
         stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         shot_01 = stream.toByteArray();
 
         bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_02);
         stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         shot_02 = stream.toByteArray();
 
     }

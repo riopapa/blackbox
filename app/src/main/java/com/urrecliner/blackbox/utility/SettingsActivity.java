@@ -6,8 +6,6 @@ import static com.urrecliner.blackbox.Vars.share_image_size;
 import static com.urrecliner.blackbox.Vars.share_left_right_interval;
 import static com.urrecliner.blackbox.Vars.share_snap_interval;
 import static com.urrecliner.blackbox.Vars.sharedPref;
-import static com.urrecliner.blackbox.Vars.snapBytes;
-import static com.urrecliner.blackbox.Vars.snapNowPos;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -43,16 +41,16 @@ public class SettingsActivity extends AppCompatActivity  {
             String t = "" + share_image_size;
             tvSize.setText(t);
             sharedEditor.putInt(NAME_IMAGES_SIZE, share_image_size).apply();
-            snapBytes = new byte[share_image_size][];
-            snapNowPos = 0;
+//            snapBytes = new byte[share_image_size][];
+//            snapNowPos = 0;
         });
         tvSizeUp.setOnClickListener(v -> {
             share_image_size++;
             String t = "" + share_image_size;
             tvSize.setText(t);
             sharedEditor.putInt(NAME_IMAGES_SIZE, share_image_size).apply();
-            snapBytes = new byte[share_image_size][];
-            snapNowPos = 0;
+//            snapBytes = new byte[share_image_size][];
+//            snapNowPos = 0;
         });
     }
 
