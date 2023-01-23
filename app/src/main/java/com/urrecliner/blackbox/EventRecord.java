@@ -31,8 +31,8 @@ public class EventRecord {
     void start() {
 
         if (!mIsRecording) return;
-        imageStack.add(shot_00);
-        imageStack.add(shot_00);
+        imageStack.addShot(shot_00);
+        imageStack.addShot(shot_00);
 
         zoomHuge = true;
         final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 3;
@@ -51,8 +51,8 @@ public class EventRecord {
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                imageStack.add(shot_01);
-                imageStack.add(shot_01);
+                imageStack.addShot(shot_01);
+                imageStack.addShot(shot_01);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, 2);
                 zoomHuge = false;
@@ -61,8 +61,8 @@ public class EventRecord {
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                imageStack.add(shot_02);
-                imageStack.add(shot_02);
+                imageStack.addShot(shot_02);
+                imageStack.addShot(shot_02);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, 3);
                 zoomHuge = false;

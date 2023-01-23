@@ -1,6 +1,6 @@
 package com.urrecliner.blackbox.utility;
 
-import static com.urrecliner.blackbox.Vars.share_image_size;
+import java.nio.ByteBuffer;
 
 public class ImageStack {
     public byte [][] snapBytes;
@@ -13,8 +13,17 @@ public class ImageStack {
         arraySize = share_image_size;
     }
 
-    public void add(byte [] image) {
-        snapBytes[snapNowPos] = image;
+    public void addBuff(ByteBuffer buffer) {
+        byte[] bytes = new byte[buffer.capacity()];
+        buffer.get(bytes);
+        snapBytes[snapNowPos] = bytes;
+        snapNowPos++;
+        if (snapNowPos >= arraySize)
+            snapNowPos = 0;
+    }
+
+    public void addShot(byte[] bytes) {
+        snapBytes[snapNowPos] = bytes;
         snapNowPos++;
         if (snapNowPos >= arraySize)
             snapNowPos = 0;

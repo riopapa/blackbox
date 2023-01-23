@@ -2,10 +2,8 @@ package com.urrecliner.blackbox;
 
 import static com.urrecliner.blackbox.PhotoCapture.leftRight;
 import static com.urrecliner.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
-import static com.urrecliner.blackbox.Vars.imageStack;
-import static com.urrecliner.blackbox.Vars.share_snap_interval;
-import static com.urrecliner.blackbox.Vars.share_image_size;
 import static com.urrecliner.blackbox.Vars.SUFFIX;
+import static com.urrecliner.blackbox.Vars.imageStack;
 import static com.urrecliner.blackbox.Vars.mActivity;
 import static com.urrecliner.blackbox.Vars.mBackgroundCamera;
 import static com.urrecliner.blackbox.Vars.mBackgroundImage;
@@ -19,6 +17,7 @@ import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
 import static com.urrecliner.blackbox.Vars.photoSaved;
+import static com.urrecliner.blackbox.Vars.share_snap_interval;
 import static com.urrecliner.blackbox.Vars.utils;
 
 import android.content.Context;
@@ -31,14 +30,11 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
-import android.util.Log;
 import android.util.Size;
 
 import androidx.core.content.ContextCompat;
 
 import com.urrecliner.blackbox.utility.CameraSize;
-
-import java.nio.ByteBuffer;
 
 public class CameraSub {
     CameraManager mCameraManager;
@@ -130,10 +126,7 @@ public class CameraSub {
         shotTime += share_snap_interval;
 //        shotTime = nowTime + INTERVAL_SNAP_SHOT_SAVE;
         try {
-            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-            byte[] bytes = new byte[buffer.capacity()];
-            buffer.get(bytes);
-            imageStack.add(bytes);
+            imageStack.addBuff(image.getPlanes()[0].getBuffer());
             image.close();
         } catch (Exception e) {
 //            utils.showOnly("img", "buffer short " + snapNowPos);

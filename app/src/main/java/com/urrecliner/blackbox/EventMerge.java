@@ -89,7 +89,7 @@ class EventMerge {
                 String shortFileName = file.getName();
                 if (myCollator.compare(shortFileName, beginTimeS) >= 0 &&
                         myCollator.compare(shortFileName, endTimeS) < 0) {
-//                    Log.w("add to movie " + isEventMerge, shortFileName);
+//                    Log.w("addBuff to movie " + isEventMerge, shortFileName);
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
