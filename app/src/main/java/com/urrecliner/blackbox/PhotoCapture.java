@@ -47,31 +47,34 @@ public class PhotoCapture {
     }
 
     static boolean leftRight = false;
+    static Rect rect;
     private static final CameraCaptureSession.CaptureCallback zoomCameraPhotoCallback = new
         CameraCaptureSession.CaptureCallback() {
-            private void process(CaptureResult captureResult) {
-                if (mCaptureState == STATE_WAIT_LOCK) {
-                        mCaptureState = STATE_PREVIEW;
-                        Rect rect;
-                        if (zoomHuge) {
-                            rect = zoomHugeC;
-                        } else {
-                            if (Math.random() < 0.5f) {
-                                rect = leftRight ? zoomHugeL : zoomHugeR;
-                            } else {
-                                rect = leftRight ? zoomBiggerL : zoomBiggerR;
-                            }
-                        }
-                        mVideoRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, rect);
-                }
-            }
 
-            @Override
-            public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request,
-                                           TotalCaptureResult result) {
-                super.onCaptureCompleted(session, request, result);
-                photoSaved = false;
-                process(result);
+        @Override
+        public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request,
+                                       TotalCaptureResult result) {
+            super.onCaptureCompleted(session, request, result);
+            process(result);
+        }
+
+        private void process(CaptureResult captureResult) {
+
+            if (mCaptureState == STATE_WAIT_LOCK) {
+                    mCaptureState = STATE_PREVIEW;
+                    rect = leftRight ? zoomHugeL : zoomHugeR;
+
+//                        if (zoomHuge) {
+//                            rect = zoomHugeC;
+//                        } else {
+//                            if (Math.random() < 0.5f) {
+//                                rect = leftRight ? zoomHugeL : zoomHugeR;
+//                            } else {
+//                                rect = leftRight ? zoomBiggerL : zoomBiggerR;
+//                            }
+//                        }
+                    mVideoRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, rect);
             }
-        };
+        }
+    };
 }

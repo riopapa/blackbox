@@ -4,6 +4,7 @@ import static com.urrecliner.blackbox.Vars.utils;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.util.Log;
 import android.util.Size;
 
 import com.urrecliner.blackbox.Vars;
@@ -26,11 +27,6 @@ public class CameraSize {
 //        utils.logBoth("logID", "CamSize on "+model);
 //        dumpVariousCameraSizes(map);
         map.getOutputFormats();
-//        try {
-//            serializeStreamConfigurationMap(map);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
 
         switch (SUFFIX) {
 

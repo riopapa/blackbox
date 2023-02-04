@@ -156,7 +156,7 @@ public class VideoMain {
                 break;
             case "C":
                 xLeft = (xOrgSize- xZoomed)/2;
-                yTop = (yOrgSize-yZoomed)/2;
+                yTop = (yOrgSize-yZoomed)/3;
                 break;
         }
 

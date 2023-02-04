@@ -1,5 +1,6 @@
 package com.urrecliner.blackbox.utility;
 
+import android.os.AsyncTask;
 import java.nio.ByteBuffer;
 
 public class ImageStack {
@@ -16,14 +17,14 @@ public class ImageStack {
     public void addBuff(ByteBuffer buffer) {
         byte[] bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
-        snapBytes[snapNowPos] = bytes;
+        snapBytes[snapNowPos] = bytes.clone();
         snapNowPos++;
         if (snapNowPos >= arraySize)
             snapNowPos = 0;
     }
 
     public void addShot(byte[] bytes) {
-        snapBytes[snapNowPos] = bytes;
+        snapBytes[snapNowPos] = bytes.clone();
         snapNowPos++;
         if (snapNowPos >= arraySize)
             snapNowPos = 0;
@@ -34,11 +35,11 @@ public class ImageStack {
         byte [][] images = new byte[arraySize][];
         int jpgIdx = 0;
         for (int i = snapNowPos; i < arraySize; i++) {
-            images[jpgIdx++] = snapBytes[i];
+            images[jpgIdx++] = snapBytes[i].clone();
             snapBytes[i] = null;
         }
         for (int i = 0; i < snapNowPos; i++) {
-            images[jpgIdx++] = snapBytes[i];
+            images[jpgIdx++] = snapBytes[i].clone();
             snapBytes[i] = null;
             if (jpgIdx > arraySize)
                 break;

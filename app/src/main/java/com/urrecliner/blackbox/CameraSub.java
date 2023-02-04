@@ -110,35 +110,21 @@ public class CameraSub {
 
     long shotTime = 0;
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = reader -> {
-        long nowTime = System.currentTimeMillis();
-        if (nowTime < shotTime || !mIsRecording) {
+        if (System.currentTimeMillis() < shotTime || !mIsRecording) {
             return;
         }
         Image image = reader.acquireLatestImage();
         if (image == null)
             return;
-        if (photoSaved) {
-            image.close();
-            return;
-        }
-        if (shotTime == 0)
-            shotTime = nowTime;
+//        if (photoSaved) {
+//            image.close();
+//            return;
+//        }
         shotTime += share_snap_interval;
-//        shotTime = nowTime + INTERVAL_SNAP_SHOT_SAVE;
-        try {
-            imageStack.addBuff(image.getPlanes()[0].getBuffer());
-            image.close();
-        } catch (Exception e) {
-//            utils.showOnly("img", "buffer short " + snapNowPos);
-            image.close();
-            return;
-        }
-        System.gc();    // force garbage collection
-//        snapNowPos++;
-//        if (snapNowPos >= share_image_size)
-//            snapNowPos = 0;
-        photoSaved = true;
+        imageStack.addBuff(image.getPlanes()[0].getBuffer());
+        image.close();
+//        System.gc();    // force garbage collection
+//        photoSaved = true;
         leftRight = !leftRight;
     };
-
 }
