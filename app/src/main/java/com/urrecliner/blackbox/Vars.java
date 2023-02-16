@@ -20,8 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.LinearLayoutCompat;
-
 import com.urrecliner.blackbox.utility.ImageStack;
 
 import java.io.File;
@@ -118,7 +116,7 @@ public class Vars {
     static boolean zoomHuge = false;
 
     static void setSuffix(Context context) {
-        INTERVAL_EVENT = 20 * 1000;
+        INTERVAL_EVENT = 25 * 1000;
         INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
         switch (Build.MODEL) {
             case "SM-G965N":

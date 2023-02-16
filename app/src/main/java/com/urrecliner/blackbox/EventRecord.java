@@ -41,7 +41,6 @@ public class EventRecord {
         utils.readyPackageFolder(thisEventJpgPath);
         utils.logBoth("start"+(CountEvent+1+activeEventCount),thisEventJpgPath.getName());
         utils.setVolume(70);
-        gpsTracker.askLocation();
         new Timer().schedule(new TimerTask() {
             public void run() {
                 SnapShotSave snapShotSave = new SnapShotSave();
@@ -67,15 +66,16 @@ public class EventRecord {
                 snapShotSave.startSave(thisEventJpgPath, 3);
                 zoomHuge = false;
             }
-        }, INTERVAL_EVENT * 12 / 10);
+        }, INTERVAL_EVENT * 11 / 10);
 
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, 4);
-            }
-        }, INTERVAL_EVENT * 17 / 10);
+//        new Timer().schedule(new TimerTask() {
+//            public void run() {
+//                SnapShotSave snapShotSave = new SnapShotSave();
+//                snapShotSave.startSave(thisEventJpgPath, 4);
+//            }
+//        }, INTERVAL_EVENT * 17 / 10);
 
+        gpsTracker.askLocation();
         new Timer().schedule(new TimerTask() {
             public void run() {
                 new EventMerge().merge(startTime);

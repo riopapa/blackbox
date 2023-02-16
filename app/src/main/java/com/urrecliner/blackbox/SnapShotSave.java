@@ -33,7 +33,7 @@ class SnapShotSave {
         else if (phase == 4)
             maxSize = share_image_size - 20;
 
-        byte [][] jpgBytes = imageStack.getClone();
+        byte [][] jpgBytes = imageStack.getClone(imageStack.snapNowPos);
 
         startBias = phase * 200;
         prefixTime = path2Write.getName();
