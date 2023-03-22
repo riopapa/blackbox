@@ -43,8 +43,10 @@ public class EventRecord {
         utils.setVolume(70);
         new Timer().schedule(new TimerTask() {
             public void run() {
+                imageStack.addShot(shot_00);
+                imageStack.addShot(shot_00);
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, 1);
+                snapShotSave.startSave(thisEventJpgPath, 1, false);
             }
         }, 100);
 
@@ -52,21 +54,23 @@ public class EventRecord {
             public void run() {
                 imageStack.addShot(shot_01);
                 imageStack.addShot(shot_01);
+                imageStack.addShot(shot_01);
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, 2);
+                snapShotSave.startSave(thisEventJpgPath, 2, false);
                 zoomHuge = false;
             }
-        }, INTERVAL_EVENT * 6 / 10);
+        }, INTERVAL_EVENT * 5 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 imageStack.addShot(shot_02);
                 imageStack.addShot(shot_02);
+                imageStack.addShot(shot_02);
                 SnapShotSave snapShotSave = new SnapShotSave();
-                snapShotSave.startSave(thisEventJpgPath, 3);
+                snapShotSave.startSave(thisEventJpgPath, 3, true);
                 zoomHuge = false;
             }
-        }, INTERVAL_EVENT * 11 / 10);
+        }, INTERVAL_EVENT * 10 / 10);
 
 //        new Timer().schedule(new TimerTask() {
 //            public void run() {
@@ -80,7 +84,7 @@ public class EventRecord {
             public void run() {
                 new EventMerge().merge(startTime);
             }
-        }, INTERVAL_EVENT * 8 / 10);
+        }, INTERVAL_EVENT * 9 / 10);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

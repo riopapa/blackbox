@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 
     private static final String logID = "Main";
     private static final int SETTING_ACTIVITY = 101;
-    private boolean recordable = true;
+    private boolean recordable = true, started = false;
     private static boolean isRunning = false;
     CameraSub cameraSub;
 
@@ -128,16 +128,13 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         prepareMain();
-        String s = "MAX_IMAGES_SIZE="+ share_image_size +"\nINTERVAL_SNAP_SHOT_SAVE="+ share_snap_interval +"\nINTERVAL_LEFT_RIGHT="+ share_left_right_interval;
-        utils.logBoth("PREFERENCE",s);
-        String msg = new DiskSpace().squeeze(mPackageNormalPath);
-        if (msg.length() > 0)
-            utils.logBoth("DISK", msg);
     }
 
     private void prepareMain() {
 
-        utils.logOnly(logID, "Main Started ..");
+        if (started)
+            return;
+        started = true;
         startStopExit = new StartStopExit();
 
         vBtnEvent = findViewById(R.id.btnEvent);
@@ -210,6 +207,11 @@ public class MainActivity extends Activity {
         }, DELAY_AUTO_RECORDING);
 
         utils.setVolume(70);
+        String msg = new DiskSpace().squeeze(mPackageNormalPath);
+        if (msg.length() > 0)
+            utils.logBoth("DISK", msg);
+        String s = "\nImage_Arrays = "+ share_image_size +"\nInterval (Shot:"+ share_snap_interval +") LeftRight("+ share_left_right_interval+")";
+        utils.logBoth("Preference",s);
     }
 
     final static Handler startHandler = new Handler(Looper.getMainLooper()) {

@@ -21,15 +21,15 @@ class SnapShotSave {
     int startBias;
     int maxSize;
     String prefixTime;
-    void startSave(File path2Write, final int phase) {
+    void startSave(File path2Write, final int phase, boolean last) {
 
         final int minPos = 0;
 
         maxSize = share_image_size - 1;
         if (phase == 2)
-            maxSize = share_image_size - 2;
+            maxSize = share_image_size - 12;
         else if (phase == 3)
-            maxSize = share_image_size - 3;
+            maxSize = share_image_size - 13;
         else if (phase == 4)
             maxSize = share_image_size - 20;
 
@@ -50,7 +50,7 @@ class SnapShotSave {
                     Log.e( phase+" image error "+i, imageFile.getName());
                 jpgBytes[i] = null;
             }
-            if (phase == 4) { // last phase
+            if (last) { // last phase
                 utils.beepOnce(3, 1f);
                 mActivity.runOnUiThread(() -> {
                     String countStr = "" + ++CountEvent;

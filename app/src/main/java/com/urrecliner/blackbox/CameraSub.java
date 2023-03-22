@@ -13,10 +13,8 @@ import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mImageSize;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mPreviewReader;
 import static com.urrecliner.blackbox.Vars.mPreviewSize;
 import static com.urrecliner.blackbox.Vars.mVideoSize;
-import static com.urrecliner.blackbox.Vars.photoSaved;
 import static com.urrecliner.blackbox.Vars.share_snap_interval;
 import static com.urrecliner.blackbox.Vars.utils;
 
@@ -41,8 +39,10 @@ public class CameraSub {
     String mCameraId = null;
 
     void readyCamera() {
-        setupCamera();
-        connectCamera();
+        if (mCameraId == null) {
+            setupCamera();
+            connectCamera();
+        }
     }
 
     void setupCamera() {
@@ -62,15 +62,10 @@ public class CameraSub {
                     mVideoSize = sizes[2];
                 }
             }
-        } catch (CameraAccessException e) {
-            utils.logE("CameraSub", "CameraAccessException", e);
-        }
-        try {
             mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, IMAGE_BUFFER_MAX_IMAGES);
             mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundImage);
-            mPreviewReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(), ImageFormat.RGB_565, 1);    // x, y swap
-        } catch (Exception e) {
-            utils.logE("CameraSub", "Exception ", e);
+        } catch (CameraAccessException e) {
+            utils.logE("CameraSub", "CameraAccessException", e);
         }
 
     }
@@ -116,15 +111,9 @@ public class CameraSub {
         Image image = reader.acquireLatestImage();
         if (image == null)
             return;
-//        if (photoSaved) {
-//            image.close();
-//            return;
-//        }
         shotTime += share_snap_interval;
         imageStack.addBuff(image.getPlanes()[0].getBuffer());
         image.close();
-//        System.gc();    // force garbage collection
-//        photoSaved = true;
         leftRight = !leftRight;
     };
 }

@@ -84,7 +84,7 @@ public class Vars {
     final static int DELAY_WAIT_EXIT_SECONDS = 3;
     static Handler mBackgroundImage, mBackgroundCamera;
     static Size mPreviewSize, mVideoSize, mImageSize;
-    static ImageReader mImageReader, mPreviewReader;
+    static ImageReader mImageReader;
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder;
     static int speedInt = -1;

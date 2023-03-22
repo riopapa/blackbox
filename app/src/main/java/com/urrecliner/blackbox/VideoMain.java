@@ -85,9 +85,11 @@ public class VideoMain {
         }
         if (surface_Preview == null)
             utils.logBoth(logID, "surface_Preview is null ERROR ///");
-        surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-        previewSurface = new Surface(surface_Preview);
-        mVideoRequestBuilder.addTarget(previewSurface);
+        if (!SUFFIX.equals(PhoneE.N)) {
+            surface_Preview.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+            previewSurface = new Surface(surface_Preview);
+            mVideoRequestBuilder.addTarget(previewSurface);
+        }
         recordSurface = mediaRecorder.getSurface();
         mVideoRequestBuilder.addTarget(recordSurface);
         photoSurface = mImageReader.getSurface();
@@ -103,9 +105,10 @@ public class VideoMain {
 
     void buildCameraSession() {
         List<Surface> captureList;
-        captureList = Arrays.asList(previewSurface, recordSurface, photoSurface);
         if (SUFFIX.equals(PhoneE.N))    // note 20 ?
-          captureList = Arrays.asList(recordSurface, photoSurface);
+            captureList = Arrays.asList(recordSurface, photoSurface);
+        else
+            captureList = Arrays.asList(previewSurface, recordSurface, photoSurface);
         try {
             mCameraDevice.createCaptureSession(captureList, cameraStateCallBack(), null);
         } catch (Exception e) {
