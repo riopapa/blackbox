@@ -9,6 +9,7 @@ import static com.urrecliner.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.urrecliner.blackbox.Vars.mCameraBuilder;
 import static com.urrecliner.blackbox.Vars.mCameraDevice;
 import static com.urrecliner.blackbox.Vars.mCaptureSession;
+import static com.urrecliner.blackbox.Vars.mContext;
 import static com.urrecliner.blackbox.Vars.mImageReader;
 import static com.urrecliner.blackbox.Vars.mImageSize;
 import static com.urrecliner.blackbox.Vars.mIsRecording;
@@ -39,6 +40,8 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
 import android.view.Surface;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -214,7 +217,10 @@ public class VideoMain {
             }, 10);
             String s = ++nextCount + "";
             vTextRecord.setText(s);
-            vBtnRecord.setImageResource((nextCount%2 == 0) ? R.mipmap.recording_on: R.mipmap.recording_on2);
+            vBtnRecord.setImageResource((nextCount%2 == 0) ? R.drawable.circle0: R.drawable.circle1);
+            Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
+            aniRotateClk.setRepeatCount(Animation.INFINITE);
+            vBtnRecord.startAnimation(aniRotateClk);
 
         }
     }

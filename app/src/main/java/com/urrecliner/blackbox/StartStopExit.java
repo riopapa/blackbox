@@ -20,6 +20,8 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,7 +34,10 @@ class StartStopExit {
         mActivity.runOnUiThread(() -> {
             utils.logBoth(logID, "Record On");
             mIsRecording = true;
-            vBtnRecord.setImageResource(R.mipmap.recording_on);
+            vBtnRecord.setImageResource(R.drawable.circle0);
+            Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
+            aniRotateClk.setRepeatCount(Animation.INFINITE);
+            vBtnRecord.startAnimation(aniRotateClk);
             videoMain.prepareRecord();
             new Timer().schedule(new TimerTask() {
                 public void run() {
