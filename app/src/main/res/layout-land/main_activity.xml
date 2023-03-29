@@ -163,7 +163,7 @@
             android:layout_height="match_parent"
             style="@android:style/Widget.Material.Light.Button.Borderless"
             android:contentDescription="@string/play_stop"
-            android:src="@mipmap/recording_off" />
+            android:src="@drawable/recording_off" />
 
         <TextView
             android:id="@+id/textCountRecords"

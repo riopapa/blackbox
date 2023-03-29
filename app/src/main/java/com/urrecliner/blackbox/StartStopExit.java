@@ -97,7 +97,7 @@ class StartStopExit {
     }
 
     void stopVideo() {
-        vBtnRecord.setImageResource(R.mipmap.recording_off);
+        vBtnRecord.setImageResource(R.drawable.recording_off);
         mIsRecording = false;
         try {
             timerSnapCamera.cancel();
