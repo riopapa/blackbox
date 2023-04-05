@@ -1,22 +1,22 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
-import static com.urrecliner.blackbox.PhotoCapture.leftRight;
-import static com.urrecliner.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.imageStack;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mBackgroundCamera;
-import static com.urrecliner.blackbox.Vars.mBackgroundImage;
-import static com.urrecliner.blackbox.Vars.mCameraCharacteristics;
-import static com.urrecliner.blackbox.Vars.mCameraDevice;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.mImageReader;
-import static com.urrecliner.blackbox.Vars.mImageSize;
-import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mPreviewSize;
-import static com.urrecliner.blackbox.Vars.mVideoSize;
-import static com.urrecliner.blackbox.Vars.share_snap_interval;
-import static com.urrecliner.blackbox.Vars.utils;
+import static com.riopapa.blackbox.PhotoCapture.leftRight;
+import static com.riopapa.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
+import static com.riopapa.blackbox.Vars.SUFFIX;
+import static com.riopapa.blackbox.Vars.imageStack;
+import static com.riopapa.blackbox.Vars.mActivity;
+import static com.riopapa.blackbox.Vars.mBackgroundCamera;
+import static com.riopapa.blackbox.Vars.mBackgroundImage;
+import static com.riopapa.blackbox.Vars.mCameraCharacteristics;
+import static com.riopapa.blackbox.Vars.mCameraDevice;
+import static com.riopapa.blackbox.Vars.mContext;
+import static com.riopapa.blackbox.Vars.mImageReader;
+import static com.riopapa.blackbox.Vars.mImageSize;
+import static com.riopapa.blackbox.Vars.mIsRecording;
+import static com.riopapa.blackbox.Vars.mPreviewSize;
+import static com.riopapa.blackbox.Vars.mVideoSize;
+import static com.riopapa.blackbox.Vars.share_snap_interval;
+import static com.riopapa.blackbox.Vars.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -32,7 +32,7 @@ import android.util.Size;
 
 import androidx.core.content.ContextCompat;
 
-import com.urrecliner.blackbox.utility.CameraSize;
+import com.riopapa.blackbox.utility.CameraSize;
 
 public class CameraSub {
     CameraManager mCameraManager;

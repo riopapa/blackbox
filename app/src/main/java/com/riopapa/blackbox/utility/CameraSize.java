@@ -1,13 +1,13 @@
-package com.urrecliner.blackbox.utility;
+package com.riopapa.blackbox.utility;
 
-import static com.urrecliner.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.utils;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.util.Log;
 import android.util.Size;
 
-import com.urrecliner.blackbox.Vars;
+import com.riopapa.blackbox.Vars;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

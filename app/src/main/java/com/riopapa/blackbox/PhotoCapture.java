@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
 import android.graphics.Rect;
 import android.hardware.camera2.CameraCaptureSession;
@@ -6,19 +6,19 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 
-import static com.urrecliner.blackbox.Vars.mCameraBuilder;
-import static com.urrecliner.blackbox.Vars.photoSaved;
-import static com.urrecliner.blackbox.Vars.mBackgroundImage;
-import static com.urrecliner.blackbox.Vars.mVideoRequestBuilder;
-import static com.urrecliner.blackbox.Vars.mCaptureSession;
-import static com.urrecliner.blackbox.Vars.photoSurface;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.zoomBiggerL;
-import static com.urrecliner.blackbox.Vars.zoomBiggerR;
-import static com.urrecliner.blackbox.Vars.zoomHuge;
-import static com.urrecliner.blackbox.Vars.zoomHugeC;
-import static com.urrecliner.blackbox.Vars.zoomHugeL;
-import static com.urrecliner.blackbox.Vars.zoomHugeR;
+import static com.riopapa.blackbox.Vars.mCameraBuilder;
+import static com.riopapa.blackbox.Vars.photoSaved;
+import static com.riopapa.blackbox.Vars.mBackgroundImage;
+import static com.riopapa.blackbox.Vars.mVideoRequestBuilder;
+import static com.riopapa.blackbox.Vars.mCaptureSession;
+import static com.riopapa.blackbox.Vars.photoSurface;
+import static com.riopapa.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.zoomBiggerL;
+import static com.riopapa.blackbox.Vars.zoomBiggerR;
+import static com.riopapa.blackbox.Vars.zoomHuge;
+import static com.riopapa.blackbox.Vars.zoomHugeC;
+import static com.riopapa.blackbox.Vars.zoomHugeL;
+import static com.riopapa.blackbox.Vars.zoomHugeR;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;

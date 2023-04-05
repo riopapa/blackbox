@@ -1,13 +1,13 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
-import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
-import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.mExitApplication;
-import static com.urrecliner.blackbox.Vars.mPackageEventPath;
-import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.DATE_PREFIX;
+import static com.riopapa.blackbox.Vars.FORMAT_TIME;
+import static com.riopapa.blackbox.Vars.SUFFIX;
+import static com.riopapa.blackbox.Vars.gpsTracker;
+import static com.riopapa.blackbox.Vars.mExitApplication;
+import static com.riopapa.blackbox.Vars.mPackageEventPath;
+import static com.riopapa.blackbox.Vars.mPackageWorkingPath;
+import static com.riopapa.blackbox.Vars.utils;
 
 import android.graphics.Color;
 import android.media.MediaPlayer;

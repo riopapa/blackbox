@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -9,7 +9,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import android.widget.RemoteViews;
 
-import static com.urrecliner.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.utils;
 
 public class NewAppWidget_NotUsed extends AppWidgetProvider {
 

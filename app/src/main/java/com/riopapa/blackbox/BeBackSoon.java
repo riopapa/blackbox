@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -7,11 +7,11 @@ import android.os.Looper;
 import android.os.Process;
 import android.os.SystemClock;
 
-import static com.urrecliner.blackbox.Vars.DELAY_WAIT_EXIT_SECONDS;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.mExitApplication;
-import static com.urrecliner.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.DELAY_WAIT_EXIT_SECONDS;
+import static com.riopapa.blackbox.Vars.mActivity;
+import static com.riopapa.blackbox.Vars.mContext;
+import static com.riopapa.blackbox.Vars.mExitApplication;
+import static com.riopapa.blackbox.Vars.utils;
 
 public class BeBackSoon extends AsyncTask<String, String, String> {
 
@@ -40,7 +40,7 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
 //                    utils.beepOnce(7,0.7f); // I will be back
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(() -> {
-            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.urrecliner.blackboxwait");
+            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.riopapa.blackwait");
             assert sendIntent != null;
             sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mActivity.startActivity(sendIntent);

@@ -24,7 +24,7 @@ android {
             }
         }
     }
-    namespace 'com.urrecliner.blackbox'
+    namespace 'com.riopapa.blackbox'
 }
 
 dependencies {

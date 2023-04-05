@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
 import android.os.SystemClock;
 import android.util.Log;
@@ -7,14 +7,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.imageStack;
-import static com.urrecliner.blackbox.Vars.share_image_size;
-import static com.urrecliner.blackbox.Vars.activeEventCount;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vTextActiveCount;
-import static com.urrecliner.blackbox.Vars.vTextCountEvent;
+import static com.riopapa.blackbox.Vars.CountEvent;
+import static com.riopapa.blackbox.Vars.imageStack;
+import static com.riopapa.blackbox.Vars.share_image_size;
+import static com.riopapa.blackbox.Vars.activeEventCount;
+import static com.riopapa.blackbox.Vars.mActivity;
+import static com.riopapa.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.vTextActiveCount;
+import static com.riopapa.blackbox.Vars.vTextCountEvent;
 
 class SnapShotSave {
 

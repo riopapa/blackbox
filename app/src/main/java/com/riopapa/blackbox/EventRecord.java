@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
 import android.graphics.Color;
 import android.widget.Toast;
@@ -7,23 +7,23 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
-import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.INTERVAL_EVENT;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.activeEventCount;
-import static com.urrecliner.blackbox.Vars.imageStack;
-import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
-import static com.urrecliner.blackbox.Vars.shot_02;
-import static com.urrecliner.blackbox.Vars.shot_00;
-import static com.urrecliner.blackbox.Vars.shot_01;
-import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vTextActiveCount;
-import static com.urrecliner.blackbox.Vars.zoomHuge;
+import static com.riopapa.blackbox.Vars.CountEvent;
+import static com.riopapa.blackbox.Vars.DATE_PREFIX;
+import static com.riopapa.blackbox.Vars.FORMAT_TIME;
+import static com.riopapa.blackbox.Vars.INTERVAL_EVENT;
+import static com.riopapa.blackbox.Vars.SUFFIX;
+import static com.riopapa.blackbox.Vars.activeEventCount;
+import static com.riopapa.blackbox.Vars.imageStack;
+import static com.riopapa.blackbox.Vars.mPackageEventJpgPath;
+import static com.riopapa.blackbox.Vars.shot_02;
+import static com.riopapa.blackbox.Vars.shot_00;
+import static com.riopapa.blackbox.Vars.shot_01;
+import static com.riopapa.blackbox.Vars.gpsTracker;
+import static com.riopapa.blackbox.Vars.mActivity;
+import static com.riopapa.blackbox.Vars.mIsRecording;
+import static com.riopapa.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.vTextActiveCount;
+import static com.riopapa.blackbox.Vars.zoomHuge;
 
 public class EventRecord {
 
@@ -35,7 +35,7 @@ public class EventRecord {
         imageStack.addShot(shot_00);
 
         zoomHuge = true;
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT / 3;
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT;
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);

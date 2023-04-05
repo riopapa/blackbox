@@ -1,50 +1,49 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
-import static com.urrecliner.blackbox.Vars.CountEvent;
-import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
-import static com.urrecliner.blackbox.Vars.DELAY_AUTO_RECORDING;
-import static com.urrecliner.blackbox.Vars.displayBattery;
-import static com.urrecliner.blackbox.Vars.displayTime;
-import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.imageStack;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mPackageEventJpgPath;
-import static com.urrecliner.blackbox.Vars.mPackageEventPath;
-import static com.urrecliner.blackbox.Vars.mPackageLogPath;
-import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
-import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
-import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.share_image_size;
-import static com.urrecliner.blackbox.Vars.share_left_right_interval;
-import static com.urrecliner.blackbox.Vars.share_snap_interval;
-import static com.urrecliner.blackbox.Vars.startStopExit;
-import static com.urrecliner.blackbox.Vars.tvDegree;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vBtnEvent;
-import static com.urrecliner.blackbox.Vars.vBtnRecord;
-import static com.urrecliner.blackbox.Vars.vExitApp;
-import static com.urrecliner.blackbox.Vars.vImgBattery;
-import static com.urrecliner.blackbox.Vars.vKm;
-import static com.urrecliner.blackbox.Vars.vPreviewView;
-import static com.urrecliner.blackbox.Vars.vTextActiveCount;
-import static com.urrecliner.blackbox.Vars.vTextBattery;
-import static com.urrecliner.blackbox.Vars.vTextCountEvent;
-import static com.urrecliner.blackbox.Vars.vTextDate;
-import static com.urrecliner.blackbox.Vars.vTextKilo;
-import static com.urrecliner.blackbox.Vars.vTextLogInfo;
-import static com.urrecliner.blackbox.Vars.vTextRecord;
-import static com.urrecliner.blackbox.Vars.vTextSpeed;
-import static com.urrecliner.blackbox.Vars.vTextTime;
-import static com.urrecliner.blackbox.Vars.viewFinderActive;
+import static com.riopapa.blackbox.Vars.CountEvent;
+import static com.riopapa.blackbox.Vars.DATE_PREFIX;
+import static com.riopapa.blackbox.Vars.DELAY_AUTO_RECORDING;
+import static com.riopapa.blackbox.Vars.displayBattery;
+import static com.riopapa.blackbox.Vars.displayTime;
+import static com.riopapa.blackbox.Vars.gpsTracker;
+import static com.riopapa.blackbox.Vars.imageStack;
+import static com.riopapa.blackbox.Vars.mActivity;
+import static com.riopapa.blackbox.Vars.mContext;
+import static com.riopapa.blackbox.Vars.mIsRecording;
+import static com.riopapa.blackbox.Vars.mPackageEventJpgPath;
+import static com.riopapa.blackbox.Vars.mPackageEventPath;
+import static com.riopapa.blackbox.Vars.mPackageLogPath;
+import static com.riopapa.blackbox.Vars.mPackageNormalDatePath;
+import static com.riopapa.blackbox.Vars.mPackageNormalPath;
+import static com.riopapa.blackbox.Vars.mPackageWorkingPath;
+import static com.riopapa.blackbox.Vars.share_image_size;
+import static com.riopapa.blackbox.Vars.share_left_right_interval;
+import static com.riopapa.blackbox.Vars.share_snap_interval;
+import static com.riopapa.blackbox.Vars.startStopExit;
+import static com.riopapa.blackbox.Vars.tvDegree;
+import static com.riopapa.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.vBtnEvent;
+import static com.riopapa.blackbox.Vars.vBtnRecord;
+import static com.riopapa.blackbox.Vars.vExitApp;
+import static com.riopapa.blackbox.Vars.vImgBattery;
+import static com.riopapa.blackbox.Vars.vKm;
+import static com.riopapa.blackbox.Vars.vPreviewView;
+import static com.riopapa.blackbox.Vars.vTextActiveCount;
+import static com.riopapa.blackbox.Vars.vTextBattery;
+import static com.riopapa.blackbox.Vars.vTextCountEvent;
+import static com.riopapa.blackbox.Vars.vTextDate;
+import static com.riopapa.blackbox.Vars.vTextKilo;
+import static com.riopapa.blackbox.Vars.vTextLogInfo;
+import static com.riopapa.blackbox.Vars.vTextRecord;
+import static com.riopapa.blackbox.Vars.vTextSpeed;
+import static com.riopapa.blackbox.Vars.vTextTime;
+import static com.riopapa.blackbox.Vars.viewFinderActive;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -52,17 +51,16 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
-import com.urrecliner.blackbox.utility.Celcius;
-import com.urrecliner.blackbox.utility.DiskSpace;
-import com.urrecliner.blackbox.utility.ImageStack;
-import com.urrecliner.blackbox.utility.Permission;
-import com.urrecliner.blackbox.utility.SettingsActivity;
+import com.riopapa.blackbox.utility.Celcius;
+import com.riopapa.blackbox.utility.DiskSpace;
+import com.riopapa.blackbox.utility.ImageStack;
+import com.riopapa.blackbox.utility.Permission;
+import com.riopapa.blackbox.utility.SettingsActivity;
 
 import java.io.File;
 import java.util.Timer;
@@ -72,7 +70,7 @@ public class MainActivity extends Activity {
 
     private static final String logID = "Main";
     private static final int SETTING_ACTIVITY = 101;
-    private boolean recordable = true, started = false;
+    private boolean keyBack = false, started = false;
     private static boolean isRunning = false;
     CameraSub cameraSub;
 
@@ -159,7 +157,6 @@ public class MainActivity extends Activity {
             btnBeBack.setImageAlpha(50);
             if (mIsRecording)
                 stopHandler.sendEmptyMessage(0);
-//                reStarting();
             new BeBackSoon().execute("x");
         });
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
@@ -210,7 +207,7 @@ public class MainActivity extends Activity {
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
         if (msg.length() > 0)
             utils.logBoth("DISK", msg);
-        String s = "\nImage_Arrays = "+ share_image_size +"\nInterval (Shot:"+ share_snap_interval +") LeftRight("+ share_left_right_interval+")";
+        String s = "\nImage_Arrays = "+ share_image_size +"\nInterval (Shot: "+ share_snap_interval +", LeftRight: "+ share_left_right_interval+")";
         utils.logBoth("Preference",s);
     }
 
@@ -282,7 +279,7 @@ public class MainActivity extends Activity {
         utils.readyPackageFolder(mPackageNormalDatePath);
     }
 
-//    long keyOldTime = 0, keyNowTime = 0;
+    long keyOldTime = 0, keyNowTime = 0;
     @Override
     public boolean onKeyDown(final int keyCode, KeyEvent event) {
 
@@ -291,15 +288,23 @@ public class MainActivity extends Activity {
             case KeyEvent.KEYCODE_VOLUME_UP:
                 if (!mIsRecording)
                     break;
-                if (recordable) {
-                    recordable = false;
-                    startEventSaving();
-                }
-                new Timer().schedule(new TimerTask() {
-                    public void run() {
-                        recordable = true;
-                    }
-                }, 5000);
+                keyNowTime = System.currentTimeMillis();
+                if (keyOldTime == 0) {  // first Time
+                    keyOldTime = keyNowTime;
+                    new Timer().schedule(new TimerTask() {
+                        public void run() {
+                            if (keyOldTime > 0)
+                                startEventSaving();
+                            keyOldTime = 0;
+                        }
+                    }, 3000);
+                } else if (keyNowTime - keyOldTime < 2000 && keyNowTime - keyOldTime > 300) {
+                    keyOldTime = 0;
+                    if (mIsRecording)
+                        stopHandler.sendEmptyMessage(0);
+                    new BeBackSoon().execute("x");
+                } else
+                    keyOldTime = 0;
                 break;
             default:
                 utils.logBoth("key", keyCode + " Pressed");

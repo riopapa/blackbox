@@ -1,8 +1,8 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.speedInt;
-import static com.urrecliner.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.mActivity;
+import static com.riopapa.blackbox.Vars.speedInt;
+import static com.riopapa.blackbox.Vars.utils;
 
 import android.Manifest;
 import android.app.Activity;

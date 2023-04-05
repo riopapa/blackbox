@@ -1,19 +1,19 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
-import static com.urrecliner.blackbox.Vars.displayTime;
-import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.mExitApplication;
-import static com.urrecliner.blackbox.Vars.mIsRecording;
-import static com.urrecliner.blackbox.Vars.mediaRecorder;
-import static com.urrecliner.blackbox.Vars.photoCapture;
-import static com.urrecliner.blackbox.Vars.share_left_right_interval;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vBtnRecord;
-import static com.urrecliner.blackbox.Vars.videoMain;
+import static com.riopapa.blackbox.Vars.INTERVAL_NORMAL;
+import static com.riopapa.blackbox.Vars.displayTime;
+import static com.riopapa.blackbox.Vars.gpsTracker;
+import static com.riopapa.blackbox.Vars.mActivity;
+import static com.riopapa.blackbox.Vars.mContext;
+import static com.riopapa.blackbox.Vars.mExitApplication;
+import static com.riopapa.blackbox.Vars.mIsRecording;
+import static com.riopapa.blackbox.Vars.mediaRecorder;
+import static com.riopapa.blackbox.Vars.photoCapture;
+import static com.riopapa.blackbox.Vars.share_left_right_interval;
+import static com.riopapa.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.vBtnRecord;
+import static com.riopapa.blackbox.Vars.videoMain;
 
 import android.app.Activity;
 import android.content.Intent;

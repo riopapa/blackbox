@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -10,7 +10,7 @@ import com.googlecode.mp4parser.authoring.Track;
 import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
-import com.urrecliner.blackbox.utility.DiskSpace;
+import com.riopapa.blackbox.utility.DiskSpace;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,16 +24,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.urrecliner.blackbox.Vars.DATE_PREFIX;
-import static com.urrecliner.blackbox.Vars.FORMAT_TIME;
-import static com.urrecliner.blackbox.Vars.INTERVAL_NORMAL;
-import static com.urrecliner.blackbox.Vars.SUFFIX;
-import static com.urrecliner.blackbox.Vars.gpsTracker;
-import static com.urrecliner.blackbox.Vars.mPackageNormalDatePath;
-import static com.urrecliner.blackbox.Vars.mPackageNormalPath;
-import static com.urrecliner.blackbox.Vars.mPackageWorkingPath;
-import static com.urrecliner.blackbox.Vars.sdfTime;
-import static com.urrecliner.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.DATE_PREFIX;
+import static com.riopapa.blackbox.Vars.FORMAT_TIME;
+import static com.riopapa.blackbox.Vars.INTERVAL_NORMAL;
+import static com.riopapa.blackbox.Vars.SUFFIX;
+import static com.riopapa.blackbox.Vars.gpsTracker;
+import static com.riopapa.blackbox.Vars.mPackageNormalDatePath;
+import static com.riopapa.blackbox.Vars.mPackageNormalPath;
+import static com.riopapa.blackbox.Vars.mPackageWorkingPath;
+import static com.riopapa.blackbox.Vars.sdfTime;
+import static com.riopapa.blackbox.Vars.utils;
 
 class NormalMerge {
 

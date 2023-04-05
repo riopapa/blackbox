@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox.utility;
+package com.riopapa.blackbox.utility;
 
 import java.nio.ByteBuffer;
 

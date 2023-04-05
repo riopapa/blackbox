@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,11 +13,11 @@ import android.os.BatteryManager;
 import android.util.Log;
 import android.view.View;
 
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.vImgBattery;
-import static com.urrecliner.blackbox.Vars.vTextBattery;
-import static com.urrecliner.blackbox.Vars.vPreviewView;
+import static com.riopapa.blackbox.Vars.mActivity;
+import static com.riopapa.blackbox.Vars.mContext;
+import static com.riopapa.blackbox.Vars.vImgBattery;
+import static com.riopapa.blackbox.Vars.vTextBattery;
+import static com.riopapa.blackbox.Vars.vPreviewView;
 
 class DisplayBattery  {
 

@@ -1,4 +1,4 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,7 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.urrecliner.blackbox.utility.ImageStack;
+import com.riopapa.blackbox.utility.ImageStack;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -81,7 +81,7 @@ public class Vars {
     static int CountEvent;
     static int activeEventCount = 0;
     final static int DELAY_AUTO_RECORDING = 3000;
-    final static int DELAY_WAIT_EXIT_SECONDS = 3;
+    final static int DELAY_WAIT_EXIT_SECONDS = 2;
     static Handler mBackgroundImage, mBackgroundCamera;
     static Size mPreviewSize, mVideoSize, mImageSize;
     static ImageReader mImageReader;

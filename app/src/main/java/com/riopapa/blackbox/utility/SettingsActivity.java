@@ -1,17 +1,17 @@
-package com.urrecliner.blackbox.utility;
+package com.riopapa.blackbox.utility;
 
-import static com.urrecliner.blackbox.Vars.sharedEditor;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.share_image_size;
-import static com.urrecliner.blackbox.Vars.share_left_right_interval;
-import static com.urrecliner.blackbox.Vars.share_snap_interval;
-import static com.urrecliner.blackbox.Vars.sharedPref;
+import static com.riopapa.blackbox.Vars.sharedEditor;
+import static com.riopapa.blackbox.Vars.mContext;
+import static com.riopapa.blackbox.Vars.share_image_size;
+import static com.riopapa.blackbox.Vars.share_left_right_interval;
+import static com.riopapa.blackbox.Vars.share_snap_interval;
+import static com.riopapa.blackbox.Vars.sharedPref;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.urrecliner.blackbox.R;
+import com.riopapa.blackbox.R;
 
 public class SettingsActivity extends AppCompatActivity  {
 

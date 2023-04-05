@@ -1,12 +1,12 @@
-package com.urrecliner.blackbox;
+package com.riopapa.blackbox;
 
-import static com.urrecliner.blackbox.Vars.displayBattery;
-import static com.urrecliner.blackbox.Vars.mActivity;
-import static com.urrecliner.blackbox.Vars.mContext;
-import static com.urrecliner.blackbox.Vars.tvDegree;
-import static com.urrecliner.blackbox.Vars.utils;
-import static com.urrecliner.blackbox.Vars.vTextTime;
-import com.urrecliner.blackbox.utility.Celcius;
+import static com.riopapa.blackbox.Vars.displayBattery;
+import static com.riopapa.blackbox.Vars.mActivity;
+import static com.riopapa.blackbox.Vars.mContext;
+import static com.riopapa.blackbox.Vars.tvDegree;
+import static com.riopapa.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.vTextTime;
+import com.riopapa.blackbox.utility.Celcius;
 
 import android.graphics.Color;
 import androidx.core.content.ContextCompat;
