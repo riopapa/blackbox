@@ -9,10 +9,12 @@ import static com.riopapa.blackbox.Vars.mContext;
 import static com.riopapa.blackbox.Vars.mExitApplication;
 import static com.riopapa.blackbox.Vars.mIsRecording;
 import static com.riopapa.blackbox.Vars.mediaRecorder;
+import static com.riopapa.blackbox.Vars.nextCount;
 import static com.riopapa.blackbox.Vars.photoCapture;
 import static com.riopapa.blackbox.Vars.share_left_right_interval;
 import static com.riopapa.blackbox.Vars.utils;
-import static com.riopapa.blackbox.Vars.vBtnRecord;
+import static com.riopapa.blackbox.Vars.vPower;
+import static com.riopapa.blackbox.Vars.vTextRecord;
 import static com.riopapa.blackbox.Vars.videoMain;
 
 import android.app.Activity;
@@ -34,10 +36,12 @@ class StartStopExit {
         mActivity.runOnUiThread(() -> {
             utils.logBoth(logID, "Record On");
             mIsRecording = true;
-            vBtnRecord.setImageResource(R.drawable.circle0);
+            vPower.setImageResource(R.drawable.circle0);
+            nextCount = 0;
+            vTextRecord.setText("0");
             Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
             aniRotateClk.setRepeatCount(Animation.INFINITE);
-            vBtnRecord.startAnimation(aniRotateClk);
+            vPower.startAnimation(aniRotateClk);
             videoMain.prepareRecord();
             new Timer().schedule(new TimerTask() {
                 public void run() {
@@ -57,8 +61,10 @@ class StartStopExit {
         public void handleMessage(Message msg) {
             if (msg.what == 0)
                 photoCapture.zoomShotCamera();
-            else
+            else {
+                photoCapture = new PhotoCapture();
                 photoCapture.photoInit();
+            }
         }
     };
 
@@ -97,7 +103,7 @@ class StartStopExit {
     }
 
     void stopVideo() {
-        vBtnRecord.setImageResource(R.drawable.recording_off);
+        vPower.setImageResource(R.drawable.recording_off);
         mIsRecording = false;
         try {
             timerSnapCamera.cancel();
@@ -127,6 +133,7 @@ class StartStopExit {
             utils.beepOnce(8, 1f); // Exit BlackBox
         mExitApplication = true;
         if (mIsRecording) stopVideo();
+        mIsRecording = false;
         displayTime.stop();
         gpsTracker.stopGPS();
         new Timer().schedule(new TimerTask() {

@@ -18,12 +18,13 @@ import static com.riopapa.blackbox.Vars.mPreviewSize;
 import static com.riopapa.blackbox.Vars.mVideoRequestBuilder;
 import static com.riopapa.blackbox.Vars.mVideoSize;
 import static com.riopapa.blackbox.Vars.mediaRecorder;
+import static com.riopapa.blackbox.Vars.nextCount;
 import static com.riopapa.blackbox.Vars.photoSurface;
 import static com.riopapa.blackbox.Vars.previewSurface;
 import static com.riopapa.blackbox.Vars.recordSurface;
 import static com.riopapa.blackbox.Vars.surface_Preview;
 import static com.riopapa.blackbox.Vars.utils;
-import static com.riopapa.blackbox.Vars.vBtnRecord;
+import static com.riopapa.blackbox.Vars.vPower;
 import static com.riopapa.blackbox.Vars.vPreviewView;
 import static com.riopapa.blackbox.Vars.vTextRecord;
 import static com.riopapa.blackbox.Vars.zoomBiggerL;
@@ -203,7 +204,6 @@ public class VideoMain {
         return new File(mPackageWorkingPath, time + ".mp4");
     }
 
-    private int nextCount = 0;
     private void assignNextFile() {
         if (mIsRecording) {
             new Timer().schedule(new TimerTask() {
@@ -217,10 +217,10 @@ public class VideoMain {
             }, 10);
             String s = ++nextCount + "";
             vTextRecord.setText(s);
-            vBtnRecord.setImageResource((nextCount%2 == 0) ? R.drawable.circle0: R.drawable.circle1);
+            vPower.setImageResource((nextCount%2 == 0) ? R.drawable.circle0: R.drawable.circle1);
             Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
             aniRotateClk.setRepeatCount(Animation.INFINITE);
-            vBtnRecord.startAnimation(aniRotateClk);
+            vPower.startAnimation(aniRotateClk);
 
         }
     }

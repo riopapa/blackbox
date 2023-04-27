@@ -4,7 +4,36 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:keepScreenOn="true"
-    android:background="@color/baseColor">
+    android:background="@color/baseColor"
+                                                   android:id="@+id/main_layout"
+    >
+
+    <FrameLayout
+        android:id="@+id/frameRecord"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="18dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <ImageButton
+            android:id="@+id/btnPower"
+            style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/km"
+            android:src="@drawable/power" />
+
+        <TextView
+            android:id="@+id/textCountRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text=" "
+            android:textColor="#354EB5"
+            android:textSize="28sp" />
+    </FrameLayout>
 
     <!--Date and Time-->
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -12,7 +41,7 @@
         android:layout_width="148sp"
         android:layout_height="90sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/btnExit"
+        app:layout_constraintLeft_toRightOf="@id/frameRecord"
         android:layout_marginTop="16dp"
         android:orientation="vertical">
 
@@ -124,17 +153,7 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <!--Exit , Napping -->
-    <ImageButton
-        android:id="@+id/btnExit"
-        style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_margin="18dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:contentDescription="@string/km"
-        android:src="@drawable/ic_power_off" />
+
 
     <ImageButton
         android:id="@+id/btnPauseAMinute"
@@ -147,33 +166,6 @@
         android:contentDescription="@string/km"
         android:src="@drawable/ic_pause" />
 
-    <!--Record start button and count Fragment-->
-    <FrameLayout
-        android:id="@+id/frameRecord"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_margin="18dp"
-        app:layout_constraintTop_toBottomOf="@id/temper_celcius"
-        app:layout_constraintRight_toLeftOf="@id/frameBattery"
-        >
-
-        <ImageView
-            android:id="@+id/btnRecord"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@android:style/Widget.Material.Light.Button.Borderless"
-            android:contentDescription="@string/play_stop"
-            android:src="@drawable/recording_off" />
-
-        <TextView
-            android:id="@+id/textCountRecords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/zero"
-            android:textColor="#F7DEDE"
-            android:textSize="20sp" />
-    </FrameLayout>
 
     <!--  Battery  -->
     <FrameLayout
@@ -327,7 +319,7 @@
     <FrameLayout
         android:id="@+id/framePreview"
         android:layout_width="195dp"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintRight_toRightOf="parent"

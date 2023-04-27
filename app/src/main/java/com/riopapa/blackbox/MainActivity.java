@@ -16,6 +16,7 @@ import static com.riopapa.blackbox.Vars.mPackageLogPath;
 import static com.riopapa.blackbox.Vars.mPackageNormalDatePath;
 import static com.riopapa.blackbox.Vars.mPackageNormalPath;
 import static com.riopapa.blackbox.Vars.mPackageWorkingPath;
+import static com.riopapa.blackbox.Vars.mainLayout;
 import static com.riopapa.blackbox.Vars.share_image_size;
 import static com.riopapa.blackbox.Vars.share_left_right_interval;
 import static com.riopapa.blackbox.Vars.share_snap_interval;
@@ -23,8 +24,7 @@ import static com.riopapa.blackbox.Vars.startStopExit;
 import static com.riopapa.blackbox.Vars.tvDegree;
 import static com.riopapa.blackbox.Vars.utils;
 import static com.riopapa.blackbox.Vars.vBtnEvent;
-import static com.riopapa.blackbox.Vars.vBtnRecord;
-import static com.riopapa.blackbox.Vars.vExitApp;
+import static com.riopapa.blackbox.Vars.vPower;
 import static com.riopapa.blackbox.Vars.vImgBattery;
 import static com.riopapa.blackbox.Vars.vKm;
 import static com.riopapa.blackbox.Vars.vPreviewView;
@@ -68,9 +68,8 @@ import java.util.TimerTask;
 
 public class MainActivity extends Activity {
 
-    private static final String logID = "Main";
     private static final int SETTING_ACTIVITY = 101;
-    private boolean keyBack = false, started = false;
+    private boolean started = false;
     private static boolean isRunning = false;
     CameraSub cameraSub;
 
@@ -147,9 +146,9 @@ public class MainActivity extends Activity {
         utils.beepsInitiate();
         gpsTracker.askLocation();
         CountEvent = utils.getRecordEventCount();
-        vExitApp = findViewById(R.id.btnExit);
-        vExitApp.setOnClickListener(v -> {
-            vExitApp.setClickable(false);
+        vPower = findViewById(R.id.btnPower);
+        vPower.setOnClickListener(v -> {
+            vPower.setClickable(false);
             startStopExit.exitApp(false);
         });
         ImageButton btnBeBack = findViewById(R.id.btnPauseAMinute);
@@ -242,6 +241,7 @@ public class MainActivity extends Activity {
     }
 
     private void setViewVars() {
+        mainLayout = findViewById(R.id.main_layout);
         vTextDate = findViewById(R.id.textDate);
         vTextTime = findViewById(R.id.textTime);
         vTextSpeed = findViewById(R.id.textSpeed);
@@ -253,7 +253,6 @@ public class MainActivity extends Activity {
         vTextRecord = findViewById(R.id.textCountRecords);
         vTextBattery = findViewById(R.id.textBattery);
         vImgBattery = findViewById(R.id.imgBattery);
-        vBtnRecord = findViewById(R.id.btnRecord);
         tvDegree = findViewById(R.id.degree);
         vTextSpeed.setText(R.string.under_bar);
         vPreviewView = findViewById(R.id.previewView);
@@ -312,4 +311,18 @@ public class MainActivity extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+//    @Override
+//    protected void onPause() {
+//        Log.e("Now","onPause()");
+//        if (mIsRecording || isRunning) {
+//            new Handler().postDelayed(() -> {
+//                Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
+//                sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                mActivity.startActivity(sendIntent);
+//            }, 10000);
+//        }
+//        super.onPause();
+//    }
+
 }

@@ -12,6 +12,7 @@ import static com.riopapa.blackbox.Vars.mBackgroundImage;
 import static com.riopapa.blackbox.Vars.mVideoRequestBuilder;
 import static com.riopapa.blackbox.Vars.mCaptureSession;
 import static com.riopapa.blackbox.Vars.photoSurface;
+import static com.riopapa.blackbox.Vars.startStopExit;
 import static com.riopapa.blackbox.Vars.utils;
 import static com.riopapa.blackbox.Vars.zoomBiggerL;
 import static com.riopapa.blackbox.Vars.zoomBiggerR;

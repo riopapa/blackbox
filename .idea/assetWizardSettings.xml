@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../zAndroid_SDK/icons/material/materialiconsoutlined/stop_circle/outline_stop_circle_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../zAndroid_SDK/icons/material/materialicons/power_settings_new/baseline_power_settings_new_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,8 +33,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="44ff33" />
-                            <entry key="outputName" value="recording_off" />
+                            <entry key="color" value="ffff00" />
+                            <entry key="outputName" value="baseline_power_settings_new_24" />
                             <entry key="sourceFile" value="D:\@ANDROID\BlackBox" />
                           </map>
                         </option>

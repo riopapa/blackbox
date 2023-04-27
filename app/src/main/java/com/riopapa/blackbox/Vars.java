@@ -20,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.riopapa.blackbox.utility.ImageStack;
 
 import java.io.File;
@@ -55,14 +57,14 @@ public class Vars {
     static TextView vTextRecord = null;
     static TextView vTextBattery = null;
     static ImageView vImgBattery = null;
-    static ImageView vExitApp = null;
+    static ImageView vPower = null;
     static TextView tvDegree = null;
-
+    static ConstraintLayout mainLayout;
     static ImageButton vBtnEvent = null;
     static TextureView vPreviewView;
     static SurfaceTexture surface_Preview = null;
 
-    static ImageView vBtnRecord;
+    static public int nextCount = 0;
 
     public static SharedPreferences sharedPref;
     public static SharedPreferences.Editor sharedEditor;

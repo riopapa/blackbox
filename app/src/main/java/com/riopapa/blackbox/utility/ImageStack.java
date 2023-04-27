@@ -34,14 +34,18 @@ public class ImageStack {
         byte [][] images = new byte[arraySize][];
         int jpgIdx = 0;
         for (int i = startPos; i < arraySize; i++) {
-            images[jpgIdx++] = snapBytes[i].clone();
-            snapBytes[i] = null;
+            if (snapBytes[i] != null) {
+                images[jpgIdx++] = snapBytes[i].clone();
+                snapBytes[i] = null;
+            }
         }
         for (int i = 0; i < startPos-1; i++) {
             if (jpgIdx >= arraySize)
                 break;
-            images[jpgIdx++] = snapBytes[i].clone();
-            snapBytes[i] = null;
+            if (snapBytes[i] != null) {
+                images[jpgIdx++] = snapBytes[i].clone();
+                snapBytes[i] = null;
+            }
         }
         return images;
     }
