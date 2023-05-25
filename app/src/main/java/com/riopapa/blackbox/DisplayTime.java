@@ -27,7 +27,7 @@ class DisplayTime implements Runnable {
             public void run() {
                 int celcius = Celcius.get();
                 String txt = (celcius>42)? ">"+celcius+"<":" "+celcius+" ";
-                if (celcius>44) {
+                if (celcius>43) {
                     utils.beepOnce(10, 1f);
                     if (mIsRecording)
                         stopHandler.sendEmptyMessage(0);
@@ -41,16 +41,16 @@ class DisplayTime implements Runnable {
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                     vTextTime.setText(sdf.format(System.currentTimeMillis()));
                     tvDegree.setText(txt);
-                    tvDegree.setTextColor((celcius<44)? Color.WHITE : Color.YELLOW);
+                    tvDegree.setTextColor((celcius<42)? Color.WHITE : Color.YELLOW);
                     tvDegree.setBackgroundColor(ContextCompat.getColor(mContext,
-                            (celcius<41)? R.color.baseColor : R.color.hotColor));
+                            (celcius<40)? R.color.baseColor : R.color.hotColor));
                     mainLayout.setBackgroundColor(ContextCompat.getColor(mContext,
-                            (celcius<44)? R.color.baseColor : R.color.hotColor));
+                            (celcius<43)? R.color.baseColor : R.color.hotColor));
                     displayBattery.show();
                 });
             }
         };
-        displayHHMM.schedule(tt, 3000, 32000);
+        displayHHMM.schedule(tt, 3000, 62000);
     }
 
     void stop() {

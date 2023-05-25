@@ -128,9 +128,8 @@ class StartStopExit {
         }
     }
 
-    void exitApp(boolean reRun) {
-        if (!reRun)
-            utils.beepOnce(8, 1f); // Exit BlackBox
+    void exitApp() {
+        utils.beepOnce(8, 1f); // Exit BlackBox
         mExitApplication = true;
         if (mIsRecording) stopVideo();
         mIsRecording = false;
@@ -138,25 +137,21 @@ class StartStopExit {
         gpsTracker.stopGPS();
         new Timer().schedule(new TimerTask() {
             public void run() {
-                if (reRun) {
-                    reStartApp();
-//                    triggerRebirth();
-                }
-                utils.logOnly(logID, "Exit App");
-                System.exit(0);
-                android.os.Process.killProcess(android.os.Process.myPid());
+            utils.logOnly(logID, "Exit App");
+            System.exit(0);
+            android.os.Process.killProcess(android.os.Process.myPid());
             }
         }, 3000);
     }
 
     public static void reStartApp() {
+        if (mContext instanceof Activity) {
+            ((Activity) mContext).finish();
+        }
         Intent intent = new Intent(mContext, MainActivity.class);
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
 //        intent.putExtra(KEY_RESTART_INTENT, nextIntent);
         mContext.startActivity(intent);
-        if (mContext instanceof Activity) {
-            ((Activity) mContext).finish();
-        }
 
         Runtime.getRuntime().exit(0);
     }

@@ -118,7 +118,7 @@ public class Vars {
     static boolean zoomHuge = false;
 
     static void setSuffix(Context context) {
-        INTERVAL_EVENT = 25 * 1000;
+        INTERVAL_EVENT = 35 * 1000;
         INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
         switch (Build.MODEL) {
             case "SM-G965N":
@@ -136,21 +136,21 @@ public class Vars {
                 SUFFIX = PhoneE.A;
                 break;
             default:
-                utils.logBoth("Vars", "Model="+Build.MODEL);
+                utils.logBoth("Vars", "UnKnown Model="+Build.MODEL);
                 break;
         }
 
         switch (SUFFIX) {
             case P:           // galaxy s9 phone
-                share_image_size = 121;
-                share_snap_interval = 192;
-                share_left_right_interval = 92;
+                share_image_size = 157;
+                share_snap_interval = 177;
+                share_left_right_interval = 78;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 30*1024*1024;
                 break;
             case N:           // galaxy note 20
-                share_image_size = 121;
+                share_image_size = 151;
                 share_snap_interval = 172;
                 share_left_right_interval = 112;
                 VIDEO_FRAME_RATE = 30;
@@ -158,7 +158,7 @@ public class Vars {
                 VIDEO_ONE_WORK_FILE_SIZE = 34*1024*1024;
                 break;
             case B:           // galaxy s9 blackbox
-                share_image_size = 119;
+                share_image_size = 159;
                 share_snap_interval = 197;
                 share_left_right_interval = 91;
                 VIDEO_FRAME_RATE = 24;
@@ -166,7 +166,7 @@ public class Vars {
                 VIDEO_ONE_WORK_FILE_SIZE = 30*1024*1024;
                 break;
             case A:           // galaxy A32
-                share_image_size = 115;
+                share_image_size = 125;
                 share_snap_interval = 211;
                 share_left_right_interval = 140;
                 VIDEO_FRAME_RATE = 24;

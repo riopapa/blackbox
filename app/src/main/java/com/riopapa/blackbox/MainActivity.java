@@ -107,7 +107,7 @@ public class MainActivity extends Activity {
         vPreviewView = findViewById(R.id.previewView);
 
         Vars.setSuffix(getApplicationContext());
-        SettingsActivity.getPreference();
+        SettingsActivity.getPreference();   // should be after setSuffix
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
@@ -149,7 +149,7 @@ public class MainActivity extends Activity {
         vPower = findViewById(R.id.btnPower);
         vPower.setOnClickListener(v -> {
             vPower.setClickable(false);
-            startStopExit.exitApp(false);
+            startStopExit.exitApp();
         });
         ImageButton btnBeBack = findViewById(R.id.btnPauseAMinute);
         btnBeBack.setOnClickListener(v -> {

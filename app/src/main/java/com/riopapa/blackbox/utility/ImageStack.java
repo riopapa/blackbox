@@ -1,5 +1,7 @@
 package com.riopapa.blackbox.utility;
 
+import static com.riopapa.blackbox.Vars.utils;
+
 import java.nio.ByteBuffer;
 
 public class ImageStack {
@@ -14,12 +16,17 @@ public class ImageStack {
     }
 
     public void addBuff(ByteBuffer buffer) {
-        byte[] bytes = new byte[buffer.capacity()];
-        buffer.get(bytes);
-        snapBytes[snapNowPos] = bytes.clone();
-        snapNowPos++;
-        if (snapNowPos >= arraySize)
-            snapNowPos = 0;
+        try {
+            byte[] bytes = new byte[buffer.capacity()];
+            buffer.get(bytes);
+            snapBytes[snapNowPos] = bytes.clone();
+            snapNowPos++;
+            if (snapNowPos >= arraySize)
+                snapNowPos = 0;
+        } catch (Exception e) {
+            utils.logBoth("Memory Short", "Short "+e);
+            System.gc();
+        }
     }
 
     public void addShot(byte[] bytes) {
