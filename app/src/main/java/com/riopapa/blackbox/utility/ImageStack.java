@@ -1,6 +1,8 @@
 package com.riopapa.blackbox.utility;
 
+import static com.riopapa.blackbox.StartStopExit.zoomChangeTimer;
 import static com.riopapa.blackbox.Vars.utils;
+import static com.riopapa.blackbox.PhotoCapture.leftRight;
 
 import java.nio.ByteBuffer;
 
@@ -15,7 +17,7 @@ public class ImageStack {
         arraySize = share_image_size;
     }
 
-    public void addBuff(ByteBuffer buffer) {
+    public void addImageBuff(ByteBuffer buffer) {
         try {
             byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
@@ -23,13 +25,15 @@ public class ImageStack {
             snapNowPos++;
             if (snapNowPos >= arraySize)
                 snapNowPos = 0;
+            leftRight = !leftRight;
+            zoomChangeTimer.sendEmptyMessage(0);
         } catch (Exception e) {
             utils.logBoth("Memory Short", "Short "+e);
             System.gc();
         }
     }
 
-    public void addShot(byte[] bytes) {
+    public void addShotBuff(byte[] bytes) {
         snapBytes[snapNowPos] = bytes.clone();
         snapNowPos++;
         if (snapNowPos >= arraySize)

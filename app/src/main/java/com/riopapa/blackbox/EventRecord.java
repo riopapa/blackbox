@@ -23,7 +23,6 @@ import static com.riopapa.blackbox.Vars.mActivity;
 import static com.riopapa.blackbox.Vars.mIsRecording;
 import static com.riopapa.blackbox.Vars.utils;
 import static com.riopapa.blackbox.Vars.vTextActiveCount;
-import static com.riopapa.blackbox.Vars.zoomHuge;
 
 public class EventRecord {
 
@@ -31,11 +30,9 @@ public class EventRecord {
     void start() {
 
         if (!mIsRecording) return;
-        imageStack.addShot(shot_00);
-        imageStack.addShot(shot_00);
+        imageStack.addShotBuff(shot_00);
 
-        zoomHuge = true;
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT;
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT/2;
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);
@@ -43,8 +40,8 @@ public class EventRecord {
         utils.setVolume(70);
         new Timer().schedule(new TimerTask() {
             public void run() {
-                imageStack.addShot(shot_00);
-                imageStack.addShot(shot_00);
+                imageStack.addShotBuff(shot_00);
+                imageStack.addShotBuff(shot_00);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, 1, false);
             }
@@ -52,23 +49,18 @@ public class EventRecord {
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                imageStack.addShot(shot_01);
-                imageStack.addShot(shot_01);
-                imageStack.addShot(shot_01);
+                imageStack.addShotBuff(shot_01);
+                imageStack.addShotBuff(shot_01);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, 2, false);
-                zoomHuge = false;
             }
         }, INTERVAL_EVENT * 5 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                imageStack.addShot(shot_02);
-                imageStack.addShot(shot_02);
-                imageStack.addShot(shot_02);
+                imageStack.addShotBuff(shot_02);
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, 3, true);
-                zoomHuge = false;
             }
         }, INTERVAL_EVENT * 10 / 10);
 

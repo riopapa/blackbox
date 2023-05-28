@@ -28,7 +28,7 @@ import android.view.animation.AnimationUtils;
 import java.util.Timer;
 import java.util.TimerTask;
 
-class StartStopExit {
+public class StartStopExit {
 
     private final String logID = "StartStop";
 
@@ -57,7 +57,7 @@ class StartStopExit {
         });
     }
 
-    private final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
+    public final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
             if (msg.what == 0)
                 photoCapture.zoomShotCamera();
@@ -79,8 +79,8 @@ class StartStopExit {
             public void run() {
                 if (mIsRecording)
                     zoomChangeTimer.sendEmptyMessage(0);
-                else if (timerSnapCamera != null)
-                    timerSnapCamera.cancel();
+//                else if (timerSnapCamera != null)
+//                    timerSnapCamera.cancel();
             }
         };
         timerSnapCamera = new Timer();

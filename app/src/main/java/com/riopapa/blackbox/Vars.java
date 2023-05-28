@@ -113,9 +113,8 @@ public class Vars {
     static Surface recordSurface = null;
     static Surface photoSurface = null;
     static Surface previewSurface = null;
-    static Rect zoomBiggerL, zoomBiggerR, zoomHugeL, zoomHugeR, zoomHugeC;
+    static Rect zoomBiggerL, zoomBiggerR, zoomLeft, zoomRight, zoomHugeC;
     static PhoneE SUFFIX;
-    static boolean zoomHuge = false;
 
     static void setSuffix(Context context) {
         INTERVAL_EVENT = 35 * 1000;

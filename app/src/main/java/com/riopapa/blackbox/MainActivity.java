@@ -179,7 +179,7 @@ public class MainActivity extends Activity {
 
         mActivity.runOnUiThread(() -> {
             vPreviewView.setRotation(-90);
-            vPreviewView.setScaleY(1.7f);
+            vPreviewView.setScaleY(2f);
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

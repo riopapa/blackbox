@@ -27,11 +27,8 @@ import static com.riopapa.blackbox.Vars.utils;
 import static com.riopapa.blackbox.Vars.vPower;
 import static com.riopapa.blackbox.Vars.vPreviewView;
 import static com.riopapa.blackbox.Vars.vTextRecord;
-import static com.riopapa.blackbox.Vars.zoomBiggerL;
-import static com.riopapa.blackbox.Vars.zoomBiggerR;
-import static com.riopapa.blackbox.Vars.zoomHugeC;
-import static com.riopapa.blackbox.Vars.zoomHugeL;
-import static com.riopapa.blackbox.Vars.zoomHugeR;
+import static com.riopapa.blackbox.Vars.zoomLeft;
+import static com.riopapa.blackbox.Vars.zoomRight;
 
 import android.graphics.Rect;
 import android.hardware.camera2.CameraAccessException;
@@ -99,12 +96,12 @@ public class VideoMain {
         photoSurface = mImageReader.getSurface();
         mVideoRequestBuilder.addTarget(photoSurface);
 
-        zoomNormal = calcPhotoZoom(ZOOM_FACTOR_NORMAL, "N");
-        zoomBiggerL = calcPhotoZoom(ZOOM_FACTOR_BIGGER, "L");
-        zoomBiggerR = calcPhotoZoom(ZOOM_FACTOR_BIGGER, "R");
-        zoomHugeL = calcPhotoZoom(ZOOM_FACTOR_HUGE, "L");
-        zoomHugeR = calcPhotoZoom(ZOOM_FACTOR_HUGE, "R");
-        zoomHugeC = calcPhotoZoom(ZOOM_FACTOR_HUGE, "C");
+        zoomNormal = calcZoomSize(ZOOM_FACTOR_NORMAL, "N");
+//        zoomBiggerL = calcPhotoZoom(ZOOM_FACTOR_BIGGER, "L");
+//        zoomBiggerR = calcPhotoZoom(ZOOM_FACTOR_BIGGER, "R");
+        zoomLeft = calcZoomSize(ZOOM_FACTOR_HUGE, "L");
+        zoomRight = calcZoomSize(ZOOM_FACTOR_HUGE, "R");
+//        zoomHugeC = calcPhotoZoom(ZOOM_FACTOR_HUGE, "C");
     }
 
     void buildCameraSession() {
@@ -139,8 +136,8 @@ public class VideoMain {
         };
     }
 
-    final float ZOOM_FACTOR_NORMAL = 1.2f, ZOOM_FACTOR_BIGGER = 1.6f, ZOOM_FACTOR_HUGE = 1.9f;
-    private Rect calcPhotoZoom(float zoomFactor, String type) {
+    final float ZOOM_FACTOR_NORMAL = 1.1f, ZOOM_FACTOR_HUGE = 1.6f;
+    private Rect calcZoomSize(float zoomFactor, String type) {
 
         int xOrgSize = mImageSize.getWidth();
         int yOrgSize = mImageSize.getHeight();
@@ -154,7 +151,7 @@ public class VideoMain {
                 xLeft = (xOrgSize - xZoomed) / 2;
                 break;
             case "L":
-                xLeft = (xOrgSize - xZoomed) / 6;
+                xLeft = 0; // (xOrgSize - xZoomed) / 6;
                 yTop = (yOrgSize-yZoomed) * 2 / 3;
                 break;
             case "R":
