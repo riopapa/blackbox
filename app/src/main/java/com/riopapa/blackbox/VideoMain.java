@@ -215,9 +215,9 @@ public class VideoMain {
             String s = ++nextCount + "";
             vTextRecord.setText(s);
             vPower.setImageResource((nextCount%2 == 0) ? R.drawable.circle0: R.drawable.circle1);
-            Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
-            aniRotateClk.setRepeatCount(Animation.INFINITE);
-            vPower.startAnimation(aniRotateClk);
+//            Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
+//            aniRotateClk.setRepeatCount(Animation.INFINITE);
+//            vPower.startAnimation(aniRotateClk);
 
         }
     }

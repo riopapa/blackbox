@@ -9,7 +9,7 @@ SNAP_SHOT_INTERVAL-->
     <SwitchPreferenceCompat
         app:key="use_custom_value"
         and:defaultValue="true"
-        app:icon="@drawable/ic_settings"
+        app:icon="@drawable/settings"
         app:summary="사용자가 설정한 값으로 작동하게 하기"
         app:title="파라미터 수정" />
 

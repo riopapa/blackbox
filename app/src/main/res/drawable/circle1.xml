@@ -3,20 +3,20 @@
         android:width="64dp"
         android:viewportHeight="24"
         android:viewportWidth="24" >
-    <path android:fillColor="#FFC107"
+    <path android:fillColor="#991E4A"
           android:pathData="M12,12v-11.5
-        a11.5,11.5 0 0,0 -11.5,11
+        a11.5,11.5 0 0,0 -8.5,4
         z"/>
-    <path android:fillColor="#FFC107"
+    <path android:fillColor="#4CAF50"
           android:pathData="M12,12 v11.5
-           a-11.5,-11.5 0 0,0 11.5,-11
+           a-11.5,-11.5 0 0,0 8.5,-4
         z"/>
-    <path android:fillColor="#F44336"
-          android:pathData="M12,12l-1,11.5
-        a10.5,10.5 0 0,1, -10.5, -10
+    <path android:fillColor="#FFEB3B"
+          android:pathData="M12,12 h11.5
+           a11.5,11.5 0 0,0 -4,-8.5
+        z"/>
+    <path android:fillColor="#3F51B5"
+          android:pathData="M12,12h-11.5
+        a-11.5,-11.5 0 0,0, 4, 8.5
         " />
-    <path android:fillColor="#F44336"
-          android:pathData="M12,12l1,-11.5
-           a10.5,-10.5 0 0,1 10.5,10
-        z"/>
 </vector>

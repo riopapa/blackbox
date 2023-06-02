@@ -39,9 +39,9 @@ public class StartStopExit {
             vPower.setImageResource(R.drawable.circle0);
             nextCount = 0;
             vTextRecord.setText("0");
-            Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
-            aniRotateClk.setRepeatCount(Animation.INFINITE);
-            vPower.startAnimation(aniRotateClk);
+//            Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
+//            aniRotateClk.setRepeatCount(Animation.INFINITE);
+//            vPower.startAnimation(aniRotateClk);
             videoMain.prepareRecord();
             new Timer().schedule(new TimerTask() {
                 public void run() {

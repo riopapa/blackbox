@@ -164,7 +164,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:contentDescription="@string/km"
-        android:src="@drawable/ic_pause" />
+        android:src="@drawable/pause" />
 
 
     <!--  Battery  -->
@@ -241,7 +241,7 @@
         app:layout_constraintRight_toLeftOf="@id/framePreview"
         android:contentDescription="@string/km"
 
-        android:src="@drawable/ic_settings" />
+        android:src="@drawable/settings" />
 
 
     <!--Event button & counts -->
