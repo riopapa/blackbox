@@ -61,6 +61,7 @@ import com.riopapa.blackbox.utility.DiskSpace;
 import com.riopapa.blackbox.utility.ImageStack;
 import com.riopapa.blackbox.utility.Permission;
 import com.riopapa.blackbox.utility.SettingsActivity;
+import com.riopapa.blackbox.utility.Suffix;
 
 import java.io.File;
 import java.util.Timer;
@@ -106,7 +107,7 @@ public class MainActivity extends Activity {
         }
         vPreviewView = findViewById(R.id.previewView);
 
-        Vars.setSuffix(getApplicationContext());
+        new Suffix().set(getApplicationContext());
         SettingsActivity.getPreference();   // should be after setSuffix
 
         readyBlackBoxFolders();

@@ -1,8 +1,9 @@
 package com.riopapa.blackbox;
 
-import static com.riopapa.blackbox.Vars.mActivity;
 import static com.riopapa.blackbox.Vars.speedInt;
 import static com.riopapa.blackbox.Vars.utils;
+import static com.riopapa.blackbox.Vars.vPreviewView;
+import static com.riopapa.blackbox.Vars.viewFinderActive;
 
 import android.Manifest;
 import android.app.Activity;
@@ -18,7 +19,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
@@ -74,11 +74,6 @@ public class GPSTracker extends Service implements LocationListener {
                 LocationManager.GPS_PROVIDER,
                 MIN_TIME_DRIVE_UPDATES,
                 MIN_DISTANCE_DRIVE, this);
-//        if (locationManager != null) {
-//            LinearLayoutCompat newsLine = mActivity.findViewById(R.id.newsLine);
-//            newsLine.setVisibility(View.VISIBLE);
-//        } else
-//            utils.logBoth("GPS","locationManager Null");
     }
 
     double getLatitude() { return latitude; }
@@ -94,7 +89,19 @@ public class GPSTracker extends Service implements LocationListener {
         nowSpeed = (int) (newLoc.getSpeed() * 3.6f);
         if (speedInt != nowSpeed) {
             speedInt = nowSpeed;
-            gActivity.runOnUiThread(() -> speedView.setText("" + speedInt));
+            final String speedText = "" + speedInt;
+            gActivity.runOnUiThread(() -> speedView.setText(speedText));
+        }
+        if (nowSpeed > 50) {
+            if (viewFinderActive) {
+                viewFinderActive = false;
+                vPreviewView.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            if (!viewFinderActive) {
+                viewFinderActive = true;
+                vPreviewView.setVisibility(View.VISIBLE);
+            }
         }
         if (speedInt < 5) // if speed is < xx then no update, OBD should be connected
             return;

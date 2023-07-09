@@ -30,7 +30,6 @@ public class CameraSize {
 
         switch (SUFFIX) {
 
-            case B:
             case P:
             /* galaxy s9+
             4032x3024 1.3, 4032x2268 1.8, 4032x1960 2.1, 3024x3024 1.0, 3984x2988 1.3, 3840x2160 1.8 ,

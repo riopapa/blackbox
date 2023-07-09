@@ -60,6 +60,7 @@ class SnapShotSave {
                     vTextActiveCount.setText(text);
                 });
                 utils.logBoth("finish", path2Write.getName());
+                System.gc();
             }
         });
         th.start();

@@ -28,8 +28,6 @@ public class ImageStack {
             leftRight = !leftRight;
             zoomChangeTimer.sendEmptyMessage(0);
         } catch (Exception e) {
-            utils.logBoth("Memory Short", "Short "+e);
-            System.gc();
         }
     }
 
