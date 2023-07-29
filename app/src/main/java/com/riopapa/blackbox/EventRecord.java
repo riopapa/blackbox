@@ -30,9 +30,9 @@ public class EventRecord {
     void start() {
 
         if (!mIsRecording) return;
-        imageStack.addShotBuff(shot_00);
 
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT/2;
+        imageStack.addShotBuff(shot_00);
+        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT/4;
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);
@@ -41,8 +41,8 @@ public class EventRecord {
         new Timer().schedule(new TimerTask() {
             public void run() {
                 imageStack.addShotBuff(shot_00);
-                imageStack.addShotBuff(shot_00);
                 SnapShotSave snapShotSave = new SnapShotSave();
+                imageStack.addShotBuff(shot_00);
                 snapShotSave.startSave(thisEventJpgPath, 1, false);
             }
         }, 100);

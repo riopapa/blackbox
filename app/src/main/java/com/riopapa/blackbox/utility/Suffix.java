@@ -17,8 +17,8 @@ import android.os.Build;
 import com.riopapa.blackbox.Vars;
 
 public class Suffix {
-    public void set(Context context) {
-        INTERVAL_EVENT = 30 * 1000;
+    public void set() {
+        INTERVAL_EVENT = 25 * 1000;
         INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
         switch (Build.MODEL) {
             case "SM-G965N":
@@ -41,15 +41,15 @@ public class Suffix {
                 share_snap_interval = 177;
                 share_left_right_interval = 78;
                 VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
+                VIDEO_ENCODING_RATE = 24*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 18*1024*1024;
                 break;
             case N:           // galaxy note 20
                 share_image_size = 151;
                 share_snap_interval = 172;
                 share_left_right_interval = 112;
                 VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 30*1000*1000;
+                VIDEO_ENCODING_RATE = 24*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 20*1024*1024;
                 break;
             case A:           // galaxy A32
@@ -57,10 +57,9 @@ public class Suffix {
                 share_snap_interval = 211;
                 share_left_right_interval = 140;
                 VIDEO_FRAME_RATE = 24;
-                VIDEO_ENCODING_RATE = 24*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 32*1024*1024;
+                VIDEO_ENCODING_RATE = 20*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
                 break;
         }
     }
-
 }

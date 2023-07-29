@@ -74,23 +74,6 @@ public class MainActivity extends Activity {
     private static boolean isRunning = false;
     CameraSub cameraSub;
 
-//    private final TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
-//        @Override
-//        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-////            surface_Preview = surface;
-////            Log.w("onSurfaceTextureAvailable", "accepted");
-//        }
-//        @Override
-//        public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-//            surfaceTexture.release();
-//            return true;
-//        }
-//        @Override
-//        public void onSurfaceTextureUpdated(SurfaceTexture surface) { }
-//        @Override
-//        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) { }
-//    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,8 +90,8 @@ public class MainActivity extends Activity {
         }
         vPreviewView = findViewById(R.id.previewView);
 
-        new Suffix().set(getApplicationContext());
-        SettingsActivity.getPreference();   // should be after setSuffix
+        new Suffix().set();
+        SettingsActivity.getPreference();   // should be after Suffix().set()
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
