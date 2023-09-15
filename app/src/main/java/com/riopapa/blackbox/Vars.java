@@ -11,7 +11,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
-import android.os.Build;
 import android.os.Handler;
 import android.util.Size;
 import android.view.Surface;
@@ -104,8 +103,6 @@ public class Vars {
 
     public enum PhoneE {  P, N, A} // S9Phone, Note20, A32
     static boolean viewFinderActive = true;
-    static boolean photoSaved = false;
-
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;
     static CaptureRequest.Builder mVideoRequestBuilder, mCameraBuilder;
@@ -113,7 +110,7 @@ public class Vars {
     static Surface recordSurface = null;
     static Surface photoSurface = null;
     static Surface previewSurface = null;
-    static Rect zoomBiggerL, zoomBiggerR, zoomLeft, zoomRight, zoomHugeC;
+    static Rect zoomLeft, zoomRight;
     public static PhoneE SUFFIX;
 
 }

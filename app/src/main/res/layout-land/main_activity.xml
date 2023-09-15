@@ -22,6 +22,7 @@
             style="@android:style/Widget.Material.Light.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="fitXY"
             android:contentDescription="@string/km"
             android:src="@drawable/power" />
 
@@ -160,6 +161,7 @@
         style="@android:style/Widget.Material.Light.Button.Borderless"
         android:layout_width="96dp"
         android:layout_height="96dp"
+        android:scaleType="fitXY"
         android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -183,6 +185,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/circle0"
             android:layout_gravity="center"
             android:contentDescription="@string/todo" />
 
@@ -259,6 +263,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/textEvent"
+                android:scaleType="fitXY"
                 android:background="#00000000"
                 android:src="@mipmap/event_shot" />
 
@@ -330,6 +335,7 @@
             android:id="@+id/previewView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="fitXY"
             android:layout_margin="4dp" />
 
     </FrameLayout>

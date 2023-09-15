@@ -75,6 +75,10 @@ public class EventRecord {
         new Timer().schedule(new TimerTask() {
             public void run() {
                 new EventMerge().merge(startTime);
+
+//                new com.riopapa.blackbox.MergeEvent();
+//            new MergeEvent().exec(startTime);
+
             }
         }, INTERVAL_EVENT * 9 / 10);
 

@@ -38,11 +38,11 @@ class EventMerge {
     void merge(final long startTime) {
         if (mExitApplication)
             return;
-        try {
+        Thread thread = new Thread(() -> {
             new MergeFileTask().execute("" + startTime);
-        } catch (Exception e) {
-            utils.logE(logID, "Exception: ", e);
-        }
+        });
+        thread.setName("Thread #1");
+        thread.start();
     }
 
     private static class MergeFileTask extends AsyncTask<String, String, String> {
@@ -89,7 +89,6 @@ class EventMerge {
                 String shortFileName = file.getName();
                 if (myCollator.compare(shortFileName, beginTimeS) >= 0 &&
                         myCollator.compare(shortFileName, endTimeS) < 0) {
-//                    Log.w("addBuff to movie " + isEventMerge, shortFileName);
                     try {
                         listMovies.add(MovieCreator.build(file.toString()));
                     } catch (Exception e) {
@@ -108,7 +107,10 @@ class EventMerge {
                 }
             }
 
-            if (!videoTracks.isEmpty()) {
+            if (videoTracks.isEmpty()) {
+                utils.beepOnce(3, 1f);
+                utils.logOnly(logID, "IOException~ ");
+            } else {
                 Movie outputMovie = new Movie();
                 try {
                     outputMovie.addTrack(new AppendTrack(videoTracks.toArray(new Track[0])));
@@ -120,9 +122,6 @@ class EventMerge {
                 } catch (IOException e) {
                     utils.logE(logID, "IOException~ ", e);
                 }
-            } else {
-                utils.beepOnce(3, 1f);
-                utils.logOnly(logID, "IOException~ ");
             }
         }
 
