@@ -22,8 +22,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -79,8 +77,6 @@ public class StartStopExit {
             public void run() {
                 if (mIsRecording)
                     zoomChangeTimer.sendEmptyMessage(0);
-//                else if (timerSnapCamera != null)
-//                    timerSnapCamera.cancel();
             }
         };
         timerSnapCamera = new Timer();
@@ -90,13 +86,14 @@ public class StartStopExit {
     private Timer normalTimer;
 
     private void startNormal() {
-        NormalMerge normalMerge = new NormalMerge();
+        MergeNormal mergeNormal = new MergeNormal();
         normalTimer = new Timer();
         final TimerTask normalTask = new TimerTask() {
             @Override
             public void run() {
-                if (mIsRecording && !mExitApplication)
-                    normalMerge.merge();
+                if (mIsRecording && !mExitApplication) {
+                    mergeNormal.exec();
+                }
             }
         };
         normalTimer.schedule(normalTask, INTERVAL_NORMAL, INTERVAL_NORMAL);

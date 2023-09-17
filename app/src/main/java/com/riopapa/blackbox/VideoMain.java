@@ -9,7 +9,6 @@ import static com.riopapa.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.riopapa.blackbox.Vars.mCameraBuilder;
 import static com.riopapa.blackbox.Vars.mCameraDevice;
 import static com.riopapa.blackbox.Vars.mCaptureSession;
-import static com.riopapa.blackbox.Vars.mContext;
 import static com.riopapa.blackbox.Vars.mImageReader;
 import static com.riopapa.blackbox.Vars.mImageSize;
 import static com.riopapa.blackbox.Vars.mIsRecording;
@@ -38,8 +37,8 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.MediaRecorder;
 import android.view.Surface;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+
+import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -97,11 +96,8 @@ public class VideoMain {
         mVideoRequestBuilder.addTarget(photoSurface);
 
         zoomNormal = calcZoomSize(ZOOM_FACTOR_NORMAL, "N");
-//        zoomBiggerL = calcPhotoZoom(ZOOM_FACTOR_BIGGER, "L");
-//        zoomBiggerR = calcPhotoZoom(ZOOM_FACTOR_BIGGER, "R");
         zoomLeft = calcZoomSize(ZOOM_FACTOR_HUGE, "L");
         zoomRight = calcZoomSize(ZOOM_FACTOR_HUGE, "R");
-//        zoomHugeC = calcPhotoZoom(ZOOM_FACTOR_HUGE, "C");
     }
 
     void buildCameraSession() {
@@ -120,7 +116,7 @@ public class VideoMain {
     private CameraCaptureSession.StateCallback cameraStateCallBack() {
         return new CameraCaptureSession.StateCallback() {
             @Override
-            public void onConfigured(CameraCaptureSession session) {
+            public void onConfigured(@NonNull CameraCaptureSession session) {
                 mCaptureSession = session;
                 mVideoRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoomNormal);
                 try {
@@ -130,7 +126,7 @@ public class VideoMain {
                 }
             }
             @Override
-            public void onConfigureFailed(CameraCaptureSession session) {
+            public void onConfigureFailed(@NonNull CameraCaptureSession session) {
                 utils.logBoth(logID, "onConfigureFailed: while prepareRecord");
             }
         };
@@ -144,23 +140,16 @@ public class VideoMain {
         int xZoomed = (int) (xOrgSize / zoomFactor);
         int yZoomed = (int) (yOrgSize / zoomFactor);
         int xLeft = 0;
-        int yTop = 0;
+        int yTop = yOrgSize-yZoomed;
         Rect rect = new Rect();
         switch (type) {
             case "N":
                 xLeft = (xOrgSize - xZoomed) / 2;
                 break;
             case "L":
-                xLeft = 0; // (xOrgSize - xZoomed) / 6;
-                yTop = (yOrgSize-yZoomed) * 2 / 3;
                 break;
             case "R":
                 xLeft = (xOrgSize- xZoomed);
-                yTop = (yOrgSize-yZoomed) * 2 / 3;
-                break;
-            case "C":
-                xLeft = (xOrgSize- xZoomed)/2;
-                yTop = (yOrgSize-yZoomed)/3;
                 break;
         }
 

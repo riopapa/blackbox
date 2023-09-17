@@ -23,7 +23,6 @@ import static com.riopapa.blackbox.Vars.mActivity;
 import static com.riopapa.blackbox.Vars.mIsRecording;
 import static com.riopapa.blackbox.Vars.utils;
 import static com.riopapa.blackbox.Vars.vTextActiveCount;
-
 public class EventRecord {
 
     File thisEventJpgPath;
@@ -74,8 +73,9 @@ public class EventRecord {
         gpsTracker.askLocation();
         new Timer().schedule(new TimerTask() {
             public void run() {
-                new EventMerge().merge(startTime);
-
+//                new EventMerge().merge(startTime);
+            MergeEvent mergeEvent = new MergeEvent();
+            mergeEvent.exec(startTime);
 //                new com.riopapa.blackbox.MergeEvent();
 //            new MergeEvent().exec(startTime);
 

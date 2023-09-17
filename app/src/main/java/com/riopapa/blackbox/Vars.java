@@ -90,8 +90,8 @@ public class Vars {
     static MediaRecorder mediaRecorder;
     static int speedInt = -1;
 
-    public static long INTERVAL_EVENT;
-    public static long INTERVAL_NORMAL;
+    public static long INTERVAL_EVENT = 22 * 1000;
+    public static long INTERVAL_NORMAL = INTERVAL_EVENT * 3;
 
     static byte[] shot_00, shot_01, shot_02, shot_03;
 

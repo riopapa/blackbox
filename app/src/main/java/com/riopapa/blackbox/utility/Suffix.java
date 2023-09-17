@@ -1,15 +1,13 @@
 package com.riopapa.blackbox.utility;
 
-import static com.riopapa.blackbox.Vars.INTERVAL_EVENT;
-import static com.riopapa.blackbox.Vars.INTERVAL_NORMAL;
 import static com.riopapa.blackbox.Vars.SUFFIX;
-import static com.riopapa.blackbox.Vars.utils;
-import static com.riopapa.blackbox.Vars.share_image_size;
-import static com.riopapa.blackbox.Vars.share_snap_interval;
-import static com.riopapa.blackbox.Vars.share_left_right_interval;
 import static com.riopapa.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static com.riopapa.blackbox.Vars.VIDEO_FRAME_RATE;
 import static com.riopapa.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
+import static com.riopapa.blackbox.Vars.share_image_size;
+import static com.riopapa.blackbox.Vars.share_left_right_interval;
+import static com.riopapa.blackbox.Vars.share_snap_interval;
+import static com.riopapa.blackbox.Vars.utils;
 
 import android.os.Build;
 
@@ -17,8 +15,6 @@ import com.riopapa.blackbox.Vars;
 
 public class Suffix {
     public void set() {
-        INTERVAL_EVENT = 25 * 1000;
-        INTERVAL_NORMAL = INTERVAL_EVENT * 4L;
         switch (Build.MODEL) {
             case "SM-G965N":
                 SUFFIX = Vars.PhoneE.P;
