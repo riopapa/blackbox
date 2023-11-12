@@ -11,11 +11,11 @@ import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack
 import com.riopapa.blackbox.Vars.DATE_PREFIX
 import com.riopapa.blackbox.Vars.FORMAT_TIME
-import com.riopapa.blackbox.Vars.INTERVAL_NORMAL
 import com.riopapa.blackbox.Vars.SUFFIX
 import com.riopapa.blackbox.Vars.gpsTracker
 import com.riopapa.blackbox.Vars.mPackageNormalDatePath
 import com.riopapa.blackbox.Vars.mPackageNormalPath
+import com.riopapa.blackbox.Vars.normal_duration
 import com.riopapa.blackbox.Vars.sdfTime
 import com.riopapa.blackbox.Vars.utils
 import com.riopapa.blackbox.utility.DiskSpace
@@ -48,7 +48,7 @@ class MergeNormal {
         withContext(Dispatchers.IO) {
 
             if (nextNormalTime == 0L)
-                nextNormalTime = System.currentTimeMillis() - INTERVAL_NORMAL - 20000
+                nextNormalTime = System.currentTimeMillis() - normal_duration - 20000
             val beginTimeS = utils.getMilliSec2String(nextNormalTime, FORMAT_TIME)
             val files2Merge: Array<File> = utils.getDirectoryList(Vars.mPackageWorkingPath)
             if (files2Merge.size < 3) {
@@ -109,7 +109,8 @@ class MergeNormal {
                 fileChannel.close()
                 Log.w("normal", "$beginTimeS done")
                 // remove old working files //
-                val toTimeS : String = utils.getMilliSec2String(System.currentTimeMillis()- INTERVAL_NORMAL, FORMAT_TIME)
+                val toTimeS : String = utils.getMilliSec2String(System.currentTimeMillis()
+                        - normal_duration, FORMAT_TIME)
                 for (file in files2Merge) {
                     val shortFileName = file.name
                     if (myCollator.compare(shortFileName, toTimeS) < 0)

@@ -70,6 +70,8 @@ public class Vars {
     public static int share_image_size;
     public static long share_snap_interval;
     public static long share_left_right_interval;   // < SNAP_SHOT_INTERVAL
+    public static long share_event_sec; // Event Duration in sec
+    public static long normal_duration;   // Normal Duration in mili Sec
 
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
@@ -89,9 +91,6 @@ public class Vars {
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder;
     static int speedInt = -1;
-
-    public static long INTERVAL_EVENT = 22 * 1000;
-    public static long INTERVAL_NORMAL = INTERVAL_EVENT * 3;
 
     static byte[] shot_00, shot_01, shot_02, shot_03;
 

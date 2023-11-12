@@ -10,11 +10,11 @@ import java.util.TimerTask;
 import static com.riopapa.blackbox.Vars.CountEvent;
 import static com.riopapa.blackbox.Vars.DATE_PREFIX;
 import static com.riopapa.blackbox.Vars.FORMAT_TIME;
-import static com.riopapa.blackbox.Vars.INTERVAL_EVENT;
 import static com.riopapa.blackbox.Vars.SUFFIX;
 import static com.riopapa.blackbox.Vars.activeEventCount;
 import static com.riopapa.blackbox.Vars.imageStack;
 import static com.riopapa.blackbox.Vars.mPackageEventJpgPath;
+import static com.riopapa.blackbox.Vars.share_event_sec;
 import static com.riopapa.blackbox.Vars.shot_02;
 import static com.riopapa.blackbox.Vars.shot_00;
 import static com.riopapa.blackbox.Vars.shot_01;
@@ -31,7 +31,7 @@ public class EventRecord {
         if (!mIsRecording) return;
 
         imageStack.addShotBuff(shot_00);
-        final long startTime = System.currentTimeMillis() - INTERVAL_EVENT - INTERVAL_EVENT/4;
+        final long startTime = System.currentTimeMillis() - share_event_sec - share_event_sec /4;
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);
@@ -53,7 +53,7 @@ public class EventRecord {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, 2, false);
             }
-        }, INTERVAL_EVENT * 5 / 10);
+        }, share_event_sec * 5000 / 10);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
@@ -61,7 +61,7 @@ public class EventRecord {
                 SnapShotSave snapShotSave = new SnapShotSave();
                 snapShotSave.startSave(thisEventJpgPath, 3, true);
             }
-        }, INTERVAL_EVENT * 10 / 10);
+        }, share_event_sec * 10000 / 10);
 
 //        new Timer().schedule(new TimerTask() {
 //            public void run() {
@@ -80,7 +80,7 @@ public class EventRecord {
 //            new MergeEvent().exec(startTime);
 
             }
-        }, INTERVAL_EVENT * 9 / 10);
+        }, share_event_sec * 9000 / 10);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

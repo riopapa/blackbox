@@ -1,7 +1,6 @@
 package com.riopapa.blackbox;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.riopapa.blackbox.Vars.INTERVAL_NORMAL;
 import static com.riopapa.blackbox.Vars.displayTime;
 import static com.riopapa.blackbox.Vars.gpsTracker;
 import static com.riopapa.blackbox.Vars.mActivity;
@@ -10,6 +9,7 @@ import static com.riopapa.blackbox.Vars.mExitApplication;
 import static com.riopapa.blackbox.Vars.mIsRecording;
 import static com.riopapa.blackbox.Vars.mediaRecorder;
 import static com.riopapa.blackbox.Vars.nextCount;
+import static com.riopapa.blackbox.Vars.normal_duration;
 import static com.riopapa.blackbox.Vars.photoCapture;
 import static com.riopapa.blackbox.Vars.share_left_right_interval;
 import static com.riopapa.blackbox.Vars.utils;
@@ -96,7 +96,7 @@ public class StartStopExit {
                 }
             }
         };
-        normalTimer.schedule(normalTask, INTERVAL_NORMAL, INTERVAL_NORMAL);
+        normalTimer.schedule(normalTask, normal_duration, normal_duration);
     }
 
     void stopVideo() {

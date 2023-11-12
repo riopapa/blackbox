@@ -5,13 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:keepScreenOn="true"
     android:background="@color/baseColor"
-                                                   android:id="@+id/main_layout"
+    android:id="@+id/main_layout"
     >
 
     <FrameLayout
         android:id="@+id/frameRecord"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_margin="18dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -154,20 +154,17 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-
     <ImageButton
         android:id="@+id/btnPauseAMinute"
         style="@android:style/Widget.Material.Light.Button.Borderless"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:scaleType="fitXY"
         android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:contentDescription="@string/km"
         android:src="@drawable/pause" />
-
 
     <!--  Battery  -->
     <FrameLayout

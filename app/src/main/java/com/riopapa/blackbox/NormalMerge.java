@@ -26,12 +26,12 @@ import java.util.List;
 
 import static com.riopapa.blackbox.Vars.DATE_PREFIX;
 import static com.riopapa.blackbox.Vars.FORMAT_TIME;
-import static com.riopapa.blackbox.Vars.INTERVAL_NORMAL;
 import static com.riopapa.blackbox.Vars.SUFFIX;
 import static com.riopapa.blackbox.Vars.gpsTracker;
 import static com.riopapa.blackbox.Vars.mPackageNormalDatePath;
 import static com.riopapa.blackbox.Vars.mPackageNormalPath;
 import static com.riopapa.blackbox.Vars.mPackageWorkingPath;
+import static com.riopapa.blackbox.Vars.normal_duration;
 import static com.riopapa.blackbox.Vars.sdfTime;
 import static com.riopapa.blackbox.Vars.utils;
 
@@ -60,7 +60,7 @@ class NormalMerge {
         @Override
         protected String doInBackground(String... inputParams) {
             if (nextNormalTime == 0)
-                nextNormalTime = System.currentTimeMillis() - INTERVAL_NORMAL - 10000;
+                nextNormalTime = System.currentTimeMillis() - normal_duration - 10000;
             beginTimeS = utils.getMilliSec2String(nextNormalTime, FORMAT_TIME);
             File []files2Merge;
             files2Merge = utils.getDirectoryList(mPackageWorkingPath);

@@ -17,6 +17,8 @@ import static com.riopapa.blackbox.Vars.mPackageNormalDatePath;
 import static com.riopapa.blackbox.Vars.mPackageNormalPath;
 import static com.riopapa.blackbox.Vars.mPackageWorkingPath;
 import static com.riopapa.blackbox.Vars.mainLayout;
+import static com.riopapa.blackbox.Vars.normal_duration;
+import static com.riopapa.blackbox.Vars.share_event_sec;
 import static com.riopapa.blackbox.Vars.share_image_size;
 import static com.riopapa.blackbox.Vars.share_left_right_interval;
 import static com.riopapa.blackbox.Vars.share_snap_interval;
@@ -92,6 +94,8 @@ public class MainActivity extends Activity {
 
         new Suffix().set();
         SettingsActivity.getPreference();   // should be after Suffix().set()
+
+        normal_duration = share_event_sec * 4000;
 
         readyBlackBoxFolders();
         utils.deleteOldFiles(mPackageNormalPath, 6);
@@ -190,7 +194,15 @@ public class MainActivity extends Activity {
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
         if (msg.length() > 0)
             utils.logBoth("DISK", msg);
-        String s = "\nImage_Arrays = "+ share_image_size +"\nInterval (Shot: "+ share_snap_interval +", LeftRight: "+ share_left_right_interval+")";
+
+        showParams();
+    }
+
+    private static void showParams() {
+        String s = "\nImage_Arrays = "+ share_image_size +
+                "\nInterval (Shot: "+ share_snap_interval +
+                ", LeftRight: "+ share_left_right_interval+") " +
+                "\nEvent Duration: "+share_event_sec;
         utils.logBoth("Preference",s);
     }
 
@@ -207,7 +219,10 @@ public class MainActivity extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
-//        if (requestCode == SETTING_ACTIVITY) {
+        showParams();
+        imageStack = new ImageStack(share_image_size);
+
+        //        if (requestCode == SETTING_ACTIVITY) {
 //            startStopExit.exitApp(true);
 //        }
     }
@@ -295,18 +310,5 @@ public class MainActivity extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
-//    @Override
-//    protected void onPause() {
-//        Log.e("Now","onPause()");
-//        if (mIsRecording || isRunning) {
-//            new Handler().postDelayed(() -> {
-//                Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(mContext.getPackageName());
-//                sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                mActivity.startActivity(sendIntent);
-//            }, 10000);
-//        }
-//        super.onPause();
-//    }
 
 }
