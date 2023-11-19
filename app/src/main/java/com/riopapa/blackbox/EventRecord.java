@@ -31,7 +31,8 @@ public class EventRecord {
         if (!mIsRecording) return;
 
         imageStack.addShotBuff(shot_00);
-        final long startTime = System.currentTimeMillis() - share_event_sec - share_event_sec /4;
+        final long startTime = System.currentTimeMillis()
+                - ((share_event_sec + share_event_sec /4) * 1000);
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);
@@ -44,24 +45,25 @@ public class EventRecord {
                 imageStack.addShotBuff(shot_00);
                 snapShotSave.startSave(thisEventJpgPath, 1, false);
             }
-        }, 100);
+        }, 20);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 imageStack.addShotBuff(shot_01);
-                imageStack.addShotBuff(shot_01);
                 SnapShotSave snapShotSave = new SnapShotSave();
+                imageStack.addShotBuff(shot_01);
                 snapShotSave.startSave(thisEventJpgPath, 2, false);
             }
-        }, share_event_sec * 5000 / 10);
+        }, share_event_sec * 300);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 imageStack.addShotBuff(shot_02);
                 SnapShotSave snapShotSave = new SnapShotSave();
+                imageStack.addShotBuff(shot_02);
                 snapShotSave.startSave(thisEventJpgPath, 3, true);
             }
-        }, share_event_sec * 10000 / 10);
+        }, share_event_sec * 600);
 
 //        new Timer().schedule(new TimerTask() {
 //            public void run() {
@@ -70,7 +72,8 @@ public class EventRecord {
 //            }
 //        }, INTERVAL_EVENT * 17 / 10);
 
-        gpsTracker.askLocation();
+
+//        gpsTracker.askLocation();
         new Timer().schedule(new TimerTask() {
             public void run() {
 //                new EventMerge().merge(startTime);
@@ -80,7 +83,7 @@ public class EventRecord {
 //            new MergeEvent().exec(startTime);
 
             }
-        }, share_event_sec * 9000 / 10);
+        }, share_event_sec * 1000);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

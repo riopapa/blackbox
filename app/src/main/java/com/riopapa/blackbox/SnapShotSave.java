@@ -27,11 +27,11 @@ class SnapShotSave {
 
         maxSize = share_image_size - 1;
         if (phase == 2)
-            maxSize = share_image_size - 12;
+            maxSize = share_image_size - 2;
         else if (phase == 3)
-            maxSize = share_image_size - 13;
+            maxSize = share_image_size - 3;
         else if (phase == 4)
-            maxSize = share_image_size - 20;
+            maxSize = share_image_size - 4;
 
         byte [][] jpgBytes = imageStack.getClone(imageStack.snapNowPos);
 
