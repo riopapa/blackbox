@@ -8,6 +8,8 @@ import static com.riopapa.blackbox.Vars.share_image_size;
 import static com.riopapa.blackbox.Vars.share_left_right_interval;
 import static com.riopapa.blackbox.Vars.share_snap_interval;
 import static com.riopapa.blackbox.Vars.utils;
+import static com.riopapa.blackbox.VideoMain.zoomHuge;
+import static com.riopapa.blackbox.VideoMain.zoomNormal;
 
 import android.os.Build;
 
@@ -18,9 +20,13 @@ public class Suffix {
         switch (Build.MODEL) {
             case "SM-G965N":
                 SUFFIX = Vars.PhoneE.P;
+                zoomNormal = 1.1f;
+                zoomHuge = 1.6f;
                 break;
             case "SM-N986N":
                 SUFFIX = Vars.PhoneE.N;
+                zoomNormal = 1.2f;
+                zoomHuge = 1.8f;
                 break;
             case "SM-A325N":
                 SUFFIX = Vars.PhoneE.A;

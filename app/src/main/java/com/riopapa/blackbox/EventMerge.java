@@ -41,7 +41,7 @@ class EventMerge {
         Thread thread = new Thread(() -> {
             new MergeFileTask().execute("" + startTime);
         });
-        thread.setName("Thread #1");
+        thread.setName("Thread event");
         thread.start();
     }
 

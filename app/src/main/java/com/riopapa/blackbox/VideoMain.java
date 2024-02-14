@@ -51,7 +51,7 @@ public class VideoMain {
 
     private final String logID = "videoMain";
     private boolean isPrepared = false;
-    Rect zoomNormal;
+    Rect rectNormal;
 
     void prepareRecord() {
 
@@ -95,9 +95,9 @@ public class VideoMain {
         photoSurface = mImageReader.getSurface();
         mVideoRequestBuilder.addTarget(photoSurface);
 
-        zoomNormal = calcZoomSize(ZOOM_FACTOR_NORMAL, "N");
-        zoomLeft = calcZoomSize(ZOOM_FACTOR_HUGE, "L");
-        zoomRight = calcZoomSize(ZOOM_FACTOR_HUGE, "R");
+        rectNormal = calcZoomSize(zoomNormal, "N");
+        zoomLeft = calcZoomSize(zoomHuge, "L");
+        zoomRight = calcZoomSize(zoomHuge, "R");
     }
 
     void buildCameraSession() {
@@ -118,7 +118,7 @@ public class VideoMain {
             @Override
             public void onConfigured(@NonNull CameraCaptureSession session) {
                 mCaptureSession = session;
-                mVideoRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoomNormal);
+                mVideoRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, rectNormal);
                 try {
                     mCaptureSession.setRepeatingRequest(mVideoRequestBuilder.build(), null, null);
                 } catch (CameraAccessException e) {
@@ -132,7 +132,7 @@ public class VideoMain {
         };
     }
 
-    final float ZOOM_FACTOR_NORMAL = 1.1f, ZOOM_FACTOR_HUGE = 1.6f;
+    public static float zoomNormal, zoomHuge;
     private Rect calcZoomSize(float zoomFactor, String type) {
 
         int xOrgSize = mImageSize.getWidth();
