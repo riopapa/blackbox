@@ -122,10 +122,10 @@ public class MainActivity extends Activity {
         started = true;
         startStopExit = new StartStopExit();
 
-        vBtnEvent = findViewById(R.id.btnEvent);
-        vBtnEvent.setOnClickListener(v -> startEventSaving());
-
         setViewVars();
+
+        vBtnEvent.setOnClickListener(v -> startEventSaving());
+        vTextLogInfo.setOnClickListener(v -> startEventSaving());
 
         mIsRecording = false;
 
@@ -255,6 +255,7 @@ public class MainActivity extends Activity {
         tvDegree = findViewById(R.id.degree);
         vTextSpeed.setText(R.string.under_bar);
         vPreviewView = findViewById(R.id.previewView);
+        vBtnEvent = findViewById(R.id.btnEvent);
 //        vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
     }
 

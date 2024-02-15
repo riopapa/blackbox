@@ -83,7 +83,7 @@ class DisplayBattery  {
         final RectF rect = new RectF();
         rect.set(CIRCLE_WIDTH, CIRCLE_WIDTH, CIRCLE_RADIUS - CIRCLE_WIDTH, CIRCLE_RADIUS - CIRCLE_WIDTH);
         if (isCharging) {
-            if (nowPercent > 50)
+            if (nowPercent > 30)
                 paint.setColor(Color.GREEN);
             else
                 paint.setColor(Color.YELLOW);

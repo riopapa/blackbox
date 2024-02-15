@@ -83,7 +83,7 @@ public class EventRecord {
 //            new MergeEvent().exec(startTime);
 
             }
-        }, share_event_sec * 1000);
+        }, share_event_sec * 900);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {
