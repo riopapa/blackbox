@@ -20,43 +20,42 @@ import static com.riopapa.blackbox.utility.ImageStack.snapTime;
 
 class SnapShotSave {
 
-    int startBias;
     int maxSize;
     String prefixTime;
     long [] times;
     byte [][] jpgBytes;
+    static long veryFirst;
 
     void startSave(File path2Write, final int phase, boolean last) {
 
         final int minPos = 0;
 
         maxSize = share_image_size - 2;
-        if (phase == 2)
-            maxSize = share_image_size - 4;
-        else if (phase == 3)
-            maxSize = share_image_size - 6;
-        else if (phase == 4)
-            maxSize = share_image_size - 8;
+//        if (phase == 2)
+//            maxSize = share_image_size - 4;
+//        else if (phase == 3)
+//            maxSize = share_image_size - 6;
+//        else if (phase == 4)
+//            maxSize = share_image_size - 8;
 
         times = new long[share_image_size];
-        jpgBytes = new byte[share_image_size][];
         getClone(imageStack.snapNowPos);
-        long veryFirst = times[0];
-        Log.w("x", path2Write+" "+veryFirst);
-        startBias = phase * 200;
+        if (phase == 1)
+            veryFirst = times[0]; //  + 4000;    // 4000
+
         prefixTime = path2Write.getName();
         prefixTime = "D"+prefixTime.substring(1, prefixTime.length()-1)+".";
         Thread th = new Thread(() -> {
             for (int i = minPos; i < maxSize; i++) {
                 if (jpgBytes[i] == null)
                     continue;
-                int inc = (int) ((times[i] - veryFirst) / 10);
-                int sec = inc / 100 / 60;
-                int mil = inc - sec * 60 * 100;
-                File imageFile = new File(path2Write, prefixTime + ((sec+1)*1000+mil) + ".jpg");
+                int inc = 200000+ (int) ((times[i] - veryFirst));
+                String t = (""+inc).substring(1);
+
+                File imageFile = new File(path2Write, prefixTime+ t + ".jpg");
                 if (jpgBytes[i].length > 1) {
                     bytes2File(jpgBytes[i], imageFile);
-                    SystemClock.sleep(20);  // not to hold all the time
+                    SystemClock.sleep(54);  // not to hold all the time
                 } else
                     Log.e( phase+" image error "+i, imageFile.getName());
                 jpgBytes[i] = null;
@@ -64,7 +63,7 @@ class SnapShotSave {
             if (last) { // last phase
                 utils.beepOnce(3, 1f);
                 mActivity.runOnUiThread(() -> {
-                    vTextCountEvent.setText(String.valueOf(CountEvent));
+                    vTextCountEvent.setText(String.valueOf(++CountEvent));
                     activeEventCount--;
                     String text = (activeEventCount == 0) ? "" : " "+activeEventCount+" ";
                     vTextActiveCount.setText(text);
@@ -98,6 +97,7 @@ class SnapShotSave {
     void getClone(int startPos) {
 
         int jpgIdx = 0;
+        jpgBytes = new byte[share_image_size][];
         for (int i = startPos; i < share_image_size; i++) {
             if (snapBytes[i] != null) {
                 times[jpgIdx] = snapTime[i];

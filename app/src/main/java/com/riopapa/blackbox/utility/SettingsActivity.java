@@ -127,16 +127,16 @@ public class SettingsActivity extends AppCompatActivity  {
         share_image_size = sharedPref.getInt(NAME_IMAGES_SIZE, 0);
         if (share_image_size == 0) {
             share_image_size = 116;
-            sharedEditor.putInt(NAME_IMAGES_SIZE, 126);
-            sharedEditor.putInt(NAME_SNAP_INTERVAL, 187);
-            sharedEditor.putInt(NAME_LEFT_RIGHT, 100);
-            sharedEditor.putInt(NAME_DURATION, 100);
+            sharedEditor.putInt(NAME_IMAGES_SIZE, 124);
+            sharedEditor.putInt(NAME_SNAP_INTERVAL, 124);
+            sharedEditor.putInt(NAME_LEFT_RIGHT, 97);
+            sharedEditor.putInt(NAME_DURATION, 23);
             sharedEditor.apply();
         }
-        share_image_size = sharedPref.getInt(NAME_IMAGES_SIZE, 197);
-        share_snap_interval = sharedPref.getInt(NAME_SNAP_INTERVAL, 197);
-        share_left_right_interval = sharedPref.getInt(NAME_LEFT_RIGHT, 100);
-        share_event_sec = sharedPref.getInt(NAME_DURATION, 22);
+        share_image_size = sharedPref.getInt(NAME_IMAGES_SIZE, 124);
+        share_snap_interval = sharedPref.getInt(NAME_SNAP_INTERVAL, 124);
+        share_left_right_interval = sharedPref.getInt(NAME_LEFT_RIGHT, 97);
+        share_event_sec = sharedPref.getInt(NAME_DURATION, 23);
 
     }
 

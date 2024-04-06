@@ -32,58 +32,51 @@ public class EventRecord {
 
         imageStack.addShotBuff(shot_00);
         final long startTime = System.currentTimeMillis()
-                - ((share_event_sec + share_event_sec /4) * 1000);
+                - ((share_event_sec + share_event_sec /5) * 1000);
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);
         utils.logBoth("start "+(CountEvent+1+activeEventCount),thisEventJpgPath.getName());
         utils.setVolume(70);
+//        long veryFirst;
+        SnapShotSave snapShotSave = new SnapShotSave();
         new Timer().schedule(new TimerTask() {
             public void run() {
                 imageStack.addShotBuff(shot_00);
-                SnapShotSave snapShotSave = new SnapShotSave();
                 imageStack.addShotBuff(shot_00);
-                snapShotSave.startSave(thisEventJpgPath, 1, false);
+                new SnapShotSave().startSave(thisEventJpgPath, 1, false);
             }
         }, 20);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                imageStack.addShotBuff(shot_01);
-                SnapShotSave snapShotSave = new SnapShotSave();
-                imageStack.addShotBuff(shot_01);
-                snapShotSave.startSave(thisEventJpgPath, 2, false);
+                new SnapShotSave().startSave(thisEventJpgPath, 2, false);
             }
-        }, share_event_sec * 300);
+        }, share_event_sec * 110);
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                new SnapShotSave().startSave(thisEventJpgPath, 3, false);
+            }
+        }, share_event_sec * 240);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                imageStack.addShotBuff(shot_02);
-                SnapShotSave snapShotSave = new SnapShotSave();
-                imageStack.addShotBuff(shot_02);
-                snapShotSave.startSave(thisEventJpgPath, 3, true);
+                new SnapShotSave().startSave(thisEventJpgPath, 4, false);
             }
-        }, share_event_sec * 600);
+        }, share_event_sec * 360);
 
-//        new Timer().schedule(new TimerTask() {
-//            public void run() {
-//                SnapShotSave snapShotSave = new SnapShotSave();
-//                snapShotSave.startSave(thisEventJpgPath, 4);
-//            }
-//        }, INTERVAL_EVENT * 17 / 10);
-
-
-//        gpsTracker.askLocation();
         new Timer().schedule(new TimerTask() {
             public void run() {
-//                new EventMerge().merge(startTime);
+                new SnapShotSave().startSave(thisEventJpgPath, 5, true);
+            }
+        }, share_event_sec * 500);
+
+        new Timer().schedule(new TimerTask() {
+            public void run() {
             MergeEvent mergeEvent = new MergeEvent();
             mergeEvent.exec(startTime);
-//                new com.riopapa.blackbox.MergeEvent();
-//            new MergeEvent().exec(startTime);
-
             }
-        }, share_event_sec * 900);
+        }, share_event_sec * 800);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

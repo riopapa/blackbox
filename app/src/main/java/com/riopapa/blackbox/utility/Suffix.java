@@ -25,8 +25,8 @@ public class Suffix {
                 break;
             case "SM-N986N":
                 SUFFIX = Vars.PhoneE.N;
-                zoomNormal = 1.2f;
-                zoomHuge = 1.8f;
+                zoomNormal = 1.3f;
+                zoomHuge = 1.9f;
                 break;
             case "SM-A325N":
                 SUFFIX = Vars.PhoneE.A;
@@ -41,8 +41,8 @@ public class Suffix {
                 share_image_size = 157;
                 share_snap_interval = 177;
                 share_left_right_interval = 78;
-                VIDEO_FRAME_RATE = 24;
-                VIDEO_ENCODING_RATE = 24*1000*1000;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
                 break;
             case N:           // galaxy note 20
@@ -50,7 +50,7 @@ public class Suffix {
                 share_snap_interval = 172;
                 share_left_right_interval = 112;
                 VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 24*1000*1000;
+                VIDEO_ENCODING_RATE = 30*1000*1000;
                 VIDEO_ONE_WORK_FILE_SIZE = 18*1024*1024;
                 break;
             case A:           // galaxy A32
