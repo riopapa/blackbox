@@ -4,7 +4,6 @@ import static com.riopapa.blackbox.Vars.utils;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.util.Log;
 import android.util.Size;
 
 import com.riopapa.blackbox.Vars;
@@ -41,9 +40,9 @@ public class CameraSize {
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                     if (size.getWidth() == 960 && size.getHeight() == 720)
                         sizePreview = size;
-                    else if (size.getWidth() == 3840 && size.getHeight() == 2160) // 1.8
+                    else if (size.getWidth() == 3264 && size.getHeight() == 2448) // 1.8
                         sizeCamera = size;
-                    else if (size.getWidth() == 2880 && size.getHeight() == 2160)   // 1.3
+                    else if (size.getWidth() == 1440 && size.getHeight() == 1080)   // 1.8
                         sizeVideo = size;
                 }
                 break;
@@ -61,7 +60,7 @@ public class CameraSize {
                         sizePreview = size;
                     else if (size.getWidth() == 4000 && size.getHeight() == 2252)
                         sizeCamera = size;
-                    else if (size.getWidth() == 3840 && size.getHeight() == 2160)
+                    else if (size.getWidth() == 1920 && size.getHeight() == 1440)
                         sizeVideo = size;
                 }
                 break;
@@ -105,10 +104,10 @@ public class CameraSize {
         // TODO: Serialize the rest of the StreamConfigurationMap fields.
         JSONObject mapObj = new JSONObject();
         JSONArray cfgArray = new JSONArray();
-        int fmts[] = map.getOutputFormats();
+        int []fmts = map.getOutputFormats();
         if (fmts != null) {
             for (int fi = 0; fi < Array.getLength(fmts); fi++) {
-                Size sizes[] = map.getOutputSizes(fmts[fi]);
+                Size []sizes = map.getOutputSizes(fmts[fi]);
                 if (sizes != null) {
                     String sb = "// DUMP CAMERA POSSIBLE SIZES // "+fmts[fi] +" list ";
                     for (int si = 0; si < Array.getLength(sizes); si++) {

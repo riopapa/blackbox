@@ -19,7 +19,7 @@ public class PhotoCapture {
     private static final int STATE_PREVIEW = 0;
     private static int mCaptureState = STATE_PREVIEW;
 
-    static void photoInit() {
+    public void photoInit() {
 //        mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
         mCameraBuilder.addTarget(photoSurface);
         mCameraBuilder.set(CaptureRequest.JPEG_ORIENTATION, -90);
@@ -27,7 +27,7 @@ public class PhotoCapture {
     }
 
     public static boolean leftRight = false;
-    static void zoomShotCamera() {
+    public void zoomShotCamera() {
         mCameraBuilder.set(CaptureRequest.SCALER_CROP_REGION, leftRight ? zoomLeft : zoomRight);
         mCaptureState = STATE_WAIT_LOCK;
         try {
@@ -36,7 +36,7 @@ public class PhotoCapture {
         }
     }
 
-    private static final CameraCaptureSession.CaptureCallback zoomCameraPhotoCallback = new
+    private final CameraCaptureSession.CaptureCallback zoomCameraPhotoCallback = new
         CameraCaptureSession.CaptureCallback() {
 
         @Override

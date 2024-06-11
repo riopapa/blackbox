@@ -43,7 +43,6 @@ public class EventRecord {
         new Timer().schedule(new TimerTask() {
             public void run() {
                 imageStack.addShotBuff(shot_00);
-                imageStack.addShotBuff(shot_00);
                 new SnapShotSave().startSave(thisEventJpgPath, 1, false);
             }
         }, 20);

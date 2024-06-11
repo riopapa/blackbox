@@ -41,9 +41,9 @@ public class Suffix {
                 share_image_size = 157;
                 share_snap_interval = 177;
                 share_left_right_interval = 78;
-                VIDEO_FRAME_RATE = 30;
+                VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 10*1024*1024;
                 break;
             case N:           // galaxy note 20
                 share_image_size = 151;
@@ -51,7 +51,7 @@ public class Suffix {
                 share_left_right_interval = 112;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 18*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 12*1024*1024;
                 break;
             case A:           // galaxy A32
                 share_image_size = 125;
@@ -59,7 +59,7 @@ public class Suffix {
                 share_left_right_interval = 140;
                 VIDEO_FRAME_RATE = 24;
                 VIDEO_ENCODING_RATE = 20*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 16*1024*1024;
+                VIDEO_ONE_WORK_FILE_SIZE = 12*1024*1024;
                 break;
         }
     }
