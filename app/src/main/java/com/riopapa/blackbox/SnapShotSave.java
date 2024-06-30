@@ -24,24 +24,16 @@ class SnapShotSave {
     String prefixTime;
     long [] times;
     byte [][] jpgBytes;
-    static long veryFirst;
+    int suffix;
 
     void startSave(File path2Write, final int phase, boolean last) {
 
         final int minPos = 0;
-
+        suffix = phase * 1000;
         maxSize = share_image_size - 2;
-//        if (phase == 2)
-//            maxSize = share_image_size - 4;
-//        else if (phase == 3)
-//            maxSize = share_image_size - 6;
-//        else if (phase == 4)
-//            maxSize = share_image_size - 8;
 
         times = new long[share_image_size];
         getClone(imageStack.snapNowPos);
-        if (phase == 1)
-            veryFirst = times[0]; //  + 4000;    // 4000
 
         prefixTime = path2Write.getName();
         prefixTime = "D"+prefixTime.substring(1, prefixTime.length()-1)+".";
@@ -49,9 +41,7 @@ class SnapShotSave {
             for (int i = minPos; i < maxSize; i++) {
                 if (jpgBytes[i] == null)
                     continue;
-                int inc = 200000+ (int) ((times[i] - veryFirst));
-                String t = (""+inc).substring(1);
-
+                String t = "" + suffix + i;
                 File imageFile = new File(path2Write, prefixTime+ t + ".jpg");
                 if (jpgBytes[i].length > 1) {
                     bytes2File(jpgBytes[i], imageFile);

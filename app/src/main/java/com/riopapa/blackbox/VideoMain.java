@@ -9,6 +9,7 @@ import static com.riopapa.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.riopapa.blackbox.Vars.mCameraBuilder;
 import static com.riopapa.blackbox.Vars.mCameraDevice;
 import static com.riopapa.blackbox.Vars.mCaptureSession;
+import static com.riopapa.blackbox.Vars.mContext;
 import static com.riopapa.blackbox.Vars.mImageReader;
 import static com.riopapa.blackbox.Vars.mImageSize;
 import static com.riopapa.blackbox.Vars.mIsRecording;
@@ -30,6 +31,7 @@ import static com.riopapa.blackbox.Vars.zoomLeft;
 import static com.riopapa.blackbox.Vars.zoomRight;
 
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
@@ -39,6 +41,7 @@ import android.media.MediaRecorder;
 import android.view.Surface;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +55,7 @@ public class VideoMain {
     private final String logID = "videoMain";
     private boolean isPrepared = false;
     Rect rectNormal;
+    Drawable [] onRecord;
 
     void prepareRecord() {
 
@@ -66,6 +70,8 @@ public class VideoMain {
 
         buildCameraSession();
         isPrepared = true;
+        onRecord[0] = mContext.getResources().getDrawable(R.drawable.circle0);
+        onRecord[1] = mContext.getResources().getDrawable(R.drawable.circle1);
     }
 
     private void readySurfaces() {
@@ -203,7 +209,7 @@ public class VideoMain {
             }, 10);
             String s = ++nextCount + "";
             vTextRecord.setText(s);
-            vPower.setImageResource((nextCount%2 == 0) ? R.drawable.circle0: R.drawable.circle1);
+            vPower.setImageDrawable(onRecord[nextCount%2]);
 //            Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
 //            aniRotateClk.setRepeatCount(Animation.INFINITE);
 //            vPower.startAnimation(aniRotateClk);

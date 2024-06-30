@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 29
@@ -13,7 +13,18 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            buildConfigField("String", "API_ENDPOINT", "\"https://api.example.com/debug\"")
+        }
+        release {
+            buildConfigField("String", "API_ENDPOINT", "\"https://api.example.com/release\"")
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
     }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -29,19 +40,24 @@ android {
 }
 
 dependencies {
-    modules {
-        module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") {
-            replacedBy("org.jetbrains.kotlin:kotlin-stdlib", "kotlin-stdlib-jdk7 is now part of kotlin-stdlib")
-        }
-        module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") {
-            replacedBy("org.jetbrains.kotlin:kotlin-stdlib", "kotlin-stdlib-jdk8 is now part of kotlin-stdlib")
-        }
-    }
-    implementation 'androidx.activity:activity-ktx:1.7.2'
+//    modules {
+//        module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") {
+//            replacedBy("org.jetbrains.kotlin:kotlin-stdlib", "kotlin-stdlib-jdk7 is now part of kotlin-stdlib")
+//        }
+//        module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") {
+//            replacedBy("org.jetbrains.kotlin:kotlin-stdlib", "kotlin-stdlib-jdk8 is now part of kotlin-stdlib")
+//        }
+//    }
+
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.1"
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.10")
+
+    implementation 'androidx.activity:activity-ktx:1.9.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.googlecode.mp4parser:isoparser:1.1.22'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
     implementation 'com.github.pires:obd-java-api:1.0-RC16'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'androidx.preference:preference:1.2.1'

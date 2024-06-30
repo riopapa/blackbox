@@ -42,7 +42,7 @@ public class EventRecord {
         SnapShotSave snapShotSave = new SnapShotSave();
         new Timer().schedule(new TimerTask() {
             public void run() {
-                imageStack.addShotBuff(shot_00);
+                imageStack.addShotBuff(shot_00);    // first phase should be 1
                 new SnapShotSave().startSave(thisEventJpgPath, 1, false);
             }
         }, 20);
@@ -51,24 +51,19 @@ public class EventRecord {
             public void run() {
                 new SnapShotSave().startSave(thisEventJpgPath, 2, false);
             }
-        }, share_event_sec * 110);
+        }, share_event_sec * 200);
         new Timer().schedule(new TimerTask() {
             public void run() {
                 new SnapShotSave().startSave(thisEventJpgPath, 3, false);
             }
         }, share_event_sec * 240);
 
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                new SnapShotSave().startSave(thisEventJpgPath, 4, false);
-            }
-        }, share_event_sec * 360);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                new SnapShotSave().startSave(thisEventJpgPath, 5, true);
+                new SnapShotSave().startSave(thisEventJpgPath, 4, true);
             }
-        }, share_event_sec * 500);
+        }, share_event_sec * 600);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
