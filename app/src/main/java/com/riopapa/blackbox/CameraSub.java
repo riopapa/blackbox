@@ -80,7 +80,7 @@ public class CameraSub {
                 cameraManager.openCamera(mCameraId, mCameraDeviceStateCallback, mBackgroundCamera);
             }
         } catch (CameraAccessException e) {
-            utils.logE("CameraSub", "connectCamera Exception ", e);
+//            utils.logE("CameraSub", "connectCamera Exception ", e);
         }
     }
 

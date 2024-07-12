@@ -51,26 +51,20 @@ public class EventRecord {
             public void run() {
                 new SnapShotSave().startSave(thisEventJpgPath, 2, false);
             }
-        }, share_event_sec * 200);
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                new SnapShotSave().startSave(thisEventJpgPath, 3, false);
-            }
-        }, share_event_sec * 240);
-
+        }, share_event_sec * 600);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 new SnapShotSave().startSave(thisEventJpgPath, 4, true);
             }
-        }, share_event_sec * 600);
+        }, share_event_sec * 1200);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
             MergeEvent mergeEvent = new MergeEvent();
             mergeEvent.exec(startTime);
             }
-        }, share_event_sec * 800);
+        }, share_event_sec * 1000);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

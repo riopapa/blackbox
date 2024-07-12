@@ -2,7 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 34
+    compileSdk 34
+//    buildFeatures {
+//        buildConfig = true
+//    }
 
     defaultConfig {
         minSdkVersion 29
@@ -10,25 +13,27 @@ android {
     }
     buildTypes {
         release {
+//            buildConfigField("String", "API_ENDPOINT", "\"https://api.example.com/release\"")
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         debug {
-            buildConfigField("String", "API_ENDPOINT", "\"https://api.example.com/debug\"")
-        }
-        release {
-            buildConfigField("String", "API_ENDPOINT", "\"https://api.example.com/release\"")
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            buildConfigField("String", "API_ENDPOINT", "\"https://api.example.com/debug\"")
         }
 
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+
     sourceSets {
         main {
             java {
@@ -40,18 +45,18 @@ android {
 }
 
 dependencies {
-//    modules {
-//        module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") {
-//            replacedBy("org.jetbrains.kotlin:kotlin-stdlib", "kotlin-stdlib-jdk7 is now part of kotlin-stdlib")
-//        }
-//        module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") {
-//            replacedBy("org.jetbrains.kotlin:kotlin-stdlib", "kotlin-stdlib-jdk8 is now part of kotlin-stdlib")
-//        }
-//    }
+    modules {
+        module("org.jetbrains.kotlin:kotlin-stdlib-jdk7") {
+            replacedBy("org.jetbrains.kotlin:kotlin-stdlib", "kotlin-stdlib-jdk7 is now part of kotlin-stdlib")
+        }
+        module("org.jetbrains.kotlin:kotlin-stdlib-jdk8") {
+            replacedBy("org.jetbrains.kotlin:kotlin-stdlib", "kotlin-stdlib-jdk8 is now part of kotlin-stdlib")
+        }
+    }
 
-//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.1"
-
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.10")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.1"
+//
+//    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.10")
 
     implementation 'androidx.activity:activity-ktx:1.9.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'

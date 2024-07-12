@@ -38,7 +38,7 @@ public class CameraSize {
             720x480 1.5, 640x480 1.3, 352x288 1.2, 320x240 1.3, 256x144 1.8, 176x144 1.2 ,
              */
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 960 && size.getHeight() == 720)
+                    if (size.getWidth() == 640 && size.getHeight() == 480)
                         sizePreview = size;
                     else if (size.getWidth() == 3264 && size.getHeight() == 2448) // 1.8
                         sizeCamera = size;
@@ -65,21 +65,6 @@ public class CameraSize {
                 }
                 break;
 
-            case A:
-            /* galaxy A32
-                2560x1440 1.8, 1920x1080 1.8, 1440x1080 1.3, 1280x960 1.3, 1280x720 1.8 ,
-                1088x1088 1.0, 960x720 1.3, 720x480 1.5, 640x480 1.3, 512x384 1.3, 512x288 1.8 ,
-                 384x384 1.0, 352x288 1.2, 320x240 1.3, 256x144 1.8, 176x144 1.2 ,
-             */
-                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 640 && size.getHeight() == 480)
-                        sizePreview = size;
-                    else if (size.getWidth() == 2560 && size.getHeight() == 1440)
-                        sizeCamera = size;
-                    else if (size.getWidth() == 1920 && size.getHeight() == 1080)
-                        sizeVideo = size;
-                }
-                break;
             default:
                 utils.logBoth("Model", "size undefined");
         }

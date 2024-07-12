@@ -100,7 +100,7 @@ public class Vars {
     public static long VIDEO_ONE_WORK_FILE_SIZE;
     public  static int IMAGE_BUFFER_MAX_IMAGES = 3;
 
-    public enum PhoneE {  P, N, A} // S9Phone, Note20, A32
+    public enum PhoneE {P, N } // S9Phone, Note20
     static boolean viewFinderActive = true;
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;

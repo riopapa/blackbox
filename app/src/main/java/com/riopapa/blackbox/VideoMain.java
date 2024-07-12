@@ -70,6 +70,7 @@ public class VideoMain {
 
         buildCameraSession();
         isPrepared = true;
+        onRecord = new Drawable[2];
         onRecord[0] = mContext.getResources().getDrawable(R.drawable.circle0);
         onRecord[1] = mContext.getResources().getDrawable(R.drawable.circle1);
     }

@@ -63,7 +63,7 @@ import com.riopapa.blackbox.utility.DiskSpace;
 import com.riopapa.blackbox.utility.ImageStack;
 import com.riopapa.blackbox.utility.Permission;
 import com.riopapa.blackbox.utility.SettingsActivity;
-import com.riopapa.blackbox.utility.Suffix;
+import com.riopapa.blackbox.utility.VideoSize;
 
 import java.io.File;
 import java.util.Timer;
@@ -92,8 +92,8 @@ public class MainActivity extends Activity {
         }
         vPreviewView = findViewById(R.id.previewView);
 
-        new Suffix().set();
-        SettingsActivity.getPreference();   // should be after Suffix().set()
+        new VideoSize().set();
+        SettingsActivity.getPreference();   // should be after VideoSize().set()
 
         normal_duration = share_event_sec * 4000;
 

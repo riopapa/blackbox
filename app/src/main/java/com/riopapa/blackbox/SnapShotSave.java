@@ -41,11 +41,11 @@ class SnapShotSave {
             for (int i = minPos; i < maxSize; i++) {
                 if (jpgBytes[i] == null)
                     continue;
-                String t = "" + suffix + i;
+                String t = "" + (suffix + i);
                 File imageFile = new File(path2Write, prefixTime+ t + ".jpg");
                 if (jpgBytes[i].length > 1) {
                     bytes2File(jpgBytes[i], imageFile);
-                    SystemClock.sleep(44);  // not to hold all the time
+                    SystemClock.sleep(54);  // not to hold all the time
                 } else
                     Log.e( phase+" image error "+i, imageFile.getName());
                 jpgBytes[i] = null;
