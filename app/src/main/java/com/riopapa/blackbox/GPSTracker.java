@@ -92,7 +92,7 @@ public class GPSTracker extends Service implements LocationListener {
             final String speedText = "" + speedInt;
             gActivity.runOnUiThread(() -> speedView.setText(speedText));
         }
-        if (nowSpeed > 30) {
+        if (nowSpeed > 20) {
             if (viewFinderActive) {
                 viewFinderActive = false;
                 vPreviewView.setVisibility(View.INVISIBLE);

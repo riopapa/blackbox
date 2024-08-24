@@ -107,13 +107,13 @@ public class MainActivity extends Activity {
 
         utils.setFullScreen();
         isRunning = false;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         prepareMain();
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//    }
 
     private void prepareMain() {
 

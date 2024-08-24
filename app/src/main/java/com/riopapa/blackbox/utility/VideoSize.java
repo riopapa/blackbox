@@ -39,8 +39,8 @@ public class VideoSize {
                 share_snap_interval = 177;
                 share_left_right_interval = 78;
                 VIDEO_FRAME_RATE = 24;
-                VIDEO_ENCODING_RATE = 30*1000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 8*1024*1024;
+                VIDEO_ENCODING_RATE = 18*1000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 5*1024*1024;
                 break;
             case N:           // galaxy note 20
                 share_image_size = 151;
