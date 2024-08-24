@@ -22,7 +22,7 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
         while (downCount > 0) {
             if (!mExitApplication) {
                 publishProgress("" + downCount);
-                SystemClock.sleep(1000);
+                SystemClock.sleep(800);
             }
             downCount--;
         }
