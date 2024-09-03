@@ -32,7 +32,7 @@ public class EventRecord {
 
         imageStack.addShotBuff(shot_00);
         final long startTime = System.currentTimeMillis()
-                - ((share_event_sec + share_event_sec /5) * 1000);
+                - ((share_event_sec + share_event_sec /7) * 1000);
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);

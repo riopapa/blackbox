@@ -42,7 +42,7 @@ public class CameraSize {
                         sizePreview = size;
                     else if (size.getWidth() == 3264 && size.getHeight() == 2448) // 1.8
                         sizeCamera = size;
-                    else if (size.getWidth() == 1440 && size.getHeight() == 1080)   // 1.8
+                    else if (size.getWidth() == 960 && size.getHeight() == 540)   // 1.8
                         sizeVideo = size;
                 }
                 break;
@@ -60,7 +60,7 @@ public class CameraSize {
                         sizePreview = size;
                     else if (size.getWidth() == 4000 && size.getHeight() == 2252)
                         sizeCamera = size;
-                    else if (size.getWidth() == 1920 && size.getHeight() == 1440)
+                    else if (size.getWidth() == 960 && size.getHeight() == 540)
                         sizeVideo = size;
                 }
                 break;

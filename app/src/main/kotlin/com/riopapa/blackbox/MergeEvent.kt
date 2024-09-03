@@ -43,6 +43,7 @@ class MergeEvent {
                 Log.w("Err", "<<file[] too short " + files2Merge.size)
             } else {
                 Arrays.sort(files2Merge)
+
                 endTimeS = files2Merge[files2Merge.size - 2].name
                 outputFile = File(
                     Vars.mPackageEventPath, Vars.DATE_PREFIX + beginTimeS + Vars.SUFFIX
@@ -104,7 +105,7 @@ class MergeEvent {
             Vars.utils.beepOnce(3, 1f)
             Vars.utils.logOnly(logID, "IOException~ ")
         }
-        Log.w("Event", "videoTracks.size() = " + videoTracks.size)
+        Vars.utils.logBoth("Even", "videoTracks.size() = " + videoTracks.size)
     }
     companion object {
         private const val logID = "Event"
