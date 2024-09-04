@@ -1,111 +1,100 @@
-package com.riopapa.blackbox;
+package com.riopapa.blackbox
 
-import android.os.SystemClock;
-import android.util.Log;
+import android.os.SystemClock
+import android.util.Log
+import com.riopapa.blackbox.utility.ImageStack
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+internal class SnapShotSave {
 
-import static com.riopapa.blackbox.Vars.CountEvent;
-import static com.riopapa.blackbox.Vars.imageStack;
-import static com.riopapa.blackbox.Vars.share_image_size;
-import static com.riopapa.blackbox.Vars.activeEventCount;
-import static com.riopapa.blackbox.Vars.mActivity;
-import static com.riopapa.blackbox.Vars.utils;
-import static com.riopapa.blackbox.Vars.vTextActiveCount;
-import static com.riopapa.blackbox.Vars.vTextCountEvent;
-import static com.riopapa.blackbox.utility.ImageStack.snapBytes;
-import static com.riopapa.blackbox.utility.ImageStack.snapTime;
 
-class SnapShotSave {
+    fun exec(path2Write: File, phase: Int, last: Boolean) {
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        scope.launch {
+            execute(path2Write, phase, last)
+        }
+    }
+    private suspend fun execute(path2Write: File, phase: Int, last: Boolean) {
+        withContext(Dispatchers.IO) {
 
-    int maxSize;
-    String prefixTime;
-    long [] times;
-    byte [][] jpgBytes;
-    int suffix;
+            val minPos = 0
+            val suffix = phase * 1000
+            val maxSize = Vars.share_image_size - 2
 
-    void startSave(File path2Write, final int phase, boolean last) {
+            var jpgBytes = getClone(Vars.imageStack.snapNowPos)
 
-        final int minPos = 0;
-        suffix = phase * 1000;
-        maxSize = share_image_size - 2;
-
-        times = new long[share_image_size];
-
-        jpgBytes = getClone(imageStack.snapNowPos);
-
-        prefixTime = path2Write.getName();
-        prefixTime = "D"+prefixTime.substring(1, prefixTime.length()-1)+".";
-        Thread th = new Thread(() -> {
-            for (int i = minPos; i < maxSize; i++) {
-                if (jpgBytes[i] == null)
-                    continue;
-                String t = "" + (suffix + i);
-                File imageFile = new File(path2Write, prefixTime+ t + ".jpg");
-                if (jpgBytes[i].length > 1) {
-                    bytes2File(jpgBytes[i], imageFile);
-                    SystemClock.sleep(24);  // not to hold all the time
-                } else
-                    Log.e( phase+" image error "+i, imageFile.getName());
-                jpgBytes[i] = null;
+            var prefixTime: String = path2Write.name
+            prefixTime = "D" + prefixTime.substring(1, prefixTime.length - 1) + "."
+            val th = Thread {
+                for (i in minPos until maxSize) {
+                    if (jpgBytes[i] == null) continue
+                    val t = "" + (suffix + i)
+                    val imageFile = File(path2Write, "$prefixTime$t.jpg")
+                    if (jpgBytes[i]!!.size > 1) {
+                        bytes2File(jpgBytes[i], imageFile)
+                        SystemClock.sleep(24) // not to hold all the time
+                    } else Log.e("$phase image error $i", imageFile.name)
+                    jpgBytes[i] = null
+                }
+                if (last) { // last phase
+                    Vars.utils.beepOnce(3, 1f)
+                    Vars.mActivity.runOnUiThread {
+                        Vars.vTextCountEvent.text = (++Vars.CountEvent).toString()
+                        Vars.activeEventCount--
+                        val text =
+                            if ((Vars.activeEventCount == 0)) "" else " " + Vars.activeEventCount + " "
+                        Vars.vTextActiveCount.text = text
+                    }
+                    Vars.utils.logBoth("finish", path2Write.name)
+                    System.gc()
+                }
             }
-            if (last) { // last phase
-                utils.beepOnce(3, 1f);
-                mActivity.runOnUiThread(() -> {
-                    vTextCountEvent.setText(String.valueOf(++CountEvent));
-                    activeEventCount--;
-                    String text = (activeEventCount == 0) ? "" : " "+activeEventCount+" ";
-                    vTextActiveCount.setText(text);
-                });
-                utils.logBoth("finish", path2Write.getName());
-                System.gc();
-            }
-        });
-        th.start();
+            th.start()
+        }
     }
 
-    void bytes2File(byte[] bytes, File file) {
-
-        FileOutputStream fileOutputStream = null;
+    private fun bytes2File(bytes: ByteArray?, file: File?) {
+        var fileOutputStream: FileOutputStream? = null
         try {
-            fileOutputStream = new FileOutputStream(file);
-            fileOutputStream.write(bytes);
-        } catch (IOException e) {
-            utils.logE("snap", "IOException catch", e);
+            fileOutputStream = FileOutputStream(file)
+            fileOutputStream.write(bytes)
+        } catch (e: IOException) {
+            Vars.utils.logE("snap", "IOException catch", e)
         } finally {
             if (fileOutputStream != null) {
                 try {
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    utils.logE("snap", "IOException finally", e);
+                    fileOutputStream.close()
+                } catch (e: IOException) {
+                    Vars.utils.logE("snap", "IOException finally", e)
                 }
             }
         }
     }
 
-    byte [][] getClone(int startPos) {
-        byte [][] jBytes;
-        int jpgIdx = 0;
+    private fun getClone(startPos: Int): Array<ByteArray?> {
+        var jpgIdx = 0
 
-        jBytes = new byte[share_image_size][];
-        for (int i = startPos; i < share_image_size; i++) {
-            if (snapBytes[i] != null) {
-                times[jpgIdx] = snapTime[i];
-                jBytes[jpgIdx++] = snapBytes[i].clone();
-                snapBytes[i] = null;
+        val jBytes = arrayOfNulls<ByteArray>(Vars.share_image_size)
+        for (i in startPos until Vars.share_image_size) {
+            if (ImageStack.snapBytes[i] != null) {
+                jBytes[jpgIdx++] = ImageStack.snapBytes[i].clone()
+                ImageStack.snapBytes[i] = null
             }
         }
-        for (int i = 0; i < startPos-1; i++) {
-            if (jpgIdx >= share_image_size)
-                break;
-            if (snapBytes[i] != null) {
-                times[jpgIdx] = snapTime[i];
-                jBytes[jpgIdx++] = snapBytes[i].clone();
-                snapBytes[i] = null;
+        for (i in 0 until startPos - 1) {
+            if (jpgIdx >= Vars.share_image_size) break
+            if (ImageStack.snapBytes[i] != null) {
+                jBytes[jpgIdx++] = ImageStack.snapBytes[i].clone()
+                ImageStack.snapBytes[i] = null
             }
         }
-        return jBytes;
+        return jBytes
     }
 }

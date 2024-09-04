@@ -43,28 +43,28 @@ public class EventRecord {
         new Timer().schedule(new TimerTask() {
             public void run() {
                 imageStack.addShotBuff(shot_00);    // first phase should be 1
-                new SnapShotSave().startSave(thisEventJpgPath, 1, false);
+                snapShotSave.exec(thisEventJpgPath, 1, false);
             }
         }, 20);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                new SnapShotSave().startSave(thisEventJpgPath, 2, false);
+                snapShotSave.exec(thisEventJpgPath, 2, false);
             }
         }, share_event_sec * 600);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
-                new SnapShotSave().startSave(thisEventJpgPath, 4, true);
+                snapShotSave.exec(thisEventJpgPath, 4, true);
             }
-        }, share_event_sec * 1200);
+        }, share_event_sec * 1100);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
             MergeEvent mergeEvent = new MergeEvent();
             mergeEvent.exec(startTime);
             }
-        }, share_event_sec * 1000);
+        }, share_event_sec * 900);
 
         activeEventCount++;
         mActivity.runOnUiThread(() -> {

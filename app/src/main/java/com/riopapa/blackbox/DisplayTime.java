@@ -33,15 +33,15 @@ class DisplayTime implements Runnable {
             public void run() {
                 int celDegree = Celcius.get();
                 String txt = (celDegree>42)? ">"+celDegree+"<":" "+celDegree+" ";
-                if (celDegree > 43) {
+                if (celDegree > 44) {
                     utils.beepOnce(10, 1f);
                     if (mIsRecording)
                         stopHandler.sendEmptyMessage(0);
                     utils.beepOnce(10, 1f);
                     new BeBackSoon().execute("x");
-                } else if (celDegree > 42)
+                } else if (celDegree > 43)
                     utils.beepOnce(10, 1f);
-                else if (celDegree > 40) {
+                else if (celDegree > 41) {
                     utils.beepOnce(9, 1f);
                     if (viewFinderActive) {
                         viewFinderActive = false;
@@ -61,7 +61,7 @@ class DisplayTime implements Runnable {
                 });
             }
         };
-        displayHHMM.schedule(tt, 3000, 57000);
+        displayHHMM.schedule(tt, 3000, 50000);
     }
 
     void stop() {

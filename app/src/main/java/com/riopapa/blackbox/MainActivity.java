@@ -157,7 +157,6 @@ public class MainActivity extends Activity {
 
         ImageButton btnSetting = findViewById(R.id.btnSetting);
         btnSetting.setOnClickListener(v -> {
-
             Intent setInt = new Intent(MainActivity.this, SettingsActivity.class);
             startActivityForResult(setInt,SETTING_ACTIVITY) ;
             isRunning = false;

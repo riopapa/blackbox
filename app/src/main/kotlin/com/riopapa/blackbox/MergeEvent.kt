@@ -108,7 +108,7 @@ class MergeEvent {
         Vars.utils.logBoth("Even", "videoTracks.size() = " + videoTracks.size)
     }
     companion object {
-        private const val logID = "Event"
+        private const val logID = "EVENT MERGE"
     }
 }
 

@@ -130,7 +130,7 @@ class MergeNormal {
         }
     }
     companion object {
-        private const val logID = "Normal"
+        private const val logID = "NORMAL MERGE"
     }
 }
 
