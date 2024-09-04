@@ -33,7 +33,8 @@ class SnapShotSave {
         maxSize = share_image_size - 2;
 
         times = new long[share_image_size];
-        getClone(imageStack.snapNowPos);
+
+        jpgBytes = getClone(imageStack.snapNowPos);
 
         prefixTime = path2Write.getName();
         prefixTime = "D"+prefixTime.substring(1, prefixTime.length()-1)+".";
@@ -84,14 +85,15 @@ class SnapShotSave {
         }
     }
 
-    void getClone(int startPos) {
-
+    byte [][] getClone(int startPos) {
+        byte [][] jBytes;
         int jpgIdx = 0;
-        jpgBytes = new byte[share_image_size][];
+
+        jBytes = new byte[share_image_size][];
         for (int i = startPos; i < share_image_size; i++) {
             if (snapBytes[i] != null) {
                 times[jpgIdx] = snapTime[i];
-                jpgBytes[jpgIdx++] = snapBytes[i].clone();
+                jBytes[jpgIdx++] = snapBytes[i].clone();
                 snapBytes[i] = null;
             }
         }
@@ -100,11 +102,10 @@ class SnapShotSave {
                 break;
             if (snapBytes[i] != null) {
                 times[jpgIdx] = snapTime[i];
-                jpgBytes[jpgIdx++] = snapBytes[i].clone();
+                jBytes[jpgIdx++] = snapBytes[i].clone();
                 snapBytes[i] = null;
             }
         }
+        return jBytes;
     }
-
-
 }

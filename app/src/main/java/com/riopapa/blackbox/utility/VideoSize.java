@@ -39,16 +39,16 @@ public class VideoSize {
                 share_snap_interval = 177;
                 share_left_right_interval = 78;
                 VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 9000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 1200*1000;
+                VIDEO_ENCODING_RATE = 20000 * 1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 2000*1000;
                 break;
             case N:           // galaxy note 20
                 share_image_size = 151;
                 share_snap_interval = 172;
                 share_left_right_interval = 112;
                 VIDEO_FRAME_RATE = 30;
-                VIDEO_ENCODING_RATE = 9900*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 2000*1000;
+                VIDEO_ENCODING_RATE = 20000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = 2400*1000;
                 break;
         }
     }
