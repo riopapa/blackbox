@@ -22,9 +22,10 @@ public class CameraSize {
     public static Size[] set(StreamConfigurationMap map, Vars.PhoneE SUFFIX) {
 
         Size sizePreview = null, sizeCamera = null, sizeVideo = null;
-//        String model = Build.MODEL;
-//        utils.logBoth("logID", "CamSize on "+model);
-//        dumpVariousCameraSizes(map);
+
+        //        String model = Build.MODEL;
+        //        utils.logBoth("logID", "CamSize on "+model);
+        //        dumpVariousCameraSizes(map);
         map.getOutputFormats();
 
         switch (SUFFIX) {
