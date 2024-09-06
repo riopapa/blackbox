@@ -1,6 +1,7 @@
 package com.riopapa.blackbox.utility;
 
 import static com.riopapa.blackbox.StartStopExit.zoomChangeTimer;
+import static com.riopapa.blackbox.Vars.photoCapture;
 import static com.riopapa.blackbox.Vars.utils;
 import static com.riopapa.blackbox.PhotoCapture.leftRight;
 

@@ -3,21 +3,17 @@ package com.riopapa.blackbox;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.TotalCaptureResult;
-import android.util.Log;
 
 import static com.riopapa.blackbox.Vars.mCameraBuilder;
 import static com.riopapa.blackbox.Vars.mBackgroundImage;
-import static com.riopapa.blackbox.Vars.mVideoRequestBuilder;
 import static com.riopapa.blackbox.Vars.mCaptureSession;
 import static com.riopapa.blackbox.Vars.photoSurface;
-import static com.riopapa.blackbox.Vars.utils;
 import static com.riopapa.blackbox.Vars.zoomLeft;
 import static com.riopapa.blackbox.Vars.zoomRight;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
     private static final int STATE_PREVIEW = 0;
-    private static int mCaptureState = STATE_PREVIEW;
 
     public void photoInit() {
 //        mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
@@ -29,7 +25,7 @@ public class PhotoCapture {
     public static boolean leftRight = false;
     public void zoomShotCamera() {
         mCameraBuilder.set(CaptureRequest.SCALER_CROP_REGION, leftRight ? zoomLeft : zoomRight);
-        mCaptureState = STATE_WAIT_LOCK;
+        int mCaptureState = STATE_WAIT_LOCK;
         try {
             mCaptureSession.capture(mCameraBuilder.build(), zoomCameraPhotoCallback, mBackgroundImage);
         } catch (Exception e) {

@@ -35,7 +35,7 @@ public class Vars {
 
     public static Utils utils = new Utils();
     static VideoMain videoMain = new VideoMain();
-    static PhotoCapture photoCapture = new PhotoCapture();
+    public static PhotoCapture photoCapture = new PhotoCapture();
     static StartStopExit startStopExit = new StartStopExit();
 
 //    static OBDAccess_Unused obdAccessUnused = new OBDAccess_Unused();

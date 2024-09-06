@@ -80,7 +80,7 @@ public class StartStopExit {
             }
         };
         timerSnapCamera = new Timer();
-        timerSnapCamera.schedule(cameraTask, 1300, share_left_right_interval);
+        timerSnapCamera.schedule(cameraTask, 1300, share_left_right_interval*10000);
     }
 
     private Timer normalTimer;
