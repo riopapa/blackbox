@@ -26,13 +26,14 @@ import static com.riopapa.blackbox.Vars.vTextActiveCount;
 public class EventRecord {
 
     File thisEventJpgPath;
+    int jpg_Number = 0;
     void start() {
 
         if (!mIsRecording) return;
 
         imageStack.addShotBuff(shot_00);
         final long startTime = System.currentTimeMillis()
-                - ((share_event_sec + share_event_sec /7) * 1000);
+                - ((share_event_sec + share_event_sec / 9) * 1000);
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);
@@ -40,6 +41,7 @@ public class EventRecord {
         utils.setVolume(70);
 //        long veryFirst;
         SnapShotSave snapShotSave = new SnapShotSave();
+
         new Timer().schedule(new TimerTask() {
             public void run() {
                 imageStack.addShotBuff(shot_00);    // first phase should be 1

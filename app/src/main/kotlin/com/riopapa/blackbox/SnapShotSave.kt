@@ -13,9 +13,13 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 internal class SnapShotSave {
-
+    companion object {
+        var nbr:Long = 1000000
+    }
 
     fun exec(path2Write: File, phase: Int, last: Boolean) {
+        if (phase == 1)
+            nbr = 1000000
         val scope = CoroutineScope(Job() + Dispatchers.Main)
         scope.launch {
             execute(path2Write, phase, last)
@@ -25,7 +29,7 @@ internal class SnapShotSave {
         withContext(Dispatchers.IO) {
 
             val minPos = 0
-            val suffix = phase * 1000
+//            val suffix = phase * 1000
             val maxSize = Vars.share_image_size - 2
 
             var jpgBytes = getClone(Vars.imageStack.snapNowPos)
@@ -35,7 +39,9 @@ internal class SnapShotSave {
             val th = Thread {
                 for (i in minPos until maxSize) {
                     if (jpgBytes[i] == null) continue
-                    val t = "" + (suffix + i)
+                    var t = ("" + nbr).substring(2)
+                    t = t.substring(0,2) + "-" + t.substring(2,4)
+                    nbr += Vars.share_snap_interval + 40
                     val imageFile = File(path2Write, "$prefixTime$t.jpg")
                     if (jpgBytes[i]!!.size > 1) {
                         bytes2File(jpgBytes[i], imageFile)
