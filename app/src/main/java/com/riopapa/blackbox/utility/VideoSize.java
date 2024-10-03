@@ -7,6 +7,7 @@ import static com.riopapa.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
 import static com.riopapa.blackbox.Vars.share_image_size;
 import static com.riopapa.blackbox.Vars.share_left_right_interval;
 import static com.riopapa.blackbox.Vars.share_snap_interval;
+import static com.riopapa.blackbox.Vars.share_work_size;
 import static com.riopapa.blackbox.Vars.utils;
 import static com.riopapa.blackbox.VideoMain.zoomHuge;
 import static com.riopapa.blackbox.VideoMain.zoomNormal;
@@ -35,20 +36,20 @@ public class VideoSize {
 
         switch (SUFFIX) {
             case P:           // galaxy s9 phone
-                share_image_size = 157;
-                share_snap_interval = 177;
-                share_left_right_interval = 78;
+//                share_image_size = 157;
+//                share_snap_interval = 177;
+//                share_left_right_interval = 78;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 20000 * 1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 4000*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = share_work_size * 10000;
                 break;
             case N:           // galaxy note 20
-                share_image_size = 151;
-                share_snap_interval = 172;
-                share_left_right_interval = 112;
+//                share_image_size = 151;
+//                share_snap_interval = 172;
+//                share_left_right_interval = 112;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 20000*1000;
-                VIDEO_ONE_WORK_FILE_SIZE = 4400*1000;
+                VIDEO_ONE_WORK_FILE_SIZE = share_work_size * 10000;
                 break;
         }
     }

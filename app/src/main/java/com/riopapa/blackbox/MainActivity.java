@@ -92,8 +92,8 @@ public class MainActivity extends Activity {
         }
         vPreviewView = findViewById(R.id.previewView);
 
-        new VideoSize().set();
         SettingsActivity.getPreference();   // should be after VideoSize().set()
+        new VideoSize().set();
 
         normal_duration = share_event_sec * 4000;
 
@@ -109,11 +109,6 @@ public class MainActivity extends Activity {
         isRunning = false;
         prepareMain();
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//    }
 
     private void prepareMain() {
 
@@ -191,7 +186,7 @@ public class MainActivity extends Activity {
 
         utils.setVolume(70);
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
-        if (msg.length() > 0)
+        if (!msg.isEmpty())
             utils.logBoth("DISK", msg);
 
         showParams();
@@ -220,10 +215,6 @@ public class MainActivity extends Activity {
                                     Intent data) {
         showParams();
         imageStack = new ImageStack(share_image_size);
-
-        //        if (requestCode == SETTING_ACTIVITY) {
-//            startStopExit.exitApp(true);
-//        }
     }
 
     void startEventSaving() {

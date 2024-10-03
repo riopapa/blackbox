@@ -10,14 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="설 정"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textColor="@color/colorText"
         />
     <!-- Image Size -->
     <LinearLayout
         android:id="@+id/l_image_size"
         android:gravity="center"
-        android:layout_margin="10sp"
+        android:layout_margin="3sp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -73,7 +73,7 @@
         android:id="@+id/l_shot_interval"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_margin="10sp"
+        android:layout_margin="3sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -128,7 +128,7 @@
         android:id="@+id/l_left_right"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_margin="10sp"
+        android:layout_margin="3sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -183,7 +183,7 @@
         android:id="@+id/l_duration"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_margin="10sp"
+        android:layout_margin="3sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -219,6 +219,61 @@
             android:textSize="20sp" />
         <TextView
             android:id="@+id/duration_up"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/plus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+    </LinearLayout>
+    <!-- Work Size in 10,000 -->
+    <LinearLayout
+        android:id="@+id/l_work_size"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_margin="3sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/t_work_size"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="조각 파일 크기 * 10,000"
+            android:textColor="@color/colorText"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:id="@+id/work_size_down"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/minus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/work_size"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/number"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/work_size_up"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:gravity="center"

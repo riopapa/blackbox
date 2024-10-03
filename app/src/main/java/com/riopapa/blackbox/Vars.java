@@ -72,7 +72,7 @@ public class Vars {
     public static long share_left_right_interval;   // < SNAP_SHOT_INTERVAL
     public static long share_event_sec; // Event Duration in sec
     public static long normal_duration;   // Normal Duration in mili Sec
-
+    public static long share_work_size; // wor file size
     static final String FORMAT_TIME = "yy-MM-dd HH.mm.ss";
     static final String FORMAT_DATE = "yy-MM-dd";
     static SimpleDateFormat sdfDate = new SimpleDateFormat(FORMAT_DATE, Locale.getDefault());

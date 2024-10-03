@@ -40,10 +40,10 @@ class MergeEvent {
             val longitude = Vars.gpsTracker.getLongitude()
             val files2Merge: Array<File> = Vars.utils.getDirectoryList(Vars.mPackageWorkingPath)
             if (files2Merge.size < 3) {
-                Log.w("Err", "<<file[] too short " + files2Merge.size)
+                Log.e("Err",
+                    Vars.utils.logBoth("eventMP4", "<<file[] too short " + files2Merge.size).toString())
             } else {
                 Arrays.sort(files2Merge)
-
                 endTimeS = files2Merge[files2Merge.size - 2].name
                 outputFile = File(
                     Vars.mPackageEventPath, Vars.DATE_PREFIX + beginTimeS + Vars.SUFFIX
@@ -99,16 +99,16 @@ class MergeEvent {
                 container.writeContainer(fileChannel)
                 fileChannel.close()
             } catch (e: IOException) {
-                Vars.utils.logE(logID, "IOException~ ", e)
+                Vars.utils.logE(LOG_ID, "IOException~ ", e)
             }
         } else {
             Vars.utils.beepOnce(3, 1f)
-            Vars.utils.logOnly(logID, "IOException~ ")
+            Vars.utils.logOnly(LOG_ID, "IOException~ ")
         }
         Vars.utils.logBoth("Even", "videoTracks.size() = " + videoTracks.size)
     }
     companion object {
-        private const val logID = "EVENT MERGE"
+        private const val LOG_ID = "EMERGE"
     }
 }
 

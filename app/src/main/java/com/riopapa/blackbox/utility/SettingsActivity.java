@@ -6,6 +6,7 @@ import static com.riopapa.blackbox.Vars.mContext;
 import static com.riopapa.blackbox.Vars.share_image_size;
 import static com.riopapa.blackbox.Vars.share_left_right_interval;
 import static com.riopapa.blackbox.Vars.share_snap_interval;
+import static com.riopapa.blackbox.Vars.share_work_size;
 import static com.riopapa.blackbox.Vars.sharedPref;
 
 import android.content.pm.ActivityInfo;
@@ -20,6 +21,7 @@ public class SettingsActivity extends AppCompatActivity  {
     static final String NAME_SNAP_INTERVAL = "snap_interval";
     static final String NAME_LEFT_RIGHT = "left_right";
     static final String NAME_DURATION = "event_sec";
+    static final String NAME_WORK_SIZE = "work_size";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity  {
         setSnapInterval();
         setLeftRight();
         setDuration();
+        setWorkSize();
     }
 
     void setImageSize() {
@@ -68,13 +71,13 @@ public class SettingsActivity extends AppCompatActivity  {
             share_snap_interval--;
             String t = "" + share_snap_interval;
             tvSize.setText(t);
-            sharedEditor.putInt(NAME_SNAP_INTERVAL, (int) share_snap_interval).apply();
+            sharedEditor.putLong(NAME_SNAP_INTERVAL, share_snap_interval).apply();
         });
         tvSizeUp.setOnClickListener(v -> {
             share_snap_interval++;
             String t = "" + share_snap_interval;
             tvSize.setText(t);
-            sharedEditor.putInt(NAME_SNAP_INTERVAL, (int) share_snap_interval).apply();
+            sharedEditor.putLong(NAME_SNAP_INTERVAL, share_snap_interval).apply();
         });
     }
 
@@ -89,13 +92,13 @@ public class SettingsActivity extends AppCompatActivity  {
             share_left_right_interval--;
             String t = "" + share_left_right_interval;
             tvSize.setText(t);
-            sharedEditor.putInt(NAME_LEFT_RIGHT, (int) share_left_right_interval).apply();
+            sharedEditor.putLong(NAME_LEFT_RIGHT, share_left_right_interval).apply();
         });
         tvSizeUp.setOnClickListener(v -> {
             share_left_right_interval++;
             String t = "" + share_left_right_interval;
             tvSize.setText(t);
-            sharedEditor.putInt(NAME_LEFT_RIGHT, (int) share_left_right_interval).apply();
+            sharedEditor.putLong(NAME_LEFT_RIGHT, share_left_right_interval).apply();
         });
     }
     void setDuration() {
@@ -119,6 +122,27 @@ public class SettingsActivity extends AppCompatActivity  {
         });
     }
 
+    void setWorkSize() {
+
+        TextView tvSize = findViewById(R.id.work_size);
+        TextView tvSizeUp = findViewById(R.id.work_size_up);
+        TextView tvSizeDown = findViewById(R.id.work_size_down);
+        String txt = "" + share_work_size;
+        tvSize.setText(txt);
+        tvSizeDown.setOnClickListener(v -> {
+            share_work_size -= 10;
+            String t = "" + share_work_size;
+            tvSize.setText(t);
+            sharedEditor.putLong(NAME_WORK_SIZE, share_work_size).apply();
+        });
+        tvSizeUp.setOnClickListener(v -> {
+            share_work_size += 10;
+            String t = "" + share_work_size;
+            tvSize.setText(t);
+            sharedEditor.putLong(NAME_WORK_SIZE, share_work_size).apply();
+        });
+    }
+
     public static void getPreference() {
 
         sharedPref = mContext.getSharedPreferences("blackbox", MODE_PRIVATE);
@@ -128,16 +152,17 @@ public class SettingsActivity extends AppCompatActivity  {
         if (share_image_size == 0) {
             share_image_size = 116;
             sharedEditor.putInt(NAME_IMAGES_SIZE, 124);
-            sharedEditor.putInt(NAME_SNAP_INTERVAL, 124);
-            sharedEditor.putInt(NAME_LEFT_RIGHT, 97);
+            sharedEditor.putLong(NAME_SNAP_INTERVAL, 122);
+            sharedEditor.putInt(NAME_LEFT_RIGHT, 120);
             sharedEditor.putInt(NAME_DURATION, 23);
+            sharedEditor.putLong(NAME_WORK_SIZE, 400);
             sharedEditor.apply();
         }
         share_image_size = sharedPref.getInt(NAME_IMAGES_SIZE, 124);
-        share_snap_interval = sharedPref.getInt(NAME_SNAP_INTERVAL, 124);
+        share_snap_interval = sharedPref.getLong(NAME_SNAP_INTERVAL, 124);
         share_left_right_interval = sharedPref.getInt(NAME_LEFT_RIGHT, 97);
         share_event_sec = sharedPref.getInt(NAME_DURATION, 23);
-
+        share_work_size = sharedPref.getLong(NAME_WORK_SIZE, 400);
     }
 
     @Override
