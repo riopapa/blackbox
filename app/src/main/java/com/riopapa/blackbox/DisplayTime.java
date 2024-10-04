@@ -54,9 +54,9 @@ class DisplayTime implements Runnable {
                     tvDegree.setText(txt);
                     tvDegree.setTextColor((celDegree<42)? Color.WHITE : Color.YELLOW);
                     tvDegree.setBackgroundColor(ContextCompat.getColor(mContext,
-                            (celDegree<40)? R.color.baseColor : R.color.hotColor));
+                            (celDegree<42)? R.color.baseColor : R.color.hotColor));
                     mainLayout.setBackgroundColor(ContextCompat.getColor(mContext,
-                            (celDegree<43)? R.color.baseColor : R.color.hotColor));
+                            (celDegree<44)? R.color.baseColor : R.color.hotColor));
                     displayBattery.show();
                 });
             }

@@ -25,20 +25,10 @@ class DisplayBattery  {
     static IntentFilter chgFilter = null;
     static Intent statusReceiver = null;
     static boolean prevCharging = false;
-//
-//    @Override
-//    public void onReceive(Context context, Intent intent) {
-//        String action = intent.getAction();
-//        Log.w("onRecieve", action);
-//        if (action.equals(Intent.ACTION_POWER_CONNECTED) || action.equals(Intent.ACTION_POWER_DISCONNECTED))
-//            showBattery(action);
-//    }
 
     void start() {
         try {
             IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-//            ifilter.addAction(Intent.ACTION_POWER_CONNECTED);
-//            ifilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
             mContext.registerReceiver(mBroadcastReceiver, ifilter);
         } catch (Exception e) {
             // ignore registering
@@ -60,9 +50,7 @@ class DisplayBattery  {
         boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                 status == BatteryManager.BATTERY_STATUS_FULL;
         int nowPercent = statusReceiver.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-//        int batteryScale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-//        int nowPercent = (int) (batteryLevel * 100 / (float) batteryScale);
-        if (nowPercent < 50)
+        if (nowPercent < 30)
             vPreviewView.setVisibility(View.INVISIBLE);
         if (nowPercent != prevPercent || isCharging != prevCharging) {
             mActivity.runOnUiThread(() -> {

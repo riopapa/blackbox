@@ -160,7 +160,7 @@ public class SettingsActivity extends AppCompatActivity  {
         }
         share_image_size = sharedPref.getInt(NAME_IMAGES_SIZE, 124);
         share_snap_interval = sharedPref.getLong(NAME_SNAP_INTERVAL, 124);
-        share_left_right_interval = sharedPref.getInt(NAME_LEFT_RIGHT, 97);
+        share_left_right_interval = sharedPref.getLong(NAME_LEFT_RIGHT, 97);
         share_event_sec = sharedPref.getInt(NAME_DURATION, 23);
         share_work_size = sharedPref.getLong(NAME_WORK_SIZE, 400);
     }
