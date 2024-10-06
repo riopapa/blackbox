@@ -1,18 +1,18 @@
-package com.riopapa.blackbox;
+package biz.riopapa.blackbox;
 
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.TotalCaptureResult;
 import android.util.Log;
 
-import static com.riopapa.blackbox.Vars.mCameraBuilder;
-import static com.riopapa.blackbox.Vars.mBackgroundImage;
-import static com.riopapa.blackbox.Vars.mVideoRequestBuilder;
-import static com.riopapa.blackbox.Vars.mCaptureSession;
-import static com.riopapa.blackbox.Vars.photoSurface;
-import static com.riopapa.blackbox.Vars.utils;
-import static com.riopapa.blackbox.Vars.zoomLeft;
-import static com.riopapa.blackbox.Vars.zoomRight;
+import static biz.riopapa.blackbox.Vars.mCameraBuilder;
+import static biz.riopapa.blackbox.Vars.mBackgroundImage;
+import static biz.riopapa.blackbox.Vars.mVideoRequestBuilder;
+import static biz.riopapa.blackbox.Vars.mCaptureSession;
+import static biz.riopapa.blackbox.Vars.photoSurface;
+import static biz.riopapa.blackbox.Vars.utils;
+import static biz.riopapa.blackbox.Vars.zoomLeft;
+import static biz.riopapa.blackbox.Vars.zoomRight;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;

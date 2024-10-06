@@ -1,18 +1,18 @@
-package com.riopapa.blackbox;
+package biz.riopapa.blackbox;
 
-import static com.riopapa.blackbox.MainActivity.stopHandler;
-import static com.riopapa.blackbox.Vars.displayBattery;
-import static com.riopapa.blackbox.Vars.mActivity;
-import static com.riopapa.blackbox.Vars.mContext;
-import static com.riopapa.blackbox.Vars.mIsRecording;
-import static com.riopapa.blackbox.Vars.mainLayout;
-import static com.riopapa.blackbox.Vars.tvDegree;
-import static com.riopapa.blackbox.Vars.utils;
-import static com.riopapa.blackbox.Vars.vPreviewView;
-import static com.riopapa.blackbox.Vars.vTextTime;
-import static com.riopapa.blackbox.Vars.viewFinderActive;
+import static biz.riopapa.blackbox.MainActivity.stopHandler;
+import static biz.riopapa.blackbox.Vars.displayBattery;
+import static biz.riopapa.blackbox.Vars.mActivity;
+import static biz.riopapa.blackbox.Vars.mContext;
+import static biz.riopapa.blackbox.Vars.mIsRecording;
+import static biz.riopapa.blackbox.Vars.mainLayout;
+import static biz.riopapa.blackbox.Vars.tvDegree;
+import static biz.riopapa.blackbox.Vars.utils;
+import static biz.riopapa.blackbox.Vars.vPreviewView;
+import static biz.riopapa.blackbox.Vars.vTextTime;
+import static biz.riopapa.blackbox.Vars.viewFinderActive;
 
-import com.riopapa.blackbox.utility.Celcius;
+import biz.riopapa.blackbox.utility.Celcius;
 
 import android.graphics.Color;
 import android.view.View;

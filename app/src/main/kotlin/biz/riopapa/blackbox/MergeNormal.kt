@@ -1,15 +1,24 @@
 
 @file:JvmName("MergeEvent")
 
-package com.riopapa.blackbox
+package biz.riopapa.blackbox
 
-import android.media.MediaPlayer
 import android.util.Log
 import com.googlecode.mp4parser.authoring.Movie
 import com.googlecode.mp4parser.authoring.Track
 import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack
+import biz.riopapa.blackbox.Vars.DATE_PREFIX
+import biz.riopapa.blackbox.Vars.FORMAT_TIME
+import biz.riopapa.blackbox.Vars.SUFFIX
+import biz.riopapa.blackbox.Vars.gpsTracker
+import biz.riopapa.blackbox.Vars.mPackageNormalDatePath
+import biz.riopapa.blackbox.Vars.mPackageNormalPath
+import biz.riopapa.blackbox.Vars.normal_duration
+import biz.riopapa.blackbox.Vars.sdfTime
+import biz.riopapa.blackbox.Vars.utils
+import biz.riopapa.blackbox.utility.DiskSpace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,46 +28,46 @@ import java.io.File
 import java.io.IOException
 import java.io.RandomAccessFile
 import java.text.Collator
+import java.text.ParseException
 import java.util.Arrays
+import java.util.Date
 import java.util.LinkedList
 
-class MergeEvent {
+class MergeNormal {
 
+    private var nextNormalTime: Long = 0
     private var outputFile: String? = null
-    fun exec(startTime: Long) {
+    fun exec() {
         val scope = CoroutineScope(Job() + Dispatchers.Main)
         scope.launch {
-            execute(startTime)
+            execute()
         }
     }
-    private suspend fun execute(startTime: Long) {
+    private suspend fun execute() {
 
         withContext(Dispatchers.IO) {
-            val beginTimeS = Vars.utils.getMilliSec2String(startTime, Vars.FORMAT_TIME)
-            val endTimeS: String
-            val latitude = Vars.gpsTracker.getLatitude()
-            val longitude = Vars.gpsTracker.getLongitude()
-            val files2Merge: Array<File> = Vars.utils.getDirectoryList(Vars.mPackageWorkingPath)
+
+            if (nextNormalTime == 0L)
+                nextNormalTime = System.currentTimeMillis() - normal_duration - 20000
+            val beginTimeS = utils.getMilliSec2String(nextNormalTime, FORMAT_TIME)
+            val files2Merge: Array<File> = utils.getDirectoryList(Vars.mPackageWorkingPath)
             if (files2Merge.size < 3) {
-                Log.e("Err",
-                    Vars.utils.logBoth("eventMP4", "<<file[] too short " + files2Merge.size).toString())
+                Log.w("normal", "files short, len=" + files2Merge.size)
             } else {
                 Arrays.sort(files2Merge)
-                endTimeS = files2Merge[files2Merge.size - 2].name
-                outputFile = File(
-                    Vars.mPackageEventPath, Vars.DATE_PREFIX + beginTimeS + Vars.SUFFIX
-                            + " x" + latitude + "," + longitude + ".mp4"
+                val endTimeS: String = files2Merge[files2Merge.size - 3].name
+                //                utils.logBoth(logID, beginTimeS+" to "+endTimeS+" len="+files2Merge.length);
+                var date: Date? = null
+                try {
+                    date = sdfTime.parse(endTimeS)
+                } catch (e: ParseException) {
+                    utils.logE(logID, "$endTimeS parse Error", e)
+                }
+                nextNormalTime = date!!.time - 6000
+                outputFile = File(mPackageNormalDatePath, DATE_PREFIX + beginTimeS + SUFFIX
+                            + " x" + gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + ".mp4"
                 ).toString()
                 merge2OneVideo(beginTimeS, endTimeS, files2Merge)
-                val mp = MediaPlayer()
-                try {
-                    mp.setDataSource(outputFile)
-                    mp.prepare()
-                } catch (e: IOException) {
-                    Log.w("Err", "<<Event IO>> " + files2Merge.size)
-                }
-                mp.release()
-                Vars.utils.logBoth("eventMP4", beginTimeS)
             }
         }
     }
@@ -98,17 +107,30 @@ class MergeEvent {
                 val fileChannel = RandomAccessFile(outputFile, "rw").channel
                 container.writeContainer(fileChannel)
                 fileChannel.close()
+                Log.w("normal", "$beginTimeS done")
+                // remove old working files //
+                val toTimeS : String = utils.getMilliSec2String(System.currentTimeMillis()
+                        - normal_duration, FORMAT_TIME)
+                for (file in files2Merge) {
+                    val shortFileName = file.name
+                    if (myCollator.compare(shortFileName, toTimeS) < 0)
+                        file.delete()
+                }
+
+                val msg :String = DiskSpace().squeeze(mPackageNormalPath)
+                if (msg.isNotEmpty())
+                    utils.logBoth("DISK", msg)
+
             } catch (e: IOException) {
-                Vars.utils.logE(LOG_ID, "IOException~ ", e)
+                    utils.logE(logID, "IOException~ ", e)
             }
         } else {
-            Vars.utils.beepOnce(3, 1f)
-            Vars.utils.logOnly(LOG_ID, "IOException~ ")
+            utils.beepOnce(3, 1f)
+            utils.logOnly(logID, "IOException~ ")
         }
-        Vars.utils.logBoth("Even", "videoTracks.size() = " + videoTracks.size)
     }
     companion object {
-        private const val LOG_ID = "EMERGE"
+        private const val logID = "NORMAL MERGE"
     }
 }
 

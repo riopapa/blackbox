@@ -1,26 +1,26 @@
-package com.riopapa.blackbox.utility;
+package biz.riopapa.blackbox.utility;
 
-import static com.riopapa.blackbox.Vars.share_event_sec;
-import static com.riopapa.blackbox.Vars.sharedEditor;
-import static com.riopapa.blackbox.Vars.mContext;
-import static com.riopapa.blackbox.Vars.share_image_size;
-import static com.riopapa.blackbox.Vars.share_left_right_interval;
-import static com.riopapa.blackbox.Vars.share_snap_interval;
-import static com.riopapa.blackbox.Vars.share_work_size;
-import static com.riopapa.blackbox.Vars.sharedPref;
+import static biz.riopapa.blackbox.Vars.share_event_sec;
+import static biz.riopapa.blackbox.Vars.sharedEditor;
+import static biz.riopapa.blackbox.Vars.mContext;
+import static biz.riopapa.blackbox.Vars.share_image_size;
+import static biz.riopapa.blackbox.Vars.share_left_right_interval;
+import static biz.riopapa.blackbox.Vars.share_snap_interval;
+import static biz.riopapa.blackbox.Vars.share_work_size;
+import static biz.riopapa.blackbox.Vars.sharedPref;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.riopapa.blackbox.R;
+import biz.riopapa.blackbox.R;
 
 public class SettingsActivity extends AppCompatActivity  {
 
     static final String NAME_IMAGES_SIZE = "images_size";
     static final String NAME_SNAP_INTERVAL = "snap_interval";
     static final String NAME_LEFT_RIGHT = "left_right";
-    static final String NAME_DURATION = "event_sec";
+    static final String NAME_EVENT_SEC = "event_sec";
     static final String NAME_WORK_SIZE = "work_size";
 
     @Override
@@ -112,13 +112,13 @@ public class SettingsActivity extends AppCompatActivity  {
             share_event_sec--;
             String t = "" + share_event_sec;
             tvSize.setText(t);
-            sharedEditor.putInt(NAME_DURATION, (int) share_event_sec).apply();
+            sharedEditor.putInt(NAME_EVENT_SEC, (int) share_event_sec).apply();
         });
         tvSizeUp.setOnClickListener(v -> {
             share_event_sec++;
             String t = "" + share_event_sec;
             tvSize.setText(t);
-            sharedEditor.putInt(NAME_DURATION, (int) share_event_sec).apply();
+            sharedEditor.putInt(NAME_EVENT_SEC, (int) share_event_sec).apply();
         });
     }
 
@@ -152,16 +152,16 @@ public class SettingsActivity extends AppCompatActivity  {
         if (share_image_size == 0) {
             share_image_size = 116;
             sharedEditor.putInt(NAME_IMAGES_SIZE, 124);
+            sharedEditor.putInt(NAME_EVENT_SEC, 23);
             sharedEditor.putLong(NAME_SNAP_INTERVAL, 122);
-            sharedEditor.putInt(NAME_LEFT_RIGHT, 120);
-            sharedEditor.putInt(NAME_DURATION, 23);
+            sharedEditor.putLong(NAME_LEFT_RIGHT, 120);
             sharedEditor.putLong(NAME_WORK_SIZE, 400);
             sharedEditor.apply();
         }
         share_image_size = sharedPref.getInt(NAME_IMAGES_SIZE, 124);
+        share_event_sec = sharedPref.getInt(NAME_EVENT_SEC, 23);
         share_snap_interval = sharedPref.getLong(NAME_SNAP_INTERVAL, 124);
         share_left_right_interval = sharedPref.getLong(NAME_LEFT_RIGHT, 97);
-        share_event_sec = sharedPref.getInt(NAME_DURATION, 23);
         share_work_size = sharedPref.getLong(NAME_WORK_SIZE, 400);
     }
 

@@ -1,22 +1,22 @@
-package com.riopapa.blackbox;
+package biz.riopapa.blackbox;
 
-import static com.riopapa.blackbox.PhotoCapture.leftRight;
-import static com.riopapa.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
-import static com.riopapa.blackbox.Vars.SUFFIX;
-import static com.riopapa.blackbox.Vars.imageStack;
-import static com.riopapa.blackbox.Vars.mActivity;
-import static com.riopapa.blackbox.Vars.mBackgroundCamera;
-import static com.riopapa.blackbox.Vars.mBackgroundImage;
-import static com.riopapa.blackbox.Vars.mCameraCharacteristics;
-import static com.riopapa.blackbox.Vars.mCameraDevice;
-import static com.riopapa.blackbox.Vars.mContext;
-import static com.riopapa.blackbox.Vars.mImageReader;
-import static com.riopapa.blackbox.Vars.mImageSize;
-import static com.riopapa.blackbox.Vars.mIsRecording;
-import static com.riopapa.blackbox.Vars.mPreviewSize;
-import static com.riopapa.blackbox.Vars.mVideoSize;
-import static com.riopapa.blackbox.Vars.share_snap_interval;
-import static com.riopapa.blackbox.Vars.utils;
+import static biz.riopapa.blackbox.PhotoCapture.leftRight;
+import static biz.riopapa.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
+import static biz.riopapa.blackbox.Vars.SUFFIX;
+import static biz.riopapa.blackbox.Vars.imageStack;
+import static biz.riopapa.blackbox.Vars.mActivity;
+import static biz.riopapa.blackbox.Vars.mBackgroundCamera;
+import static biz.riopapa.blackbox.Vars.mBackgroundImage;
+import static biz.riopapa.blackbox.Vars.mCameraCharacteristics;
+import static biz.riopapa.blackbox.Vars.mCameraDevice;
+import static biz.riopapa.blackbox.Vars.mContext;
+import static biz.riopapa.blackbox.Vars.mImageReader;
+import static biz.riopapa.blackbox.Vars.mImageSize;
+import static biz.riopapa.blackbox.Vars.mIsRecording;
+import static biz.riopapa.blackbox.Vars.mPreviewSize;
+import static biz.riopapa.blackbox.Vars.mVideoSize;
+import static biz.riopapa.blackbox.Vars.share_snap_interval;
+import static biz.riopapa.blackbox.Vars.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -33,7 +33,7 @@ import android.util.Size;
 
 import androidx.core.content.ContextCompat;
 
-import com.riopapa.blackbox.utility.CameraSize;
+import biz.riopapa.blackbox.utility.CameraSize;
 
 public class CameraSub {
     CameraManager mCameraManager;
@@ -61,6 +61,7 @@ public class CameraSub {
                     mPreviewSize = sizes[0];
                     mImageSize = sizes[1];
                     mVideoSize = sizes[2];
+                    break;
                 }
             }
             mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, IMAGE_BUFFER_MAX_IMAGES);

@@ -35,7 +35,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.riopapa.blackbox.fileprovider"
+            android:authorities="biz.riopapa.blackbox.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

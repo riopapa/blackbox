@@ -1,4 +1,4 @@
-package com.riopapa.blackbox;
+package biz.riopapa.blackbox;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -7,11 +7,11 @@ import android.os.Looper;
 import android.os.Process;
 import android.os.SystemClock;
 
-import static com.riopapa.blackbox.Vars.DELAY_WAIT_EXIT_SECONDS;
-import static com.riopapa.blackbox.Vars.mActivity;
-import static com.riopapa.blackbox.Vars.mContext;
-import static com.riopapa.blackbox.Vars.mExitApplication;
-import static com.riopapa.blackbox.Vars.utils;
+import static biz.riopapa.blackbox.Vars.DELAY_WAIT_EXIT_SECONDS;
+import static biz.riopapa.blackbox.Vars.mActivity;
+import static biz.riopapa.blackbox.Vars.mContext;
+import static biz.riopapa.blackbox.Vars.mExitApplication;
+import static biz.riopapa.blackbox.Vars.utils;
 
 public class BeBackSoon extends AsyncTask<String, String, String> {
 

@@ -1,4 +1,4 @@
-package com.riopapa.blackbox.utility;
+package biz.riopapa.blackbox.utility;
 
 import java.io.File;
 import java.io.IOException;

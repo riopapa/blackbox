@@ -1,8 +1,8 @@
-package com.riopapa.blackbox.utility;
+package biz.riopapa.blackbox.utility;
 
-import static com.riopapa.blackbox.StartStopExit.zoomChangeTimer;
-import static com.riopapa.blackbox.Vars.utils;
-import static com.riopapa.blackbox.PhotoCapture.leftRight;
+import static biz.riopapa.blackbox.StartStopExit.zoomChangeTimer;
+import static biz.riopapa.blackbox.Vars.utils;
+import static biz.riopapa.blackbox.PhotoCapture.leftRight;
 
 import android.util.Log;
 

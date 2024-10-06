@@ -1,4 +1,4 @@
-package com.riopapa.blackbox;
+package biz.riopapa.blackbox;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.riopapa.blackbox.utility.ImageStack;
+import biz.riopapa.blackbox.utility.ImageStack;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -100,7 +100,7 @@ public class Vars {
     public static long VIDEO_ONE_WORK_FILE_SIZE;
     public  static int IMAGE_BUFFER_MAX_IMAGES = 3;
 
-    public enum PhoneE {P, N } // S9Phone, Note20
+    public enum PhoneE {P, N, H } // S9Phone, Note20
     static boolean viewFinderActive = true;
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;

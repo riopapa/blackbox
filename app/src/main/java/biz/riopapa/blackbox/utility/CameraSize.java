@@ -1,12 +1,13 @@
-package com.riopapa.blackbox.utility;
+package biz.riopapa.blackbox.utility;
 
-import static com.riopapa.blackbox.Vars.utils;
+import static biz.riopapa.blackbox.Vars.utils;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.util.Log;
 import android.util.Size;
 
-import com.riopapa.blackbox.Vars;
+import biz.riopapa.blackbox.Vars;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,8 +19,11 @@ public class CameraSize {
 // "SM-G986N" "N";  note 20
 // "SM-G965N" "P";
 // "SM-A325N" "A";
+// "SM-G977N" "H"; S10
 
     public static Size[] set(StreamConfigurationMap map, Vars.PhoneE SUFFIX) {
+
+//        dumpVariousCameraSizes(map);
 
         Size sizePreview = null, sizeCamera = null, sizeVideo = null;
 
@@ -27,8 +31,32 @@ public class CameraSize {
         //        utils.logBoth("logID", "CamSize on "+model);
         //        dumpVariousCameraSizes(map);
         map.getOutputFormats();
-
+        Log.w("CameraSize", "map.getOutputFormats()");
         switch (SUFFIX) {
+
+            case H:
+            /* galaxy S10
+            4032x3024 1.3 , 4032x2268 1.8 , 4032x1908 2.1 , 3024x3024 1.0 , 960x540 1.8 ,
+            800x600 1.3 , 3840x2160 1.8 , 2288x1080 2.1 , 1920x1440 1.3 , 1920x1080 1.8 ,
+            1920x912 2.1 , 1440x1080 1.3 , 1280x720 1.8 , 1088x1088 1.0 , 960x720 1.3 ,
+            720x480 1.5 , 640x480 1.3 , 640x360 1.8 , 352x288 1.2 , 320x240 1.3 ,
+            256x144 1.8 , 176x144 1.2 ,
+
+            4608x3456 1.3 , 4608x2592 1.8 , 4608x2184 2.1 , 3456x3456 1.0 , 3840x2160 1.8 ,
+            2288x1080 2.1 , 1920x1440 1.3 , 1920x1080 1.8 , 1920x912 2.1 , 1440x1080 1.3 ,
+            1280x720 1.8 , 1088x1088 1.0 , 960x720 1.3 , 720x480 1.5 , 640x480 1.3 ,
+            640x360 1.8 , 352x288 1.2 , 320x240 1.3 , 256x144 1.8 , 176x144 1.2 ,
+
+             */
+                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+                    if (size.getWidth() == 640 && size.getHeight() == 480)
+                        sizePreview = size;
+                    else if (size.getWidth() == 4032 && size.getHeight() == 2268) // 1.8
+                        sizeCamera = size;
+                    else if (size.getWidth() == 960 && size.getHeight() == 720)   // 1.8
+                        sizeVideo = size;
+                }
+                break;
 
             case P:
             /* galaxy s9+

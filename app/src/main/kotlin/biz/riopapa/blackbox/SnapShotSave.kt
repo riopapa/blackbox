@@ -1,8 +1,8 @@
-package com.riopapa.blackbox
+package biz.riopapa.blackbox
 
 import android.os.SystemClock
 import android.util.Log
-import com.riopapa.blackbox.utility.ImageStack
+import biz.riopapa.blackbox.utility.ImageStack
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

@@ -1,4 +1,4 @@
-package com.riopapa.blackbox;
+package biz.riopapa.blackbox;
 
 import android.graphics.Color;
 import android.widget.Toast;
@@ -7,22 +7,22 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.riopapa.blackbox.Vars.CountEvent;
-import static com.riopapa.blackbox.Vars.DATE_PREFIX;
-import static com.riopapa.blackbox.Vars.FORMAT_TIME;
-import static com.riopapa.blackbox.Vars.SUFFIX;
-import static com.riopapa.blackbox.Vars.activeEventCount;
-import static com.riopapa.blackbox.Vars.imageStack;
-import static com.riopapa.blackbox.Vars.mPackageEventJpgPath;
-import static com.riopapa.blackbox.Vars.share_event_sec;
-import static com.riopapa.blackbox.Vars.shot_02;
-import static com.riopapa.blackbox.Vars.shot_00;
-import static com.riopapa.blackbox.Vars.shot_01;
-import static com.riopapa.blackbox.Vars.gpsTracker;
-import static com.riopapa.blackbox.Vars.mActivity;
-import static com.riopapa.blackbox.Vars.mIsRecording;
-import static com.riopapa.blackbox.Vars.utils;
-import static com.riopapa.blackbox.Vars.vTextActiveCount;
+import static biz.riopapa.blackbox.Vars.CountEvent;
+import static biz.riopapa.blackbox.Vars.DATE_PREFIX;
+import static biz.riopapa.blackbox.Vars.FORMAT_TIME;
+import static biz.riopapa.blackbox.Vars.SUFFIX;
+import static biz.riopapa.blackbox.Vars.activeEventCount;
+import static biz.riopapa.blackbox.Vars.imageStack;
+import static biz.riopapa.blackbox.Vars.mPackageEventJpgPath;
+import static biz.riopapa.blackbox.Vars.share_event_sec;
+import static biz.riopapa.blackbox.Vars.shot_02;
+import static biz.riopapa.blackbox.Vars.shot_00;
+import static biz.riopapa.blackbox.Vars.shot_01;
+import static biz.riopapa.blackbox.Vars.gpsTracker;
+import static biz.riopapa.blackbox.Vars.mActivity;
+import static biz.riopapa.blackbox.Vars.mIsRecording;
+import static biz.riopapa.blackbox.Vars.utils;
+import static biz.riopapa.blackbox.Vars.vTextActiveCount;
 public class EventRecord {
 
     File thisEventJpgPath;

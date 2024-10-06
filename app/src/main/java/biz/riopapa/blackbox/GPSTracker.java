@@ -1,9 +1,9 @@
-package com.riopapa.blackbox;
+package biz.riopapa.blackbox;
 
-import static com.riopapa.blackbox.Vars.speedInt;
-import static com.riopapa.blackbox.Vars.utils;
-import static com.riopapa.blackbox.Vars.vPreviewView;
-import static com.riopapa.blackbox.Vars.viewFinderActive;
+import static biz.riopapa.blackbox.Vars.speedInt;
+import static biz.riopapa.blackbox.Vars.utils;
+import static biz.riopapa.blackbox.Vars.vPreviewView;
+import static biz.riopapa.blackbox.Vars.viewFinderActive;
 
 import android.Manifest;
 import android.app.Activity;

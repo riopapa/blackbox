@@ -1,18 +1,18 @@
-package com.riopapa.blackbox;
+package biz.riopapa.blackbox;
 
-import static com.riopapa.blackbox.Vars.DATE_PREFIX;
-import static com.riopapa.blackbox.Vars.FORMAT_DATE;
-import static com.riopapa.blackbox.Vars.FORMAT_TIME;
-import static com.riopapa.blackbox.Vars.shot_02;
-import static com.riopapa.blackbox.Vars.shot_00;
-import static com.riopapa.blackbox.Vars.shot_01;
-import static com.riopapa.blackbox.Vars.mActivity;
-import static com.riopapa.blackbox.Vars.mContext;
-import static com.riopapa.blackbox.Vars.mPackageEventPath;
-import static com.riopapa.blackbox.Vars.mPackageLogPath;
-import static com.riopapa.blackbox.Vars.sdfDate;
-import static com.riopapa.blackbox.Vars.shot_03;
-import static com.riopapa.blackbox.Vars.vTextLogInfo;
+import static biz.riopapa.blackbox.Vars.DATE_PREFIX;
+import static biz.riopapa.blackbox.Vars.FORMAT_DATE;
+import static biz.riopapa.blackbox.Vars.FORMAT_TIME;
+import static biz.riopapa.blackbox.Vars.shot_02;
+import static biz.riopapa.blackbox.Vars.shot_00;
+import static biz.riopapa.blackbox.Vars.shot_01;
+import static biz.riopapa.blackbox.Vars.mActivity;
+import static biz.riopapa.blackbox.Vars.mContext;
+import static biz.riopapa.blackbox.Vars.mPackageEventPath;
+import static biz.riopapa.blackbox.Vars.mPackageLogPath;
+import static biz.riopapa.blackbox.Vars.sdfDate;
+import static biz.riopapa.blackbox.Vars.shot_03;
+import static biz.riopapa.blackbox.Vars.vTextLogInfo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
