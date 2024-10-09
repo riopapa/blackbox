@@ -22,6 +22,7 @@ import static biz.riopapa.blackbox.Vars.share_event_sec;
 import static biz.riopapa.blackbox.Vars.share_image_size;
 import static biz.riopapa.blackbox.Vars.share_left_right_interval;
 import static biz.riopapa.blackbox.Vars.share_snap_interval;
+import static biz.riopapa.blackbox.Vars.share_work_size;
 import static biz.riopapa.blackbox.Vars.startStopExit;
 import static biz.riopapa.blackbox.Vars.tvDegree;
 import static biz.riopapa.blackbox.Vars.utils;
@@ -46,11 +47,13 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -90,6 +93,16 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             Log.e("Permission", "No Permission " + e);
         }
+
+        if (!Environment.isExternalStorageManager()) {
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+            Uri uri = Uri.fromParts("package", this.getPackageName(), null);
+            intent.setData(uri);
+            startActivity(intent);
+        }
+
+
         vPreviewView = findViewById(R.id.previewView);
 
         SettingsActivity.getPreference();   // should be after VideoSize().set()
@@ -193,10 +206,11 @@ public class MainActivity extends Activity {
     }
 
     private static void showParams() {
-        String s = "\nImage_Arrays = "+ share_image_size +
+        String s = "\nImage_Arrays : "+ share_image_size +
                 "\nInterval (Shot: "+ share_snap_interval +
                 ", LeftRight: "+ share_left_right_interval+") " +
-                "\nEvent Duration: "+share_event_sec;
+                "\nEvent Duration: "+share_event_sec +
+                "\nWork Size : "+share_work_size;
         utils.logBoth("Preference",s);
     }
 

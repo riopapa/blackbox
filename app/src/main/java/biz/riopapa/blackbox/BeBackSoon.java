@@ -1,6 +1,7 @@
 package biz.riopapa.blackbox;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,10 +9,19 @@ import android.os.Process;
 import android.os.SystemClock;
 
 import static biz.riopapa.blackbox.Vars.DELAY_WAIT_EXIT_SECONDS;
+import static biz.riopapa.blackbox.Vars.displayBattery;
 import static biz.riopapa.blackbox.Vars.mActivity;
 import static biz.riopapa.blackbox.Vars.mContext;
 import static biz.riopapa.blackbox.Vars.mExitApplication;
+import static biz.riopapa.blackbox.Vars.mainLayout;
+import static biz.riopapa.blackbox.Vars.tvDegree;
 import static biz.riopapa.blackbox.Vars.utils;
+import static biz.riopapa.blackbox.Vars.vTextTime;
+
+import androidx.core.content.ContextCompat;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class BeBackSoon extends AsyncTask<String, String, String> {
 
@@ -29,8 +39,10 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
         return "Done";
     }
     protected void onProgressUpdate(String... s) {
-        String msg = mContext.getString(R.string.i_will_back) +"\n"+s[0];
-        utils.displayCount(msg);
+//        mActivity.runOnUiThread(() -> {
+//            String msg = mContext.getString(R.string.i_will_back) +"\n"+s[0];
+//            utils.displayCount(msg);
+//        });
     }
 
     @Override

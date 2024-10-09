@@ -166,7 +166,7 @@ public class VideoMain {
 
     private void setupMediaRecorder() {
 
-        mediaRecorder = new MediaRecorder();
+        mediaRecorder = new MediaRecorder(mContext);
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);    // 1. setAudioSource
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);    // 2. setVideoSource
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);   // 3. setOutputFormat
