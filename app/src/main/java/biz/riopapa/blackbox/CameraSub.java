@@ -55,13 +55,18 @@ public class CameraSub {
 
                 if (mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
                         CameraCharacteristics.LENS_FACING_BACK) {
-                    mCameraId = cameraId;
                     StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                     Size[] sizes = CameraSize.set(map, SUFFIX);
+                    if (sizes[0] == null || sizes[1] == null || sizes[2] == null)   // in case of multi camera
+                        continue;
+                    mCameraId = cameraId;
                     mPreviewSize = sizes[0];
                     mImageSize = sizes[1];
                     mVideoSize = sizes[2];
                     break;
+                    // S10 5G has good 2 camera
+                    // first one is better physical size 5.645x4.234;
+                    // second one resolution is better;
                 }
             }
             mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, IMAGE_BUFFER_MAX_IMAGES);

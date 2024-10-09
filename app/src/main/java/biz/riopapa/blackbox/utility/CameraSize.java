@@ -23,7 +23,7 @@ public class CameraSize {
 
     public static Size[] set(StreamConfigurationMap map, Vars.PhoneE SUFFIX) {
 
-//        dumpVariousCameraSizes(map);
+        dumpVariousCameraSizes(map);
 
         Size sizePreview = null, sizeCamera = null, sizeVideo = null;
 
@@ -35,13 +35,14 @@ public class CameraSize {
         switch (SUFFIX) {
 
             case H:
-            /* galaxy S10
+            /* galaxy S10 first
             4032x3024 1.3 , 4032x2268 1.8 , 4032x1908 2.1 , 3024x3024 1.0 , 960x540 1.8 ,
             800x600 1.3 , 3840x2160 1.8 , 2288x1080 2.1 , 1920x1440 1.3 , 1920x1080 1.8 ,
             1920x912 2.1 , 1440x1080 1.3 , 1280x720 1.8 , 1088x1088 1.0 , 960x720 1.3 ,
             720x480 1.5 , 640x480 1.3 , 640x360 1.8 , 352x288 1.2 , 320x240 1.3 ,
             256x144 1.8 , 176x144 1.2 ,
 
+            /* galaxy S10 second
             4608x3456 1.3 , 4608x2592 1.8 , 4608x2184 2.1 , 3456x3456 1.0 , 3840x2160 1.8 ,
             2288x1080 2.1 , 1920x1440 1.3 , 1920x1080 1.8 , 1920x912 2.1 , 1440x1080 1.3 ,
             1280x720 1.8 , 1088x1088 1.0 , 960x720 1.3 , 720x480 1.5 , 640x480 1.3 ,
@@ -51,27 +52,9 @@ public class CameraSize {
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                     if (size.getWidth() == 640 && size.getHeight() == 480)
                         sizePreview = size;
-                    else if (size.getWidth() == 4032 && size.getHeight() == 2268) // 1.8
-                        sizeCamera = size;
-                    else if (size.getWidth() == 960 && size.getHeight() == 720)   // 1.8
-                        sizeVideo = size;
-                }
-                break;
-
-            case P:
-            /* galaxy s9+
-            4032x3024 1.3, 4032x2268 1.8, 4032x1960 2.1, 3024x3024 1.0, 3984x2988 1.3, 3840x2160 1.8 ,
-            3264x2448 1.3, 3264x1836 1.8, 2976x2976 1.0, 2880x2160 1.3, 2560x1440 1.8, 2160x2160 1.0 ,
-            2224x1080 2.1, 2048x1152 1.8, 1920x1080 1.8, 1440x1080 1.3, 1088x1088 1.0, 1280x720 1.8 ,
-            1056x704 1.5, 1024x768 1.3, 960x720 1.3, 960x540 1.8, 800x450 1.8, 720x720 1.0 ,
-            720x480 1.5, 640x480 1.3, 352x288 1.2, 320x240 1.3, 256x144 1.8, 176x144 1.2 ,
-             */
-                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
-                    if (size.getWidth() == 640 && size.getHeight() == 480)
-                        sizePreview = size;
-                    else if (size.getWidth() == 3264 && size.getHeight() == 2448) // 1.8
-                        sizeCamera = size;
-                    else if (size.getWidth() == 960 && size.getHeight() == 540)   // 1.8
+                    else if (size.getWidth() == 4608 && size.getHeight() == 2592) // 1.8
+                        sizeCamera = size;  // s10 5G second camera
+                    else if (size.getWidth() == 1280 && size.getHeight() == 720)   // 1.8
                         sizeVideo = size;
                 }
                 break;

@@ -40,7 +40,7 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
 //                    utils.beepOnce(7,0.7f); // I will be back
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(() -> {
-            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.riopapa.blackwait");
+            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("biz.riopapa.blackwait");
             assert sendIntent != null;
             sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mActivity.startActivity(sendIntent);

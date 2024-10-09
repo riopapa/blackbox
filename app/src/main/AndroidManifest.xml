@@ -21,9 +21,6 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
-<!--    android:hardwareAccelerated="false" // these to prevent out out memory
-        android:largeHeap="true"-->
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/event_shot"
@@ -43,43 +40,22 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <receiver android:name=".NewAppWidget_NotUsed">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="BIG_ICON" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/new_app_widget_info" />
-        </receiver> <!-- android:configChanges="screenSize|orientation" -->
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="landscape"
             android:theme="@style/MaterialTheme"
-            >
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
         </activity>
-<!--             />-->
+
         <activity android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/Theme.AppCompat"
             android:name=".utility.SettingsActivity"/>
-
-<!--        <receiver android:name=".DisplayBattery">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />-->
-<!--                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />-->
-<!--                <action android:name="android.intent.action.BATTERY_CHANGED" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
 
         <service
             android:name=".GPSTracker"
