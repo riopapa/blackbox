@@ -23,7 +23,7 @@ public class CameraSize {
 
     public static Size[] set(StreamConfigurationMap map, Vars.PhoneE SUFFIX) {
 
-        dumpVariousCameraSizes(map);
+//        dumpVariousCameraSizes(map);
 
         Size sizePreview = null, sizeCamera = null, sizeVideo = null;
 

@@ -52,7 +52,6 @@ public class CameraSub {
             assert mCameraManager != null;
             for (String cameraId : mCameraManager.getCameraIdList()) {
                 mCameraCharacteristics = mCameraManager.getCameraCharacteristics(cameraId);
-
                 if (mCameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
                         CameraCharacteristics.LENS_FACING_BACK) {
                     StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
