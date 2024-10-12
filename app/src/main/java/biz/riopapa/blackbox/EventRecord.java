@@ -26,7 +26,7 @@ import static biz.riopapa.blackbox.Vars.vTextActiveCount;
 public class EventRecord {
 
     File thisEventJpgPath;
-    int jpg_Number = 0;
+
     void start() {
 
         if (!mIsRecording) return;
@@ -72,7 +72,7 @@ public class EventRecord {
         mActivity.runOnUiThread(() -> {
             String text = " "+activeEventCount+" ";
             vTextActiveCount.setText(text);
-            utils.customToast("EVENT\nbutton\nPressed "+text, Toast.LENGTH_LONG, Color.RED);
+            utils.customToast("EVENT\nbutton\nPressed "+text);
         });
     }
 

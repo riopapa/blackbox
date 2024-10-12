@@ -25,6 +25,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
@@ -246,22 +247,29 @@ public class Utils {
         }
     }
 
-    void customToast  (final String text, final int short_Long, final int foreColor) {
+    void customToast(final String text) {
 
         mActivity.runOnUiThread(() -> {
-            Toast toast = Toast.makeText(mContext, text, short_Long);
-            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
-            View toastView = toast.getView();
-            TextView toastMessage = toastView.findViewById(android.R.id.message);
-            toastMessage.setTextSize(24);
-            int backColor = foreColor ^ 0xececec;
-            toastMessage.setTextColor(foreColor);
-            toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.event_shot, 0, 0, 0);
-            toastMessage.setCompoundDrawablePadding(16);
-            toastMessage.setPadding(4,4,24,4);
-            toastView.setBackgroundColor(backColor);
+
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            View layout = inflater.inflate(android.R.layout.simple_list_item_1, null); // Using a built-in layout, can replace with a custom one if needed
+
+            // Get the TextView and set its properties
+            TextView textV = layout.findViewById(android.R.id.text1);
+            textV.setText(text);
+            textV.setTextSize(24); // Set text size to 32sp
+            textV.setBackgroundColor(Color.YELLOW); // Set background color to red
+            textV.setTextColor(Color.RED); // Set text color to white for visibility
+            textV.setPadding(15, 16, 16, 16); // Set padding for the text
+
+            // Create the toast object
+            Toast toast = new Toast(mContext);
+            toast.setDuration(Toast.LENGTH_LONG); // Set the duration for the toast
+            toast.setView(layout); // Set the custom layout
+            toast.setGravity(Gravity.CENTER, 0, 0); // Show toast in the center
+
+            // Show the toast
             toast.show();
-//                log("customToast",text);
         });
     }
 
@@ -293,22 +301,6 @@ public class Utils {
         else
             return str;
     }
-
-//    public void singleBeep(Activity activity,int type) {
-//        try {
-//            Uri notification;
-//            if (type == 0) {
-//                notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//            }
-//            else {
-//                notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//            }
-//            Ringtone r = RingtoneManager.getRingtone(activity.getApplicationContext(), notification);
-//            r.play();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private SoundPool soundPool = null;
     private final int[] beepSound = {
