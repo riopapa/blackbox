@@ -105,7 +105,7 @@ class MergeEvent {
             Vars.utils.beepOnce(3, 1f)
             Vars.utils.logOnly(LOG_ID, "IOException~ ")
         }
-        Vars.utils.logBoth("Even", "videoTracks.size() = " + videoTracks.size)
+        Vars.utils.logBoth("Even", "videoTracks.size= " + videoTracks.size)
     }
     companion object {
         private const val LOG_ID = "EMERGE"

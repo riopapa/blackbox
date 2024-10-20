@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,7 +34,7 @@
             android:layout_gravity="center"
             android:text=" "
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="22sp" />
     </FrameLayout>
 
     <!--Date and Time-->
@@ -53,7 +54,7 @@
             android:gravity="center_horizontal"
             android:text="@string/_00_00"
             android:textColor="@color/colorText"
-            android:textSize="40sp" />
+            android:textSize="32sp" />
 
         <TextView
             android:id="@+id/textDate"
@@ -82,6 +83,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center_horizontal"
             android:src="@mipmap/mark" />
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -141,7 +143,7 @@
             android:gravity="end"
             android:text="__ "
             android:textColor="@color/colorText"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/degreeInCelcius"
@@ -249,7 +251,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="60dp"
             app:layout_constraintLeft_toRightOf="@id/speed_km"
             app:layout_constraintTop_toBottomOf="@id/date_time"
             app:layout_constraintBottom_toTopOf="@id/logInfo"
@@ -272,13 +274,13 @@
                 android:text=""
                 android:textColor="#FFF"
                 android:background="#000"
-                android:textSize="36sp" />
+                android:textSize="30sp" />
 
         </FrameLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/event_count"
-        android:layout_width="70dp"
+        android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
         app:layout_constraintLeft_toRightOf="@id/frameEvent"
@@ -301,22 +303,21 @@
             android:gravity="center_horizontal"
             android:text="@string/zero"
             android:textColor="@color/colorText"
-            android:textSize="32sp" />
+            android:textSize="28sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
         android:id="@+id/logInfo"
-        android:layout_width="280dp"
-        android:layout_height="184dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="366dp"
+        android:layout_height="143dp"
         android:layout_marginBottom="4dp"
-        app:layout_constraintLeft_toRightOf="@id/btnPauseAMinute"
-        app:layout_constraintTop_toBottomOf="@id/frameEvent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:text="@string/logInfo"
         android:textColor="@color/colorText"
-        android:textSize="14sp" />
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btnPauseAMinute"
+        app:layout_constraintTop_toBottomOf="@id/frameEvent" />
 
     <!--Preview  -->
     <FrameLayout

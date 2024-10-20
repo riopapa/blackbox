@@ -151,11 +151,11 @@ public class SettingsActivity extends AppCompatActivity  {
         share_image_size = sharedPref.getInt(NAME_IMAGES_SIZE, 0);
         if (share_image_size == 0) {
             share_image_size = 116;
-            sharedEditor.putInt(NAME_IMAGES_SIZE, 104);
+            sharedEditor.putInt(NAME_IMAGES_SIZE, 110);
             sharedEditor.putInt(NAME_EVENT_SEC, 23);
-            sharedEditor.putLong(NAME_SNAP_INTERVAL, 212);
-            sharedEditor.putLong(NAME_LEFT_RIGHT, 190);
-            sharedEditor.putLong(NAME_WORK_SIZE, 330);
+            sharedEditor.putLong(NAME_SNAP_INTERVAL, 182);
+            sharedEditor.putLong(NAME_LEFT_RIGHT, 170);
+            sharedEditor.putLong(NAME_WORK_SIZE, 350);
             sharedEditor.apply();
         }
         share_image_size = sharedPref.getInt(NAME_IMAGES_SIZE, 124);

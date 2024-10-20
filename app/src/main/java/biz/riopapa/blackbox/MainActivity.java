@@ -102,7 +102,6 @@ public class MainActivity extends Activity {
             startActivity(intent);
         }
 
-
         vPreviewView = findViewById(R.id.previewView);
 
         SettingsActivity.getPreference();   // should be after VideoSize().set()
@@ -178,7 +177,6 @@ public class MainActivity extends Activity {
         });
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        showInitialValues();
 
         if (isRunning)
             return;
@@ -203,6 +201,11 @@ public class MainActivity extends Activity {
             utils.logBoth("DISK", msg);
 
         showParams();
+        mActivity.runOnUiThread(() -> {
+            String txt = " " + CountEvent + " ";
+            vTextCountEvent.setText(txt);
+            vTextActiveCount.setText("");
+        });
     }
 
     private static void showParams() {
@@ -233,14 +236,6 @@ public class MainActivity extends Activity {
 
     void startEventSaving() {
         eventHandler.sendEmptyMessage(0);
-    }
-
-    private void showInitialValues() {
-        mActivity.runOnUiThread(() -> {
-            String txt = " " + CountEvent + " ";
-            vTextCountEvent.setText(txt);
-            vTextActiveCount.setText("");
-        });
     }
 
     private void setViewVars() {
