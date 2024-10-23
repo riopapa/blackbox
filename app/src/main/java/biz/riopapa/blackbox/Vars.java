@@ -17,6 +17,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -51,6 +52,7 @@ public class Vars {
     static TextView vTextSpeed = null;
     static TextView vTextKilo = null;
     static TextView vKm = null;
+    static ScrollView scrollLog = null;
     static TextView vTextLogInfo = null;
     static TextView vTextActiveCount = null;
     static TextView vTextRecord = null;
@@ -92,7 +94,7 @@ public class Vars {
     static MediaRecorder mediaRecorder;
     static int speedInt = -1;
 
-    static byte[] shot_00, shot_01, shot_02, shot_03;
+    static byte[] shot_00, shot_01;
 
     static ImageStack imageStack;
     public static int VIDEO_FRAME_RATE;

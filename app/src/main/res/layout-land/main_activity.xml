@@ -239,7 +239,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintLeft_toRightOf="@id/logInfo"
+        app:layout_constraintLeft_toRightOf="@id/scroll_log"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@id/framePreview"
         android:contentDescription="@string/km"
@@ -254,7 +254,7 @@
             android:layout_marginTop="60dp"
             app:layout_constraintLeft_toRightOf="@id/speed_km"
             app:layout_constraintTop_toBottomOf="@id/date_time"
-            app:layout_constraintBottom_toTopOf="@id/logInfo"
+            app:layout_constraintBottom_toTopOf="@id/scroll_log"
             >
             <ImageButton
                 android:id="@+id/btnEvent"
@@ -307,18 +307,27 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <TextView
-        android:id="@+id/logInfo"
-        android:layout_width="366dp"
-        android:layout_height="143dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/logInfo"
-        android:textColor="@color/colorText"
-        android:textSize="12sp"
+    <ScrollView
+        android:id="@+id/scroll_log"
+        android:layout_width="320dp"
+        android:layout_height="132dp"
+        android:fastScrollEnabled="true"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/btnPauseAMinute"
-        app:layout_constraintTop_toBottomOf="@id/frameEvent" />
-
+        app:layout_constraintTop_toBottomOf="@id/frameEvent"
+        >
+        <TextView
+            android:id="@+id/logInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/logInfo"
+            android:textColor="@color/colorText"
+            android:textSize="12sp"
+            />
+    </ScrollView>
     <!--Preview  -->
     <FrameLayout
         android:id="@+id/framePreview"

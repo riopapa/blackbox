@@ -3,7 +3,7 @@ package biz.riopapa.blackbox;
 import static biz.riopapa.blackbox.Vars.DATE_PREFIX;
 import static biz.riopapa.blackbox.Vars.FORMAT_DATE;
 import static biz.riopapa.blackbox.Vars.FORMAT_TIME;
-import static biz.riopapa.blackbox.Vars.shot_02;
+import static biz.riopapa.blackbox.Vars.scrollLog;
 import static biz.riopapa.blackbox.Vars.shot_00;
 import static biz.riopapa.blackbox.Vars.shot_01;
 import static biz.riopapa.blackbox.Vars.mActivity;
@@ -11,7 +11,6 @@ import static biz.riopapa.blackbox.Vars.mContext;
 import static biz.riopapa.blackbox.Vars.mPackageEventPath;
 import static biz.riopapa.blackbox.Vars.mPackageLogPath;
 import static biz.riopapa.blackbox.Vars.sdfDate;
-import static biz.riopapa.blackbox.Vars.shot_03;
 import static biz.riopapa.blackbox.Vars.vTextLogInfo;
 
 import android.content.Context;
@@ -23,6 +22,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -92,8 +92,11 @@ public class Utils {
     }
 
     public void showOnly(String tag, String text) {
-        uText = lastNLines(vTextLogInfo.getText().toString() + "\n"+ getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text);
-        mActivity.runOnUiThread(() -> vTextLogInfo.setText(uText));
+        uText = vTextLogInfo.getText().toString() + "\n"+ getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
+        mActivity.runOnUiThread(() -> {
+            vTextLogInfo.setText(uText);
+            scrollLog.smoothScrollBy(0, 1000);
+        });
     }
 
     public void logBoth(String tag, String text) {
@@ -102,8 +105,12 @@ public class Utils {
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
         Log.w(tag , log);
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME)+" "+tag+": " + log);
-        uText = lastNLines(vTextLogInfo.getText().toString() + "\n"+ getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text);
-        mActivity.runOnUiThread(() -> vTextLogInfo.setText(uText));
+        uText = vTextLogInfo.getText().toString() + "\n"+ getMilliSec2String(System.currentTimeMillis(), "HH:mm ")+tag+": "+text;
+//        mActivity.runOnUiThread(() -> {
+        new Handler(Looper.getMainLooper()).post(() -> {
+            vTextLogInfo.setText(uText);
+            scrollLog.scrollBy(0, 500);
+        });
     }
 
     public void logOnly (String tag, String text) {
@@ -116,13 +123,16 @@ public class Utils {
     }
 
     public void logE(String tag, String text, Exception e) {
-        beepOnce(0, .7f);
+        beepOnce(0, 1f);
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " [err:"+ tag + "] " + text;
         append2file(mPackageLogPath, logFile, "\n\n<logE ------------------- Start>\n"+getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME) +  "// " + log+ "\n"+ getStackTrace(e)+"<End ---------- >\n\n");
-        uText = tag+" : "+lastNLines(vTextLogInfo.getText().toString() + text);
-        mActivity.runOnUiThread(() -> vTextLogInfo.setText(uText));
+        uText = tag + " : " + vTextLogInfo.getText().toString() + text;
+        mActivity.runOnUiThread(() -> {
+            vTextLogInfo.setText(uText);
+            scrollLog.smoothScrollBy(0, 1000);
+        });
         Log.e("Error",uText);
 //        beepOnce(1, .7f);
     }
@@ -320,25 +330,35 @@ public class Utils {
 
     void beepsInitiate() {
 
-        SoundPool.Builder builder;
+
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE) // or USAGE_NOTIFICATION
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build();
 
-        builder = new SoundPool.Builder();
+        SoundPool.Builder builder = new SoundPool.Builder();
         builder.setAudioAttributes(audioAttributes).setMaxStreams(5);
         soundPool = builder.build();
+
+//        SoundPool.Builder builder;
+//        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+//                .setUsage(AudioAttributes.USAGE_MEDIA)
+//                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+//                .build();
+//
+//        builder = new SoundPool.Builder();
+//        builder.setAudioAttributes(audioAttributes).setMaxStreams(5);
+//        soundPool = builder.build();
         for (int i = 0; i < beepSound.length; i++) {
             soundNbr[i] = soundPool.load(mContext, beepSound[i], 1);
         }
     }
-
-    void setVolume(int percent) {
-        AudioManager mAudio = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-        int volume = mAudio.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * percent / 100;
-        mAudio.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_PLAY_SOUND);
-    }
+//
+//    void setVolume(int percent) {
+//        AudioManager mAudio = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+//        int volume = mAudio.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * percent / 100;
+//        mAudio.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_PLAY_SOUND);
+//    }
 
     void beepOnce(int soundId,float volume) {
 
@@ -361,17 +381,10 @@ public class Utils {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         shot_00 = stream.toByteArray();
-
         bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_01);
         stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         shot_01 = stream.toByteArray();
-
-        bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.shot_02);
-        stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        shot_02 = stream.toByteArray();
-
     }
 
 }

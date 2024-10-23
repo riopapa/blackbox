@@ -41,7 +41,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_alignTop="@id/newsLine"
-        android:layout_alignRight="@id/logInfo"
+        android:layout_alignRight="@id/scroll_log"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/km"
@@ -103,15 +103,27 @@
         android:textSize="48sp" />
 
     <!--Log Info in multi lines-->
-    <TextView
-        android:id="@+id/logInfo"
-        android:layout_width="440dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/logInfo"
-        android:layout_alignParentEnd="true"
-        android:textColor="@color/colorText"
-        android:textSize="@dimen/log_size" />
+
+    <ScrollView
+        android:id="@+id/scroll_log"
+        android:layout_width="320dp"
+        android:layout_height="132dp"
+        android:fastScrollEnabled="true"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btnPauseAMinute"
+        app:layout_constraintTop_toBottomOf="@id/frameEvent"
+        >
+        <TextView
+            android:id="@+id/logInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/logInfo"
+            android:textColor="@color/colorText"
+            android:textSize="12sp"
+            />
+    </ScrollView>
 
     <!--Speed in Km-->
     <TextView
@@ -251,7 +263,7 @@
         android:layout_below="@id/news_mark1"
         android:layout_marginTop="-12dp"
         android:orientation="horizontal"
-        android:layout_alignStart="@id/logInfo"
+        android:layout_alignStart="@id/scroll_log"
         android:layout_marginStart="0dp">
         <ImageView
             android:id="@+id/news_0"
@@ -284,7 +296,7 @@
         android:id="@+id/news_mark1"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_below="@id/logInfo"
+        android:layout_below="@id/scroll_log"
         android:layout_marginTop="0dp"
         android:src="@mipmap/mark"
         android:layout_alignStart="@id/newsLine"

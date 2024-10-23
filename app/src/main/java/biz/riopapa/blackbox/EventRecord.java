@@ -1,8 +1,5 @@
 package biz.riopapa.blackbox;
 
-import android.graphics.Color;
-import android.widget.Toast;
-
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,10 +12,7 @@ import static biz.riopapa.blackbox.Vars.activeEventCount;
 import static biz.riopapa.blackbox.Vars.imageStack;
 import static biz.riopapa.blackbox.Vars.mPackageEventJpgPath;
 import static biz.riopapa.blackbox.Vars.share_event_sec;
-import static biz.riopapa.blackbox.Vars.shot_02;
 import static biz.riopapa.blackbox.Vars.shot_00;
-import static biz.riopapa.blackbox.Vars.shot_01;
-import static biz.riopapa.blackbox.Vars.gpsTracker;
 import static biz.riopapa.blackbox.Vars.mActivity;
 import static biz.riopapa.blackbox.Vars.mIsRecording;
 import static biz.riopapa.blackbox.Vars.utils;
@@ -38,10 +32,7 @@ public class EventRecord {
 
         utils.readyPackageFolder(thisEventJpgPath);
         utils.logBoth("start "+(CountEvent+1+activeEventCount),thisEventJpgPath.getName());
-        utils.setVolume(70);
-//        long veryFirst;
         SnapShotSave snapShotSave = new SnapShotSave();
-
         new Timer().schedule(new TimerTask() {
             public void run() {
                 imageStack.addShotBuff(shot_00);    // first phase should be 1
@@ -75,5 +66,4 @@ public class EventRecord {
             utils.customToast("EVENT\nbutton\nPressed "+text);
         });
     }
-
 }

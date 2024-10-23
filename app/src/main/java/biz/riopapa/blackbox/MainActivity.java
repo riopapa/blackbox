@@ -18,6 +18,7 @@ import static biz.riopapa.blackbox.Vars.mPackageNormalPath;
 import static biz.riopapa.blackbox.Vars.mPackageWorkingPath;
 import static biz.riopapa.blackbox.Vars.mainLayout;
 import static biz.riopapa.blackbox.Vars.normal_duration;
+import static biz.riopapa.blackbox.Vars.scrollLog;
 import static biz.riopapa.blackbox.Vars.share_event_sec;
 import static biz.riopapa.blackbox.Vars.share_image_size;
 import static biz.riopapa.blackbox.Vars.share_left_right_interval;
@@ -132,7 +133,7 @@ public class MainActivity extends Activity {
         setViewVars();
 
         vBtnEvent.setOnClickListener(v -> startEventSaving());
-        vTextLogInfo.setOnClickListener(v -> startEventSaving());
+//        vTextLogInfo.setOnClickListener(v -> startEventSaving());
 
         mIsRecording = false;
 
@@ -195,7 +196,7 @@ public class MainActivity extends Activity {
             }
         }, DELAY_AUTO_RECORDING);
 
-        utils.setVolume(70);
+//        utils.setVolume(70);
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
         if (!msg.isEmpty())
             utils.logBoth("DISK", msg);
@@ -245,6 +246,7 @@ public class MainActivity extends Activity {
         vTextSpeed = findViewById(R.id.textSpeed);
         vKm = findViewById(R.id.textKm);
         vTextKilo = findViewById(R.id.todayKm);
+        scrollLog = findViewById(R.id.scroll_log);
         vTextLogInfo = findViewById(R.id.logInfo);
         vTextCountEvent = findViewById(R.id.textCountEvent);
         vTextActiveCount = findViewById(R.id.activeEvent);
