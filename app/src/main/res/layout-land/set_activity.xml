@@ -28,7 +28,7 @@
             android:layout_weight="6"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="이미지 크기"
+            android:text="이미지 어레이"
             android:textColor="@color/colorText"
             android:layout_gravity="center"
             />

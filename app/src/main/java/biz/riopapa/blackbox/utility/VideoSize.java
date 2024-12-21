@@ -19,15 +19,15 @@ import biz.riopapa.blackbox.Vars;
 public class VideoSize {
     public void set() {
         switch (Build.MODEL) {
-            case "SM-G977N":
+            case "SM-G977N":    // black box
                 SUFFIX = Vars.PhoneE.H;
-                zoomNormal = 1.1f;
-                zoomHuge = 1.6f;
+                zoomNormal = 1.15f;
+                zoomHuge = 1.7f;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 20000 * 1000;
                 VIDEO_ONE_WORK_FILE_SIZE = share_work_size * 10000;
                 break;
-            case "SM-N986N":
+            case "SM-N986N":    // note 20
                 SUFFIX = Vars.PhoneE.N;
                 zoomNormal = 1.2f;
                 zoomHuge = 1.7f;

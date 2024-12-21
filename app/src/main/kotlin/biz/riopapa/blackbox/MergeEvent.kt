@@ -58,7 +58,7 @@ class MergeEvent {
                     Log.w("Err", "<<Event IO>> " + files2Merge.size)
                 }
                 mp.release()
-                Vars.utils.logBoth("eventMP4", beginTimeS)
+                Vars.utils.logBoth("eventMP4", beginTimeS+"\n")
             }
         }
     }

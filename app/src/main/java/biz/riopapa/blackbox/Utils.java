@@ -109,7 +109,7 @@ public class Utils {
 //        mActivity.runOnUiThread(() -> {
         new Handler(Looper.getMainLooper()).post(() -> {
             vTextLogInfo.setText(uText);
-            scrollLog.scrollBy(0, 500);
+            scrollLog.scrollBy(0, 2500);
         });
     }
 

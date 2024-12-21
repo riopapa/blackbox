@@ -31,6 +31,7 @@ public class EventRecord {
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);
+        utils.logBoth("EVENT"," ");
         utils.logBoth("start "+(CountEvent+1+activeEventCount),thisEventJpgPath.getName());
         SnapShotSave snapShotSave = new SnapShotSave();
         new Timer().schedule(new TimerTask() {
