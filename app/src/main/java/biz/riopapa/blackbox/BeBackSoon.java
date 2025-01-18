@@ -25,10 +25,12 @@ import java.util.Locale;
 
 public class BeBackSoon extends AsyncTask<String, String, String> {
 
+    String xcode;
     @Override
     protected String doInBackground(String... s) {
-        String xcode = s[0];   // currently 'x' only
-        int downCount = (xcode.equals("x"))? DELAY_WAIT_EXIT_SECONDS : 1;
+        xcode = s[0];   // currently 'x' only
+//        int downCount = (xcode.equals("x"))? DELAY_WAIT_EXIT_SECONDS : 1;
+        int downCount = DELAY_WAIT_EXIT_SECONDS;
         while (downCount > 0) {
             if (!mExitApplication) {
                 publishProgress("" + downCount);
@@ -52,7 +54,8 @@ public class BeBackSoon extends AsyncTask<String, String, String> {
 //                    utils.beepOnce(7,0.7f); // I will be back
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(() -> {
-            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage("biz.riopapa.blackwait");
+            String launchApp = (xcode.equals("x") ? "biz.riopapa.blackwait" : "biz.riopapa.blackmove");
+            Intent sendIntent = mActivity.getPackageManager().getLaunchIntentForPackage(launchApp);
             assert sendIntent != null;
             sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mActivity.startActivity(sendIntent);

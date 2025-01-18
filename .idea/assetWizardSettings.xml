@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../zAndroid_SDK/icons/material/materialicons/circle/baseline_circle_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/directions_car/baseline_directions_car_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -34,7 +34,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffff00" />
-                            <entry key="outputName" value="baseline_circle_24" />
+                            <entry key="outputName" value="car_moving" />
                             <entry key="sourceFile" value="D:\@ANDROID\BlackBox" />
                           </map>
                         </option>

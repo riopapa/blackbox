@@ -154,6 +154,13 @@ public class MainActivity extends Activity {
                 stopHandler.sendEmptyMessage(0);
             new BeBackSoon().execute("x");
         });
+        ImageButton btnMove = findViewById(R.id.btnPauseMoving);
+        btnMove.setOnClickListener(v -> {
+            btnMove.setImageAlpha(50);
+            if (mIsRecording)
+                stopHandler.sendEmptyMessage(0);
+            new BeBackSoon().execute("M");
+        });
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
         utils.readyPackageFolder(mPackageNormalDatePath);
 

@@ -34,6 +34,17 @@
             android:textColor="#00FF00"
             android:textSize="24sp" />
     </FrameLayout>
+    <ImageButton
+        android:id="@+id/btnPauseMoving"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="fitXY"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btnPauseAMinute"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:contentDescription="@string/km"
+        android:src="@drawable/car_moving" />
 
     <ImageButton
         android:id="@+id/btnSetting"

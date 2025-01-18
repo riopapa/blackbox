@@ -25,6 +25,7 @@
     <queries>
         <!-- To query specific app by package name -->
         <package android:name="biz.riopapa.blackwait" />
+        <package android:name="biz.riopapa.blackmove" />
     </queries>
 
 
