@@ -62,6 +62,8 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
+
 import biz.riopapa.blackbox.utility.Celcius;
 import biz.riopapa.blackbox.utility.DiskSpace;
 import biz.riopapa.blackbox.utility.ImageStack;
@@ -226,7 +228,7 @@ public class MainActivity extends Activity {
     }
 
     final static Handler startHandler = new Handler(Looper.getMainLooper()) {
-        public void handleMessage(Message msg) { startStopExit.startVideo();
+        public void handleMessage(@NonNull Message msg) { startStopExit.startVideo();
         }
     };
     final static Handler stopHandler = new Handler(Looper.getMainLooper()) {

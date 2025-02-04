@@ -3,16 +3,15 @@ package biz.riopapa.blackbox;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.TotalCaptureResult;
-import android.util.Log;
 
+import static biz.riopapa.blackbox.Vars.activeEventCount;
 import static biz.riopapa.blackbox.Vars.mCameraBuilder;
 import static biz.riopapa.blackbox.Vars.mBackgroundImage;
-import static biz.riopapa.blackbox.Vars.mVideoRequestBuilder;
 import static biz.riopapa.blackbox.Vars.mCaptureSession;
 import static biz.riopapa.blackbox.Vars.photoSurface;
-import static biz.riopapa.blackbox.Vars.utils;
-import static biz.riopapa.blackbox.Vars.zoomLeft;
-import static biz.riopapa.blackbox.Vars.zoomRight;
+import static biz.riopapa.blackbox.Vars.rectLeft;
+import static biz.riopapa.blackbox.Vars.rectRight;
+import static biz.riopapa.blackbox.Vars.rectShot;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
@@ -28,7 +27,10 @@ public class PhotoCapture {
 
     public static boolean leftRight = false;
     public void zoomShotCamera() {
-        mCameraBuilder.set(CaptureRequest.SCALER_CROP_REGION, leftRight ? zoomLeft : zoomRight);
+        if (activeEventCount > 0)
+            mCameraBuilder.set(CaptureRequest.SCALER_CROP_REGION, rectShot);
+        else
+            mCameraBuilder.set(CaptureRequest.SCALER_CROP_REGION, leftRight ? rectLeft : rectRight);
         mCaptureState = STATE_WAIT_LOCK;
         try {
             mCaptureSession.capture(mCameraBuilder.build(), zoomCameraPhotoCallback, mBackgroundImage);

@@ -11,6 +11,7 @@ import static biz.riopapa.blackbox.Vars.share_work_size;
 import static biz.riopapa.blackbox.Vars.utils;
 import static biz.riopapa.blackbox.VideoMain.zoomHuge;
 import static biz.riopapa.blackbox.VideoMain.zoomNormal;
+import static biz.riopapa.blackbox.VideoMain.zoomShot;
 
 import android.os.Build;
 
@@ -18,19 +19,18 @@ import biz.riopapa.blackbox.Vars;
 
 public class VideoSize {
     public void set() {
+        zoomNormal = 1.2f;
+        zoomHuge = 1.7f;
+        zoomShot = 2.2f;
         switch (Build.MODEL) {
             case "SM-G977N":    // black box
                 SUFFIX = Vars.PhoneE.H;
-                zoomNormal = 1.15f;
-                zoomHuge = 1.7f;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 20000 * 1000;
                 VIDEO_ONE_WORK_FILE_SIZE = share_work_size * 10000;
                 break;
             case "SM-N986N":    // note 20
                 SUFFIX = Vars.PhoneE.N;
-                zoomNormal = 1.2f;
-                zoomHuge = 1.7f;
                 VIDEO_FRAME_RATE = 30;
                 VIDEO_ENCODING_RATE = 20000 * 1000;
                 VIDEO_ONE_WORK_FILE_SIZE = share_work_size * 10000;

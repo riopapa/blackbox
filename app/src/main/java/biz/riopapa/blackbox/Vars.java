@@ -111,7 +111,7 @@ public class Vars {
     static Surface recordSurface = null;
     static Surface photoSurface = null;
     static Surface previewSurface = null;
-    static Rect zoomLeft, zoomRight;
+    static Rect rectLeft, rectRight, rectShot;
     public static PhoneE SUFFIX;
 
 }

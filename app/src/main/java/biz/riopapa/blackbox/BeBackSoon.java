@@ -1,7 +1,6 @@
 package biz.riopapa.blackbox;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,27 +8,15 @@ import android.os.Process;
 import android.os.SystemClock;
 
 import static biz.riopapa.blackbox.Vars.DELAY_WAIT_EXIT_SECONDS;
-import static biz.riopapa.blackbox.Vars.displayBattery;
 import static biz.riopapa.blackbox.Vars.mActivity;
-import static biz.riopapa.blackbox.Vars.mContext;
 import static biz.riopapa.blackbox.Vars.mExitApplication;
-import static biz.riopapa.blackbox.Vars.mainLayout;
-import static biz.riopapa.blackbox.Vars.tvDegree;
-import static biz.riopapa.blackbox.Vars.utils;
-import static biz.riopapa.blackbox.Vars.vTextTime;
-
-import androidx.core.content.ContextCompat;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public class BeBackSoon extends AsyncTask<String, String, String> {
 
     String xcode;
     @Override
     protected String doInBackground(String... s) {
-        xcode = s[0];   // currently 'x' only
-//        int downCount = (xcode.equals("x"))? DELAY_WAIT_EXIT_SECONDS : 1;
+        xcode = s[0];   // 'x' : blackWait, else blackMove
         int downCount = DELAY_WAIT_EXIT_SECONDS;
         while (downCount > 0) {
             if (!mExitApplication) {

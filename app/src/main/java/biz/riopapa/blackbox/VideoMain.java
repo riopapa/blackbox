@@ -22,13 +22,14 @@ import static biz.riopapa.blackbox.Vars.nextCount;
 import static biz.riopapa.blackbox.Vars.photoSurface;
 import static biz.riopapa.blackbox.Vars.previewSurface;
 import static biz.riopapa.blackbox.Vars.recordSurface;
+import static biz.riopapa.blackbox.Vars.rectShot;
 import static biz.riopapa.blackbox.Vars.surface_Preview;
 import static biz.riopapa.blackbox.Vars.utils;
 import static biz.riopapa.blackbox.Vars.vPower;
 import static biz.riopapa.blackbox.Vars.vPreviewView;
 import static biz.riopapa.blackbox.Vars.vTextRecord;
-import static biz.riopapa.blackbox.Vars.zoomLeft;
-import static biz.riopapa.blackbox.Vars.zoomRight;
+import static biz.riopapa.blackbox.Vars.rectLeft;
+import static biz.riopapa.blackbox.Vars.rectRight;
 
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -41,7 +42,6 @@ import android.media.MediaRecorder;
 import android.view.Surface;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 
 import java.io.File;
 import java.io.IOException;
@@ -103,8 +103,9 @@ public class VideoMain {
         mVideoRequestBuilder.addTarget(photoSurface);
 
         rectNormal = calcZoomSize(zoomNormal, "N");
-        zoomLeft = calcZoomSize(zoomHuge, "L");
-        zoomRight = calcZoomSize(zoomHuge, "R");
+        rectLeft = calcZoomSize(zoomHuge, "L");
+        rectRight = calcZoomSize(zoomHuge, "R");
+        rectShot = calcZoomSize(zoomShot, "N");
     }
 
     void buildCameraSession() {
@@ -139,7 +140,7 @@ public class VideoMain {
         };
     }
 
-    public static float zoomNormal, zoomHuge;
+    public static float zoomNormal, zoomHuge, zoomShot;
     private Rect calcZoomSize(float zoomFactor, String type) {
 
         int xOrgSize = mImageSize.getWidth();
@@ -147,7 +148,7 @@ public class VideoMain {
         int xZoomed = (int) (xOrgSize / zoomFactor);
         int yZoomed = (int) (yOrgSize / zoomFactor);
         int xLeft = 0;
-        int yTop = yOrgSize-yZoomed;
+        int yTop = 0; // yOrgSize-yZoomed;
         Rect rect = new Rect();
         switch (type) {
             case "N":
