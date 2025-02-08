@@ -164,6 +164,7 @@
         android:scaleType="fitXY"
         android:layout_margin="16dp"
         app:layout_constraintBottom_toTopOf="@id/btnPauseAMinute"
+        app:layout_constraintTop_toBottomOf="@id/frameRecord"
         app:layout_constraintLeft_toLeftOf="parent"
         android:contentDescription="@string/km"
         android:src="@drawable/car_moving" />

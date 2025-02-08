@@ -1,6 +1,5 @@
 package biz.riopapa.blackbox;
 
-import static biz.riopapa.blackbox.PhotoCapture.leftRight;
 import static biz.riopapa.blackbox.Vars.IMAGE_BUFFER_MAX_IMAGES;
 import static biz.riopapa.blackbox.Vars.SUFFIX;
 import static biz.riopapa.blackbox.Vars.imageStack;
@@ -28,7 +27,6 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
-import android.util.Log;
 import android.util.Size;
 
 import androidx.core.content.ContextCompat;

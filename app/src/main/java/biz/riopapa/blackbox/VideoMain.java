@@ -22,6 +22,7 @@ import static biz.riopapa.blackbox.Vars.nextCount;
 import static biz.riopapa.blackbox.Vars.photoSurface;
 import static biz.riopapa.blackbox.Vars.previewSurface;
 import static biz.riopapa.blackbox.Vars.recordSurface;
+import static biz.riopapa.blackbox.Vars.rectNormal;
 import static biz.riopapa.blackbox.Vars.rectShot;
 import static biz.riopapa.blackbox.Vars.surface_Preview;
 import static biz.riopapa.blackbox.Vars.utils;
@@ -54,7 +55,6 @@ public class VideoMain {
 
     private final String logID = "videoMain";
     private boolean isPrepared = false;
-    Rect rectNormal;
     Drawable [] onRecord;
 
     void prepareRecord() {
@@ -103,8 +103,8 @@ public class VideoMain {
         mVideoRequestBuilder.addTarget(photoSurface);
 
         rectNormal = calcZoomSize(zoomNormal, "N");
-        rectLeft = calcZoomSize(zoomHuge, "L");
-        rectRight = calcZoomSize(zoomHuge, "R");
+        rectLeft = calcZoomSize(zoomBig, "L");
+        rectRight = calcZoomSize(zoomBig, "R");
         rectShot = calcZoomSize(zoomShot, "N");
     }
 
@@ -140,7 +140,7 @@ public class VideoMain {
         };
     }
 
-    public static float zoomNormal, zoomHuge, zoomShot;
+    public static float zoomNormal, zoomBig, zoomShot;
     private Rect calcZoomSize(float zoomFactor, String type) {
 
         int xOrgSize = mImageSize.getWidth();
@@ -148,16 +148,17 @@ public class VideoMain {
         int xZoomed = (int) (xOrgSize / zoomFactor);
         int yZoomed = (int) (yOrgSize / zoomFactor);
         int xLeft = 0;
-        int yTop = 0; // yOrgSize-yZoomed;
+        int yTop = (yOrgSize-yZoomed) / 2;
         Rect rect = new Rect();
         switch (type) {
             case "N":
                 xLeft = (xOrgSize - xZoomed) / 2;
                 break;
             case "L":
+                xLeft = (xOrgSize - xZoomed) / 3;
                 break;
             case "R":
-                xLeft = (xOrgSize- xZoomed);
+                xLeft = (xOrgSize- xZoomed) * 3 / 4;
                 break;
         }
 

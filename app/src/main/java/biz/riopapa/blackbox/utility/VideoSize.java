@@ -4,12 +4,9 @@ import static biz.riopapa.blackbox.Vars.SUFFIX;
 import static biz.riopapa.blackbox.Vars.VIDEO_ENCODING_RATE;
 import static biz.riopapa.blackbox.Vars.VIDEO_FRAME_RATE;
 import static biz.riopapa.blackbox.Vars.VIDEO_ONE_WORK_FILE_SIZE;
-import static biz.riopapa.blackbox.Vars.share_image_size;
-import static biz.riopapa.blackbox.Vars.share_left_right_interval;
-import static biz.riopapa.blackbox.Vars.share_snap_interval;
 import static biz.riopapa.blackbox.Vars.share_work_size;
 import static biz.riopapa.blackbox.Vars.utils;
-import static biz.riopapa.blackbox.VideoMain.zoomHuge;
+import static biz.riopapa.blackbox.VideoMain.zoomBig;
 import static biz.riopapa.blackbox.VideoMain.zoomNormal;
 import static biz.riopapa.blackbox.VideoMain.zoomShot;
 
@@ -20,7 +17,7 @@ import biz.riopapa.blackbox.Vars;
 public class VideoSize {
     public void set() {
         zoomNormal = 1.2f;
-        zoomHuge = 1.7f;
+        zoomBig = 1.7f;
         zoomShot = 2.2f;
         switch (Build.MODEL) {
             case "SM-G977N":    // black box

@@ -107,11 +107,12 @@ public class Vars {
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;
     static CaptureRequest.Builder mVideoRequestBuilder, mCameraBuilder;
+    static CaptureRequest mCameraBigRequest, mCameraLeftRequest, mCameraRightRequest, mCameraShotRequest;
     static CameraCaptureSession mCaptureSession;
     static Surface recordSurface = null;
     static Surface photoSurface = null;
     static Surface previewSurface = null;
-    static Rect rectLeft, rectRight, rectShot;
+    static Rect rectNormal, rectLeft, rectRight, rectShot;
     public static PhoneE SUFFIX;
 
 }

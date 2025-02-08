@@ -25,9 +25,10 @@ public class EventRecord {
 
         if (!mIsRecording) return;
 
+        activeEventCount++;
         imageStack.addShotBuff(shot_00);
         final long startTime = System.currentTimeMillis()
-                - ((share_event_sec + share_event_sec / 9) * 1000);
+                - ((share_event_sec + share_event_sec / 10) * 1000);
         thisEventJpgPath = new File(mPackageEventJpgPath, DATE_PREFIX+utils.getMilliSec2String(startTime, FORMAT_TIME)+ SUFFIX);
 
         utils.readyPackageFolder(thisEventJpgPath);
@@ -60,7 +61,6 @@ public class EventRecord {
             }
         }, share_event_sec * 800);
 
-        activeEventCount++;
         mActivity.runOnUiThread(() -> {
             String text = " "+activeEventCount+" ";
             vTextActiveCount.setText(text);

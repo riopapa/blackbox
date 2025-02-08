@@ -78,7 +78,6 @@ import java.util.TimerTask;
 public class MainActivity extends Activity {
 
     private static final int SETTING_ACTIVITY = 101;
-    private boolean started = false;
     private static boolean isRunning = false;
     CameraSub cameraSub;
 
@@ -122,14 +121,7 @@ public class MainActivity extends Activity {
 
         utils.setFullScreen();
         isRunning = false;
-        prepareMain();
-    }
 
-    private void prepareMain() {
-
-        if (started)
-            return;
-        started = true;
         startStopExit = new StartStopExit();
 
         setViewVars();

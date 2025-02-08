@@ -1,0 +1,61 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_duration"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_columnWeight="1"
+    android:layout_rowWeight="1"
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="4dp">
+    <LinearLayout
+        android:id="@+id/l_duration"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_margin="3sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/t_duration"
+            android:textSize="32sp"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="이벤트 녹화 시간"
+            android:textColor="@color/colorText"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:id="@+id/duration_down"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/minus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="36sp" />
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/number"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="32sp" />
+        <TextView
+            android:id="@+id/duration_up"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/plus"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="36sp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
