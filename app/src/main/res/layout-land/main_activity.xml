@@ -34,6 +34,7 @@
             android:layout_gravity="center"
             android:text=" "
             android:textColor="#FFFFFF"
+            android:layout_marginBottom="2dp"
             android:textSize="18sp" />
     </FrameLayout>
 
@@ -198,7 +199,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/circle0"
+            android:src="@drawable/recording_off"
             android:layout_gravity="center"
             android:contentDescription="@string/todo" />
 

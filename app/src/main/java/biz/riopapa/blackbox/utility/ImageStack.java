@@ -1,6 +1,5 @@
 package biz.riopapa.blackbox.utility;
 
-import static biz.riopapa.blackbox.StartStopExit.zoomChangeTimer;
 import static biz.riopapa.blackbox.PhotoCapture.takeLeft;
 
 import java.nio.ByteBuffer;
@@ -28,7 +27,7 @@ public class ImageStack {
             if (snapNowPos >= arraySize)
                 snapNowPos = 0;
             takeLeft = !takeLeft;
-            zoomChangeTimer.sendEmptyMessage(0);
+//            zoomChangeTimer.sendEmptyMessage(0);
         } catch (Exception e) {
         }
     }

@@ -12,6 +12,7 @@ import static biz.riopapa.blackbox.Vars.nextCount;
 import static biz.riopapa.blackbox.Vars.normal_duration;
 import static biz.riopapa.blackbox.Vars.photoCapture;
 import static biz.riopapa.blackbox.Vars.share_left_right_interval;
+import static biz.riopapa.blackbox.Vars.timerSnapCamera;
 import static biz.riopapa.blackbox.Vars.utils;
 import static biz.riopapa.blackbox.Vars.vPower;
 import static biz.riopapa.blackbox.Vars.vTextRecord;
@@ -19,9 +20,6 @@ import static biz.riopapa.blackbox.Vars.videoMain;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -55,28 +53,30 @@ public class StartStopExit {
         });
     }
 
-    public final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
-        public void handleMessage(Message msg) {
-            if (msg.what == 0)
-                photoCapture.zoomShotCamera();
-            else {
-                photoCapture = new PhotoCapture();
-                photoCapture.photoInit();
-            }
-        }
-    };
+//    public final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
+//        public void handleMessage(Message msg) {
+//            if (msg.what == 0)
+//                photoCapture.zoomShotCamera();
+//            else {
+//                photoCapture = new PhotoCapture();
+//                photoCapture.photoInit();
+//            }
+//        }
+//    };
 
-    private Timer timerSnapCamera;
 
     public void startSnapBigShot() {
 
-        zoomChangeTimer.sendEmptyMessage(1);
+        photoCapture = new PhotoCapture();
+        photoCapture.photoInit();
+//        zoomChangeTimer.sendEmptyMessage(1);
 
         final TimerTask cameraTask = new TimerTask() {
             @Override
             public void run() {
                 if (mIsRecording)
-                    zoomChangeTimer.sendEmptyMessage(0);
+                    photoCapture.zoomedShot();
+//                    zoomChangeTimer.sendEmptyMessage(0);
             }
         };
         timerSnapCamera = new Timer();

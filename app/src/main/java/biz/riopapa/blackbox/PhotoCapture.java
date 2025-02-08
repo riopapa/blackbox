@@ -2,8 +2,6 @@ package biz.riopapa.blackbox;
 
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.CaptureResult;
-import android.hardware.camera2.TotalCaptureResult;
 
 import static biz.riopapa.blackbox.Vars.activeEventCount;
 import static biz.riopapa.blackbox.Vars.mCameraBigRequest;
@@ -19,7 +17,7 @@ import static biz.riopapa.blackbox.Vars.rectNormal;
 import static biz.riopapa.blackbox.Vars.rectRight;
 import static biz.riopapa.blackbox.Vars.rectShot;
 
-import androidx.annotation.NonNull;
+import java.util.Random;
 
 public class PhotoCapture {
     private static final int STATE_WAIT_LOCK = 1;
@@ -42,10 +40,11 @@ public class PhotoCapture {
     }
 
     public static boolean takeLeft = false;
-    public void zoomShotCamera() {
+    Random random = new Random();
+    public void zoomedShot() {
 //        mCaptureState = STATE_WAIT_LOCK;
         try {
-            if (activeEventCount > 0)
+            if (activeEventCount > 0 || random.nextInt(10) > 7)
                 mCaptureSession.capture(mCameraShotRequest, null, mBackgroundImage);
             else if (takeLeft)
                 mCaptureSession.capture(mCameraLeftRequest, null, mBackgroundImage);

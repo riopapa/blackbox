@@ -3,11 +3,11 @@
         android:width="64dp"
         android:viewportHeight="24"
         android:viewportWidth="24" >
-    <path android:fillColor="#A0C6225C"
+    <path android:fillColor="#FDD835"
           android:pathData="M12,12v-11.5
         a11.5,11.5 0 0,0 -11.5,11
         z"/>
-    <path android:fillColor="#A0C6225C"
+    <path android:fillColor="#FFB300"
           android:pathData="M12,12 v11.5
            a-11.5,-11.5 0 0,0 11.5,-11
         z"/>

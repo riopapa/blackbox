@@ -27,6 +27,7 @@ import biz.riopapa.blackbox.utility.ImageStack;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Timer;
 
 public class Vars {
 
@@ -36,7 +37,10 @@ public class Vars {
 
     public static Utils utils = new Utils();
     static VideoMain videoMain = new VideoMain();
+
     static PhotoCapture photoCapture = new PhotoCapture();
+    static Timer timerSnapCamera;
+
     static StartStopExit startStopExit = new StartStopExit();
 
 //    static OBDAccess_Unused obdAccessUnused = new OBDAccess_Unused();

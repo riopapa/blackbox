@@ -1,11 +1,11 @@
 package biz.riopapa.blackbox;
 
-import static biz.riopapa.blackbox.MainActivity.stopHandler;
 import static biz.riopapa.blackbox.Vars.displayBattery;
 import static biz.riopapa.blackbox.Vars.mActivity;
 import static biz.riopapa.blackbox.Vars.mContext;
 import static biz.riopapa.blackbox.Vars.mIsRecording;
 import static biz.riopapa.blackbox.Vars.mainLayout;
+import static biz.riopapa.blackbox.Vars.startStopExit;
 import static biz.riopapa.blackbox.Vars.tvDegree;
 import static biz.riopapa.blackbox.Vars.utils;
 import static biz.riopapa.blackbox.Vars.vPreviewView;
@@ -36,7 +36,8 @@ class DisplayTime implements Runnable {
                 if (celDegree > 44) {
                     utils.beepOnce(10, 1f);
                     if (mIsRecording)
-                        stopHandler.sendEmptyMessage(0);
+                        startStopExit.stopVideo();
+//                        stopHandler.sendEmptyMessage(0);
                     utils.beepOnce(10, 1f);
                     new BeBackSoon().execute("x");
                 } else if (celDegree > 43)
