@@ -1,6 +1,5 @@
 package biz.riopapa.blackbox;
 
-import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CaptureRequest;
 
 import static biz.riopapa.blackbox.Vars.activeEventCount;
@@ -15,13 +14,13 @@ import static biz.riopapa.blackbox.Vars.photoSurface;
 import static biz.riopapa.blackbox.Vars.rectLeft;
 import static biz.riopapa.blackbox.Vars.rectNormal;
 import static biz.riopapa.blackbox.Vars.rectRight;
-import static biz.riopapa.blackbox.Vars.rectShot;
+import static biz.riopapa.blackbox.Vars.rectBigShot;
 
 import java.util.Random;
 
 public class PhotoCapture {
-    private static final int STATE_WAIT_LOCK = 1;
-    private static final int STATE_PREVIEW = 0;
+//    private static final int STATE_WAIT_LOCK = 1;
+//    private static final int STATE_PREVIEW = 0;
 //    private static int mCaptureState = STATE_PREVIEW;
 
     public void photoInit() {
@@ -35,7 +34,7 @@ public class PhotoCapture {
         mCameraRightRequest = mCameraBuilder.build();
         mCameraBuilder.set(CaptureRequest.SCALER_CROP_REGION, rectLeft);
         mCameraLeftRequest = mCameraBuilder.build();
-        mCameraBuilder.set(CaptureRequest.SCALER_CROP_REGION, rectShot);
+        mCameraBuilder.set(CaptureRequest.SCALER_CROP_REGION, rectBigShot);
         mCameraShotRequest = mCameraBuilder.build();
     }
 
@@ -56,9 +55,9 @@ public class PhotoCapture {
         }
     }
 
-    private final CameraCaptureSession.CaptureCallback zoomCameraPhotoCallback = new
-        CameraCaptureSession.CaptureCallback() {
-
+//    private final CameraCaptureSession.CaptureCallback zoomCameraPhotoCallback = new
+//        CameraCaptureSession.CaptureCallback() {
+//
 //            @Override
 //            public void onCaptureProgressed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureResult partialResult) {
 //                super.onCaptureProgressed(session, request, partialResult);
@@ -69,5 +68,5 @@ public class PhotoCapture {
 //                                       TotalCaptureResult result) {
 //            super.onCaptureCompleted(session, request, result);
 //        }
-    };
+//    };
 }

@@ -339,7 +339,7 @@
             android:layout_marginBottom="4dp"
             android:text="@string/logInfo"
             android:textColor="@color/colorText"
-            android:textSize="12sp"
+            android:textSize="14sp"
             />
     </ScrollView>
     <!--Preview  -->

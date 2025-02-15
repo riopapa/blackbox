@@ -12,7 +12,6 @@ import static biz.riopapa.blackbox.Vars.nextCount;
 import static biz.riopapa.blackbox.Vars.normal_duration;
 import static biz.riopapa.blackbox.Vars.photoCapture;
 import static biz.riopapa.blackbox.Vars.share_left_right_interval;
-import static biz.riopapa.blackbox.Vars.timerSnapCamera;
 import static biz.riopapa.blackbox.Vars.utils;
 import static biz.riopapa.blackbox.Vars.vPower;
 import static biz.riopapa.blackbox.Vars.vTextRecord;
@@ -27,6 +26,7 @@ import java.util.TimerTask;
 public class StartStopExit {
 
     private final String logID = "StartStop";
+    Timer timerSnapCamera;
 
     void startVideo() {
         mActivity.runOnUiThread(() -> {
@@ -35,9 +35,6 @@ public class StartStopExit {
             vPower.setImageResource(R.drawable.circle0);
             nextCount = 0;
             vTextRecord.setText("0");
-//            Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
-//            aniRotateClk.setRepeatCount(Animation.INFINITE);
-//            vPower.startAnimation(aniRotateClk);
             videoMain.prepareRecord();
             new Timer().schedule(new TimerTask() {
                 public void run() {
@@ -53,30 +50,16 @@ public class StartStopExit {
         });
     }
 
-//    public final static Handler zoomChangeTimer = new Handler(Looper.getMainLooper()) {
-//        public void handleMessage(Message msg) {
-//            if (msg.what == 0)
-//                photoCapture.zoomShotCamera();
-//            else {
-//                photoCapture = new PhotoCapture();
-//                photoCapture.photoInit();
-//            }
-//        }
-//    };
-
-
-    public void startSnapBigShot() {
+    void startSnapBigShot() {
 
         photoCapture = new PhotoCapture();
         photoCapture.photoInit();
-//        zoomChangeTimer.sendEmptyMessage(1);
 
         final TimerTask cameraTask = new TimerTask() {
             @Override
             public void run() {
                 if (mIsRecording)
                     photoCapture.zoomedShot();
-//                    zoomChangeTimer.sendEmptyMessage(0);
             }
         };
         timerSnapCamera = new Timer();
@@ -147,7 +130,6 @@ public class StartStopExit {
         }
         Intent intent = new Intent(mContext, MainActivity.class);
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-//        intent.putExtra(KEY_RESTART_INTENT, nextIntent);
         mContext.startActivity(intent);
 
         Runtime.getRuntime().exit(0);

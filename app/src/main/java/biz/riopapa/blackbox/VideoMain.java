@@ -23,7 +23,7 @@ import static biz.riopapa.blackbox.Vars.photoSurface;
 import static biz.riopapa.blackbox.Vars.previewSurface;
 import static biz.riopapa.blackbox.Vars.recordSurface;
 import static biz.riopapa.blackbox.Vars.rectNormal;
-import static biz.riopapa.blackbox.Vars.rectShot;
+import static biz.riopapa.blackbox.Vars.rectBigShot;
 import static biz.riopapa.blackbox.Vars.surface_Preview;
 import static biz.riopapa.blackbox.Vars.utils;
 import static biz.riopapa.blackbox.Vars.vPower;
@@ -105,7 +105,7 @@ public class VideoMain {
         rectNormal = calcZoomSize(zoomNormal, "N");
         rectLeft = calcZoomSize(zoomBig, "L");
         rectRight = calcZoomSize(zoomBig, "R");
-        rectShot = calcZoomSize(zoomShot, "N");
+        rectBigShot = calcZoomSize(zoomBigShot, "B");
     }
 
     void buildCameraSession() {
@@ -140,15 +140,16 @@ public class VideoMain {
         };
     }
 
-    public static float zoomNormal, zoomBig, zoomShot;
+    public static float zoomNormal, zoomBig, zoomBigShot;
     private Rect calcZoomSize(float zoomFactor, String type) {
 
         int xOrgSize = mImageSize.getWidth();
         int yOrgSize = mImageSize.getHeight();
         int xZoomed = (int) (xOrgSize / zoomFactor);
         int yZoomed = (int) (yOrgSize / zoomFactor);
+        int yShift = (yOrgSize - yZoomed) / 2;
         int xLeft = 0;
-        int yTop = (yOrgSize-yZoomed) / 2;
+        int yTop = yShift * 4 / 3;
         Rect rect = new Rect();
         switch (type) {
             case "N":
@@ -159,6 +160,10 @@ public class VideoMain {
                 break;
             case "R":
                 xLeft = (xOrgSize- xZoomed) * 3 / 4;
+                break;
+            case "B":
+                xLeft = (xOrgSize - xZoomed) / 2;
+                yTop = yShift * 3 / 2;
                 break;
         }
 
@@ -213,10 +218,6 @@ public class VideoMain {
             String s = ++nextCount + "";
             vTextRecord.setText(s);
             vPower.setImageDrawable(onRecord[nextCount%2]);
-//            Animation aniRotateClk = AnimationUtils.loadAnimation(mContext,R.anim.rotate);
-//            aniRotateClk.setRepeatCount(Animation.INFINITE);
-//            vPower.startAnimation(aniRotateClk);
-
         }
     }
 }

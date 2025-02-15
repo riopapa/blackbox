@@ -27,7 +27,6 @@ import biz.riopapa.blackbox.utility.ImageStack;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-import java.util.Timer;
 
 public class Vars {
 
@@ -39,7 +38,6 @@ public class Vars {
     static VideoMain videoMain = new VideoMain();
 
     static PhotoCapture photoCapture = new PhotoCapture();
-    static Timer timerSnapCamera;
 
     static StartStopExit startStopExit = new StartStopExit();
 
@@ -96,7 +94,7 @@ public class Vars {
     static ImageReader mImageReader;
     static boolean mIsRecording;
     static MediaRecorder mediaRecorder;
-    static int speedInt = -1;
+    static int speedNow = -1;
 
     static byte[] shot_00, shot_01;
 
@@ -106,7 +104,8 @@ public class Vars {
     public static long VIDEO_ONE_WORK_FILE_SIZE;
     public  static int IMAGE_BUFFER_MAX_IMAGES = 3;
 
-    public enum PhoneE {N, H } // S9Phone, Note20
+    public static PhoneE SUFFIX;
+    public enum PhoneE {N, H } // S10Phone, Note20
     static boolean viewFinderActive = true;
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;
@@ -116,7 +115,6 @@ public class Vars {
     static Surface recordSurface = null;
     static Surface photoSurface = null;
     static Surface previewSurface = null;
-    static Rect rectNormal, rectLeft, rectRight, rectShot;
-    public static PhoneE SUFFIX;
+    static Rect rectNormal, rectLeft, rectRight, rectBigShot;
 
 }

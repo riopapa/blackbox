@@ -8,7 +8,7 @@ import static biz.riopapa.blackbox.Vars.share_work_size;
 import static biz.riopapa.blackbox.Vars.utils;
 import static biz.riopapa.blackbox.VideoMain.zoomBig;
 import static biz.riopapa.blackbox.VideoMain.zoomNormal;
-import static biz.riopapa.blackbox.VideoMain.zoomShot;
+import static biz.riopapa.blackbox.VideoMain.zoomBigShot;
 
 import android.os.Build;
 
@@ -18,7 +18,7 @@ public class VideoSize {
     public void set() {
         zoomNormal = 1.2f;
         zoomBig = 1.7f;
-        zoomShot = 2.2f;
+        zoomBigShot = 2.2f;
         switch (Build.MODEL) {
             case "SM-G977N":    // black box
                 SUFFIX = Vars.PhoneE.H;

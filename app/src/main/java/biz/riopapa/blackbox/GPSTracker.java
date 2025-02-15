@@ -1,6 +1,6 @@
 package biz.riopapa.blackbox;
 
-import static biz.riopapa.blackbox.Vars.speedInt;
+import static biz.riopapa.blackbox.Vars.speedNow;
 import static biz.riopapa.blackbox.Vars.utils;
 import static biz.riopapa.blackbox.Vars.vPreviewView;
 import static biz.riopapa.blackbox.Vars.viewFinderActive;
@@ -28,7 +28,7 @@ public class GPSTracker extends Service implements LocationListener {
     Context gContext;
     Activity gActivity;
     double latitude = 0, longitude = 0;
-    int nowSpeed = 0;
+    int newSpeed = 0;
     ArrayList<Double> latitudes, longitudes;
     final int ARRAY_SIZE = 4;
     int newDirection, currDirection = -99;       // nowDirection = 0 ~ 360/22.5
@@ -46,7 +46,7 @@ public class GPSTracker extends Service implements LocationListener {
         for (int i = 0; i < 5; i++) {
             newsView[i] = gActivity.findViewById(newsIds[i]);
         }
-        latitude = 37.3926; longitude = 127.1267; nowSpeed = 1;
+        latitude = 37.3926; longitude = 127.1267; newSpeed = 1;
         latitudes = new ArrayList<>(); longitudes = new ArrayList<>();
         for (int i = 0; i < ARRAY_SIZE; i++) {
             latitudes.add(latitude + (double) i * 0.0001f); longitudes.add(longitude + (double) i * 0.0001f); }
@@ -86,13 +86,13 @@ public class GPSTracker extends Service implements LocationListener {
             return;
         latitude = newLoc.getLatitude();
         longitude = newLoc.getLongitude();
-        nowSpeed = (int) (newLoc.getSpeed() * 3.6f);
-        if (speedInt != nowSpeed) {
-            speedInt = nowSpeed;
-            final String speedText = "" + speedInt;
+        newSpeed = (int) (newLoc.getSpeed() * 3.6f);
+        if (speedNow != newSpeed) {
+            speedNow = newSpeed;
+            final String speedText = "" + speedNow;
             gActivity.runOnUiThread(() -> speedView.setText(speedText));
         }
-        if (nowSpeed > 20) {
+        if (newSpeed > 20) {
             if (viewFinderActive) {
                 viewFinderActive = false;
                 vPreviewView.setVisibility(View.INVISIBLE);
@@ -103,7 +103,7 @@ public class GPSTracker extends Service implements LocationListener {
                 vPreviewView.setVisibility(View.VISIBLE);
             }
         }
-        if (speedInt < 5) // if speed is < xx then no update, OBD should be connected
+        if (speedNow < 5) // if speed is < xx then no update, OBD should be connected
             return;
         latitudes.remove(0); longitudes.remove(0);
         latitudes.add(latitude); longitudes.add(longitude);

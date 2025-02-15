@@ -51,9 +51,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -61,8 +58,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-
-import androidx.annotation.NonNull;
 
 import biz.riopapa.blackbox.utility.Celcius;
 import biz.riopapa.blackbox.utility.DiskSpace;
@@ -112,7 +107,7 @@ public class MainActivity extends Activity {
         normal_duration = share_event_sec * 4000;
 
         readyBlackBoxFolders();
-        utils.deleteOldFiles(mPackageNormalPath, 6);
+        utils.deleteOldFiles(mPackageNormalPath);
         utils.deleteOldLogs();
         cameraSub = new CameraSub();
         gpsTracker = new GPSTracker();
@@ -127,7 +122,6 @@ public class MainActivity extends Activity {
         setViewVars();
 
         vBtnEvent.setOnClickListener(v -> startEventSaving());
-//        vTextLogInfo.setOnClickListener(v -> startEventSaving());
 
         mIsRecording = false;
 
