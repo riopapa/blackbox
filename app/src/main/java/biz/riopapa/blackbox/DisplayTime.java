@@ -37,7 +37,6 @@ class DisplayTime implements Runnable {
                     utils.beepOnce(10, 1f);
                     if (mIsRecording)
                         startStopExit.stopVideo();
-//                        stopHandler.sendEmptyMessage(0);
                     utils.beepOnce(10, 1f);
                     new BeBackSoon().execute("x");
                 } else if (celDegree > 43)

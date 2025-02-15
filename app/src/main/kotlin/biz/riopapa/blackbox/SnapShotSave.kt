@@ -29,10 +29,9 @@ internal class SnapShotSave {
         withContext(Dispatchers.IO) {
 
             val minPos = 0
-//            val suffix = phase * 1000
             val maxSize = Vars.share_image_size - 2
 
-            var jpgBytes = getClone(Vars.imageStack.snapNowPos)
+            val jpgBytes = getClone(Vars.imageStack.snapNowPos)
 
             var prefixTime: String = path2Write.name
             prefixTime = "D" + prefixTime.substring(1, prefixTime.length - 1) + "."
@@ -49,7 +48,7 @@ internal class SnapShotSave {
                     } else Log.e("$phase image error $i", imageFile.name)
                     jpgBytes[i] = null
                 }
-                if (last) { // last phase
+                if (last) {
                     Vars.utils.beepOnce(3, 1f)
                     Vars.mActivity.runOnUiThread {
                         Vars.vTextCountEvent.text = (++Vars.CountEvent).toString()

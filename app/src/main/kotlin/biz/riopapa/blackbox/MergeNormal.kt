@@ -61,7 +61,7 @@ class MergeNormal {
                 try {
                     date = sdfTime.parse(endTimeS)
                 } catch (e: ParseException) {
-                    utils.logE(logID, "$endTimeS parse Error", e)
+                    utils.logE(LOG_ID, "$endTimeS parse Error", e)
                 }
                 nextNormalTime = date!!.time - 6000
                 outputFile = File(mPackageNormalDatePath, DATE_PREFIX + beginTimeS + SUFFIX
@@ -122,15 +122,15 @@ class MergeNormal {
                     utils.logBoth("DISK", msg)
 
             } catch (e: IOException) {
-                    utils.logE(logID, "IOException~ ", e)
+                    utils.logE(LOG_ID, "IOException~ ", e)
             }
         } else {
             utils.beepOnce(3, 1f)
-            utils.logOnly(logID, "IOException~ ")
+            utils.logOnly(LOG_ID, "IOException~ ")
         }
     }
     companion object {
-        private const val logID = "NORMAL MERGE"
+        private const val LOG_ID = "NORMAL MERGE"
     }
 }
 

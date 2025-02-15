@@ -140,7 +140,6 @@ public class MainActivity extends Activity {
             btnBeBack.setImageAlpha(50);
             if (mIsRecording)
                 startStopExit.stopVideo();
-//                stopHandler.sendEmptyMessage(0);
             new BeBackSoon().execute("x");
         });
         ImageButton btnMove = findViewById(R.id.btnPauseMoving);
@@ -148,7 +147,6 @@ public class MainActivity extends Activity {
             btnMove.setImageAlpha(50);
             if (mIsRecording)
                 startStopExit.stopVideo();
-//                stopHandler.sendEmptyMessage(0);
             new BeBackSoon().execute("M");
         });
         vTextDate.setText(utils.getMilliSec2String(System.currentTimeMillis(), "MM-dd(EEE)"));
@@ -184,7 +182,6 @@ public class MainActivity extends Activity {
         @Override
         public void run() {
                 startStopExit.startVideo();
-//                startHandler.sendEmptyMessage(0);
                 displayBattery = new DisplayBattery();
                 displayBattery.start();
                 displayBattery.show();
@@ -194,7 +191,6 @@ public class MainActivity extends Activity {
             }
         }, DELAY_AUTO_RECORDING);
 
-//        utils.setVolume(70);
         String msg = new DiskSpace().squeeze(mPackageNormalPath);
         if (!msg.isEmpty())
             utils.logBoth("DISK", msg);
@@ -215,17 +211,6 @@ public class MainActivity extends Activity {
                 "\nWork Size : "+share_work_size;
         utils.logBoth("Preference",s);
     }
-//
-//    final static Handler startHandler = new Handler(Looper.getMainLooper()) {
-//        public void handleMessage(@NonNull Message msg) { startStopExit.startVideo();
-//        }
-//    };
-//    final static Handler stopHandler = new Handler(Looper.getMainLooper()) {
-//        public void handleMessage(Message msg) { startStopExit.stopVideo();}
-//    };
-//    final Handler eventHandler = new Handler(Looper.getMainLooper()) {
-//        public void handleMessage(Message msg) { new EventRecord().start();}
-//    };
 
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
@@ -235,7 +220,6 @@ public class MainActivity extends Activity {
 
     void startEventSaving() {
         new EventRecord().start();
-//        eventHandler.sendEmptyMessage(0);
     }
 
     private void setViewVars() {
@@ -256,7 +240,6 @@ public class MainActivity extends Activity {
         vTextSpeed.setText(R.string.under_bar);
         vPreviewView = findViewById(R.id.previewView);
         vBtnEvent = findViewById(R.id.btnEvent);
-//        vPreviewView.setSurfaceTextureListener(mSurfaceTextureListener);
     }
 
     private void readyBlackBoxFolders() {
@@ -301,7 +284,6 @@ public class MainActivity extends Activity {
                     keyOldTime = 0;
                     if (mIsRecording)
                         startStopExit.stopVideo();
-//                        stopHandler.sendEmptyMessage(0);
                     new BeBackSoon().execute("x");
                 } else
                     keyOldTime = 0;

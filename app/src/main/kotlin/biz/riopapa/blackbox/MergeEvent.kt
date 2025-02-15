@@ -82,9 +82,9 @@ class MergeEvent {
         }
         for (movie in listMovies) {
             for (track in movie.tracks) {
-                if (track.handler == "vide") {    // excluding "audi"
+                if (track.handler == "vide") {
                     videoTracks.add(track)
-                } else { // track.getHandler().equals("soon")
+                } else {
                     audioTracks.add(track)
                 }
             }
