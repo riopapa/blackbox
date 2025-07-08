@@ -18,12 +18,12 @@ public class CameraSize {
 
 // "SM-G986N" "N";  note 20
 // "SM-G965N" "P";
-// "SM-A325N" "A";
 // "SM-G977N" "H"; S10
+// "SM-S938N" "U"; S25 Ultra
 
     public static Size[] set(StreamConfigurationMap map, Vars.PhoneE SUFFIX) {
 
-//        dumpVariousCameraSizes(map);
+        dumpVariousCameraSizes(map);
 
         Size sizePreview = null, sizeCamera = null, sizeVideo = null;
 
@@ -47,8 +47,8 @@ public class CameraSize {
             2288x1080 2.1 , 1920x1440 1.3 , 1920x1080 1.8 , 1920x912 2.1 , 1440x1080 1.3 ,
             1280x720 1.8 , 1088x1088 1.0 , 960x720 1.3 , 720x480 1.5 , 640x480 1.3 ,
             640x360 1.8 , 352x288 1.2 , 320x240 1.3 , 256x144 1.8 , 176x144 1.2 ,
-
              */
+
                 for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
                     if (size.getWidth() == 640 && size.getHeight() == 480)
                         sizePreview = size;
@@ -71,6 +71,26 @@ public class CameraSize {
                     if (size.getWidth() == 960 && size.getHeight() == 720)
                         sizePreview = size;
                     else if (size.getWidth() == 4000 && size.getHeight() == 2252)
+                        sizeCamera = size;
+                    else if (size.getWidth() == 1280 && size.getHeight() == 720)
+                        sizeVideo = size;
+                }
+                break;
+
+            case U:
+            /* S25 Ultra
+            4080x3060 1.3 , 4032x3024 1.3 , 4000x3000 1.3 , 4000x2252 1.8 , 4000x1848 2.2 ,
+            4000x1716 2.3 , 3840x2160 1.8 , 3648x2736 1.3 , 3648x2052 1.8 , 3648x1704 2.1 ,
+            2992x2992 1.0 , 2736x2736 1.0 , 2560x1440 1.8 , 2400x1080 2.2 , 2336x1080 2.2 ,
+            1920x1440 1.3 , 1920x1080 1.8 , 1920x824 2.3 , 1440x1080 1.3 , 1280x720 1.8 ,
+            1232x1008 1.2 , 1088x1088 1.0 , 960x720 1.3 , 720x480 1.5 , 640x480 1.3 ,
+            640x360 1.8 , 352x288 1.2 , 320x240 1.3 , 176x144 1.2 ,
+            */
+
+                for (Size size : map.getOutputSizes(SurfaceTexture.class)) {
+                    if (size.getWidth() == 960 && size.getHeight() == 720)
+                        sizePreview = size;
+                    else if (size.getWidth() == 4032 && size.getHeight() == 3024)
                         sizeCamera = size;
                     else if (size.getWidth() == 1280 && size.getHeight() == 720)
                         sizeVideo = size;

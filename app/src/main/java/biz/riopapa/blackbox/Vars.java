@@ -105,7 +105,7 @@ public class Vars {
     public  static int IMAGE_BUFFER_MAX_IMAGES = 3;
 
     public static PhoneE SUFFIX;
-    public enum PhoneE {N, H } // S10Phone, Note20
+    public enum PhoneE {N, H, U } // S10Phone, Note20, S25Ultra
     static boolean viewFinderActive = true;
     static CameraDevice mCameraDevice = null;
     static CameraCharacteristics mCameraCharacteristics;

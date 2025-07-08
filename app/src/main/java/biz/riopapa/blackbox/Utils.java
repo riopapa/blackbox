@@ -87,9 +87,18 @@ public class Utils {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
         String log = traceName(traces[5].getMethodName()) + traceName(traces[4].getMethodName()) + traceClassName(traces[3].getClassName())+"> "+traces[3].getMethodName() + "#" + traces[3].getLineNumber() + " {"+ tag + "} " + text;
+
         Log.w(tag , log);
         append2file(mPackageLogPath, logFile, getMilliSec2String(System.currentTimeMillis(), FORMAT_TIME)+" "+tag+": " + log);
-        uText = vTextLogInfo.getText().toString() + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")
+        String vText = null;
+        try {
+            vText = vTextLogInfo.getText().toString();
+        } catch (Exception e) {
+
+        }
+        if (vText == null)
+            vText = "";
+        uText = vText + getMilliSec2String(System.currentTimeMillis(), "HH:mm ")
                 +tag+": "+text + "\n";
         new Handler(Looper.getMainLooper()).post(() -> {
             vTextLogInfo.setText(uText);

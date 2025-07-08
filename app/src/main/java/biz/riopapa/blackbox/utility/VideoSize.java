@@ -32,6 +32,12 @@ public class VideoSize {
                 VIDEO_ENCODING_RATE = 20000 * 1000;
                 VIDEO_ONE_WORK_FILE_SIZE = share_work_size * 10000;
                 break;
+            case "SM-S938N":    // note 20
+                SUFFIX = Vars.PhoneE.U;
+                VIDEO_FRAME_RATE = 30;
+                VIDEO_ENCODING_RATE = 24000 * 1000;
+                VIDEO_ONE_WORK_FILE_SIZE = share_work_size * 10000;
+                break;
             default:
                 utils.logBoth("Vars", "UnKnown Model=" + Build.MODEL);
                 break;

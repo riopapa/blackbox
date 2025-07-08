@@ -32,16 +32,16 @@ class DisplayTime implements Runnable {
             @Override
             public void run() {
                 int celDegree = Celcius.get();
-                String txt = (celDegree>42)? ">"+celDegree+"<":" "+celDegree+" ";
-                if (celDegree > 44) {
+                String txt = " "+celDegree+" ";
+                if (celDegree > 45) {
                     utils.beepOnce(10, 1f);
                     if (mIsRecording)
                         startStopExit.stopVideo();
                     utils.beepOnce(10, 1f);
                     new BeBackSoon().execute("x");
-                } else if (celDegree > 43)
+                } else if (celDegree > 44)
                     utils.beepOnce(10, 1f);
-                else if (celDegree > 41) {
+                else if (celDegree > 42) {
                     utils.beepOnce(9, 1f);
                     if (viewFinderActive) {
                         viewFinderActive = false;
@@ -54,7 +54,7 @@ class DisplayTime implements Runnable {
                     tvDegree.setText(txt);
                     tvDegree.setTextColor((celDegree<42)? Color.WHITE : Color.YELLOW);
                     tvDegree.setBackgroundColor(ContextCompat.getColor(mContext,
-                            (celDegree<42)? R.color.baseColor : R.color.hotColor));
+                            (celDegree<42)? R.color.baseColor : R.color.hotText));
                     mainLayout.setBackgroundColor(ContextCompat.getColor(mContext,
                             (celDegree<44)? R.color.baseColor : R.color.hotColor));
                     displayBattery.show();

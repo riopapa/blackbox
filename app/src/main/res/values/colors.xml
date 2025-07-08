@@ -3,6 +3,7 @@
     <color name="colorText">#FFFFFF</color>
     <color name="speedColor">#FFFF00</color>
     <color name="baseColor">#220122</color>
-    <color name="hotColor">#EB4C4C</color>
+    <color name="hotColor">#F08484</color>
+    <color name="hotText">#820C0C</color>
 
 </resources>

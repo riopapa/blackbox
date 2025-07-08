@@ -141,11 +141,11 @@
         <TextView
             android:id="@+id/degree"
             android:layout_width="76sp"
-            android:layout_height="42sp"
+            android:layout_height="36sp"
             android:gravity="end"
             android:text="__ "
             android:textColor="@color/colorText"
-            android:textSize="16sp" />
+            android:textSize="32sp" />
 
         <TextView
             android:id="@+id/degreeInCelcius"

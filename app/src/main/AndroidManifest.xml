@@ -28,7 +28,6 @@
         <package android:name="biz.riopapa.blackmove" />
     </queries>
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/event_shot"

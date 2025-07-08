@@ -1,5 +1,7 @@
 package biz.riopapa.blackbox;
 
+import android.content.ContentProvider;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
